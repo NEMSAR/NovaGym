@@ -62,13 +62,14 @@
                 </div>
                 
                 <div class="flex items-center gap-6">
-                    <button id="btn-abrir-modal" class="dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
+                    <!-- Botón Dinámico de la Cabecera -->
+                    <button id="btn-accion-principal" class="dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
                         <span class="text-xl">+</span> Nuevo Socio
                     </button>
 
-                    <div class="glass-panel px-6 py-3 rounded-2xl text-right hidden xl:block">
-                        <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Ingresos del Día</p>
-                        <p class="text-xl font-bold dynamic-text">$45.000 ARS</p>
+                    <div class="glass-panel px-6 py-3 rounded-2xl text-right hidden xl:block border border-gray-700/50">
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Ingresos Totales</p>
+                        <p id="ui-ingresos-totales" class="text-xl font-bold dynamic-text">$0 ARS</p>
                     </div>
                 </div>
             </header>
@@ -82,15 +83,10 @@
                                 <span class="bg-orange-500/20 text-orange-400 p-2 rounded-xl">⚠️</span> 
                                 Membresías Próximas a Vencer
                             </h2>
-                            <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1 rounded-full border border-gray-700">Seguimiento</span>
                         </div>
                         
-                        <div id="loading-dashboard" class="text-center py-8 text-gray-500">
-                            Analizando base de datos...
-                        </div>
-                        <div id="contenedor-alertas" class="grid grid-cols-1 gap-4 hidden">
-                            <!-- Alertas -->
-                        </div>
+                        <div id="loading-dashboard" class="text-center py-8 text-gray-500">Analizando base de datos...</div>
+                        <div id="contenedor-alertas" class="grid grid-cols-1 gap-4 hidden"></div>
                     </section>
                 </div>
                 
@@ -102,19 +98,16 @@
                 </div>
             </div>
 
-            <!-- VISTA 2: PADRÓN DE SOCIOS (Tabla interactiva) -->
+            <!-- VISTA 2: PADRÓN DE SOCIOS -->
             <div id="vista-socios" class="hidden transition-opacity duration-300">
                 <section class="glass-panel p-8 rounded-3xl">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                         <h2 class="text-xl font-bold text-white">Directorio Completo</h2>
-                        
-                        <!-- Buscador -->
                         <div class="relative w-full md:w-72">
                             <span class="absolute left-3 top-3 text-gray-400">🔍</span>
-                            <input type="text" id="input-busqueda" class="w-full input-dark rounded-xl py-2.5 pl-10 pr-4" placeholder="Buscar por nombre...">
+                            <input type="text" id="input-busqueda-socio" class="w-full input-dark rounded-xl py-2.5 pl-10 pr-4" placeholder="Buscar socio...">
                         </div>
                     </div>
-
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[700px]">
                             <thead>
@@ -126,11 +119,31 @@
                                     <th class="py-4 px-4 text-center">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabla-socios-body" class="text-sm">
-                                <!-- Filas renderizadas por JS -->
-                            </tbody>
+                            <tbody id="tabla-socios-body" class="text-sm"></tbody>
                         </table>
-                        <div id="loading-tabla" class="text-center py-8 text-gray-500 hidden">Cargando directorio...</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- VISTA 3: FINANZAS Y PAGOS -->
+            <div id="vista-finanzas" class="hidden transition-opacity duration-300">
+                <section class="glass-panel p-8 rounded-3xl">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                        <h2 class="text-xl font-bold text-white">Historial de Transacciones</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px]">
+                            <thead>
+                                <tr class="border-b border-gray-700 text-gray-400 text-xs uppercase tracking-wider">
+                                    <th class="py-4 px-4">Fecha</th>
+                                    <th class="py-4 px-4">Socio</th>
+                                    <th class="py-4 px-4">Concepto</th>
+                                    <th class="py-4 px-4">Monto</th>
+                                    <th class="py-4 px-4 text-center">Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-finanzas-body" class="text-sm"></tbody>
+                        </table>
                     </div>
                 </section>
             </div>
@@ -138,37 +151,62 @@
         </div>
     </main>
 
-    <!-- Modal Reutilizable (Alta / Edición) -->
+    <!-- Modal Socio -->
     <div id="modal-socio" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md transition-opacity">
         <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative border border-white/10 shadow-2xl">
-            <button id="btn-cerrar-modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl transition">✕</button>
-            
-            <h2 id="modal-title" class="text-2xl font-bold text-white mb-6">Alta de Nuevo Socio</h2>
-            
+            <button class="btn-cerrar-modal absolute top-5 right-5 text-gray-400 hover:text-white text-xl transition" data-modal="modal-socio">✕</button>
+            <h2 id="modal-socio-title" class="text-2xl font-bold text-white mb-6">Alta de Nuevo Socio</h2>
             <form id="form-socio" class="space-y-5">
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre Completo</label>
                     <input type="text" id="socio-nombre" class="w-full input-dark rounded-xl p-3" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono (WhatsApp)</label>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono</label>
                     <input type="tel" id="socio-telefono" class="w-full input-dark rounded-xl p-3" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Tipo de Membresía</label>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Membresía</label>
                     <select id="socio-membresia" class="w-full input-dark rounded-xl p-3" required>
                         <option value="Pase Libre">Pase Libre</option>
                         <option value="Musculación">Musculación</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Fecha de Vencimiento</label>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Vencimiento</label>
                     <input type="date" id="socio-vence" class="w-full input-dark rounded-xl p-3" required>
                 </div>
-                
-                <button type="submit" id="btn-guardar-socio" class="w-full dynamic-btn text-white font-bold py-3 px-4 rounded-xl transition shadow-lg mt-4">
-                    Registrar Socio
-                </button>
+                <button type="submit" id="btn-guardar-socio" class="w-full dynamic-btn text-white font-bold py-3 px-4 rounded-xl transition mt-4">Registrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pagos -->
+    <div id="modal-pago" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md transition-opacity">
+        <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative border border-white/10 shadow-2xl">
+            <button class="btn-cerrar-modal absolute top-5 right-5 text-gray-400 hover:text-white text-xl transition" data-modal="modal-pago">✕</button>
+            <h2 class="text-2xl font-bold text-white mb-6">Registrar Pago</h2>
+            <form id="form-pago" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Socio</label>
+                    <select id="pago-socio" class="w-full input-dark rounded-xl p-3" required>
+                        <option value="">Seleccione un socio...</option>
+                        <!-- Se llena con JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Concepto</label>
+                    <input type="text" id="pago-concepto" class="w-full input-dark rounded-xl p-3" placeholder="Ej: Mensualidad Pase Libre" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Monto (ARS)</label>
+                    <input type="number" id="pago-monto" class="w-full input-dark rounded-xl p-3" placeholder="Ej: 15000" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Fecha</label>
+                    <input type="date" id="pago-fecha" class="w-full input-dark rounded-xl p-3" required>
+                </div>
+                <button type="submit" id="btn-guardar-pago" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl transition shadow-[0_0_15px_rgba(16,185,129,0.4)] mt-4">Procesar Pago</button>
             </form>
         </div>
     </div>
@@ -176,7 +214,7 @@
     <!-- Script Principal -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
@@ -192,243 +230,254 @@
         const GYM_ID = 'gym_001'; 
         let nombreGymActual = "";
         
-        // Estado Global de la App
-        let listaSociosData = []; // Array en memoria para búsquedas rápidas
+        let listaSociosData = []; 
+        let listaFinanzasData = [];
         let modoEdicion = false;
         let idSocioEnEdicion = null;
+        let vistaActual = 'dashboard';
 
-        // Referencias UI Navegación
+        // UI Refs
         const navDashboard = document.getElementById('nav-dashboard');
         const navSocios = document.getElementById('nav-socios');
+        const navFinanzas = document.getElementById('nav-finanzas');
         const vistaDashboard = document.getElementById('vista-dashboard');
         const vistaSocios = document.getElementById('vista-socios');
+        const vistaFinanzas = document.getElementById('vista-finanzas');
         const headerTitle = document.getElementById('header-title');
         const headerSubtitle = document.getElementById('header-subtitle');
+        const btnAccionPrincipal = document.getElementById('btn-accion-principal');
 
-        // Referencias UI Modal & Tablas
-        const modal = document.getElementById('modal-socio');
-        const modalTitle = document.getElementById('modal-title');
-        const formSocio = document.getElementById('form-socio');
-        const btnSubmitSocio = document.getElementById('btn-guardar-socio');
-        const tablaBody = document.getElementById('tabla-socios-body');
-        const inputBusqueda = document.getElementById('input-busqueda');
-
-        // --- SISTEMA DE NAVEGACIÓN SPA ---
-        navDashboard.addEventListener('click', () => {
-            vistaSocios.classList.add('hidden');
-            vistaDashboard.classList.remove('hidden');
-            navSocios.classList.remove('active', 'bg-white/10');
-            navDashboard.classList.add('active', 'bg-white/10');
-            headerTitle.innerText = "Panel Operativo";
-            headerSubtitle.innerText = "Resumen del sistema y alertas automáticas";
-        });
-
-        navSocios.addEventListener('click', () => {
+        // NAVEGACIÓN SPA
+        function cambiarVista(vista) {
+            vistaActual = vista;
             vistaDashboard.classList.add('hidden');
-            vistaSocios.classList.remove('hidden');
+            vistaSocios.classList.add('hidden');
+            vistaFinanzas.classList.add('hidden');
             navDashboard.classList.remove('active', 'bg-white/10');
-            navSocios.classList.add('active', 'bg-white/10');
-            headerTitle.innerText = "Padrón de Socios";
-            headerSubtitle.innerText = "Gestión de altas, bajas y modificaciones";
-            renderizarTabla(listaSociosData); // Repintar por si hubo cambios
+            navSocios.classList.remove('active', 'bg-white/10');
+            navFinanzas.classList.remove('active', 'bg-white/10');
+
+            if (vista === 'dashboard') {
+                vistaDashboard.classList.remove('hidden');
+                navDashboard.classList.add('active', 'bg-white/10');
+                headerTitle.innerText = "Panel Operativo";
+                headerSubtitle.innerText = "Resumen del sistema y alertas automáticas";
+                btnAccionPrincipal.innerHTML = '<span class="text-xl">+</span> Nuevo Socio';
+            } else if (vista === 'socios') {
+                vistaSocios.classList.remove('hidden');
+                navSocios.classList.add('active', 'bg-white/10');
+                headerTitle.innerText = "Padrón de Socios";
+                headerSubtitle.innerText = "Gestión de altas, bajas y modificaciones";
+                btnAccionPrincipal.innerHTML = '<span class="text-xl">+</span> Nuevo Socio';
+                renderizarTablaSocios(listaSociosData);
+            } else if (vista === 'finanzas') {
+                vistaFinanzas.classList.remove('hidden');
+                navFinanzas.classList.add('active', 'bg-white/10');
+                headerTitle.innerText = "Finanzas y Pagos";
+                headerSubtitle.innerText = "Gestión de caja e historial de cobros";
+                btnAccionPrincipal.innerHTML = '<span class="text-xl">+</span> Registrar Pago';
+                renderizarTablaFinanzas(listaFinanzasData);
+            }
+        }
+
+        navDashboard.addEventListener('click', () => cambiarVista('dashboard'));
+        navSocios.addEventListener('click', () => cambiarVista('socios'));
+        navFinanzas.addEventListener('click', () => cambiarVista('finanzas'));
+
+        // BOTÓN ACCIÓN PRINCIPAL Y MODALES
+        btnAccionPrincipal.addEventListener('click', () => {
+            if (vistaActual === 'dashboard' || vistaActual === 'socios') {
+                modoEdicion = false;
+                document.getElementById('form-socio').reset();
+                document.getElementById('modal-socio-title').innerText = "Alta de Nuevo Socio";
+                document.getElementById('modal-socio').classList.remove('hidden');
+            } else if (vistaActual === 'finanzas') {
+                document.getElementById('form-pago').reset();
+                // Fecha por defecto hoy
+                document.getElementById('pago-fecha').valueAsDate = new Date();
+                
+                // Cargar lista de socios en el select
+                const selectSocio = document.getElementById('pago-socio');
+                selectSocio.innerHTML = '<option value="">Seleccione un socio...</option>';
+                listaSociosData.forEach(socio => {
+                    selectSocio.innerHTML += `<option value="${socio.nombre}">${socio.nombre}</option>`;
+                });
+
+                document.getElementById('modal-pago').classList.remove('hidden');
+            }
         });
 
-        // --- CONTROL DEL MODAL ---
-        document.getElementById('btn-abrir-modal').addEventListener('click', () => {
-            modoEdicion = false;
-            idSocioEnEdicion = null;
-            formSocio.reset();
-            modalTitle.innerText = "Alta de Nuevo Socio";
-            btnSubmitSocio.innerText = "Registrar Socio";
-            modal.classList.remove('hidden');
+        // Cerrar modales
+        document.querySelectorAll('.btn-cerrar-modal').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.getElementById(e.target.dataset.modal).classList.add('hidden');
+            });
         });
 
-        document.getElementById('btn-cerrar-modal').addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
-
-        // --- CARGA DE DATOS (FIREBASE) ---
+        // CARGA GENERAL FIREBASE
         async function cargarDatos() {
             try {
-                // 1. Setup Gym
+                // Gym config
                 const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
                 if (gymSnap.exists()) {
                     const data = gymSnap.data();
                     nombreGymActual = data.nombre;
                     document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase();
-                    
                     if(data.colorPrimario) {
                         document.querySelectorAll('.dynamic-bg').forEach(el => el.style.backgroundColor = data.colorPrimario);
                         document.querySelectorAll('.dynamic-text').forEach(el => el.style.color = data.colorPrimario);
                         document.querySelectorAll('.dynamic-border').forEach(el => el.style.borderColor = data.colorPrimario);
                         document.querySelectorAll('.dynamic-btn').forEach(el => el.style.backgroundColor = data.colorPrimario);
-                        
-                        const style = document.createElement('style');
-                        style.innerHTML = `.input-dark:focus { border-color: ${data.colorPrimario}; box-shadow: 0 0 10px ${data.colorPrimario}40; }`;
-                        document.head.appendChild(style);
                     }
-                    
-                    const selectMembresia = document.getElementById('socio-membresia');
-                    if (data.modulos?.funcional && !selectMembresia.innerHTML.includes("Funcional")) selectMembresia.insertAdjacentHTML('beforeend', `<option value="Funcional">Funcional</option>`);
-                    if (data.modulos?.pilates && !selectMembresia.innerHTML.includes("Pilates")) selectMembresia.insertAdjacentHTML('beforeend', `<option value="Pilates">Pilates</option>`);
                 }
 
-                // 2. Traer Socios
-                const sociosRef = collection(db, "gimnasios", GYM_ID, "socios");
-                const snap = await getDocs(sociosRef);
-                
-                listaSociosData = []; // Resetear array local
-                snap.forEach(doc => {
-                    listaSociosData.push({ id: doc.id, ...doc.data() });
+                // Cargar Socios
+                const sociosSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "socios"));
+                listaSociosData = [];
+                sociosSnap.forEach(doc => listaSociosData.push({ id: doc.id, ...doc.data() }));
+
+                // Cargar Finanzas
+                const finanzasSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "finanzas"));
+                listaFinanzasData = [];
+                let ingresosTotales = 0;
+                finanzasSnap.forEach(doc => {
+                    const pago = doc.data();
+                    listaFinanzasData.push({ id: doc.id, ...pago });
+                    ingresosTotales += Number(pago.monto);
                 });
 
-                // 3. Actualizar UI General
+                // Ordenar finanzas por fecha (más reciente primero)
+                listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                // UI Updates
                 document.getElementById('total-socios').innerText = listaSociosData.length;
+                document.getElementById('ui-ingresos-totales').innerText = `$${ingresosTotales.toLocaleString('es-AR')} ARS`;
                 document.getElementById('loading-dashboard').classList.add('hidden');
                 
                 renderizarAlertas();
-                renderizarTabla(listaSociosData);
+                if(vistaActual === 'socios') renderizarTablaSocios(listaSociosData);
+                if(vistaActual === 'finanzas') renderizarTablaFinanzas(listaFinanzasData);
 
             } catch (error) {
-                console.error("Error global:", error);
+                console.error("Error cargando datos:", error);
             }
         }
 
-        // --- RENDERIZADO DE VISTAS ---
+        // RENDERIZADOS
         function renderizarAlertas() {
             const contenedor = document.getElementById('contenedor-alertas');
             contenedor.classList.remove('hidden');
-            contenedor.innerHTML = '';
-            
-            // Para la demo, mostramos todos. En producción, filtrarías por fecha próxima.
-            if(listaSociosData.length === 0) {
-                contenedor.innerHTML = `<p class="text-gray-400 text-center py-4 bg-gray-800/50 rounded-xl">Sin socios activos.</p>`;
-                return;
-            }
+            contenedor.innerHTML = listaSociosData.length === 0 ? 
+                `<p class="text-gray-400">Sin socios activos.</p>` : '';
 
             listaSociosData.forEach(socio => {
-                const linkWs = `https://wa.me/${socio.telefono}?text=${encodeURIComponent(`¡Hola ${socio.nombre}! De parte de ${nombreGymActual} te recordamos que tu ${socio.membresia} vence el ${socio.vence}. ¡Te esperamos!`)}`;
+                const linkWs = `https://wa.me/${socio.telefono}?text=${encodeURIComponent(`¡Hola ${socio.nombre}! De parte de ${nombreGymActual} te recordamos que tu ${socio.membresia} vence el ${socio.vence}.`)}`;
                 contenedor.innerHTML += `
-                    <div class="flex justify-between items-center p-4 bg-gray-800/40 border border-gray-700/50 rounded-xl hover:bg-gray-800/80 transition">
+                    <div class="flex justify-between items-center p-4 bg-gray-800/40 border border-gray-700/50 rounded-xl">
                         <div>
                             <p class="font-bold text-white">${socio.nombre}</p>
-                            <p class="text-gray-400 text-sm"><span class="text-red-400 font-bold">${socio.vence}</span> - ${socio.membresia}</p>
+                            <p class="text-gray-400 text-sm">Vence: <span class="text-red-400 font-bold">${socio.vence}</span></p>
                         </div>
                         <a href="${linkWs}" target="_blank" class="bg-[#25D366]/10 text-[#25D366] px-4 py-2 rounded-lg font-bold hover:bg-[#25D366] hover:text-white transition">Avisar</a>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
-        function renderizarTabla(arrayDatos) {
-            tablaBody.innerHTML = '';
-            if(arrayDatos.length === 0) {
-                tablaBody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">No se encontraron registros.</td></tr>`;
+        function renderizarTablaSocios(datos) {
+            const tbody = document.getElementById('tabla-socios-body');
+            tbody.innerHTML = '';
+            datos.forEach(socio => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-800 glass-row">
+                        <td class="py-4 px-4 font-bold text-white">${socio.nombre}</td>
+                        <td class="py-4 px-4 text-gray-300">${socio.telefono}</td>
+                        <td class="py-4 px-4"><span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded text-xs border border-blue-500/20">${socio.membresia}</span></td>
+                        <td class="py-4 px-4 text-gray-300">${socio.vence}</td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="btn-eliminar-socio bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white px-3 py-1 rounded transition" data-id="${socio.id}">Eliminar</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function renderizarTablaFinanzas(datos) {
+            const tbody = document.getElementById('tabla-finanzas-body');
+            tbody.innerHTML = '';
+            if(datos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">No hay pagos registrados.</td></tr>`;
                 return;
             }
-
-            arrayDatos.forEach(socio => {
-                const tr = document.createElement('tr');
-                tr.className = "border-b border-gray-800 glass-row transition";
-                tr.innerHTML = `
-                    <td class="py-4 px-4 font-bold text-white">${socio.nombre}</td>
-                    <td class="py-4 px-4 text-gray-300">${socio.telefono}</td>
-                    <td class="py-4 px-4"><span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-1 rounded text-xs">${socio.membresia}</span></td>
-                    <td class="py-4 px-4 text-gray-300">${socio.vence}</td>
-                    <td class="py-4 px-4 flex justify-center gap-2">
-                        <button class="btn-editar bg-gray-700 hover:bg-blue-600 text-white p-2 rounded transition" data-id="${socio.id}" title="Editar">✏️</button>
-                        <button class="btn-eliminar bg-gray-700 hover:bg-red-600 text-white p-2 rounded transition" data-id="${socio.id}" title="Eliminar">🗑️</button>
-                    </td>
-                `;
-                tablaBody.appendChild(tr);
+            datos.forEach(pago => {
+                // Formatear fecha para vista (de AAAA-MM-DD a DD/MM/AAAA)
+                const fechaAr = pago.fecha.split('-').reverse().join('/');
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-800 glass-row">
+                        <td class="py-4 px-4 text-gray-300">${fechaAr}</td>
+                        <td class="py-4 px-4 font-bold text-white">${pago.socio}</td>
+                        <td class="py-4 px-4 text-gray-400">${pago.concepto}</td>
+                        <td class="py-4 px-4 font-bold text-emerald-400">$${Number(pago.monto).toLocaleString('es-AR')}</td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="btn-eliminar-pago bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white px-3 py-1 rounded transition" data-id="${pago.id}">Eliminar</button>
+                        </td>
+                    </tr>`;
             });
         }
 
-        // --- BUSCADOR ---
-        inputBusqueda.addEventListener('input', (e) => {
-            const termino = e.target.value.toLowerCase();
-            const filtrados = listaSociosData.filter(s => s.nombre.toLowerCase().includes(termino));
-            renderizarTabla(filtrados);
-        });
-
-        // --- ACCIONES DE TABLA (Event Delegation) ---
-        tablaBody.addEventListener('click', async (e) => {
-            const btnEditar = e.target.closest('.btn-editar');
-            const btnEliminar = e.target.closest('.btn-eliminar');
-
-            // Acción: EDITAR
-            if (btnEditar) {
-                const id = btnEditar.dataset.id;
-                const socio = listaSociosData.find(s => s.id === id);
-                if(socio) {
-                    modoEdicion = true;
-                    idSocioEnEdicion = id;
-                    
-                    document.getElementById('socio-nombre').value = socio.nombre;
-                    document.getElementById('socio-telefono').value = socio.telefono;
-                    document.getElementById('socio-membresia').value = socio.membresia;
-                    document.getElementById('socio-vence').value = socio.vence;
-                    
-                    modalTitle.innerText = "Modificar Socio";
-                    btnSubmitSocio.innerText = "Guardar Cambios";
-                    modal.classList.remove('hidden');
+        // ELIMINAR SOCIOS Y PAGOS
+        document.body.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-eliminar-socio')) {
+                if(confirm("¿Eliminar socio permanentemente?")) {
+                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.dataset.id));
+                    cargarDatos();
                 }
             }
-
-            // Acción: ELIMINAR
-            if (btnEliminar) {
-                const id = btnEliminar.dataset.id;
-                if(confirm("¿Estás seguro de que deseas eliminar este socio? Esta acción no se puede deshacer.")) {
-                    try {
-                        const btn = e.target;
-                        btn.innerHTML = '⏳';
-                        await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", id));
-                        await cargarDatos(); // Recargar datos
-                    } catch (error) {
-                        alert("Error al eliminar el registro.");
-                        console.error(error);
-                    }
+            if (e.target.classList.contains('btn-eliminar-pago')) {
+                if(confirm("¿Eliminar este pago del registro?")) {
+                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.dataset.id));
+                    cargarDatos();
                 }
             }
         });
 
-        // --- GUARDAR O ACTUALIZAR SOCIO ---
-        formSocio.addEventListener('submit', async (e) => {
+        // FORMULARIOS SUBMIT
+        document.getElementById('form-socio').addEventListener('submit', async (e) => {
             e.preventDefault();
-            btnSubmitSocio.innerHTML = 'Procesando...';
-            btnSubmitSocio.disabled = true;
-
-            const datosSocio = {
-                nombre: document.getElementById('socio-nombre').value,
-                telefono: document.getElementById('socio-telefono').value,
-                membresia: document.getElementById('socio-membresia').value,
-                vence: document.getElementById('socio-vence').value
-            };
-
+            const btn = document.getElementById('btn-guardar-socio');
+            btn.innerHTML = 'Guardando...'; btn.disabled = true;
             try {
-                if (modoEdicion) {
-                    // Actualizar documento existente
-                    const docRef = doc(db, "gimnasios", GYM_ID, "socios", idSocioEnEdicion);
-                    await updateDoc(docRef, datosSocio);
-                } else {
-                    // Crear nuevo documento
-                    datosSocio.estado = 'activo';
-                    datosSocio.fechaRegistro = new Date().toISOString();
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), datosSocio);
-                }
-                
-                modal.classList.add('hidden');
-                await cargarDatos(); // Refrescar memoria y UI
-                
-            } catch (error) {
-                console.error("Error guardando:", error);
-                alert("Hubo un error de conexión.");
+                await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), {
+                    nombre: document.getElementById('socio-nombre').value,
+                    telefono: document.getElementById('socio-telefono').value,
+                    membresia: document.getElementById('socio-membresia').value,
+                    vence: document.getElementById('socio-vence').value
+                });
+                document.getElementById('modal-socio').classList.add('hidden');
+                cargarDatos();
             } finally {
-                btnSubmitSocio.disabled = false;
+                btn.innerHTML = 'Registrar'; btn.disabled = false;
             }
         });
 
-        // Arrancar
+        document.getElementById('form-pago').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-guardar-pago');
+            btn.innerHTML = 'Procesando...'; btn.disabled = true;
+            try {
+                await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), {
+                    socio: document.getElementById('pago-socio').value,
+                    concepto: document.getElementById('pago-concepto').value,
+                    monto: document.getElementById('pago-monto').value,
+                    fecha: document.getElementById('pago-fecha').value,
+                    timestamp: new Date().toISOString()
+                });
+                document.getElementById('modal-pago').classList.add('hidden');
+                cargarDatos();
+            } finally {
+                btn.innerHTML = 'Procesar Pago'; btn.disabled = false;
+            }
+        });
+
+        // INICIO
         cargarDatos();
     </script>
 </body>
