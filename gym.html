@@ -3,99 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel del Gimnasio</title>
+    <title>Dashboard | Sistema de Gestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b0f19; color: #f8fafc; }
+        /* El color dinámico se aplicará por JS a esta clase */
+        .dynamic-bg { background-color: #3b82f6; } 
+        .dynamic-text { color: #3b82f6; }
+        .dynamic-border { border-color: #3b82f6; }
+        
+        .glass-panel { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); }
+        .nav-item { transition: all 0.2s ease-in-out; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); padding-left: 1.5rem; }
+    </style>
 </head>
-<body class="bg-gray-100 flex h-screen overflow-hidden">
+<body class="flex h-screen overflow-hidden">
 
-    <!-- Menú Lateral (El color se inyectará desde Firebase luego) -->
-    <aside class="w-64 text-white flex flex-col shadow-lg" style="background-color: #ea580c;">
-        <div class="p-6 text-center font-black text-2xl border-b border-white/20">
-            FitCenter Plus
+    <!-- Menú Lateral -->
+    <aside id="sidebar" class="w-72 flex flex-col shadow-2xl z-20 border-r border-white/5 dynamic-bg relative overflow-hidden">
+        <!-- Overlay oscuro para darle textura al color principal -->
+        <div class="absolute inset-0 bg-black/40 z-0 pointer-events-none"></div>
+        
+        <div class="p-8 text-center border-b border-white/10 z-10 relative">
+            <h2 id="ui-gym-name" class="font-black text-2xl tracking-widest text-white drop-shadow-md">Cargando...</h2>
         </div>
-        <nav class="flex-1 p-4 space-y-2 mt-4">
-            <a href="#" class="flex items-center gap-3 py-3 px-4 rounded bg-white/20 font-bold">👥 Socios</a>
-            <a href="#" class="flex items-center gap-3 py-3 px-4 rounded hover:bg-white/10 transition">🏋️ Funcional</a>
-            <a href="#" class="flex items-center gap-3 py-3 px-4 rounded hover:bg-white/10 transition">🧘 Pilates</a>
-            <a href="#" class="flex items-center gap-3 py-3 px-4 rounded hover:bg-white/10 transition">👆 Acceso Biométrico</a>
-            <a href="index.html" class="flex items-center gap-3 py-3 px-4 rounded hover:bg-white/10 transition mt-auto">⬅ Salir</a>
+        
+        <nav id="ui-nav-menu" class="flex-1 p-4 space-y-2 mt-4 z-10 relative text-gray-200 font-medium">
+            <a href="#" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl bg-white/10 text-white shadow-inner">
+                <span>👥</span> Padrón de Socios
+            </a>
+            <a href="#" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl">
+                <span>💳</span> Finanzas y Pagos
+            </a>
+            
+            <!-- Los módulos extra se inyectarán aquí con JS -->
+            
+            <a href="index.html" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl mt-10 text-red-300 hover:bg-red-500/20 hover:text-red-100">
+                <span>🚪</span> Cerrar Sesión
+            </a>
         </nav>
     </aside>
 
     <!-- Contenido Principal -->
-    <main class="flex-1 p-8 overflow-y-auto">
-        <header class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Panel de Control</h1>
-        </header>
+    <main class="flex-1 overflow-y-auto relative">
+        <!-- Decoración de fondo -->
+        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full blur-[120px] opacity-20 z-0 dynamic-bg"></div>
+        
+        <div class="p-10 relative z-10">
+            <header class="flex justify-between items-end mb-12">
+                <div>
+                    <h1 class="text-4xl font-black text-white tracking-tight mb-2">Panel Operativo</h1>
+                    <p class="text-gray-400">Resumen del sistema y alertas automáticas</p>
+                </div>
+                
+                <div class="glass-panel px-6 py-3 rounded-2xl flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Ingresos del Día</p>
+                        <p class="text-xl font-bold dynamic-text">$45.000 ARS</p>
+                    </div>
+                </div>
+            </header>
 
-        <!-- Sección de Alertas -->
-        <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                ⚠️ Membresías por Vencer
-            </h2>
-            <div id="contenedor-alertas" class="grid grid-cols-1 gap-4">
-                <!-- Las alertas se cargarán por JS -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- Columna Principal -->
+                <div class="xl:col-span-2 space-y-8">
+                    <!-- Sección Alertas -->
+                    <section class="glass-panel p-8 rounded-3xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-white flex items-center gap-3">
+                                <span class="bg-orange-500/20 text-orange-400 p-2 rounded-xl">⚠️</span> 
+                                Membresías Críticas
+                            </h2>
+                            <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1 rounded-full border border-gray-700">Acción Requerida</span>
+                        </div>
+                        
+                        <div id="loading-socios" class="text-center py-8 text-gray-500">
+                            Analizando base de datos de socios...
+                        </div>
+
+                        <div id="contenedor-alertas" class="grid grid-cols-1 gap-4 hidden">
+                            <!-- Alertas de Firebase irán aquí -->
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- Columna Secundaria (Métricas rápidas) -->
+                <div class="space-y-6">
+                    <div class="glass-panel p-6 rounded-3xl border-l-4 dynamic-border">
+                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Socios Activos</h3>
+                        <p class="text-4xl font-black text-white">124</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-3xl border-l-4 border-emerald-500">
+                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Renovaciones Hoy</h3>
+                        <p class="text-4xl font-black text-white">8</p>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
     </main>
 
-    <script>
-        // Datos simulados de miembros por vencer
-        const miembrosPorVencer = [
-            { nombre: "Micaela Silva", membresia: "Pase Libre - Mensual", vence: "Hoy", telefono: "5491112345678" },
-            { nombre: "Lean Gimenez", membresia: "Funcional 3 Días", vence: "Mañana", telefono: "5491112345679" }
-        ];
+    <!-- Script Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const contenedorAlertas = document.getElementById('contenedor-alertas');
-        const nombreGym = "FitCenter Plus";
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
+            authDomain: "novagym-saas-enterprise.firebaseapp.com",
+            projectId: "novagym-saas-enterprise",
+            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
+            messagingSenderId: "578362101056",
+            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
+        };
 
-        // Renderizar lista y crear enlaces de WhatsApp
-        miembrosPorVencer.forEach(socio => {
-            const textoWs = `¡Hola ${socio.nombre}! Te escribimos de ${nombreGym}. Te recordamos que tu ${socio.membresia} vence ${socio.vence}. ¡Te esperamos para renovar! 💪`;
-            const linkWs = `https://wa.me/${socio.telefono}?text=${encodeURIComponent(textoWs)}`;
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-            const div = document.createElement('div');
-            div.className = "flex justify-between items-center p-4 border border-gray-100 rounded-lg hover:shadow-md transition";
-            div.innerHTML = `
-                <div>
-                    <p class="font-bold text-lg text-gray-800">${socio.nombre}</p>
-                    <p class="text-gray-500 text-sm">${socio.membresia} • Vence: <span class="font-bold text-red-500">${socio.vence}</span></p>
-                </div>
-                <a href="${linkWs}" target="_blank" class="flex items-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white px-5 py-2.5 rounded-full font-bold transition shadow-sm">
-                    💬 Avisar
-                </a>
-            `;
-            contenedorAlertas.appendChild(div);
-        });
+        // ID del gimnasio de prueba que creamos en Firestore
+        const GYM_ID = 'gym_001'; 
+        let nombreGymActual = "";
+
+        async function inicializarDashboard() {
+            try {
+                // 1. Obtener configuración del Gimnasio
+                const gymRef = doc(db, "gimnasios", GYM_ID);
+                const gymSnap = await getDoc(gymRef);
+
+                if (gymSnap.exists()) {
+                    const gymData = gymSnap.data();
+                    nombreGymActual = gymData.nombre;
+                    
+                    // Aplicar UI
+                    document.getElementById('ui-gym-name').innerText = gymData.nombre.toUpperCase();
+                    
+                    // Aplicar colores dinámicos
+                    if(gymData.colorPrimario) {
+                        document.documentElement.style.setProperty('--dynamic-color', gymData.colorPrimario);
+                        document.querySelectorAll('.dynamic-bg').forEach(el => el.style.backgroundColor = gymData.colorPrimario);
+                        document.querySelectorAll('.dynamic-text').forEach(el => el.style.color = gymData.colorPrimario);
+                        document.querySelectorAll('.dynamic-border').forEach(el => el.style.borderColor = gymData.colorPrimario);
+                    }
+
+                    // Inyectar Módulos en el menú
+                    const navMenu = document.getElementById('ui-nav-menu');
+                    const logoutBtn = navMenu.lastElementChild;
+                    
+                    if (gymData.modulos?.funcional) {
+                        logoutBtn.insertAdjacentHTML('beforebegin', `<a href="#" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl"><span>🏋️</span> Área Funcional</a>`);
+                    }
+                    if (gymData.modulos?.pilates) {
+                        logoutBtn.insertAdjacentHTML('beforebegin', `<a href="#" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl"><span>🧘</span> Clases Pilates</a>`);
+                    }
+                    if (gymData.modulos?.biometria) {
+                        logoutBtn.insertAdjacentHTML('beforebegin', `<a href="#" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl"><span>👆</span> API Biométrica</a>`);
+                    }
+                }
+
+                // 2. Obtener los Socios de este gimnasio
+                const sociosRef = collection(db, "gimnasios", GYM_ID, "socios");
+                const sociosSnap = await getDocs(sociosRef);
+                
+                const contenedorAlertas = document.getElementById('contenedor-alertas');
+                const loader = document.getElementById('loading-socios');
+                
+                loader.classList.add('hidden');
+                contenedorAlertas.classList.remove('hidden');
+
+                if (sociosSnap.empty) {
+                    contenedorAlertas.innerHTML = `<p class="text-gray-400 text-center py-4 bg-gray-800/50 rounded-xl">No hay socios próximos a vencer registrados aún.</p>`;
+                    return;
+                }
+
+                sociosSnap.forEach((docSnap) => {
+                    const socio = docSnap.data();
+                    
+                    // Link de WhatsApp automatizado
+                    const textoWs = `¡Hola ${socio.nombre}! Te escribimos de ${nombreGymActual}. Tu pase de ${socio.membresia || 'entrenamiento'} figura con vencimiento para el ${socio.vence || socio.fechaVencimiento}. ¡Te esperamos para renovar! 💪`;
+                    const linkWs = `https://wa.me/${socio.telefono}?text=${encodeURIComponent(textoWs)}`;
+
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center p-5 bg-gray-800/40 border border-gray-700/50 rounded-2xl hover:bg-gray-800/80 transition group";
+                    div.innerHTML = `
+                        <div>
+                            <p class="font-bold text-lg text-white mb-1">${socio.nombre}</p>
+                            <p class="text-gray-400 text-sm flex items-center gap-2">
+                                <span class="bg-gray-700 px-2 py-0.5 rounded text-xs text-gray-300">${socio.membresia || 'Pase Libre'}</span>
+                                Vence: <span class="font-bold text-red-400">${socio.vence || socio.fechaVencimiento}</span>
+                            </p>
+                        </div>
+                        <a href="${linkWs}" target="_blank" class="flex items-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white px-5 py-2.5 rounded-xl font-bold transition duration-300 border border-[#25D366]/30 hover:border-[#25D366] shadow-sm">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Notificar
+                        </a>
+                    `;
+                    contenedorAlertas.appendChild(div);
+                });
+
+            } catch (error) {
+                console.error("Error cargando dashboard:", error);
+                document.getElementById('ui-gym-name').innerText = "Error de Conexión";
+            }
+        }
+
+        inicializarDashboard();
     </script>
-
-    <!-- Importamos Firebase como módulo al final del body -->
-<script type="module">
-    // 1. Importar las funciones de Firebase vía CDN
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-    // 2. Tu configuración (Reemplaza con los datos que te dio Firebase)
-    const firebaseConfig = {
-  apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
-  authDomain: "novagym-saas-enterprise.firebaseapp.com",
-  projectId: "novagym-saas-enterprise",
-  storageBucket: "novagym-saas-enterprise.firebasestorage.app",
-  messagingSenderId: "578362101056",
-  appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
-};
-
-    // 3. Inicializar Firebase y Firestore
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-    // Hacemos que la base de datos sea accesible globalmente en la ventana (para usarla en otros scripts si lo necesitas)
-    window.db = db;
-    window.collection = collection;
-    window.addDoc = addDoc;
-    window.getDocs = getDocs;
-
-    console.log("🔥 Firebase conectado con éxito!");
-</script>
 </body>
 </html>
