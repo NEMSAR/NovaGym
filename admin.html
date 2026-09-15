@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Admin | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // ESCUDO DE SEGURIDAD
+        if(sessionStorage.getItem('nems_admin_token') !== 'autorizado_2026') {
+            window.location.href = 'index.html';
+        }
+    </script>
     <style>
         body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         .glass-card { background: #121214; border: 1px solid #27272a; }
@@ -24,9 +30,9 @@
                 <h1 class="text-3xl font-black tracking-tight text-white">Consola <span class="text-blue-500">Super Admin</span></h1>
                 <p class="text-gray-400 text-sm mt-1">Gestión Global de Franquicias y Licencias</p>
             </div>
-            <a href="index.html" class="bg-[#18181b] border border-[#27272a] text-gray-300 hover:text-white transition px-4 py-2 rounded-lg hover:bg-[#27272a]">
+            <button id="btn-logout" class="bg-[#18181b] border border-[#27272a] text-gray-300 hover:text-white transition px-4 py-2 rounded-lg hover:bg-[#27272a]">
                 Cerrar Sesión Corporativa
-            </a>
+            </button>
         </header>
         
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
@@ -42,12 +48,12 @@
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre</label>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre Comercial</label>
                             <input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Ej. Titan Gym" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">ID (Opcional)</label>
-                            <input type="text" id="gym-custom-id" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Auto-generado">
+                            <label class="block text-xs font-bold text-blue-400 uppercase mb-1">Usuario Login</label>
+                            <input type="text" id="gym-username" class="w-full input-dark rounded-lg p-2.5 text-sm border-blue-500/30" placeholder="Ej. titangym" required>
                         </div>
                     </div>
                     
@@ -103,9 +109,8 @@
                             <tr class="border-b border-[#27272a] text-gray-500 text-xs uppercase tracking-wider">
                                 <th class="py-3 px-4">Estado</th>
                                 <th class="py-3 px-4">Gimnasio</th>
-                                <th class="py-3 px-4">ID Operador</th>
+                                <th class="py-3 px-4">Usuario Login</th>
                                 <th class="py-3 px-4">Clave</th>
-                                <th class="py-3 px-4">Módulos</th>
                                 <th class="py-3 px-4 text-right">Administrar</th>
                             </tr>
                         </thead>
@@ -119,11 +124,16 @@
     <!-- Script Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, getDocs, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            sessionStorage.removeItem('nems_admin_token');
+            window.location.href = 'index.html';
+        });
 
         let gymsData = [];
 
@@ -155,28 +165,18 @@
             gymsData.forEach((data) => {
                 const isSuspendido = data.estado === 'suspendido';
                 
-                let modTags = '';
-                const m = data.modulos || {};
-                if(m.musculacion) modTags += `<span class="bg-[#27272a] px-2 py-0.5 rounded text-[10px] mr-1">Musculación</span>`;
-                if(m.funcional) modTags += `<span class="bg-[#27272a] px-2 py-0.5 rounded text-[10px] mr-1">Funcional</span>`;
-                if(m.pilates) modTags += `<span class="bg-[#27272a] px-2 py-0.5 rounded text-[10px] mr-1">Pilates</span>`;
-                if(m.tienda) modTags += `<span class="bg-emerald-900/40 text-emerald-400 px-2 py-0.5 rounded text-[10px] mr-1">POS</span>`;
-                if(m.asistencia) modTags += `<span class="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded text-[10px] mr-1">Asistencia</span>`;
-                if(m.evaluaciones) modTags += `<span class="bg-purple-900/40 text-purple-400 px-2 py-0.5 rounded text-[10px] mr-1">Metas</span>`;
-
                 const tr = document.createElement('tr');
                 tr.className = `border-b border-[#27272a] transition ${isSuspendido ? 'bg-red-900/5' : 'hover:bg-[#18181b]'}`;
                 tr.innerHTML = `
                     <td class="py-4 px-4"><div class="w-3 h-3 rounded-full ${isSuspendido ? 'bg-red-500 shadow-[0_0_8px_#ef4444]' : 'bg-emerald-500 shadow-[0_0_8px_#10b981]'}"></div></td>
                     <td class="py-4 px-4">
                         <div class="flex items-center gap-3">
-                            ${data.logoUrl ? `<img src="${data.logoUrl}" class="w-8 h-8 rounded object-cover border border-gray-700">` : `<div class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-xs font-bold" style="color:${data.colorPrimario}">Gym</div>`}
+                            ${data.logoUrl ? `<img src="${data.logoUrl}" class="w-8 h-8 rounded object-cover border border-gray-700 bg-white">` : `<div class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-xs font-bold" style="color:${data.colorPrimario}">Gym</div>`}
                             <span class="font-bold text-white ${isSuspendido ? 'line-through text-gray-500' : ''}">${data.nombre}</span>
                         </div>
                     </td>
-                    <td class="py-4 px-4"><span class="font-mono text-xs bg-black px-2 py-1 rounded text-gray-300 border border-gray-800">${data.id}</span></td>
-                    <td class="py-4 px-4"><span class="text-xs text-gray-400 cursor-pointer hover:text-white" onclick="alert('Clave: ${data.password}')">Ver 👁️</span></td>
-                    <td class="py-4 px-4"><div class="flex flex-wrap gap-1 max-w-[200px]">${modTags}</div></td>
+                    <td class="py-4 px-4"><span class="font-mono text-xs bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-500/30">${data.username}</span></td>
+                    <td class="py-4 px-4"><span class="font-mono text-xs bg-black px-2 py-1 rounded text-gray-300 border border-gray-800">${data.password}</span></td>
                     <td class="py-4 px-4 flex justify-end gap-2">
                         <button class="btn-editar text-xs bg-blue-900/30 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded transition" data-id="${data.id}">Editar</button>
                         <button class="btn-toggle text-xs px-3 py-1.5 rounded transition ${isSuspendido ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600 hover:text-white' : 'bg-red-900/30 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white'}" data-id="${data.id}" data-estado="${data.estado}">${isSuspendido ? 'Activar' : 'Suspender'}</button>
@@ -203,8 +203,7 @@
                 document.getElementById('form-title').innerText = "✏️ Modificar Franquicia";
                 document.getElementById('edit-gym-id').value = gym.id;
                 document.getElementById('gym-nombre').value = gym.nombre;
-                document.getElementById('gym-custom-id').value = gym.id;
-                document.getElementById('gym-custom-id').disabled = true; // No se puede cambiar ID una vez creado
+                document.getElementById('gym-username').value = gym.username || '';
                 document.getElementById('gym-password').value = gym.password || '';
                 document.getElementById('gym-color').value = gym.colorPrimario;
                 document.getElementById('gym-color-text').value = gym.colorPrimario;
@@ -226,7 +225,6 @@
         document.getElementById('btn-cancelar-edicion').addEventListener('click', () => {
             form.reset();
             document.getElementById('edit-gym-id').value = "";
-            document.getElementById('gym-custom-id').disabled = false;
             document.getElementById('form-title').innerText = "➕ Nuevo Despliegue";
             document.getElementById('btn-submit').innerText = "Crear e Iniciar Entorno";
             document.getElementById('btn-cancelar-edicion').classList.add('hidden');
@@ -237,13 +235,12 @@
             const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Procesando...'; btn.disabled = true;
             
             const editId = document.getElementById('edit-gym-id').value;
-            const inputCustomId = document.getElementById('gym-custom-id').value.trim();
-            const password = document.getElementById('gym-password').value;
             
             const gymData = {
                 nombre: document.getElementById('gym-nombre').value, 
+                username: document.getElementById('gym-username').value.trim(),
                 colorPrimario: document.getElementById('gym-color').value,
-                password: password,
+                password: document.getElementById('gym-password').value,
                 logoUrl: document.getElementById('gym-logo').value.trim(),
                 modulos: {
                     musculacion: document.getElementById('mod-musculacion').checked, 
@@ -257,21 +254,12 @@
 
             try {
                 if (editId) {
-                    // Actualizar existente
                     await updateDoc(doc(db, "gimnasios", editId), gymData);
                     showToast('Configuración actualizada');
                 } else {
-                    // Crear nuevo
                     gymData.estado = 'activo';
                     gymData.fechaCreacion = new Date().toISOString();
-                    
-                    let docRef;
-                    if(inputCustomId) {
-                        docRef = doc(db, "gimnasios", inputCustomId);
-                    } else {
-                        docRef = doc(collection(db, "gimnasios")); // Autogenera ID
-                    }
-                    await setDoc(docRef, gymData);
+                    await addDoc(collection(db, "gimnasios"), gymData);
                     showToast('Nuevo entorno desplegado exitosamente');
                 }
                 
