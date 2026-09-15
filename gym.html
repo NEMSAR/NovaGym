@@ -62,7 +62,6 @@
                 </div>
                 
                 <div class="flex items-center gap-6">
-                    <!-- Botón Dinámico de la Cabecera -->
                     <button id="btn-accion-principal" class="dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
                         <span class="text-xl">+</span> Nuevo Socio
                     </button>
@@ -74,7 +73,7 @@
                 </div>
             </header>
 
-            <!-- VISTA 1: DASHBOARD (Alertas y Métricas) -->
+            <!-- VISTA 1: DASHBOARD -->
             <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-8 transition-opacity duration-300">
                 <div class="xl:col-span-2 space-y-8">
                     <section class="glass-panel p-8 rounded-3xl">
@@ -130,6 +129,12 @@
                 <section class="glass-panel p-8 rounded-3xl">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                         <h2 class="text-xl font-bold text-white">Historial de Transacciones</h2>
+                        
+                        <!-- Botón de Exportar CSV -->
+                        <button id="btn-exportar-csv" class="bg-emerald-600/20 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500 hover:text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            Exportar CSV (Excel)
+                        </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[700px]">
@@ -191,7 +196,6 @@
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Socio</label>
                     <select id="pago-socio" class="w-full input-dark rounded-xl p-3" required>
                         <option value="">Seleccione un socio...</option>
-                        <!-- Se llena con JS -->
                     </select>
                 </div>
                 <div>
@@ -214,7 +218,7 @@
     <!-- Script Principal -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
@@ -232,8 +236,6 @@
         
         let listaSociosData = []; 
         let listaFinanzasData = [];
-        let modoEdicion = false;
-        let idSocioEnEdicion = null;
         let vistaActual = 'dashboard';
 
         // UI Refs
@@ -246,6 +248,7 @@
         const headerTitle = document.getElementById('header-title');
         const headerSubtitle = document.getElementById('header-subtitle');
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
+        const inputBusquedaSocio = document.getElementById('input-busqueda-socio');
 
         // NAVEGACIÓN SPA
         function cambiarVista(vista) {
@@ -287,31 +290,70 @@
         // BOTÓN ACCIÓN PRINCIPAL Y MODALES
         btnAccionPrincipal.addEventListener('click', () => {
             if (vistaActual === 'dashboard' || vistaActual === 'socios') {
-                modoEdicion = false;
                 document.getElementById('form-socio').reset();
                 document.getElementById('modal-socio-title').innerText = "Alta de Nuevo Socio";
                 document.getElementById('modal-socio').classList.remove('hidden');
             } else if (vistaActual === 'finanzas') {
                 document.getElementById('form-pago').reset();
-                // Fecha por defecto hoy
                 document.getElementById('pago-fecha').valueAsDate = new Date();
                 
-                // Cargar lista de socios en el select
                 const selectSocio = document.getElementById('pago-socio');
                 selectSocio.innerHTML = '<option value="">Seleccione un socio...</option>';
                 listaSociosData.forEach(socio => {
                     selectSocio.innerHTML += `<option value="${socio.nombre}">${socio.nombre}</option>`;
                 });
-
                 document.getElementById('modal-pago').classList.remove('hidden');
             }
         });
 
-        // Cerrar modales
         document.querySelectorAll('.btn-cerrar-modal').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.getElementById(e.target.dataset.modal).classList.add('hidden');
             });
+        });
+
+        // FUNCIÓN EXPORTAR CSV
+        document.getElementById('btn-exportar-csv').addEventListener('click', () => {
+            if (listaFinanzasData.length === 0) {
+                alert("No hay registros financieros para exportar.");
+                return;
+            }
+
+            // Crear el encabezado del archivo
+            let csvContent = "Fecha,Socio,Concepto,Monto\n";
+
+            listaFinanzasData.forEach(pago => {
+                const fechaAr = pago.fecha.split('-').reverse().join('/');
+                
+                // Escapar textos para evitar errores si el usuario escribió comas
+                const socioEscapado = `"${pago.socio.replace(/"/g, '""')}"`;
+                const conceptoEscapado = `"${pago.concepto.replace(/"/g, '""')}"`;
+                const monto = pago.monto;
+
+                csvContent += `${fechaAr},${socioEscapado},${conceptoEscapado},${monto}\n`;
+            });
+
+            // Generar el archivo Blob y forzar descarga
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            const fechaHoy = new Date().toISOString().split('T')[0];
+            const nombreArchivoSeguro = nombreGymActual.replace(/\s+/g, '_');
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Reporte_Finanzas_${nombreArchivoSeguro}_${fechaHoy}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // BUSCADOR EN PADRÓN
+        inputBusquedaSocio.addEventListener('input', (e) => {
+            const termino = e.target.value.toLowerCase();
+            const filtrados = listaSociosData.filter(s => s.nombre.toLowerCase().includes(termino));
+            renderizarTablaSocios(filtrados);
         });
 
         // CARGA GENERAL FIREBASE
@@ -346,7 +388,6 @@
                     ingresosTotales += Number(pago.monto);
                 });
 
-                // Ordenar finanzas por fecha (más reciente primero)
                 listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
                 // UI Updates
@@ -386,6 +427,10 @@
         function renderizarTablaSocios(datos) {
             const tbody = document.getElementById('tabla-socios-body');
             tbody.innerHTML = '';
+            if(datos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">No se encontraron registros.</td></tr>`;
+                return;
+            }
             datos.forEach(socio => {
                 tbody.innerHTML += `
                     <tr class="border-b border-gray-800 glass-row">
@@ -408,7 +453,6 @@
                 return;
             }
             datos.forEach(pago => {
-                // Formatear fecha para vista (de AAAA-MM-DD a DD/MM/AAAA)
                 const fechaAr = pago.fecha.split('-').reverse().join('/');
                 tbody.innerHTML += `
                     <tr class="border-b border-gray-800 glass-row">
