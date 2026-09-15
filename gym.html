@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Management Pro | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Agregamos Chart.js para analíticas avanzadas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -39,15 +38,26 @@
             <h2 id="ui-gym-name" class="font-black text-lg tracking-wider text-white text-center">N.OS PRO</h2>
         </div>
         
-        <nav id="ui-nav-menu" class="flex-1 p-4 space-y-1 mt-2 text-xs font-bold uppercase tracking-wider">
-            <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
-            <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Executive Dashboard</div>
-            <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Gestión de Socios</div>
-            <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Finanzas y Caja</div>
-            
-            <div id="modulos-container"></div>
-            
-            <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
+        <nav id="ui-nav-menu" class="flex-1 p-4 flex flex-col text-xs font-bold uppercase tracking-wider overflow-y-auto">
+            <div class="space-y-1">
+                <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
+                <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Executive Dashboard</div>
+                <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Gestión de Socios</div>
+                <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Finanzas y Caja</div>
+                
+                <div id="modulos-container"></div>
+                
+                <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
+            </div>
+
+            <!-- Footer NovaBit (Se adapta al fondo) -->
+            <div class="mt-auto pt-8 flex flex-col items-center justify-center opacity-40 hover:opacity-100 transition duration-300">
+                <!-- Puedes cambiar el placeholder por el link del logo de NovaBit -->
+                <img src="https://via.placeholder.com/100x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-16 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+                <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">
+                    Powered by<br>NovaBit Media Agency
+                </p>
+            </div>
         </nav>
     </aside>
 
@@ -71,7 +81,6 @@
 
             <!-- VISTA DASHBOARD -->
             <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-6 fade-in">
-                <!-- Tarjetas KPI -->
                 <div class="glass-panel p-5 border-t-4 dynamic-border">
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Miembros Activos</h3>
                     <p id="total-socios" class="text-3xl font-black text-white mt-1">0</p>
@@ -85,7 +94,6 @@
                     <p id="total-alertas" class="text-3xl font-black text-red-400 mt-1">0</p>
                 </div>
                 
-                <!-- Gráfico de Analíticas (Ocupa 2 columnas) -->
                 <div class="xl:col-span-2 space-y-6 mt-2">
                     <section class="glass-panel p-6 h-full">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Crecimiento de Revenue</h2>
@@ -95,7 +103,6 @@
                     </section>
                 </div>
 
-                <!-- Alertas y Últimas transacciones -->
                 <div class="xl:col-span-1 space-y-6 mt-2">
                     <section class="glass-panel p-6">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Atención Requerida</h2>
@@ -117,7 +124,7 @@
                                 <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
                                     <th class="py-3 px-4">Status</th>
                                     <th class="py-3 px-4">Miembro / Contacto</th>
-                                    <th class="py-3 px-4">Servicio</th>
+                                    <th class="py-3 px-4">Servicio Asignado</th>
                                     <th class="py-3 px-4">Plan (Membresía)</th>
                                     <th class="py-3 px-4">Fecha Exp.</th>
                                     <th class="py-3 px-4 text-right">Acciones</th>
@@ -177,7 +184,7 @@
                 </section>
             </div>
 
-            <!-- VISTA ASISTENCIA (Placeholder) -->
+            <!-- VISTA ASISTENCIA -->
             <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 text-center">
                 <span class="text-4xl mb-4 block">📱</span>
                 <h2 class="text-xl font-bold text-white mb-2">Módulo de Control de Asistencia</h2>
@@ -187,8 +194,8 @@
     </main>
 
     <!-- Modal Formulario Único -->
-    <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
-        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-md relative border border-[#27272a] shadow-2xl fade-in">
+    <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
+        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-md relative border border-[#27272a] shadow-2xl">
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-universal">✕</button>
             <h2 id="modal-title" class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Formulario</h2>
             <div id="modal-content"></div>
@@ -210,7 +217,7 @@
         let nombreGymActual = ""; let gymModulos = {};
         let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = [];
         let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
-        let chartInstance = null; // Para destruir y redibujar el gráfico de Chart.js
+        let chartInstance = null;
 
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
 
@@ -371,7 +378,7 @@
                         <input type="number" id="e-altura" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Altura (Cm)" required>
                     </div>
                     <input type="date" id="e-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-lg mt-2 text-sm shadow-[0_0_15px_rgba(168,85,247,0.3)]">Guardar Medición Física</button>
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-lg mt-2 text-sm shadow-[0_0_15px_rgba(168,85,247,0.3)]">Guardar Medición</button>
                 </form>`;
             document.getElementById('e-fec').valueAsDate = new Date();
             
@@ -379,7 +386,7 @@
                 e.preventDefault();
                 const peso = parseFloat(document.getElementById('e-peso').value);
                 const alturaCm = parseFloat(document.getElementById('e-altura').value);
-                const imc = (peso / Math.pow(alturaCm/100, 2)).toFixed(1); // Fórmula IMC
+                const imc = (peso / Math.pow(alturaCm/100, 2)).toFixed(1); 
                 
                 try {
                     await addDoc(collection(db, "gimnasios", GYM_ID, "evaluaciones"), { socio: document.getElementById('e-soc').value, peso: peso, altura: alturaCm, imc: imc, fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() });
@@ -400,25 +407,16 @@
 
         function renderizarGrafico(finanzas) {
             if(chartInstance) chartInstance.destroy();
-            
-            // Agrupar por mes (Formato AAAA-MM)
             const ingresosPorMes = {};
             finanzas.forEach(f => {
-                const mes = f.fecha.substring(0, 7); // Toma "YYYY-MM"
+                const mes = f.fecha.substring(0, 7);
                 ingresosPorMes[mes] = (ingresosPorMes[mes] || 0) + Number(f.monto);
             });
-
-            // Ordenar meses cronológicamente
             const mesesOrdenados = Object.keys(ingresosPorMes).sort();
-            const etiquetas = mesesOrdenados.map(m => {
-                const date = new Date(m + "-02"); // hack para zona horaria
-                return date.toLocaleString('es-ES', { month: 'short', year: 'numeric' }).toUpperCase();
-            });
+            const etiquetas = mesesOrdenados.map(m => new Date(m + "-02").toLocaleString('es-ES', { month: 'short', year: 'numeric' }).toUpperCase());
             const dataPuntos = mesesOrdenados.map(m => ingresosPorMes[m]);
 
             const ctx = document.getElementById('revenueChart').getContext('2d');
-            
-            // Colores dinámicos basados en el tema del gym
             const style = getComputedStyle(document.body);
             const colorAcento = style.getPropertyValue('--accent-color').trim() || '#eab308';
 
@@ -439,26 +437,25 @@
             if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
             
             const logoCont = document.getElementById('ui-gym-logo-container');
-            if(data.logoUrl) { logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-16 h-16 object-contain rounded-lg shadow-lg">`; document.getElementById('ui-gym-name').innerText = ""; } 
+            if(data.logoUrl) { logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-20 h-auto object-contain drop-shadow-lg">`; document.getElementById('ui-gym-name').innerText = ""; } 
             else { logoCont.innerHTML = `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase(); }
 
             // Inyectar Módulos
             const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
             if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><span>🛒</span> Tienda POS</div>`;
-            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Assessments (Metas)</div>`;
+            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Assessments</div>`;
             if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><span>📱</span> Attendance</div>`;
             
             if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
             if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
             if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
 
-            // Data Fetch
             const [sSnap, fSnap, eSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")) ]);
             
             listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
             
             listaFinanzasData = []; let ingrT = 0; let ingrMes = 0;
-            const mesActual = new Date().toISOString().substring(0,7); // Ej: "2026-09"
+            const mesActual = new Date().toISOString().substring(0,7);
             fSnap.forEach(d => { 
                 const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); 
                 ingrT += Number(p.monto);
@@ -473,15 +470,14 @@
             document.getElementById('ui-ingresos-totales').innerText = `$${ingrT.toLocaleString('es-AR')}`;
             document.getElementById('ingresos-mes').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
             
-            renderUI();
+            renderUI(listaSociosData);
             renderizarGrafico(listaFinanzasData);
         }
 
-        function renderUI() {
-            // Alertas Dashboard
+        function renderUI(sociosArray) {
             const cAlertas = document.getElementById('contenedor-alertas'); cAlertas.innerHTML = '';
             let alertas = 0;
-            listaSociosData.forEach(s => {
+            sociosArray.forEach(s => {
                 const est = evaluarEstado(s.vence);
                 if(est.t !== 'Active') {
                     alertas++;
@@ -495,9 +491,8 @@
             document.getElementById('total-alertas').innerText = alertas;
             if(alertas === 0) cAlertas.innerHTML = `<p class="text-xs text-gray-500 italic">No action required. All members are active.</p>`;
 
-            // Directorio Socios
             const tbS = document.getElementById('tabla-socios-body'); tbS.innerHTML = '';
-            listaSociosData.forEach(s => {
+            sociosArray.forEach(s => {
                 const est = evaluarEstado(s.vence);
                 tbS.innerHTML += `
                     <tr class="border-b border-[#27272a] glass-row">
@@ -514,7 +509,6 @@
                     </tr>`;
             });
 
-            // Registro Finanzas
             const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
             listaFinanzasData.forEach(f => {
                 const tColor = f.tipo === 'Inventario' ? 'text-emerald-400 bg-emerald-900/20 border-emerald-500/30' : 'text-blue-400 bg-blue-900/20 border-blue-500/30';
@@ -523,21 +517,20 @@
                         <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha.split('-').reverse().join('/')}</td>
                         <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
                         <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] border ${tColor}">${f.tipo}</span></td>
-                        <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
+                        <td class="py-3 px-4 font-bold text-white">$${Number(f.monto).toLocaleString('es-AR')}</td>
                         <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-500 hover:text-red-500" data-id="${f.id}">✕</button></td>
                     </tr>`;
             });
 
-            // Registro Evaluaciones
             const tbE = document.getElementById('tabla-evaluaciones-body'); 
             if(tbE) {
                 tbE.innerHTML = '';
                 listaEvalsData.forEach(e => {
                     const imc = parseFloat(e.imc);
-                    let badgeImc = 'text-gray-400 bg-gray-900/20 border-gray-500/30'; // Normal
-                    if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border-blue-500/30'; // Bajo
-                    if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border-orange-500/30'; // Sobrepeso
-                    if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border-red-500/30'; // Obesidad
+                    let badgeImc = 'text-gray-400 bg-gray-900/20 border-gray-500/30'; 
+                    if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border-blue-500/30'; 
+                    if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border-orange-500/30'; 
+                    if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border-red-500/30'; 
 
                     tbE.innerHTML += `
                         <tr class="border-b border-[#27272a] glass-row">
@@ -552,7 +545,6 @@
             }
         }
 
-        // Delegación Click Tablas
         document.body.addEventListener('click', async (e) => {
             if (e.target.closest('.btn-edit-s')) abrirModalSocio(listaSociosData.find(s => s.id === e.target.closest('.btn-edit-s').dataset.id));
             if (e.target.closest('.btn-del-s') && confirm("¿Delete member? This action is permanent.")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Member Deleted"); cargarDatos(); }
@@ -560,10 +552,8 @@
             if (e.target.closest('.btn-del-e') && confirm("¿Eliminar registro físico?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Assessment Deleted"); cargarDatos(); }
         });
 
-        // Buscador
         document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
         
-        // Exportar CSV
         document.getElementById('btn-exportar-csv').addEventListener('click', () => {
             if(!listaFinanzasData.length) return; let c = "Date,Description,Category,Amount\n";
             listaFinanzasData.forEach(p => c += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.monto}\n`);
