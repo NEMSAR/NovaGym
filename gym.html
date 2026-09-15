@@ -6,7 +6,6 @@
     <title>Management Pro | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estética inspirada en 'Gym Management Pro' */
         body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         .dynamic-text { color: var(--accent-color, #eab308); } 
         .dynamic-border { border-color: var(--accent-color, #eab308); }
@@ -34,7 +33,6 @@
     <!-- Menú Lateral -->
     <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-20">
         <div class="p-6 flex flex-col items-center justify-center border-b border-[#27272a] min-h-[120px]">
-            <!-- Aquí se inyecta el Logo o el texto por defecto -->
             <div id="ui-gym-logo-container" class="mb-2"></div>
             <h2 id="ui-gym-name" class="font-black text-lg tracking-wider text-white text-center">N.OS PRO</h2>
         </div>
@@ -45,7 +43,6 @@
             <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Gestión de Socios</div>
             <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Facturación y Caja</div>
             
-            <!-- Módulos dinámicos se inyectan aquí -->
             <div id="modulos-container"></div>
             
             <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
@@ -72,7 +69,6 @@
 
             <!-- VISTA DASHBOARD -->
             <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-4 gap-6 fade-in">
-                <!-- Tarjetas KPI estilo imagen -->
                 <div class="glass-panel p-5 border-t-4 dynamic-border">
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Miembros Activos</h3>
                     <p id="total-socios" class="text-3xl font-black text-white mt-1">0</p>
@@ -160,7 +156,7 @@
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-universal">✕</button>
             <h2 id="modal-title" class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Formulario</h2>
             <div id="modal-content">
-                <!-- Se inyectan los inputs dinámicamente según la acción -->
+                <!-- Inputs dinámicos -->
             </div>
         </div>
     </div>
@@ -182,6 +178,9 @@
         let vistaActual = 'dashboard';
         let modoEdicion = false; let idEdicion = null;
 
+        // Declaración corregida del botón
+        const btnAccionPrincipal = document.getElementById('btn-accion-principal');
+
         window.showToast = (msg, tipo = 'success') => {
             const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500' : 'bg-[#18181b] border-l-4 border-red-500';
@@ -191,7 +190,6 @@
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        // --- NAVEGACIÓN Y RENDER UI ---
         function cambiarVista(vista) {
             vistaActual = vista;
             ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-asistencia', 'vista-evaluaciones'].forEach(id => {
@@ -199,7 +197,6 @@
             });
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
-            const btn = document.getElementById('btn-accion-principal');
             const title = document.getElementById('header-title');
             const subtitle = document.getElementById('header-subtitle');
 
@@ -208,20 +205,20 @@
 
             if (vista === 'dashboard') {
                 title.innerText = "Executive Dashboard"; subtitle.innerText = "Métricas en tiempo real";
-                btn.innerText = 'Registrar Socio'; btn.style.display = 'block';
+                btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block';
             } else if (vista === 'socios') {
                 title.innerText = "Member Management"; subtitle.innerText = "Padrón completo";
-                btn.innerText = 'Registrar Socio'; btn.style.display = 'block';
+                btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block';
             } else if (vista === 'finanzas') {
                 title.innerText = "Billing & Invoicing"; subtitle.innerText = "Facturación de cuotas";
-                btn.innerText = 'Cobrar Membresía'; btn.style.display = 'block';
+                btnAccionPrincipal.innerText = 'Cobrar Membresía'; btnAccionPrincipal.style.display = 'block';
             } else if (vista === 'tienda') {
                 document.getElementById('vista-finanzas').classList.remove('hidden');
                 title.innerText = "Point of Sale (POS)"; subtitle.innerText = "Gestión de Inventario y Ventas";
-                btn.innerText = 'Registrar Venta'; btn.style.display = 'block';
+                btnAccionPrincipal.innerText = 'Registrar Venta'; btnAccionPrincipal.style.display = 'block';
             } else {
                 title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise";
-                btn.style.display = 'none';
+                btnAccionPrincipal.style.display = 'none';
             }
         }
 
@@ -229,7 +226,6 @@
         document.getElementById('nav-socios').addEventListener('click', () => cambiarVista('socios'));
         document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
 
-        // --- MANEJO DE FORMULARIOS DINÁMICOS ---
         const modal = document.getElementById('modal-universal');
         const modalContent = document.getElementById('modal-content');
         const modalTitle = document.getElementById('modal-title');
@@ -327,7 +323,6 @@
             modal.classList.remove('hidden');
         }
 
-        // --- CEREBRO & CARGA ---
         function evaluarEstado(vence) {
             const h = new Date(); h.setHours(0,0,0,0); const v = new Date(vence); v.setHours(23,59,59,999);
             const d = Math.ceil((v - h) / (1000 * 60 * 60 * 24));
@@ -343,7 +338,6 @@
             document.getElementById('app-container').classList.remove('hidden');
             const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
             
-            // Estilos dinámicos y Logo
             if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
             
             const logoCont = document.getElementById('ui-gym-logo-container');
@@ -355,17 +349,14 @@
                 document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase();
             }
 
-            // Inyectar Módulos Extra
             const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
             if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><span>🛒</span> Tienda POS</div>`;
             if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><span>📱</span> Attendance</div>`;
             if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Assessments</div>`;
-            // Re-asignar eventos a los generados dinámicamente
             if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
             if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
             if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
 
-            // Fetch
             const [sSnap, fSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")) ]);
             
             listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
