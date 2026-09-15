@@ -3,81 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaGym Enterprise Management | NEMS OS</title>
+    <title>NovaGym Enterprise | Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #040814; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        .bg-gradient-nems { background: radial-gradient(circle at top left, #111827, #040814); }
-        .input-dark { background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: border-color 0.3s; }
-        .input-dark:focus { outline: none; border-color: #8b5cf6; }
-        .btn-nems { background: linear-gradient(90deg, #60a5fa, #8b5cf6); }
-        .btn-nems:hover { background: linear-gradient(90deg, #3b82f6, #7c3aed); box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
-        .glass-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); }
-        .glass-btn:hover { background: rgba(255,255,255,0.08); }
+        body { background-color: #09090b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .bg-gradient-nems { background: radial-gradient(circle at top left, #18181b, #09090b); }
+        .input-dark { background: #18181b; border: 1px solid #27272a; color: white; transition: all 0.3s; }
+        .input-dark:focus { outline: none; border-color: #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.15); }
+        .btn-nems { background: linear-gradient(90deg, #ca8a04, #eab308); color: #000; }
+        .btn-nems:hover { background: linear-gradient(90deg, #a16207, #ca8a04); box-shadow: 0 0 20px rgba(234, 179, 8, 0.3); }
+        .glass-btn { background: #18181b; border: 1px solid #27272a; }
+        .glass-btn:hover { background: #27272a; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
 
-    <!-- Panel Izquierdo: Branding NEMS OS -->
-    <div class="hidden md:flex w-1/2 bg-gradient-nems border-r border-white/5 flex-col justify-center px-20 relative">
+    <!-- Panel Izquierdo: Branding Corporativo -->
+    <div class="hidden md:flex w-1/2 bg-gradient-nems border-r border-[#27272a] flex-col justify-center px-20 relative">
         <div class="absolute top-12 left-20">
-            <div class="w-12 h-12 bg-white text-black font-black text-2xl flex items-center justify-center rounded-xl">
-                N.
-            </div>
+            <div class="w-12 h-12 bg-white text-black font-black text-2xl flex items-center justify-center rounded-xl shadow-lg">N.</div>
         </div>
-        
         <div>
-            <h1 class="text-6xl font-bold tracking-tight mb-4">NovaGym<br>Enterprise.</h1>
+            <h1 class="text-6xl font-black tracking-tight mb-4">Intelligence<br>Amplified.</h1>
             <p class="text-gray-400 text-lg leading-relaxed max-w-md">
-                Ecosistema de gestión deportiva. Transforma datos crudos operativos en decisiones estratégicas en milisegundos.
+                NEMS OS transforma datos crudos operativos en decisiones estratégicas en milisegundos. Ecosistema de gestión deportiva.
             </p>
         </div>
-
         <div class="absolute bottom-12 left-20">
             <p class="text-xs text-gray-600 tracking-wider">© 2026 NEMS Tech Enterprise. Recreo, Catamarca.</p>
         </div>
     </div>
 
     <!-- Panel Derecho: Login -->
-    <div class="w-full md:w-1/2 flex items-center justify-center p-10 bg-[#040814]">
+    <div class="w-full md:w-1/2 flex items-center justify-center p-10 bg-[#09090b]">
         <div class="w-full max-w-md">
             <h2 class="text-3xl font-bold mb-2">Bienvenido al Sistema</h2>
             <p class="text-gray-400 text-sm mb-10">Ingresa tus credenciales operativas.</p>
 
+            <div id="login-error" class="hidden mb-6 bg-red-900/30 border border-red-500/50 text-red-400 p-4 rounded-xl text-sm font-bold text-center"></div>
+
             <form id="form-login-gym" class="space-y-6">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-2">ID de Operador (Ej. gym_001)</label>
-                    <input type="text" id="input-gym-id" class="w-full input-dark rounded-xl p-4 text-sm" placeholder="Ingresa el ID de tu gimnasio" required>
+                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">ID de Operador (Gym ID)</label>
+                    <input type="text" id="input-gym-id" class="w-full input-dark rounded-xl p-4 text-sm" placeholder="Ej. titan_gym" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-2">Clave de Acceso</label>
-                    <input type="password" class="w-full input-dark rounded-xl p-4 text-sm" placeholder="••••••••" value="password" required readonly title="Autenticación sin contraseña activada en esta versión">
+                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Clave de Acceso</label>
+                    <input type="password" id="input-password" class="w-full input-dark rounded-xl p-4 text-sm" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" class="w-full btn-nems text-white font-bold py-4 rounded-xl transition duration-300">
+                <button type="submit" id="btn-login" class="w-full btn-nems font-bold py-4 rounded-xl transition duration-300">
                     Autorizar Sesión Segura
                 </button>
             </form>
 
             <div class="my-8 flex items-center justify-center">
-                <div class="w-full h-px bg-white/10"></div>
-                <span class="px-4 text-xs text-gray-500 bg-[#040814]">O ingresa con</span>
-                <div class="w-full h-px bg-white/10"></div>
+                <div class="w-full h-px bg-[#27272a]"></div>
+                <span class="px-4 text-xs text-gray-500 bg-[#09090b]">NEMS Admin</span>
+                <div class="w-full h-px bg-[#27272a]"></div>
             </div>
 
             <!-- Acceso Super Admin -->
             <a href="admin.html" class="w-full glass-btn text-white text-sm font-semibold py-4 rounded-xl transition duration-300 flex items-center justify-center gap-3">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                Credenciales Corporativas
+                Ingresar con Credenciales Corporativas
             </a>
         </div>
     </div>
 
-    <script>
-        document.getElementById('form-login-gym').addEventListener('submit', (e) => {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
+            authDomain: "novagym-saas-enterprise.firebaseapp.com",
+            projectId: "novagym-saas-enterprise",
+            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
+            messagingSenderId: "578362101056",
+            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('form-login-gym').addEventListener('submit', async (e) => {
             e.preventDefault();
             const gymId = document.getElementById('input-gym-id').value.trim();
-            if(gymId) window.location.href = `gym.html?id=${gymId}`;
+            const password = document.getElementById('input-password').value.trim();
+            const btn = document.getElementById('btn-login');
+            const errorDiv = document.getElementById('login-error');
+            
+            btn.innerHTML = 'Verificando...'; btn.disabled = true; errorDiv.classList.add('hidden');
+
+            try {
+                const gymRef = doc(db, "gimnasios", gymId);
+                const snap = await getDoc(gymRef);
+
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if(data.estado === 'suspendido') {
+                        errorDiv.innerText = "ACCESO DENEGADO: Cuenta suspendida por NEMS Tech.";
+                        errorDiv.classList.remove('hidden');
+                    } else if (data.password === password) {
+                        // Credenciales correctas
+                        window.location.href = `gym.html?id=${gymId}`;
+                    } else {
+                        errorDiv.innerText = "Clave de acceso incorrecta.";
+                        errorDiv.classList.remove('hidden');
+                    }
+                } else {
+                    errorDiv.innerText = "El ID de Operador no existe.";
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorDiv.innerText = "Error de conexión con el servidor.";
+                errorDiv.classList.remove('hidden');
+            } finally {
+                btn.innerHTML = 'Autorizar Sesión Segura'; btn.disabled = false;
+            }
         });
     </script>
 </body>
