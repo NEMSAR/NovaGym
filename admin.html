@@ -87,5 +87,34 @@
             form.reset();
         });
     </script>
+<!-- Importamos Firebase como módulo al final del body -->
+<script type="module">
+    // 1. Importar las funciones de Firebase vía CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // 2. Tu configuración (Reemplaza con los datos que te dio Firebase)
+    const firebaseConfig = {
+  apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
+  authDomain: "novagym-saas-enterprise.firebaseapp.com",
+  projectId: "novagym-saas-enterprise",
+  storageBucket: "novagym-saas-enterprise.firebasestorage.app",
+  messagingSenderId: "578362101056",
+  appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
+};
+
+    // 3. Inicializar Firebase y Firestore
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    // Hacemos que la base de datos sea accesible globalmente en la ventana (para usarla en otros scripts si lo necesitas)
+    window.db = db;
+    window.collection = collection;
+    window.addDoc = addDoc;
+    window.getDocs = getDocs;
+
+    console.log("🔥 Firebase conectado con éxito!");
+</script>
+    
 </body>
 </html>
