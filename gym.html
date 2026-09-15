@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Sistema de Gestión</title>
+    <title>Dashboard | NovaGym SaaS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b0f19; color: #f8fafc; }
@@ -14,11 +14,13 @@
         .dynamic-btn:hover { filter: brightness(1.1); }
         
         .glass-panel { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); }
+        .glass-row:hover { background: rgba(255,255,255,0.05); }
+        
         .input-dark { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; }
         .input-dark:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
         
-        .nav-item { transition: all 0.2s ease-in-out; }
-        .nav-item:hover { background: rgba(255,255,255,0.1); padding-left: 1.5rem; }
+        .nav-item { transition: all 0.2s ease-in-out; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); padding-left: 1.5rem; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
@@ -32,12 +34,16 @@
         </div>
         
         <nav id="ui-nav-menu" class="flex-1 p-4 space-y-2 mt-4 z-10 relative text-gray-200 font-medium">
-            <a href="#" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl bg-white/10 text-white shadow-inner">
+            <div id="nav-dashboard" class="nav-item active flex items-center gap-4 py-3 px-4 rounded-xl text-white shadow-inner">
+                <span>📊</span> Dashboard Operativo
+            </div>
+            <div id="nav-socios" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl">
                 <span>👥</span> Padrón de Socios
-            </a>
-            <a href="#" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl">
+            </div>
+            <div id="nav-finanzas" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl">
                 <span>💳</span> Finanzas y Pagos
-            </a>
+            </div>
+            
             <a href="index.html" class="nav-item flex items-center gap-4 py-3 px-4 rounded-xl mt-10 text-red-300 hover:bg-red-500/20 hover:text-red-100">
                 <span>🚪</span> Cerrar Sesión
             </a>
@@ -51,25 +57,24 @@
         <div class="p-10 relative z-10">
             <header class="flex justify-between items-end mb-12">
                 <div>
-                    <h1 class="text-4xl font-black text-white tracking-tight mb-2">Panel Operativo</h1>
-                    <p class="text-gray-400">Resumen del sistema y alertas automáticas</p>
+                    <h1 id="header-title" class="text-4xl font-black text-white tracking-tight mb-2">Panel Operativo</h1>
+                    <p id="header-subtitle" class="text-gray-400">Resumen del sistema y alertas automáticas</p>
                 </div>
                 
                 <div class="flex items-center gap-6">
-                    <!-- Botón para abrir el Modal -->
                     <button id="btn-abrir-modal" class="dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
                         <span class="text-xl">+</span> Nuevo Socio
                     </button>
 
-                    <div class="glass-panel px-6 py-3 rounded-2xl text-right">
+                    <div class="glass-panel px-6 py-3 rounded-2xl text-right hidden xl:block">
                         <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Ingresos del Día</p>
                         <p class="text-xl font-bold dynamic-text">$45.000 ARS</p>
                     </div>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                <!-- Columna Principal -->
+            <!-- VISTA 1: DASHBOARD (Alertas y Métricas) -->
+            <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-8 transition-opacity duration-300">
                 <div class="xl:col-span-2 space-y-8">
                     <section class="glass-panel p-8 rounded-3xl">
                         <div class="flex justify-between items-center mb-6">
@@ -80,17 +85,15 @@
                             <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1 rounded-full border border-gray-700">Seguimiento</span>
                         </div>
                         
-                        <div id="loading-socios" class="text-center py-8 text-gray-500">
-                            Analizando base de datos de socios...
+                        <div id="loading-dashboard" class="text-center py-8 text-gray-500">
+                            Analizando base de datos...
                         </div>
-
                         <div id="contenedor-alertas" class="grid grid-cols-1 gap-4 hidden">
-                            <!-- Alertas de Firebase irán aquí -->
+                            <!-- Alertas -->
                         </div>
                     </section>
                 </div>
                 
-                <!-- Columna Secundaria -->
                 <div class="space-y-6">
                     <div class="glass-panel p-6 rounded-3xl border-l-4 dynamic-border flex flex-col justify-center">
                         <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Total Socios</h3>
@@ -98,31 +101,64 @@
                     </div>
                 </div>
             </div>
+
+            <!-- VISTA 2: PADRÓN DE SOCIOS (Tabla interactiva) -->
+            <div id="vista-socios" class="hidden transition-opacity duration-300">
+                <section class="glass-panel p-8 rounded-3xl">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                        <h2 class="text-xl font-bold text-white">Directorio Completo</h2>
+                        
+                        <!-- Buscador -->
+                        <div class="relative w-full md:w-72">
+                            <span class="absolute left-3 top-3 text-gray-400">🔍</span>
+                            <input type="text" id="input-busqueda" class="w-full input-dark rounded-xl py-2.5 pl-10 pr-4" placeholder="Buscar por nombre...">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px]">
+                            <thead>
+                                <tr class="border-b border-gray-700 text-gray-400 text-xs uppercase tracking-wider">
+                                    <th class="py-4 px-4">Socio</th>
+                                    <th class="py-4 px-4">Teléfono</th>
+                                    <th class="py-4 px-4">Membresía</th>
+                                    <th class="py-4 px-4">Vencimiento</th>
+                                    <th class="py-4 px-4 text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-socios-body" class="text-sm">
+                                <!-- Filas renderizadas por JS -->
+                            </tbody>
+                        </table>
+                        <div id="loading-tabla" class="text-center py-8 text-gray-500 hidden">Cargando directorio...</div>
+                    </div>
+                </section>
+            </div>
+
         </div>
     </main>
 
-    <!-- Modal de Alta de Socio -->
-    <div id="modal-nuevo-socio" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md transition-opacity">
+    <!-- Modal Reutilizable (Alta / Edición) -->
+    <div id="modal-socio" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md transition-opacity">
         <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative border border-white/10 shadow-2xl">
             <button id="btn-cerrar-modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl transition">✕</button>
             
-            <h2 class="text-2xl font-bold text-white mb-6">Alta de Nuevo Socio</h2>
+            <h2 id="modal-title" class="text-2xl font-bold text-white mb-6">Alta de Nuevo Socio</h2>
             
             <form id="form-socio" class="space-y-5">
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre Completo</label>
-                    <input type="text" id="socio-nombre" class="w-full input-dark rounded-xl p-3" placeholder="Ej. Juan Pérez" required>
+                    <input type="text" id="socio-nombre" class="w-full input-dark rounded-xl p-3" required>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono (WhatsApp)</label>
-                    <input type="tel" id="socio-telefono" class="w-full input-dark rounded-xl p-3" placeholder="Ej. 549112345678" required>
+                    <input type="tel" id="socio-telefono" class="w-full input-dark rounded-xl p-3" required>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Tipo de Membresía</label>
                     <select id="socio-membresia" class="w-full input-dark rounded-xl p-3" required>
                         <option value="Pase Libre">Pase Libre</option>
                         <option value="Musculación">Musculación</option>
-                        <!-- Las opciones extra se inyectarán según la config del gym -->
                     </select>
                 </div>
                 <div>
@@ -137,10 +173,10 @@
         </div>
     </div>
 
-    <!-- Script Firebase -->
+    <!-- Script Principal -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
@@ -153,146 +189,247 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        // ID fijo para esta demo (en el sistema real, este ID vendría del inicio de sesión)
         const GYM_ID = 'gym_001'; 
         let nombreGymActual = "";
+        
+        // Estado Global de la App
+        let listaSociosData = []; // Array en memoria para búsquedas rápidas
+        let modoEdicion = false;
+        let idSocioEnEdicion = null;
 
-        // Referencias del Modal
-        const modal = document.getElementById('modal-nuevo-socio');
-        const btnAbrirModal = document.getElementById('btn-abrir-modal');
-        const btnCerrarModal = document.getElementById('btn-cerrar-modal');
+        // Referencias UI Navegación
+        const navDashboard = document.getElementById('nav-dashboard');
+        const navSocios = document.getElementById('nav-socios');
+        const vistaDashboard = document.getElementById('vista-dashboard');
+        const vistaSocios = document.getElementById('vista-socios');
+        const headerTitle = document.getElementById('header-title');
+        const headerSubtitle = document.getElementById('header-subtitle');
+
+        // Referencias UI Modal & Tablas
+        const modal = document.getElementById('modal-socio');
+        const modalTitle = document.getElementById('modal-title');
         const formSocio = document.getElementById('form-socio');
+        const btnSubmitSocio = document.getElementById('btn-guardar-socio');
+        const tablaBody = document.getElementById('tabla-socios-body');
+        const inputBusqueda = document.getElementById('input-busqueda');
 
-        // Control del Modal
-        btnAbrirModal.addEventListener('click', () => modal.classList.remove('hidden'));
-        btnCerrarModal.addEventListener('click', () => modal.classList.add('hidden'));
+        // --- SISTEMA DE NAVEGACIÓN SPA ---
+        navDashboard.addEventListener('click', () => {
+            vistaSocios.classList.add('hidden');
+            vistaDashboard.classList.remove('hidden');
+            navSocios.classList.remove('active', 'bg-white/10');
+            navDashboard.classList.add('active', 'bg-white/10');
+            headerTitle.innerText = "Panel Operativo";
+            headerSubtitle.innerText = "Resumen del sistema y alertas automáticas";
+        });
 
-        // Cargar datos de socios y repintar la UI
-        async function cargarSocios() {
-            const sociosRef = collection(db, "gimnasios", GYM_ID, "socios");
-            const sociosSnap = await getDocs(sociosRef);
-            
-            const contenedorAlertas = document.getElementById('contenedor-alertas');
-            const loader = document.getElementById('loading-socios');
-            const totalSociosUi = document.getElementById('total-socios');
-            
-            loader.classList.add('hidden');
-            contenedorAlertas.classList.remove('hidden');
-            contenedorAlertas.innerHTML = ''; // Limpiar lista
-            
-            totalSociosUi.innerText = sociosSnap.size; // Actualizar contador
+        navSocios.addEventListener('click', () => {
+            vistaDashboard.classList.add('hidden');
+            vistaSocios.classList.remove('hidden');
+            navDashboard.classList.remove('active', 'bg-white/10');
+            navSocios.classList.add('active', 'bg-white/10');
+            headerTitle.innerText = "Padrón de Socios";
+            headerSubtitle.innerText = "Gestión de altas, bajas y modificaciones";
+            renderizarTabla(listaSociosData); // Repintar por si hubo cambios
+        });
 
-            if (sociosSnap.empty) {
-                contenedorAlertas.innerHTML = `<p class="text-gray-400 text-center py-4 bg-gray-800/50 rounded-xl">No hay socios registrados.</p>`;
+        // --- CONTROL DEL MODAL ---
+        document.getElementById('btn-abrir-modal').addEventListener('click', () => {
+            modoEdicion = false;
+            idSocioEnEdicion = null;
+            formSocio.reset();
+            modalTitle.innerText = "Alta de Nuevo Socio";
+            btnSubmitSocio.innerText = "Registrar Socio";
+            modal.classList.remove('hidden');
+        });
+
+        document.getElementById('btn-cerrar-modal').addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        // --- CARGA DE DATOS (FIREBASE) ---
+        async function cargarDatos() {
+            try {
+                // 1. Setup Gym
+                const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
+                if (gymSnap.exists()) {
+                    const data = gymSnap.data();
+                    nombreGymActual = data.nombre;
+                    document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase();
+                    
+                    if(data.colorPrimario) {
+                        document.querySelectorAll('.dynamic-bg').forEach(el => el.style.backgroundColor = data.colorPrimario);
+                        document.querySelectorAll('.dynamic-text').forEach(el => el.style.color = data.colorPrimario);
+                        document.querySelectorAll('.dynamic-border').forEach(el => el.style.borderColor = data.colorPrimario);
+                        document.querySelectorAll('.dynamic-btn').forEach(el => el.style.backgroundColor = data.colorPrimario);
+                        
+                        const style = document.createElement('style');
+                        style.innerHTML = `.input-dark:focus { border-color: ${data.colorPrimario}; box-shadow: 0 0 10px ${data.colorPrimario}40; }`;
+                        document.head.appendChild(style);
+                    }
+                    
+                    const selectMembresia = document.getElementById('socio-membresia');
+                    if (data.modulos?.funcional && !selectMembresia.innerHTML.includes("Funcional")) selectMembresia.insertAdjacentHTML('beforeend', `<option value="Funcional">Funcional</option>`);
+                    if (data.modulos?.pilates && !selectMembresia.innerHTML.includes("Pilates")) selectMembresia.insertAdjacentHTML('beforeend', `<option value="Pilates">Pilates</option>`);
+                }
+
+                // 2. Traer Socios
+                const sociosRef = collection(db, "gimnasios", GYM_ID, "socios");
+                const snap = await getDocs(sociosRef);
+                
+                listaSociosData = []; // Resetear array local
+                snap.forEach(doc => {
+                    listaSociosData.push({ id: doc.id, ...doc.data() });
+                });
+
+                // 3. Actualizar UI General
+                document.getElementById('total-socios').innerText = listaSociosData.length;
+                document.getElementById('loading-dashboard').classList.add('hidden');
+                
+                renderizarAlertas();
+                renderizarTabla(listaSociosData);
+
+            } catch (error) {
+                console.error("Error global:", error);
+            }
+        }
+
+        // --- RENDERIZADO DE VISTAS ---
+        function renderizarAlertas() {
+            const contenedor = document.getElementById('contenedor-alertas');
+            contenedor.classList.remove('hidden');
+            contenedor.innerHTML = '';
+            
+            // Para la demo, mostramos todos. En producción, filtrarías por fecha próxima.
+            if(listaSociosData.length === 0) {
+                contenedor.innerHTML = `<p class="text-gray-400 text-center py-4 bg-gray-800/50 rounded-xl">Sin socios activos.</p>`;
                 return;
             }
 
-            sociosSnap.forEach((docSnap) => {
-                const socio = docSnap.data();
-                
-                const textoWs = `¡Hola ${socio.nombre}! Te escribimos de ${nombreGymActual}. Tu pase de ${socio.membresia || 'entrenamiento'} figura con vencimiento para el ${socio.vence}. ¡Te esperamos para renovar! 💪`;
-                const linkWs = `https://wa.me/${socio.telefono}?text=${encodeURIComponent(textoWs)}`;
-
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center p-5 bg-gray-800/40 border border-gray-700/50 rounded-2xl hover:bg-gray-800/80 transition group";
-                div.innerHTML = `
-                    <div>
-                        <p class="font-bold text-lg text-white mb-1">${socio.nombre}</p>
-                        <p class="text-gray-400 text-sm flex items-center gap-2">
-                            <span class="bg-gray-700 px-2 py-0.5 rounded text-xs text-gray-300">${socio.membresia}</span>
-                            Vence: <span class="font-bold text-red-400">${socio.vence}</span>
-                        </p>
+            listaSociosData.forEach(socio => {
+                const linkWs = `https://wa.me/${socio.telefono}?text=${encodeURIComponent(`¡Hola ${socio.nombre}! De parte de ${nombreGymActual} te recordamos que tu ${socio.membresia} vence el ${socio.vence}. ¡Te esperamos!`)}`;
+                contenedor.innerHTML += `
+                    <div class="flex justify-between items-center p-4 bg-gray-800/40 border border-gray-700/50 rounded-xl hover:bg-gray-800/80 transition">
+                        <div>
+                            <p class="font-bold text-white">${socio.nombre}</p>
+                            <p class="text-gray-400 text-sm"><span class="text-red-400 font-bold">${socio.vence}</span> - ${socio.membresia}</p>
+                        </div>
+                        <a href="${linkWs}" target="_blank" class="bg-[#25D366]/10 text-[#25D366] px-4 py-2 rounded-lg font-bold hover:bg-[#25D366] hover:text-white transition">Avisar</a>
                     </div>
-                    <a href="${linkWs}" target="_blank" class="flex items-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white px-5 py-2.5 rounded-xl font-bold transition duration-300 border border-[#25D366]/30 hover:border-[#25D366] shadow-sm">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Notificar
-                    </a>
                 `;
-                contenedorAlertas.appendChild(div);
             });
         }
 
-        // Inicialización General
-        async function inicializarDashboard() {
-            try {
-                const gymRef = doc(db, "gimnasios", GYM_ID);
-                const gymSnap = await getDoc(gymRef);
-
-                if (gymSnap.exists()) {
-                    const gymData = gymSnap.data();
-                    nombreGymActual = gymData.nombre;
-                    
-                    // Aplicar Configuración UI
-                    document.getElementById('ui-gym-name').innerText = gymData.nombre.toUpperCase();
-                    
-                    if(gymData.colorPrimario) {
-                        document.querySelectorAll('.dynamic-bg').forEach(el => el.style.backgroundColor = gymData.colorPrimario);
-                        document.querySelectorAll('.dynamic-text').forEach(el => el.style.color = gymData.colorPrimario);
-                        document.querySelectorAll('.dynamic-border').forEach(el => el.style.borderColor = gymData.colorPrimario);
-                        document.querySelectorAll('.dynamic-btn').forEach(el => el.style.backgroundColor = gymData.colorPrimario);
-                        
-                        // Aplicar color al foco del formulario inyectando una regla CSS
-                        const style = document.createElement('style');
-                        style.innerHTML = `.input-dark:focus { border-color: ${gymData.colorPrimario}; box-shadow: 0 0 10px ${gymData.colorPrimario}40; }`;
-                        document.head.appendChild(style);
-                    }
-
-                    // Inyectar opciones de membresía en el select dinámicamente
-                    const selectMembresia = document.getElementById('socio-membresia');
-                    if (gymData.modulos?.funcional) {
-                        selectMembresia.insertAdjacentHTML('beforeend', `<option value="Funcional">Funcional</option>`);
-                    }
-                    if (gymData.modulos?.pilates) {
-                        selectMembresia.insertAdjacentHTML('beforeend', `<option value="Pilates">Pilates</option>`);
-                    }
-                }
-
-                // Cargar la lista de socios
-                await cargarSocios();
-
-            } catch (error) {
-                console.error("Error inicializando:", error);
-                document.getElementById('ui-gym-name').innerText = "Error de Conexión";
+        function renderizarTabla(arrayDatos) {
+            tablaBody.innerHTML = '';
+            if(arrayDatos.length === 0) {
+                tablaBody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">No se encontraron registros.</td></tr>`;
+                return;
             }
+
+            arrayDatos.forEach(socio => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-800 glass-row transition";
+                tr.innerHTML = `
+                    <td class="py-4 px-4 font-bold text-white">${socio.nombre}</td>
+                    <td class="py-4 px-4 text-gray-300">${socio.telefono}</td>
+                    <td class="py-4 px-4"><span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-1 rounded text-xs">${socio.membresia}</span></td>
+                    <td class="py-4 px-4 text-gray-300">${socio.vence}</td>
+                    <td class="py-4 px-4 flex justify-center gap-2">
+                        <button class="btn-editar bg-gray-700 hover:bg-blue-600 text-white p-2 rounded transition" data-id="${socio.id}" title="Editar">✏️</button>
+                        <button class="btn-eliminar bg-gray-700 hover:bg-red-600 text-white p-2 rounded transition" data-id="${socio.id}" title="Eliminar">🗑️</button>
+                    </td>
+                `;
+                tablaBody.appendChild(tr);
+            });
         }
 
-        // Evento para guardar un nuevo socio en Firebase
-        formSocio.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btnSubmit = document.getElementById('btn-guardar-socio');
-            btnSubmit.innerHTML = 'Guardando...';
-            btnSubmit.disabled = true;
+        // --- BUSCADOR ---
+        inputBusqueda.addEventListener('input', (e) => {
+            const termino = e.target.value.toLowerCase();
+            const filtrados = listaSociosData.filter(s => s.nombre.toLowerCase().includes(termino));
+            renderizarTabla(filtrados);
+        });
 
-            const nuevoSocio = {
-                nombre: document.getElementById('socio-nombre').value,
-                telefono: document.getElementById('socio-telefono').value,
-                membresia: document.getElementById('socio-membresia').value,
-                vence: document.getElementById('socio-vence').value,
-                estado: 'activo',
-                fechaRegistro: new Date().toISOString()
-            };
+        // --- ACCIONES DE TABLA (Event Delegation) ---
+        tablaBody.addEventListener('click', async (e) => {
+            const btnEditar = e.target.closest('.btn-editar');
+            const btnEliminar = e.target.closest('.btn-eliminar');
 
-            try {
-                // Guardar en la subcolección 'socios' del gimnasio correspondiente
-                await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), nuevoSocio);
-                
-                // Limpiar, cerrar modal y recargar lista en tiempo real
-                formSocio.reset();
-                modal.classList.add('hidden');
-                await cargarSocios();
-                
-            } catch (error) {
-                console.error("Error al registrar socio:", error);
-                alert("Hubo un error de conexión al registrar el socio.");
-            } finally {
-                btnSubmit.innerHTML = 'Registrar Socio';
-                btnSubmit.disabled = false;
+            // Acción: EDITAR
+            if (btnEditar) {
+                const id = btnEditar.dataset.id;
+                const socio = listaSociosData.find(s => s.id === id);
+                if(socio) {
+                    modoEdicion = true;
+                    idSocioEnEdicion = id;
+                    
+                    document.getElementById('socio-nombre').value = socio.nombre;
+                    document.getElementById('socio-telefono').value = socio.telefono;
+                    document.getElementById('socio-membresia').value = socio.membresia;
+                    document.getElementById('socio-vence').value = socio.vence;
+                    
+                    modalTitle.innerText = "Modificar Socio";
+                    btnSubmitSocio.innerText = "Guardar Cambios";
+                    modal.classList.remove('hidden');
+                }
+            }
+
+            // Acción: ELIMINAR
+            if (btnEliminar) {
+                const id = btnEliminar.dataset.id;
+                if(confirm("¿Estás seguro de que deseas eliminar este socio? Esta acción no se puede deshacer.")) {
+                    try {
+                        const btn = e.target;
+                        btn.innerHTML = '⏳';
+                        await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", id));
+                        await cargarDatos(); // Recargar datos
+                    } catch (error) {
+                        alert("Error al eliminar el registro.");
+                        console.error(error);
+                    }
+                }
             }
         });
 
-        // Ejecutar al cargar la página
-        inicializarDashboard();
+        // --- GUARDAR O ACTUALIZAR SOCIO ---
+        formSocio.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btnSubmitSocio.innerHTML = 'Procesando...';
+            btnSubmitSocio.disabled = true;
+
+            const datosSocio = {
+                nombre: document.getElementById('socio-nombre').value,
+                telefono: document.getElementById('socio-telefono').value,
+                membresia: document.getElementById('socio-membresia').value,
+                vence: document.getElementById('socio-vence').value
+            };
+
+            try {
+                if (modoEdicion) {
+                    // Actualizar documento existente
+                    const docRef = doc(db, "gimnasios", GYM_ID, "socios", idSocioEnEdicion);
+                    await updateDoc(docRef, datosSocio);
+                } else {
+                    // Crear nuevo documento
+                    datosSocio.estado = 'activo';
+                    datosSocio.fechaRegistro = new Date().toISOString();
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), datosSocio);
+                }
+                
+                modal.classList.add('hidden');
+                await cargarDatos(); // Refrescar memoria y UI
+                
+            } catch (error) {
+                console.error("Error guardando:", error);
+                alert("Hubo un error de conexión.");
+            } finally {
+                btnSubmitSocio.disabled = false;
+            }
+        });
+
+        // Arrancar
+        cargarDatos();
     </script>
 </body>
 </html>
