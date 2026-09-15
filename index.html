@@ -3,21 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión SaaS</title>
+    <title>NovaGym SaaS Enterprise Management | Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #000000 100%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 h-screen flex flex-col items-center justify-center">
+<body class="h-screen flex flex-col items-center justify-center text-white font-sans">
+
+    <div class="mb-10 text-center">
+        <h1 class="text-5xl font-black tracking-tighter mb-2 bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+            NOVAGYM
+        </h1>
+        <p class="text-gray-400 tracking-widest text-sm uppercase">Enterprise SaaS OS</p>
+    </div>
     
-    <h1 class="text-4xl font-bold text-gray-800 mb-8">Gym SaaS Control</h1>
-    
-    <div class="flex gap-6">
-        <a href="admin.html" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition">
-            👑 Entrar como Super Admin
-        </a>
-        <a href="gym.html" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition">
-            🏋️ Entrar a Vista Gimnasio (Demo)
-        </a>
+    <div class="flex flex-col md:flex-row gap-6 w-full max-w-4xl px-6">
+        <!-- Tarjeta Super Admin -->
+        <div class="glass-panel p-8 rounded-2xl w-full flex flex-col items-center text-center hover:bg-white/10 transition duration-300">
+            <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mb-6 border border-blue-500/50">
+                <span class="text-2xl">👑</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Super Admin System</h2>
+            <p class="text-gray-400 mb-8 text-sm">Gestión global de inquilinos, facturación y despliegue de módulos.</p>
+            <a href="admin.html" class="mt-auto w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition shadow-[0_0_15px_rgba(37,99,235,0.5)]">
+                Acceder a Consola
+            </a>
+        </div>
+
+        <!-- Tarjeta Gimnasio Cliente -->
+        <div class="glass-panel p-8 rounded-2xl w-full flex flex-col items-center text-center hover:bg-white/10 transition duration-300">
+            <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 border border-emerald-500/50">
+                <span class="text-2xl">🏋️</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Gym Dashboard</h2>
+            <p class="text-gray-400 mb-8 text-sm">Portal de gestión de socios, membresías y control de accesos.</p>
+            <a href="gym.html" class="mt-auto w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-8 rounded-lg transition shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                Acceder al Gym (Demo)
+            </a>
+        </div>
     </div>
 
+    <!-- Firebase Init (Silencioso para el login) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
+            authDomain: "novagym-saas-enterprise.firebaseapp.com",
+            projectId: "novagym-saas-enterprise",
+            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
+            messagingSenderId: "578362101056",
+            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
+        };
+        initializeApp(firebaseConfig);
+    </script>
 </body>
 </html>
