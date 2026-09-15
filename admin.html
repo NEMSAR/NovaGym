@@ -6,66 +6,112 @@
     <title>Super Admin | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #040814; color: #f8fafc; }
-        .glass-card { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .input-dark { background: rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
-        .input-dark:focus { outline: none; border-color: #8b5cf6; }
-        .toast-enter { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .glass-card { background: #121214; border: 1px solid #27272a; }
+        .input-dark { background: #18181b; border: 1px solid #27272a; color: white; transition: all 0.3s; }
+        .input-dark:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        .toast-enter { animation: slideIn 0.4s forwards; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
 <body class="p-8 relative">
 
-    <!-- Contenedor de Notificaciones -->
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-50"></div>
 
-    <div class="max-w-7xl mx-auto">
-        <header class="flex justify-between items-center mb-10 border-b border-gray-800 pb-6">
+    <div class="max-w-[1400px] mx-auto">
+        <header class="flex justify-between items-center mb-10 border-b border-[#27272a] pb-6">
             <div>
                 <h1 class="text-3xl font-black tracking-tight text-white">Consola <span class="text-blue-500">Super Admin</span></h1>
-                <p class="text-gray-400 text-sm mt-1">Gestión global NEMS Tech Enterprise</p>
+                <p class="text-gray-400 text-sm mt-1">Gestión Global de Franquicias y Licencias</p>
             </div>
-            <a href="index.html" class="text-gray-400 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-gray-700">
-                Finalizar Sesión
+            <a href="index.html" class="bg-[#18181b] border border-[#27272a] text-gray-300 hover:text-white transition px-4 py-2 rounded-lg hover:bg-[#27272a]">
+                Cerrar Sesión Corporativa
             </a>
         </header>
         
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="glass-card p-6 rounded-2xl lg:col-span-1 h-fit">
-                <h2 class="text-xl font-bold mb-6">➕ Nuevo Inquilino</h2>
-                <form id="form-nuevo-gym" class="space-y-5">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Nombre del Gimnasio</label>
-                        <input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-3" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Color Interfaz (Hex)</label>
-                        <div class="flex items-center gap-3">
-                            <input type="color" id="gym-color" class="h-10 w-12 rounded cursor-pointer bg-transparent border-0 p-0" value="#8b5cf6">
-                            <input type="text" id="gym-color-text" class="w-full input-dark rounded-lg p-3 text-sm" value="#8b5cf6" readonly>
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+            <!-- Formulario ALTA / EDICIÓN -->
+            <div class="glass-card p-6 rounded-2xl xl:col-span-4 h-fit">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="form-title" class="text-xl font-bold">➕ Nuevo Despliegue</h2>
+                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-red-900/50 text-red-400 px-3 py-1 rounded hover:bg-red-900">Cancelar Edición</button>
+                </div>
+                
+                <form id="form-gym" class="space-y-4">
+                    <input type="hidden" id="edit-gym-id">
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre</label>
+                            <input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Ej. Titan Gym" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">ID (Opcional)</label>
+                            <input type="text" id="gym-custom-id" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Auto-generado">
                         </div>
                     </div>
                     
-                    <div class="pt-4 border-t border-gray-800">
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-4">Servicios Habilitados</label>
-                        <label class="flex items-center space-x-3 mb-2 cursor-pointer p-2 hover:bg-white/5 rounded-lg"><input type="checkbox" id="mod-musculacion" class="w-4 h-4 accent-blue-500" checked><span class="text-sm">Musculación</span></label>
-                        <label class="flex items-center space-x-3 mb-2 cursor-pointer p-2 hover:bg-white/5 rounded-lg"><input type="checkbox" id="mod-funcional" class="w-4 h-4 accent-blue-500"><span class="text-sm">Área Funcional</span></label>
-                        <label class="flex items-center space-x-3 mb-2 cursor-pointer p-2 hover:bg-white/5 rounded-lg"><input type="checkbox" id="mod-pilates" class="w-4 h-4 accent-blue-500"><span class="text-sm">Clases de Pilates</span></label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Clave de Acceso</label>
+                            <input type="text" id="gym-password" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Asigna contraseña" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Color (Hex)</label>
+                            <div class="flex gap-2">
+                                <input type="color" id="gym-color" class="h-10 w-10 rounded cursor-pointer bg-transparent border-0 p-0" value="#eab308">
+                                <input type="text" id="gym-color-text" class="w-full input-dark rounded-lg p-2.5 text-xs" value="#eab308">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">URL Logo del Gimnasio (Opcional)</label>
+                        <input type="url" id="gym-logo" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="https://ejemplo.com/logo.png">
+                    </div>
+                    
+                    <div class="pt-4 border-t border-[#27272a]">
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Servicios Base</label>
+                        <div class="grid grid-cols-2 gap-2 mb-4">
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-musculacion" checked><span class="text-xs">Musculación</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-funcional"><span class="text-xs">Funcional</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-pilates"><span class="text-xs">Pilates</span></label>
+                        </div>
                         
-                        <label class="block text-xs font-bold text-gray-400 uppercase mt-4 mb-2">Módulos Extra</label>
-                        <label class="flex items-center space-x-3 mb-2 cursor-pointer p-2 hover:bg-white/5 rounded-lg"><input type="checkbox" id="mod-tienda" class="w-4 h-4 accent-emerald-500" checked><span class="text-sm">Tienda / Ventas (POS)</span></label>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Módulos Pro (Enterprise)</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-tienda" checked><span class="text-xs">Tienda POS</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-asistencia"><span class="text-xs">Control Asistencia</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-evaluaciones"><span class="text-xs">Fichas Físicas</span></label>
+                        </div>
                     </div>
                     
                     <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-500 transition mt-4">
-                        Desplegar Entorno
+                        Crear e Iniciar Entorno
                     </button>
                 </form>
             </div>
 
-            <div class="glass-card p-6 rounded-2xl lg:col-span-2">
-                <h2 class="text-xl font-bold mb-6">Inquilinos Activos</h2>
+            <!-- Lista de Gimnasios -->
+            <div class="glass-card p-6 rounded-2xl xl:col-span-8">
+                <h2 class="text-xl font-bold mb-6">Directorio de Inquilinos</h2>
                 <div id="loading-gyms" class="text-center py-10 text-gray-500">Sincronizando con base de datos...</div>
-                <ul id="lista-gyms" class="space-y-4 hidden"></ul>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[800px] hidden" id="table-gyms">
+                        <thead>
+                            <tr class="border-b border-[#27272a] text-gray-500 text-xs uppercase tracking-wider">
+                                <th class="py-3 px-4">Estado</th>
+                                <th class="py-3 px-4">Gimnasio</th>
+                                <th class="py-3 px-4">ID Operador</th>
+                                <th class="py-3 px-4">Clave</th>
+                                <th class="py-3 px-4">Módulos</th>
+                                <th class="py-3 px-4 text-right">Administrar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-gyms" class="text-sm"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -73,24 +119,16 @@
     <!-- Script Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
-            authDomain: "novagym-saas-enterprise.firebaseapp.com",
-            projectId: "novagym-saas-enterprise",
-            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
-            messagingSenderId: "578362101056",
-            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Sistema de Toasts Premium
+        let gymsData = [];
+
         window.showToast = (msg, tipo = 'success') => {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             const bg = tipo === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-red-500/20 border-red-500/50 text-red-400';
             toast.className = `toast-enter ${bg} border px-6 py-4 rounded-xl shadow-lg backdrop-blur-md font-bold text-sm flex items-center gap-3`;
             toast.innerHTML = `<span>${tipo === 'success' ? '✓' : '⚠️'}</span> ${msg}`;
@@ -98,83 +136,151 @@
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        const form = document.getElementById('form-nuevo-gym');
-        const listaGyms = document.getElementById('lista-gyms');
+        const form = document.getElementById('form-gym');
         const colorInput = document.getElementById('gym-color');
         const colorText = document.getElementById('gym-color-text');
-
+        
         colorInput.addEventListener('input', (e) => colorText.value = e.target.value);
-
-        window.toggleEstadoGym = async (id, estadoActual) => {
-            const nuevoEstado = estadoActual === 'activo' ? 'suspendido' : 'activo';
-            if(confirm(`¿Estás seguro de cambiar el estado a ${nuevoEstado.toUpperCase()}?`)) {
-                await updateDoc(doc(db, "gimnasios", id), { estado: nuevoEstado });
-                showToast(`Gimnasio ${nuevoEstado}`, nuevoEstado === 'activo' ? 'success' : 'error');
-                cargarGimnasios();
-            }
-        };
+        colorText.addEventListener('input', (e) => colorInput.value = e.target.value);
 
         async function cargarGimnasios() {
-            listaGyms.innerHTML = '';
+            const tbody = document.getElementById('lista-gyms'); tbody.innerHTML = '';
             const querySnapshot = await getDocs(collection(db, "gimnasios"));
             document.getElementById('loading-gyms').classList.add('hidden');
-            listaGyms.classList.remove('hidden');
+            document.getElementById('table-gyms').classList.remove('hidden');
 
-            if (querySnapshot.empty) {
-                listaGyms.innerHTML = '<li class="text-gray-500 text-center py-5">No hay gimnasios registrados.</li>'; return;
-            }
+            gymsData = [];
+            querySnapshot.forEach((docSnap) => gymsData.push({id: docSnap.id, ...docSnap.data()}));
 
-            querySnapshot.forEach((docSnap) => {
-                const data = docSnap.data(); const id = docSnap.id; 
+            gymsData.forEach((data) => {
                 const isSuspendido = data.estado === 'suspendido';
-                const li = document.createElement('li');
-                li.className = `flex flex-col md:flex-row justify-between md:items-center p-5 rounded-xl border transition gap-4 ${isSuspendido ? 'bg-red-900/10 border-red-500/30' : 'bg-white/5 border-white/10 hover:bg-white/10'}`;
-                li.style.borderLeft = `4px solid ${isSuspendido ? '#ef4444' : (data.colorPrimario || '#3b82f6')}`;
                 
-                let modulosTags = '';
-                if(data.modulos?.musculacion) modulosTags += `<span class="text-[10px] bg-black/50 px-2 py-1 rounded">Musculación</span> `;
-                if(data.modulos?.funcional) modulosTags += `<span class="text-[10px] bg-black/50 px-2 py-1 rounded">Funcional</span> `;
-                if(data.modulos?.pilates) modulosTags += `<span class="text-[10px] bg-black/50 px-2 py-1 rounded">Pilates</span> `;
-                if(data.modulos?.tienda) modulosTags += `<span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded">Tienda POS</span> `;
+                let modTags = '';
+                const m = data.modulos || {};
+                if(m.musculacion) modTags += `<span class="bg-[#27272a] px-2 py-0.5 rounded text-[10px] mr-1">Musculación</span>`;
+                if(m.funcional) modTags += `<span class="bg-[#27272a] px-2 py-0.5 rounded text-[10px] mr-1">Funcional</span>`;
+                if(m.pilates) modTags += `<span class="bg-[#27272a] px-2 py-0.5 rounded text-[10px] mr-1">Pilates</span>`;
+                if(m.tienda) modTags += `<span class="bg-emerald-900/40 text-emerald-400 px-2 py-0.5 rounded text-[10px] mr-1">POS</span>`;
+                if(m.asistencia) modTags += `<span class="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded text-[10px] mr-1">Asistencia</span>`;
+                if(m.evaluaciones) modTags += `<span class="bg-purple-900/40 text-purple-400 px-2 py-0.5 rounded text-[10px] mr-1">Metas</span>`;
 
-                li.innerHTML = `
-                    <div>
+                const tr = document.createElement('tr');
+                tr.className = `border-b border-[#27272a] transition ${isSuspendido ? 'bg-red-900/5' : 'hover:bg-[#18181b]'}`;
+                tr.innerHTML = `
+                    <td class="py-4 px-4"><div class="w-3 h-3 rounded-full ${isSuspendido ? 'bg-red-500 shadow-[0_0_8px_#ef4444]' : 'bg-emerald-500 shadow-[0_0_8px_#10b981]'}"></div></td>
+                    <td class="py-4 px-4">
                         <div class="flex items-center gap-3">
-                            <p class="font-bold text-lg text-white ${isSuspendido ? 'line-through text-gray-500' : ''}">${data.nombre}</p>
-                            ${isSuspendido ? '<span class="text-[10px] font-bold uppercase tracking-wider bg-red-500/20 text-red-400 px-2 py-0.5 rounded border border-red-500/30">Suspendido</span>' : '<span class="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">Activo</span>'}
+                            ${data.logoUrl ? `<img src="${data.logoUrl}" class="w-8 h-8 rounded object-cover border border-gray-700">` : `<div class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-xs font-bold" style="color:${data.colorPrimario}">Gym</div>`}
+                            <span class="font-bold text-white ${isSuspendido ? 'line-through text-gray-500' : ''}">${data.nombre}</span>
                         </div>
-                        <p class="text-xs text-gray-400 font-mono mb-2 mt-1">ID: <span class="text-white select-all bg-black/50 px-1 rounded">${id}</span></p>
-                        <div class="flex gap-2 flex-wrap">${modulosTags}</div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <button onclick="toggleEstadoGym('${id}', '${data.estado}')" class="text-xs font-bold px-4 py-2 rounded-lg transition ${isSuspendido ? 'bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white' : 'bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white'}">
-                            ${isSuspendido ? '✅ Activar' : '⛔ Suspender'}
-                        </button>
-                        <a href="gym.html?id=${id}" target="_blank" class="text-sm bg-blue-600/20 border border-blue-500/50 text-blue-400 font-bold px-5 py-2.5 rounded-lg hover:bg-blue-600 hover:text-white transition text-center">Abrir Panel</a>
-                    </div>
+                    </td>
+                    <td class="py-4 px-4"><span class="font-mono text-xs bg-black px-2 py-1 rounded text-gray-300 border border-gray-800">${data.id}</span></td>
+                    <td class="py-4 px-4"><span class="text-xs text-gray-400 cursor-pointer hover:text-white" onclick="alert('Clave: ${data.password}')">Ver 👁️</span></td>
+                    <td class="py-4 px-4"><div class="flex flex-wrap gap-1 max-w-[200px]">${modTags}</div></td>
+                    <td class="py-4 px-4 flex justify-end gap-2">
+                        <button class="btn-editar text-xs bg-blue-900/30 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded transition" data-id="${data.id}">Editar</button>
+                        <button class="btn-toggle text-xs px-3 py-1.5 rounded transition ${isSuspendido ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600 hover:text-white' : 'bg-red-900/30 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white'}" data-id="${data.id}" data-estado="${data.estado}">${isSuspendido ? 'Activar' : 'Suspender'}</button>
+                    </td>
                 `;
-                listaGyms.appendChild(li);
+                tbody.appendChild(tr);
             });
         }
 
+        // DELEGACIÓN BOTONES TABLA
+        document.body.addEventListener('click', async (e) => {
+            // Suspender/Activar
+            if (e.target.classList.contains('btn-toggle')) {
+                const id = e.target.dataset.id;
+                const nuevoEstado = e.target.dataset.estado === 'activo' ? 'suspendido' : 'activo';
+                if(confirm(`¿Cambiar estado de la franquicia a ${nuevoEstado.toUpperCase()}?`)) {
+                    await updateDoc(doc(db, "gimnasios", id), { estado: nuevoEstado });
+                    showToast(`Franquicia ${nuevoEstado}`, nuevoEstado === 'activo' ? 'success' : 'error'); cargarGimnasios();
+                }
+            }
+            // Modo Edición
+            if (e.target.classList.contains('btn-editar')) {
+                const gym = gymsData.find(g => g.id === e.target.dataset.id);
+                document.getElementById('form-title').innerText = "✏️ Modificar Franquicia";
+                document.getElementById('edit-gym-id').value = gym.id;
+                document.getElementById('gym-nombre').value = gym.nombre;
+                document.getElementById('gym-custom-id').value = gym.id;
+                document.getElementById('gym-custom-id').disabled = true; // No se puede cambiar ID una vez creado
+                document.getElementById('gym-password').value = gym.password || '';
+                document.getElementById('gym-color').value = gym.colorPrimario;
+                document.getElementById('gym-color-text').value = gym.colorPrimario;
+                document.getElementById('gym-logo').value = gym.logoUrl || '';
+                
+                const m = gym.modulos || {};
+                document.getElementById('mod-musculacion').checked = !!m.musculacion;
+                document.getElementById('mod-funcional').checked = !!m.funcional;
+                document.getElementById('mod-pilates').checked = !!m.pilates;
+                document.getElementById('mod-tienda').checked = !!m.tienda;
+                document.getElementById('mod-asistencia').checked = !!m.asistencia;
+                document.getElementById('mod-evaluaciones').checked = !!m.evaluaciones;
+
+                document.getElementById('btn-submit').innerText = "Guardar Cambios";
+                document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('btn-cancelar-edicion').addEventListener('click', () => {
+            form.reset();
+            document.getElementById('edit-gym-id').value = "";
+            document.getElementById('gym-custom-id').disabled = false;
+            document.getElementById('form-title').innerText = "➕ Nuevo Despliegue";
+            document.getElementById('btn-submit').innerText = "Crear e Iniciar Entorno";
+            document.getElementById('btn-cancelar-edicion').classList.add('hidden');
+        });
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Desplegando...'; btn.disabled = true;
+            const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Procesando...'; btn.disabled = true;
+            
+            const editId = document.getElementById('edit-gym-id').value;
+            const inputCustomId = document.getElementById('gym-custom-id').value.trim();
+            const password = document.getElementById('gym-password').value;
+            
+            const gymData = {
+                nombre: document.getElementById('gym-nombre').value, 
+                colorPrimario: document.getElementById('gym-color').value,
+                password: password,
+                logoUrl: document.getElementById('gym-logo').value.trim(),
+                modulos: {
+                    musculacion: document.getElementById('mod-musculacion').checked, 
+                    funcional: document.getElementById('mod-funcional').checked,
+                    pilates: document.getElementById('mod-pilates').checked, 
+                    tienda: document.getElementById('mod-tienda').checked,
+                    asistencia: document.getElementById('mod-asistencia').checked,
+                    evaluaciones: document.getElementById('mod-evaluaciones').checked
+                }
+            };
+
             try {
-                await addDoc(collection(db, "gimnasios"), {
-                    nombre: document.getElementById('gym-nombre').value, colorPrimario: document.getElementById('gym-color').value,
-                    estado: 'activo', fechaCreacion: new Date().toISOString(),
-                    modulos: {
-                        musculacion: document.getElementById('mod-musculacion').checked, funcional: document.getElementById('mod-funcional').checked,
-                        pilates: document.getElementById('mod-pilates').checked, tienda: document.getElementById('mod-tienda').checked
+                if (editId) {
+                    // Actualizar existente
+                    await updateDoc(doc(db, "gimnasios", editId), gymData);
+                    showToast('Configuración actualizada');
+                } else {
+                    // Crear nuevo
+                    gymData.estado = 'activo';
+                    gymData.fechaCreacion = new Date().toISOString();
+                    
+                    let docRef;
+                    if(inputCustomId) {
+                        docRef = doc(db, "gimnasios", inputCustomId);
+                    } else {
+                        docRef = doc(collection(db, "gimnasios")); // Autogenera ID
                     }
-                });
-                form.reset(); colorText.value = '#8b5cf6'; colorInput.value = '#8b5cf6';
-                showToast('Gimnasio desplegado exitosamente');
+                    await setDoc(docRef, gymData);
+                    showToast('Nuevo entorno desplegado exitosamente');
+                }
+                
+                document.getElementById('btn-cancelar-edicion').click(); // Limpia form
                 cargarGimnasios();
-            } catch (error) { showToast("Error al guardar", 'error'); } 
-            finally { btn.innerHTML = 'Desplegar Entorno'; btn.disabled = false; }
+            } catch (error) { showToast("Error en base de datos", 'error'); console.error(error); } 
+            finally { btn.disabled = false; }
         });
+
         cargarGimnasios();
     </script>
 </body>
