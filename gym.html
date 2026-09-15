@@ -23,7 +23,7 @@
         .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); padding-left: 1.5rem; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden">
+<body class="flex h-screen overflow-hidden hidden" id="app-container">
 
     <!-- Menú Lateral -->
     <aside id="sidebar" class="w-72 flex flex-col shadow-2xl z-20 border-r border-white/5 dynamic-bg relative overflow-hidden">
@@ -73,7 +73,7 @@
                 </div>
             </header>
 
-            <!-- VISTA 1: DASHBOARD -->
+            <!-- VISTAS... (Mismo código que en la versión anterior) -->
             <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-8 transition-opacity duration-300">
                 <div class="xl:col-span-2 space-y-8">
                     <section class="glass-panel p-8 rounded-3xl">
@@ -88,7 +88,6 @@
                         <div id="contenedor-alertas" class="grid grid-cols-1 gap-4 hidden"></div>
                     </section>
                 </div>
-                
                 <div class="space-y-6">
                     <div class="glass-panel p-6 rounded-3xl border-l-4 dynamic-border flex flex-col justify-center">
                         <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Total Socios</h3>
@@ -97,7 +96,6 @@
                 </div>
             </div>
 
-            <!-- VISTA 2: PADRÓN DE SOCIOS -->
             <div id="vista-socios" class="hidden transition-opacity duration-300">
                 <section class="glass-panel p-8 rounded-3xl">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
@@ -124,16 +122,13 @@
                 </section>
             </div>
 
-            <!-- VISTA 3: FINANZAS Y PAGOS -->
             <div id="vista-finanzas" class="hidden transition-opacity duration-300">
                 <section class="glass-panel p-8 rounded-3xl">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                         <h2 class="text-xl font-bold text-white">Historial de Transacciones</h2>
-                        
-                        <!-- Botón de Exportar CSV -->
                         <button id="btn-exportar-csv" class="bg-emerald-600/20 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500 hover:text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Exportar CSV (Excel)
+                            Exportar CSV
                         </button>
                     </div>
                     <div class="overflow-x-auto">
@@ -152,11 +147,10 @@
                     </div>
                 </section>
             </div>
-
         </div>
     </main>
 
-    <!-- Modal Socio -->
+    <!-- Modales -->
     <div id="modal-socio" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md transition-opacity">
         <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative border border-white/10 shadow-2xl">
             <button class="btn-cerrar-modal absolute top-5 right-5 text-gray-400 hover:text-white text-xl transition" data-modal="modal-socio">✕</button>
@@ -186,7 +180,6 @@
         </div>
     </div>
 
-    <!-- Modal Pagos -->
     <div id="modal-pago" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md transition-opacity">
         <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative border border-white/10 shadow-2xl">
             <button class="btn-cerrar-modal absolute top-5 right-5 text-gray-400 hover:text-white text-xl transition" data-modal="modal-pago">✕</button>
@@ -220,6 +213,17 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+        // ATRAPAR EL ID DE LA URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const GYM_ID = urlParams.get('id');
+
+        // Escudo de seguridad
+        if (!GYM_ID) {
+            alert("Acceso denegado: No se especificó el ID del gimnasio.");
+            window.location.href = "index.html";
+            throw new Error("Ejecución detenida.");
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
             authDomain: "novagym-saas-enterprise.firebaseapp.com",
@@ -231,9 +235,8 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const GYM_ID = 'gym_001'; 
-        let nombreGymActual = "";
         
+        let nombreGymActual = "";
         let listaSociosData = []; 
         let listaFinanzasData = [];
         let vistaActual = 'dashboard';
@@ -312,73 +315,56 @@
             });
         });
 
-        // FUNCIÓN EXPORTAR CSV
+        // EXPORTAR CSV
         document.getElementById('btn-exportar-csv').addEventListener('click', () => {
-            if (listaFinanzasData.length === 0) {
-                alert("No hay registros financieros para exportar.");
-                return;
-            }
-
-            // Crear el encabezado del archivo
+            if (listaFinanzasData.length === 0) { alert("No hay registros."); return; }
             let csvContent = "Fecha,Socio,Concepto,Monto\n";
-
             listaFinanzasData.forEach(pago => {
                 const fechaAr = pago.fecha.split('-').reverse().join('/');
-                
-                // Escapar textos para evitar errores si el usuario escribió comas
-                const socioEscapado = `"${pago.socio.replace(/"/g, '""')}"`;
-                const conceptoEscapado = `"${pago.concepto.replace(/"/g, '""')}"`;
-                const monto = pago.monto;
-
-                csvContent += `${fechaAr},${socioEscapado},${conceptoEscapado},${monto}\n`;
+                csvContent += `${fechaAr},"${pago.socio.replace(/"/g, '""')}","${pago.concepto.replace(/"/g, '""')}",${pago.monto}\n`;
             });
-
-            // Generar el archivo Blob y forzar descarga
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
-            const fechaHoy = new Date().toISOString().split('T')[0];
-            const nombreArchivoSeguro = nombreGymActual.replace(/\s+/g, '_');
-            
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Reporte_Finanzas_${nombreArchivoSeguro}_${fechaHoy}.csv`);
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            link.href = URL.createObjectURL(blob);
+            link.download = `Reporte_${nombreGymActual.replace(/\s+/g, '_')}.csv`;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
         });
 
-        // BUSCADOR EN PADRÓN
         inputBusquedaSocio.addEventListener('input', (e) => {
-            const termino = e.target.value.toLowerCase();
-            const filtrados = listaSociosData.filter(s => s.nombre.toLowerCase().includes(termino));
-            renderizarTablaSocios(filtrados);
+            renderizarTablaSocios(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase())));
         });
 
-        // CARGA GENERAL FIREBASE
+        // CARGA GENERAL FIREBASE CON ID DINÁMICO
         async function cargarDatos() {
             try {
-                // Gym config
-                const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
-                if (gymSnap.exists()) {
-                    const data = gymSnap.data();
-                    nombreGymActual = data.nombre;
-                    document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase();
-                    if(data.colorPrimario) {
-                        document.querySelectorAll('.dynamic-bg').forEach(el => el.style.backgroundColor = data.colorPrimario);
-                        document.querySelectorAll('.dynamic-text').forEach(el => el.style.color = data.colorPrimario);
-                        document.querySelectorAll('.dynamic-border').forEach(el => el.style.borderColor = data.colorPrimario);
-                        document.querySelectorAll('.dynamic-btn').forEach(el => el.style.backgroundColor = data.colorPrimario);
-                    }
+                // Verificar si el gimnasio existe en Firestore
+                const gymRef = doc(db, "gimnasios", GYM_ID);
+                const gymSnap = await getDoc(gymRef);
+                
+                if (!gymSnap.exists()) {
+                    alert("El ID del gimnasio ingresado no existe o fue dado de baja.");
+                    window.location.href = "index.html";
+                    return;
                 }
 
-                // Cargar Socios
+                // Mostrar la UI ahora que sabemos que existe
+                document.getElementById('app-container').classList.remove('hidden');
+
+                const data = gymSnap.data();
+                nombreGymActual = data.nombre;
+                document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase();
+                
+                if(data.colorPrimario) {
+                    document.querySelectorAll('.dynamic-bg').forEach(el => el.style.backgroundColor = data.colorPrimario);
+                    document.querySelectorAll('.dynamic-text').forEach(el => el.style.color = data.colorPrimario);
+                    document.querySelectorAll('.dynamic-border').forEach(el => el.style.borderColor = data.colorPrimario);
+                    document.querySelectorAll('.dynamic-btn').forEach(el => el.style.backgroundColor = data.colorPrimario);
+                }
+
                 const sociosSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "socios"));
                 listaSociosData = [];
                 sociosSnap.forEach(doc => listaSociosData.push({ id: doc.id, ...doc.data() }));
 
-                // Cargar Finanzas
                 const finanzasSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "finanzas"));
                 listaFinanzasData = [];
                 let ingresosTotales = 0;
@@ -387,10 +373,8 @@
                     listaFinanzasData.push({ id: doc.id, ...pago });
                     ingresosTotales += Number(pago.monto);
                 });
-
                 listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
-                // UI Updates
                 document.getElementById('total-socios').innerText = listaSociosData.length;
                 document.getElementById('ui-ingresos-totales').innerText = `$${ingresosTotales.toLocaleString('es-AR')} ARS`;
                 document.getElementById('loading-dashboard').classList.add('hidden');
@@ -401,6 +385,7 @@
 
             } catch (error) {
                 console.error("Error cargando datos:", error);
+                alert("Error de conexión con la base de datos.");
             }
         }
 
@@ -408,9 +393,7 @@
         function renderizarAlertas() {
             const contenedor = document.getElementById('contenedor-alertas');
             contenedor.classList.remove('hidden');
-            contenedor.innerHTML = listaSociosData.length === 0 ? 
-                `<p class="text-gray-400">Sin socios activos.</p>` : '';
-
+            contenedor.innerHTML = listaSociosData.length === 0 ? `<p class="text-gray-400">Sin socios activos.</p>` : '';
             listaSociosData.forEach(socio => {
                 const linkWs = `https://wa.me/${socio.telefono}?text=${encodeURIComponent(`¡Hola ${socio.nombre}! De parte de ${nombreGymActual} te recordamos que tu ${socio.membresia} vence el ${socio.vence}.`)}`;
                 contenedor.innerHTML += `
@@ -427,10 +410,7 @@
         function renderizarTablaSocios(datos) {
             const tbody = document.getElementById('tabla-socios-body');
             tbody.innerHTML = '';
-            if(datos.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">No se encontraron registros.</td></tr>`;
-                return;
-            }
+            if(datos.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">Sin registros.</td></tr>`; return; }
             datos.forEach(socio => {
                 tbody.innerHTML += `
                     <tr class="border-b border-gray-800 glass-row">
@@ -448,10 +428,7 @@
         function renderizarTablaFinanzas(datos) {
             const tbody = document.getElementById('tabla-finanzas-body');
             tbody.innerHTML = '';
-            if(datos.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">No hay pagos registrados.</td></tr>`;
-                return;
-            }
+            if(datos.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">Sin pagos.</td></tr>`; return; }
             datos.forEach(pago => {
                 const fechaAr = pago.fecha.split('-').reverse().join('/');
                 tbody.innerHTML += `
@@ -467,61 +444,37 @@
             });
         }
 
-        // ELIMINAR SOCIOS Y PAGOS
         document.body.addEventListener('click', async (e) => {
             if (e.target.classList.contains('btn-eliminar-socio')) {
-                if(confirm("¿Eliminar socio permanentemente?")) {
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.dataset.id));
-                    cargarDatos();
-                }
+                if(confirm("¿Eliminar socio permanentemente?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.dataset.id)); cargarDatos(); }
             }
             if (e.target.classList.contains('btn-eliminar-pago')) {
-                if(confirm("¿Eliminar este pago del registro?")) {
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.dataset.id));
-                    cargarDatos();
-                }
+                if(confirm("¿Eliminar este pago del registro?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.dataset.id)); cargarDatos(); }
             }
         });
 
-        // FORMULARIOS SUBMIT
         document.getElementById('form-socio').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-guardar-socio');
-            btn.innerHTML = 'Guardando...'; btn.disabled = true;
+            e.preventDefault(); const btn = document.getElementById('btn-guardar-socio'); btn.innerHTML = 'Guardando...'; btn.disabled = true;
             try {
                 await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), {
-                    nombre: document.getElementById('socio-nombre').value,
-                    telefono: document.getElementById('socio-telefono').value,
-                    membresia: document.getElementById('socio-membresia').value,
-                    vence: document.getElementById('socio-vence').value
+                    nombre: document.getElementById('socio-nombre').value, telefono: document.getElementById('socio-telefono').value,
+                    membresia: document.getElementById('socio-membresia').value, vence: document.getElementById('socio-vence').value
                 });
-                document.getElementById('modal-socio').classList.add('hidden');
-                cargarDatos();
-            } finally {
-                btn.innerHTML = 'Registrar'; btn.disabled = false;
-            }
+                document.getElementById('modal-socio').classList.add('hidden'); cargarDatos();
+            } finally { btn.innerHTML = 'Registrar'; btn.disabled = false; }
         });
 
         document.getElementById('form-pago').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-guardar-pago');
-            btn.innerHTML = 'Procesando...'; btn.disabled = true;
+            e.preventDefault(); const btn = document.getElementById('btn-guardar-pago'); btn.innerHTML = 'Procesando...'; btn.disabled = true;
             try {
                 await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), {
-                    socio: document.getElementById('pago-socio').value,
-                    concepto: document.getElementById('pago-concepto').value,
-                    monto: document.getElementById('pago-monto').value,
-                    fecha: document.getElementById('pago-fecha').value,
-                    timestamp: new Date().toISOString()
+                    socio: document.getElementById('pago-socio').value, concepto: document.getElementById('pago-concepto').value,
+                    monto: document.getElementById('pago-monto').value, fecha: document.getElementById('pago-fecha').value, timestamp: new Date().toISOString()
                 });
-                document.getElementById('modal-pago').classList.add('hidden');
-                cargarDatos();
-            } finally {
-                btn.innerHTML = 'Procesar Pago'; btn.disabled = false;
-            }
+                document.getElementById('modal-pago').classList.add('hidden'); cargarDatos();
+            } finally { btn.innerHTML = 'Procesar Pago'; btn.disabled = false; }
         });
 
-        // INICIO
         cargarDatos();
     </script>
 </body>
