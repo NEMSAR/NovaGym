@@ -3,99 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Dashboard | NEMS OS</title>
+    <title>Management Pro | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #040814; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        .dynamic-bg { background-color: #3b82f6; } .dynamic-text { color: #3b82f6; } .dynamic-border { border-color: #3b82f6; }
-        .dynamic-btn { background-color: #3b82f6; } .dynamic-btn:hover { filter: brightness(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
-        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); }
-        .glass-row:hover { background: rgba(255,255,255,0.05); }
-        .input-dark { background: rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
-        .input-dark:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
-        .nav-item { transition: all 0.2s ease-in-out; cursor: pointer; }
-        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); border-left: 3px solid white; padding-left: 1.2rem; }
+        /* Estética inspirada en 'Gym Management Pro' */
+        body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .dynamic-text { color: var(--accent-color, #eab308); } 
+        .dynamic-border { border-color: var(--accent-color, #eab308); }
+        .dynamic-btn { background-color: var(--accent-color, #eab308); color: #000; }
+        .dynamic-btn:hover { filter: brightness(0.85); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        .nav-item.active { background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent-color, #eab308); color: white; }
         
-        /* Animaciones Premium */
-        .toast-enter { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .glass-panel { background: #121214; border: 1px solid #27272a; border-radius: 1rem; }
+        .glass-row:hover { background: #18181b; }
+        .input-dark { background: #09090b; border: 1px solid #27272a; color: white; transition: all 0.2s; }
+        .input-dark:focus { outline: none; border-color: var(--accent-color, #eab308); }
+        .nav-item { transition: all 0.2s ease; cursor: pointer; color: #a1a1aa; }
+        .nav-item:hover { background: #18181b; color: white; padding-left: 1.2rem; }
+        
+        .toast-enter { animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden hidden" id="app-container">
 
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
-    <aside id="sidebar" class="w-72 flex flex-col shadow-2xl z-20 border-r border-white/5 dynamic-bg relative overflow-hidden">
-        <div class="absolute inset-0 bg-black/60 z-0 pointer-events-none"></div>
-        <div class="p-8 text-center border-b border-white/10 z-10 relative">
-            <h2 id="ui-gym-name" class="font-black text-2xl tracking-widest text-white">N.OS</h2>
+    <!-- Menú Lateral -->
+    <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-20">
+        <div class="p-6 flex flex-col items-center justify-center border-b border-[#27272a] min-h-[120px]">
+            <!-- Aquí se inyecta el Logo o el texto por defecto -->
+            <div id="ui-gym-logo-container" class="mb-2"></div>
+            <h2 id="ui-gym-name" class="font-black text-lg tracking-wider text-white text-center">N.OS PRO</h2>
         </div>
-        <nav id="ui-nav-menu" class="flex-1 p-4 space-y-2 mt-4 z-10 relative text-gray-300 text-sm font-medium">
-            <div id="nav-dashboard" class="nav-item active flex items-center gap-4 py-3 px-4 rounded-lg text-white"><span>📊</span> Dashboard Operativo</div>
-            <div id="nav-socios" class="nav-item flex items-center gap-4 py-3 px-4 rounded-lg"><span>👥</span> Padrón de Socios</div>
-            <div id="nav-finanzas" class="nav-item flex items-center gap-4 py-3 px-4 rounded-lg"><span>💳</span> Finanzas Globales</div>
-            <a href="index.html" class="nav-item flex items-center gap-4 py-3 px-4 rounded-lg mt-10 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
+        
+        <nav id="ui-nav-menu" class="flex-1 p-4 space-y-1 mt-2 text-xs font-bold uppercase tracking-wider">
+            <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
+            <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Dashboard Ejecutivo</div>
+            <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Gestión de Socios</div>
+            <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Facturación y Caja</div>
+            
+            <!-- Módulos dinámicos se inyectan aquí -->
+            <div id="modulos-container"></div>
+            
+            <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
         </nav>
     </aside>
 
-    <main class="flex-1 overflow-y-auto relative">
-        <div class="p-10 relative z-10">
-            <header class="flex justify-between items-end mb-12">
+    <main class="flex-1 overflow-y-auto bg-[#09090b]">
+        <div class="p-8 max-w-[1600px] mx-auto">
+            <header class="flex justify-between items-end mb-10 border-b border-[#27272a] pb-6">
                 <div>
-                    <h1 id="header-title" class="text-4xl font-black text-white tracking-tight mb-2">Panel Operativo</h1>
-                    <p id="header-subtitle" class="text-gray-400 text-sm">Resumen del sistema y alertas</p>
+                    <h1 id="header-title" class="text-3xl font-black text-white tracking-tight mb-1">Executive Dashboard</h1>
+                    <p id="header-subtitle" class="text-gray-400 text-sm">Visión general y métricas en tiempo real</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button id="btn-accion-principal" class="dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
-                        + Nuevo Socio
+                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-lg shadow-lg transition text-sm">
+                        + Registrar Socio
                     </button>
-                    <div class="glass-panel px-6 py-3 rounded-2xl text-right hidden xl:block">
-                        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Caja General</p>
-                        <p id="ui-ingresos-totales" class="text-xl font-bold dynamic-text">$0 ARS</p>
+                    <div class="glass-panel px-5 py-2 text-right hidden lg:block">
+                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Revenue Total</p>
+                        <p id="ui-ingresos-totales" class="text-lg font-bold dynamic-text">$0</p>
                     </div>
                 </div>
             </header>
 
             <!-- VISTA DASHBOARD -->
-            <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-8 fade-in">
-                <div class="xl:col-span-2 space-y-8">
-                    <section class="glass-panel p-8 rounded-3xl">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-bold text-white flex items-center gap-3">⚠️ Membresías Vencidas o por Vencer (Próx. 3 días)</h2>
-                        </div>
-                        <div id="contenedor-alertas" class="grid grid-cols-1 gap-3"></div>
-                    </section>
+            <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-4 gap-6 fade-in">
+                <!-- Tarjetas KPI estilo imagen -->
+                <div class="glass-panel p-5 border-t-4 dynamic-border">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase">Miembros Activos</h3>
+                    <p id="total-socios" class="text-3xl font-black text-white mt-1">0</p>
                 </div>
-                <div class="space-y-6">
-                    <div class="glass-panel p-6 rounded-3xl border-l-4 dynamic-border flex flex-col justify-center">
-                        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Total Socios Registrados</h3>
-                        <p id="total-socios" class="text-4xl font-black text-white">0</p>
-                    </div>
+                <div class="glass-panel p-5 border-t-4 border-red-500/50">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase">Alertas / Vencidos</h3>
+                    <p id="total-alertas" class="text-3xl font-black text-red-400 mt-1">0</p>
+                </div>
+                
+                <div class="xl:col-span-4 space-y-6 mt-4">
+                    <section class="glass-panel p-6">
+                        <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Control de Retención (Próximos Vencimientos)</h2>
+                        <div id="contenedor-alertas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </section>
                 </div>
             </div>
 
             <!-- VISTA SOCIOS -->
             <div id="vista-socios" class="hidden fade-in">
-                <section class="glass-panel p-8 rounded-3xl">
+                <section class="glass-panel p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-bold text-white">Directorio Completo</h2>
-                        <input type="text" id="input-busqueda-socio" class="w-72 input-dark rounded-xl py-2 px-4 text-sm" placeholder="Buscar socio...">
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Directorio de Miembros</h2>
+                        <input type="text" id="input-busqueda-socio" class="w-64 input-dark rounded-lg py-2 px-4 text-xs" placeholder="Buscar socio por nombre...">
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[800px]">
+                        <table class="w-full text-left border-collapse text-sm">
                             <thead>
-                                <tr class="border-b border-white/10 text-gray-500 text-xs uppercase tracking-wider">
-                                    <th class="py-3 px-4">Estado</th>
-                                    <th class="py-3 px-4">Socio / Tel</th>
-                                    <th class="py-3 px-4">Servicio</th>
-                                    <th class="py-3 px-4">Membresía</th>
-                                    <th class="py-3 px-4">Vence</th>
+                                <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4">Miembro / Contacto</th>
+                                    <th class="py-3 px-4">Servicio Asignado</th>
+                                    <th class="py-3 px-4">Plan (Membresía)</th>
+                                    <th class="py-3 px-4">Fecha Exp.</th>
                                     <th class="py-3 px-4 text-right">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabla-socios-body" class="text-sm"></tbody>
+                            <tbody id="tabla-socios-body"></tbody>
                         </table>
                     </div>
                 </section>
@@ -103,75 +117,51 @@
 
             <!-- VISTA FINANZAS -->
             <div id="vista-finanzas" class="hidden fade-in">
-                <section class="glass-panel p-8 rounded-3xl">
+                <section class="glass-panel p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-bold text-white">Flujo de Caja Global</h2>
-                        <button id="btn-exportar-csv" class="bg-emerald-600/20 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500 hover:text-white px-4 py-2 rounded-xl text-sm font-bold transition">Exportar CSV</button>
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Registro de Transacciones (POS & Billing)</h2>
+                        <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">Descargar CSV</button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px]">
+                        <table class="w-full text-left border-collapse text-sm">
                             <thead>
-                                <tr class="border-b border-white/10 text-gray-500 text-xs uppercase tracking-wider">
+                                <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
                                     <th class="py-3 px-4">Fecha</th>
-                                    <th class="py-3 px-4">Detalle / Socio</th>
-                                    <th class="py-3 px-4">Tipo</th>
-                                    <th class="py-3 px-4">Monto</th>
-                                    <th class="py-3 px-4 text-center">X</th>
+                                    <th class="py-3 px-4">Descripción</th>
+                                    <th class="py-3 px-4">Categoría</th>
+                                    <th class="py-3 px-4">Importe</th>
+                                    <th class="py-3 px-4 text-center">Del</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabla-finanzas-body" class="text-sm"></tbody>
+                            <tbody id="tabla-finanzas-body"></tbody>
                         </table>
                     </div>
                 </section>
             </div>
+
+            <!-- VISTAS PLACEHOLDER NUEVOS MÓDULOS -->
+            <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 text-center">
+                <span class="text-4xl mb-4 block">📱</span>
+                <h2 class="text-xl font-bold text-white mb-2">Módulo de Control de Asistencia</h2>
+                <p class="text-gray-400 text-sm">Aquí se conectará el sistema de escaneo QR y registro de huella biométrica.</p>
+            </div>
+            
+            <div id="vista-evaluaciones" class="hidden fade-in glass-panel p-10 text-center">
+                <span class="text-4xl mb-4 block">🎯</span>
+                <h2 class="text-xl font-bold text-white mb-2">Evaluaciones Físicas y Metas</h2>
+                <p class="text-gray-400 text-sm">Gestión de peso, IMC, rutinas y evolución del socio.</p>
+            </div>
         </div>
     </main>
 
-    <!-- Modal Socio (Alta y Edición) -->
-    <div id="modal-socio" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
-        <div class="bg-[#0b0f19] p-8 rounded-2xl w-full max-w-md relative border border-white/10">
-            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-socio">✕</button>
-            <h2 id="modal-socio-title" class="text-xl font-bold text-white mb-6">Alta de Socio</h2>
-            <form id="form-socio" class="space-y-4">
-                <input type="text" id="socio-nombre" class="w-full input-dark rounded-lg p-3 text-sm" placeholder="Nombre completo" required>
-                <input type="tel" id="socio-telefono" class="w-full input-dark rounded-lg p-3 text-sm" placeholder="Teléfono" required>
-                <select id="socio-servicio" class="w-full input-dark rounded-lg p-3 text-sm" required></select>
-                <select id="socio-membresia" class="w-full input-dark rounded-lg p-3 text-sm" required>
-                    <option value="">Seleccione el Plan...</option>
-                    <option value="3 Días a la Semana">3 Días a la Semana</option>
-                    <option value="Pase Libre (5 Días)">Pase Libre (5 Días)</option>
-                </select>
-                <input type="date" id="socio-vence" class="w-full input-dark rounded-lg p-3 text-sm" required>
-                <button type="submit" class="w-full dynamic-btn text-white font-bold py-3 rounded-lg mt-2">Guardar Registro</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Pago Membresía -->
-    <div id="modal-pago" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
-        <div class="bg-[#0b0f19] p-8 rounded-2xl w-full max-w-md relative border border-white/10">
-            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-pago">✕</button>
-            <h2 class="text-xl font-bold text-white mb-6">Renovar Cuota</h2>
-            <form id="form-pago" class="space-y-4">
-                <select id="pago-socio" class="w-full input-dark rounded-lg p-3 text-sm" required></select>
-                <input type="number" id="pago-monto" class="w-full input-dark rounded-lg p-3 text-sm" placeholder="Monto (ARS)" required>
-                <input type="date" id="pago-fecha" class="w-full input-dark rounded-lg p-3 text-sm" required>
-                <button type="submit" class="w-full dynamic-btn text-white font-bold py-3 rounded-lg">Procesar Cuota</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Venta Tienda -->
-    <div id="modal-venta" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
-        <div class="bg-[#0b0f19] p-8 rounded-2xl w-full max-w-md relative border border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-venta">✕</button>
-            <h2 class="text-xl font-bold text-emerald-400 mb-6">Venta de Mostrador</h2>
-            <form id="form-venta" class="space-y-4">
-                <input type="text" id="venta-articulo" class="w-full input-dark rounded-lg p-3 text-sm" placeholder="Ej: Agua, Energizante..." required>
-                <input type="number" id="venta-monto" class="w-full input-dark rounded-lg p-3 text-sm" placeholder="Monto (ARS)" required>
-                <input type="date" id="venta-fecha" class="w-full input-dark rounded-lg p-3 text-sm" required>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg transition">Registrar Venta</button>
-            </form>
+    <!-- Modal Formulario Único -->
+    <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
+        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-md relative border border-[#27272a] shadow-2xl">
+            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-universal">✕</button>
+            <h2 id="modal-title" class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Formulario</h2>
+            <div id="modal-content">
+                <!-- Se inyectan los inputs dinámicamente según la acción -->
+            </div>
         </div>
     </div>
 
@@ -183,14 +173,7 @@
         const GYM_ID = urlParams.get('id');
         if (!GYM_ID) { window.location.href = "index.html"; throw new Error("No ID"); }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
-            authDomain: "novagym-saas-enterprise.firebaseapp.com",
-            projectId: "novagym-saas-enterprise",
-            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
-            messagingSenderId: "578362101056",
-            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
@@ -199,41 +182,46 @@
         let vistaActual = 'dashboard';
         let modoEdicion = false; let idEdicion = null;
 
-        // --- SISTEMA TOASTS PREMIUM ---
         window.showToast = (msg, tipo = 'success') => {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const bg = tipo === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-red-500/20 border-red-500/50 text-red-400';
-            toast.className = `toast-enter ${bg} border px-6 py-4 rounded-xl shadow-lg backdrop-blur-md font-bold text-sm flex items-center gap-3`;
-            toast.innerHTML = `<span>${tipo === 'success' ? '✓' : '⚠️'}</span> ${msg}`;
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+            const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500' : 'bg-[#18181b] border-l-4 border-red-500';
+            toast.className = `toast-enter ${bg} border-y border-r border-[#27272a] text-white px-6 py-4 shadow-2xl font-bold text-sm`;
+            toast.innerHTML = msg;
             container.appendChild(toast);
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        // --- NAVEGACIÓN SPA ---
+        // --- NAVEGACIÓN Y RENDER UI ---
         function cambiarVista(vista) {
             vistaActual = vista;
-            ['vista-dashboard', 'vista-socios', 'vista-finanzas'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            ['nav-dashboard', 'nav-socios', 'nav-finanzas', 'nav-tienda'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.classList.remove('active', 'border-l-[3px]', 'border-white', 'bg-white/10');
+            ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-asistencia', 'vista-evaluaciones'].forEach(id => {
+                const el = document.getElementById(id); if(el) el.classList.add('hidden');
             });
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
             const btn = document.getElementById('btn-accion-principal');
             const title = document.getElementById('header-title');
+            const subtitle = document.getElementById('header-subtitle');
+
+            if(document.getElementById(`nav-${vista}`)) document.getElementById(`nav-${vista}`).classList.add('active');
+            if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
 
             if (vista === 'dashboard') {
-                document.getElementById('vista-dashboard').classList.remove('hidden'); document.getElementById('nav-dashboard').classList.add('active', 'border-l-[3px]', 'border-white', 'bg-white/10');
-                title.innerText = "Panel Operativo"; btn.innerHTML = '+ Nuevo Socio'; btn.className = "dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition";
+                title.innerText = "Executive Dashboard"; subtitle.innerText = "Métricas en tiempo real";
+                btn.innerText = 'Registrar Socio'; btn.style.display = 'block';
             } else if (vista === 'socios') {
-                document.getElementById('vista-socios').classList.remove('hidden'); document.getElementById('nav-socios').classList.add('active', 'border-l-[3px]', 'border-white', 'bg-white/10');
-                title.innerText = "Padrón de Socios"; btn.innerHTML = '+ Nuevo Socio'; btn.className = "dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition";
+                title.innerText = "Member Management"; subtitle.innerText = "Padrón completo";
+                btn.innerText = 'Registrar Socio'; btn.style.display = 'block';
             } else if (vista === 'finanzas') {
-                document.getElementById('vista-finanzas').classList.remove('hidden'); document.getElementById('nav-finanzas').classList.add('active', 'border-l-[3px]', 'border-white', 'bg-white/10');
-                title.innerText = "Finanzas Globales"; btn.innerHTML = '💳 Cobrar Cuota'; btn.className = "dynamic-btn text-white font-bold py-3 px-6 rounded-xl shadow-lg transition";
+                title.innerText = "Billing & Invoicing"; subtitle.innerText = "Facturación de cuotas";
+                btn.innerText = 'Cobrar Membresía'; btn.style.display = 'block';
             } else if (vista === 'tienda') {
-                document.getElementById('vista-finanzas').classList.remove('hidden'); document.getElementById('nav-tienda').classList.add('active', 'border-l-[3px]', 'border-white', 'bg-white/10');
-                title.innerText = "Punto de Venta (POS)"; btn.innerHTML = '🛒 Registrar Venta'; btn.className = "bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] transition";
+                document.getElementById('vista-finanzas').classList.remove('hidden');
+                title.innerText = "Point of Sale (POS)"; subtitle.innerText = "Gestión de Inventario y Ventas";
+                btn.innerText = 'Registrar Venta'; btn.style.display = 'block';
+            } else {
+                title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise";
+                btn.style.display = 'none';
             }
         }
 
@@ -241,274 +229,217 @@
         document.getElementById('nav-socios').addEventListener('click', () => cambiarVista('socios'));
         document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
 
-        // --- BOTONES Y MODALES ---
-        document.getElementById('btn-accion-principal').addEventListener('click', () => {
-            if (vistaActual === 'dashboard' || vistaActual === 'socios') {
-                modoEdicion = false;
-                document.getElementById('form-socio').reset();
-                document.getElementById('modal-socio-title').innerText = "Alta de Socio";
-                document.getElementById('modal-socio').classList.remove('hidden');
-            } else if (vistaActual === 'finanzas') {
-                abrirModalPago();
-            } else if (vistaActual === 'tienda') {
-                document.getElementById('form-venta').reset();
-                document.getElementById('venta-fecha').valueAsDate = new Date();
-                document.getElementById('modal-venta').classList.remove('hidden');
-            }
-        });
+        // --- MANEJO DE FORMULARIOS DINÁMICOS ---
+        const modal = document.getElementById('modal-universal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
 
-        function abrirModalPago(nombreSocioPreseleccionado = "") {
-            document.getElementById('form-pago').reset();
-            document.getElementById('pago-fecha').valueAsDate = new Date();
-            const sel = document.getElementById('pago-socio');
-            sel.innerHTML = '<option value="">Seleccione el Socio...</option>';
-            listaSociosData.forEach(s => {
-                sel.innerHTML += `<option value="${s.nombre}" ${s.nombre === nombreSocioPreseleccionado ? 'selected' : ''}>${s.nombre}</option>`;
-            });
-            document.getElementById('modal-pago').classList.remove('hidden');
-        }
+        btnAccionPrincipal.addEventListener('click', () => {
+            if (vistaActual === 'dashboard' || vistaActual === 'socios') abrirModalSocio();
+            else if (vistaActual === 'finanzas') abrirModalPago();
+            else if (vistaActual === 'tienda') abrirModalVenta();
+        });
 
         document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => document.getElementById(e.target.dataset.modal).classList.add('hidden')));
 
-        // Exportar CSV
-        document.getElementById('btn-exportar-csv').addEventListener('click', () => {
-            if(!listaFinanzasData.length) { showToast("No hay registros financieros", "error"); return; }
-            let csv = "Fecha,Concepto,Tipo,Monto\n";
-            listaFinanzasData.forEach(p => csv += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.monto}\n`);
-            const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-            link.download = `Reporte_${nombreGymActual.replace(/\s/g, '_')}.csv`; link.click();
-            showToast("Reporte descargado");
-        });
-
-        document.getElementById('input-busqueda-socio').addEventListener('input', (e) => {
-            renderizarUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase())));
-        });
-
-        // --- CEREBRO: ESTADO INTELIGENTE DEL SOCIO ---
-        function evaluarEstadoSocio(fechaVence) {
-            const hoy = new Date(); hoy.setHours(0,0,0,0);
-            const vence = new Date(fechaVence); vence.setHours(23,59,59,999);
+        function abrirModalSocio(socio = null) {
+            modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
+            modalTitle.innerText = socio ? "Modificar Member Profile" : "New Member Registration";
             
-            // Ajuste temporal: La zona horaria puede afectar el cálculo, forzamos comparar timestamps limpios
-            const diffDias = Math.ceil((vence - hoy) / (1000 * 60 * 60 * 24));
+            let servOptions = '<option value="">Seleccione...</option>';
+            if(gymModulos.musculacion) servOptions += '<option value="Musculación">Musculación</option>';
+            if(gymModulos.funcional) servOptions += '<option value="Funcional">Funcional</option>';
+            if(gymModulos.pilates) servOptions += '<option value="Pilates">Pilates</option>';
 
-            if (diffDias < 0) return { texto: 'Vencido', clase: 'text-red-400 bg-red-500/10 border border-red-500/30' };
-            if (diffDias <= 3) return { texto: 'Por Vencer', clase: 'text-orange-400 bg-orange-500/10 border border-orange-500/30' };
-            return { texto: 'Al Día', clase: 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/30' };
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <input type="text" id="s-nom" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Nombre" value="${socio?socio.nombre:''}" required>
+                    <input type="tel" id="s-tel" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Teléfono" value="${socio?socio.telefono:''}" required>
+                    <select id="s-serv" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${servOptions}</select>
+                    <select id="s-mem" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
+                        <option value="">Plan...</option>
+                        <option value="3 Días a la Semana" ${socio&&socio.membresia==="3 Días a la Semana"?'selected':''}>3 Días a la Semana</option>
+                        <option value="Pase Libre (5 Días)" ${socio&&socio.membresia==="Pase Libre (5 Días)"?'selected':''}>Pase Libre (5 Días)</option>
+                    </select>
+                    <input type="date" id="s-vence" class="w-full input-dark rounded-lg p-2.5 text-sm" value="${socio?socio.vence:''}" required>
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm">Guardar</button>
+                </form>`;
+            if(socio) document.getElementById('s-serv').value = socio.servicio;
+            
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); const btn = e.target.querySelector('button'); btn.innerText = '...'; btn.disabled = true;
+                const d = { nombre: document.getElementById('s-nom').value, telefono: document.getElementById('s-tel').value, servicio: document.getElementById('s-serv').value, membresia: document.getElementById('s-mem').value, vence: document.getElementById('s-vence').value };
+                try {
+                    if(modoEdicion) await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), d);
+                    else await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), d);
+                    modal.classList.add('hidden'); showToast("Member profile updated"); cargarDatos();
+                } catch(err) { showToast("Error", "error"); btn.disabled = false; }
+            };
+            modal.classList.remove('hidden');
         }
 
-        // --- CARGA DE DATOS ---
+        window.abrirModalPago = (nombreSocio = "") => {
+            modalTitle.innerText = "Billing: Cobrar Cuota";
+            let opts = '<option value="">Socio...</option>';
+            listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===nombreSocio?'selected':''}>${s.nombre}</option>`);
+            
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <select id="p-soc" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${opts}</select>
+                    <input type="number" id="p-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
+                    <input type="date" id="p-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm">Procesar Invoice</button>
+                </form>`;
+            document.getElementById('p-fec').valueAsDate = new Date();
+            
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault();
+                const nom = document.getElementById('p-soc').value;
+                try {
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Membresía: "+nom, monto: document.getElementById('p-mon').value, tipo: "Cuota", fecha: document.getElementById('p-fec').value, timestamp: new Date().toISOString() });
+                    if(confirm("¿Actualizar fecha de expiración del socio ahora?")) {
+                        const s = listaSociosData.find(x => x.nombre === nom);
+                        if(s) abrirModalSocio(s); else { modal.classList.add('hidden'); cargarDatos(); }
+                    } else { modal.classList.add('hidden'); showToast("Cobro registrado"); cargarDatos(); }
+                } catch(err) { showToast("Error", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        function abrirModalVenta() {
+            modalTitle.innerText = "Point of Sale (POS)";
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <input type="text" id="v-art" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Producto vendido..." required>
+                    <input type="number" id="v-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
+                    <input type="date" id="v-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm">Registrar Venta</button>
+                </form>`;
+            document.getElementById('v-fec').valueAsDate = new Date();
+            
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault();
+                try {
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('v-art').value, monto: document.getElementById('v-mon').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
+                    modal.classList.add('hidden'); showToast("POS Registrado"); cargarDatos();
+                } catch(err) { showToast("Error", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        // --- CEREBRO & CARGA ---
+        function evaluarEstado(vence) {
+            const h = new Date(); h.setHours(0,0,0,0); const v = new Date(vence); v.setHours(23,59,59,999);
+            const d = Math.ceil((v - h) / (1000 * 60 * 60 * 24));
+            if (d < 0) return { t: 'Expired', c: 'text-red-400 bg-red-900/20 border-red-500/30' };
+            if (d <= 3) return { t: 'Warning', c: 'text-orange-400 bg-orange-900/20 border-orange-500/30' };
+            return { t: 'Active', c: 'text-emerald-400 bg-emerald-900/20 border-emerald-500/30' };
+        }
+
         async function cargarDatos() {
-            const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
-            if (!gymSnap.exists()) { window.location.href = "index.html"; return; }
+            const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
+            if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
             
-            const data = gymSnap.data();
-            
-            // KILL SWITCH SECURITY CHECK
-            if(data.estado === 'suspendido') {
-                alert("ACCESO DENEGADO: La cuenta de este gimnasio ha sido suspendida por el Administrador. Comuníquese con NEMS Tech Enterprise.");
-                window.location.href = "index.html";
-                return;
-            }
-
             document.getElementById('app-container').classList.remove('hidden');
-            nombreGymActual = data.nombre; gymModulos = data.modulos || {};
+            const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
             
-            document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase();
-            if(data.colorPrimario) {
-                document.querySelectorAll('.dynamic-bg').forEach(el => el.style.backgroundColor = data.colorPrimario);
-                document.querySelectorAll('.dynamic-text').forEach(el => el.style.color = data.colorPrimario);
-                document.querySelectorAll('.dynamic-border').forEach(el => el.style.borderColor = data.colorPrimario);
-                document.querySelectorAll('.dynamic-btn').forEach(el => el.style.backgroundColor = data.colorPrimario);
+            // Estilos dinámicos y Logo
+            if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
+            
+            const logoCont = document.getElementById('ui-gym-logo-container');
+            if(data.logoUrl) {
+                logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-16 h-16 object-contain rounded-lg shadow-lg">`;
+                document.getElementById('ui-gym-name').innerText = "";
+            } else {
+                logoCont.innerHTML = `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`;
+                document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase();
             }
 
-            if(gymModulos.tienda && !document.getElementById('nav-tienda')) {
-                const nav = document.getElementById('ui-nav-menu');
-                const sep = document.createElement('div'); sep.className = "my-4 h-px bg-white/10";
-                const btnT = document.createElement('div'); btnT.id = "nav-tienda";
-                btnT.className = "nav-item flex items-center gap-4 py-3 px-4 rounded-lg text-emerald-400";
-                btnT.innerHTML = "<span>🛒</span> Punto de Venta";
-                btnT.onclick = () => cambiarVista('tienda');
-                nav.insertBefore(sep, nav.lastElementChild); nav.insertBefore(btnT, nav.lastElementChild);
-            }
+            // Inyectar Módulos Extra
+            const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
+            if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><span>🛒</span> Tienda POS</div>`;
+            if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><span>📱</span> Attendance</div>`;
+            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Assessments</div>`;
+            // Re-asignar eventos a los generados dinámicamente
+            if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
+            if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
+            if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
 
-            const selServicio = document.getElementById('socio-servicio');
-            selServicio.innerHTML = '<option value="">Seleccione el Servicio...</option>';
-            if(gymModulos.musculacion) selServicio.innerHTML += '<option value="Musculación">Musculación</option>';
-            if(gymModulos.funcional) selServicio.innerHTML += '<option value="Funcional">Funcional</option>';
-            if(gymModulos.pilates) selServicio.innerHTML += '<option value="Pilates">Pilates</option>';
-
-            const sSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "socios"));
+            // Fetch
+            const [sSnap, fSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")) ]);
+            
             listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
-            
-            const fSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "finanzas"));
             listaFinanzasData = []; let ingr = 0;
             fSnap.forEach(d => { const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); ingr += Number(p.monto); });
             listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
             document.getElementById('total-socios').innerText = listaSociosData.length;
-            document.getElementById('ui-ingresos-totales').innerText = `$${ingr.toLocaleString('es-AR')}`;
-            renderizarUI(listaSociosData);
+            document.getElementById('ui-ingresos-totales').innerText = `$${ingr.toLocaleString('en-US')}`;
+            renderUI(listaSociosData);
         }
 
-        function renderizarUI(sociosArray) {
-            // Dashboard Alertas (Solo Vencidos y Por Vencer)
-            const c = document.getElementById('contenedor-alertas'); c.innerHTML = '';
-            let contadorAlertas = 0;
+        function renderUI(sociosArray) {
+            const cAlertas = document.getElementById('contenedor-alertas'); cAlertas.innerHTML = '';
+            let alertas = 0;
             sociosArray.forEach(s => {
-                const estado = evaluarEstadoSocio(s.vence);
-                if(estado.texto !== 'Al Día') {
-                    contadorAlertas++;
-                    c.innerHTML += `
-                        <div class="flex justify-between items-center p-4 bg-white/5 border border-white/5 rounded-xl">
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <p class="font-bold text-white text-sm">${s.nombre}</p>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full ${estado.clase}">${estado.texto}</span>
-                                </div>
-                                <p class="text-gray-400 text-xs">${s.servicio} • Vence: <span class="font-bold">${s.vence}</span></p>
-                            </div>
-                            <div class="flex gap-2">
-                                <button class="btn-renovar-rapido bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600 hover:text-white transition" data-nombre="${s.nombre}">Renovar</button>
-                                <a href="https://wa.me/${s.telefono}?text=Hola%20${s.nombre},%20te%20recordamos%20el%20vencimiento%20de%20tu%20membresia!" target="_blank" class="bg-[#25D366]/20 text-[#25D366] px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#25D366] hover:text-white transition">WhatsApp</a>
-                            </div>
+                const est = evaluarEstado(s.vence);
+                if(est.t !== 'Active') {
+                    alertas++;
+                    cAlertas.innerHTML += `
+                        <div class="p-3 bg-[#18181b] border border-[#27272a] rounded-xl flex justify-between items-center">
+                            <div><p class="text-sm font-bold text-white">${s.nombre}</p><p class="text-[10px] text-gray-500">${s.vence} • <span class="${est.c.split(' ')[0]}">${est.t}</span></p></div>
+                            <button class="bg-[#27272a] text-white hover:bg-white hover:text-black px-3 py-1 text-xs rounded-lg font-bold transition" onclick="abrirModalPago('${s.nombre}')">Pay</button>
                         </div>`;
                 }
             });
-            if(contadorAlertas === 0) c.innerHTML = `<p class="text-xs text-gray-500">Todos los socios están al día. ✅</p>`;
+            document.getElementById('total-alertas').innerText = alertas;
 
-            // Tabla Socios (Con Badges, Edición y Renovación Rápida)
             const tbS = document.getElementById('tabla-socios-body'); tbS.innerHTML = '';
             sociosArray.forEach(s => {
-                const estado = evaluarEstadoSocio(s.vence);
+                const est = evaluarEstado(s.vence);
                 tbS.innerHTML += `
-                    <tr class="border-b border-white/5 glass-row">
-                        <td class="py-3 px-4"><span class="px-2 py-1 rounded text-xs font-bold ${estado.clase}">${estado.texto}</span></td>
-                        <td class="py-3 px-4"><p class="text-white font-bold">${s.nombre}</p><p class="text-xs text-gray-500">${s.telefono}</p></td>
+                    <tr class="border-b border-[#27272a] glass-row">
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${est.c}">${est.t}</span></td>
+                        <td class="py-3 px-4"><p class="text-white font-bold">${s.nombre}</p><p class="text-[10px] text-gray-500">${s.telefono}</p></td>
                         <td class="py-3 px-4 text-gray-300">${s.servicio}</td>
-                        <td class="py-3 px-4"><span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs border border-blue-500/30">${s.membresia}</span></td>
-                        <td class="py-3 px-4 text-gray-300 font-bold">${s.vence}</td>
-                        <td class="py-3 px-4 flex justify-end gap-2">
-                            <button class="btn-renovar-rapido bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white px-2 py-1 rounded text-xs font-bold transition" data-nombre="${s.nombre}">Cobrar</button>
-                            <button class="btn-editar-s bg-gray-700 hover:bg-blue-500 text-white px-2 py-1 rounded text-xs transition" data-id="${s.id}">Editar</button>
-                            <button class="btn-elim-s bg-red-900/40 text-red-400 hover:bg-red-600 hover:text-white px-2 py-1 rounded text-xs transition" data-id="${s.id}">✕</button>
+                        <td class="py-3 px-4 text-gray-400">${s.membresia}</td>
+                        <td class="py-3 px-4 text-white font-mono text-xs">${s.vence}</td>
+                        <td class="py-3 px-4 flex justify-end gap-1">
+                            <button class="text-gray-400 hover:text-white bg-[#27272a] p-1.5 rounded" onclick="abrirModalPago('${s.nombre}')" title="Cobrar">💳</button>
+                            <button class="btn-edit-s text-gray-400 hover:text-blue-400 bg-[#27272a] p-1.5 rounded" data-id="${s.id}" title="Editar">✏️</button>
+                            <button class="btn-del-s text-gray-400 hover:text-red-400 bg-[#27272a] p-1.5 rounded" data-id="${s.id}" title="Eliminar">🗑️</button>
                         </td>
                     </tr>`;
             });
 
-            // Tabla Finanzas
             const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
             listaFinanzasData.forEach(f => {
-                const badge = f.tipo === 'Venta Articulo' ? 
-                    `<span class="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs border border-emerald-500/30">Mostrador</span>` : 
-                    `<span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs border border-blue-500/30">Cuota</span>`;
+                const tColor = f.tipo === 'Inventario' ? 'text-emerald-400 bg-emerald-900/20 border-emerald-500/30' : 'text-blue-400 bg-blue-900/20 border-blue-500/30';
                 tbF.innerHTML += `
-                    <tr class="border-b border-white/5 glass-row">
-                        <td class="py-3 px-4 text-gray-400">${f.fecha.split('-').reverse().join('/')}</td>
+                    <tr class="border-b border-[#27272a] glass-row">
+                        <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha}</td>
                         <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
-                        <td class="py-3 px-4">${badge}</td>
-                        <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
-                        <td class="py-3 px-4 text-center"><button class="btn-elim-f text-red-500 hover:text-red-400" data-id="${f.id}">✕</button></td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] border ${tColor}">${f.tipo}</span></td>
+                        <td class="py-3 px-4 font-bold text-white">$${Number(f.monto).toLocaleString('en-US')}</td>
+                        <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-500 hover:text-red-500" data-id="${f.id}">✕</button></td>
                     </tr>`;
             });
         }
 
-        // --- ACCIONES EN TABLAS (DELEGACIÓN DE EVENTOS) ---
         document.body.addEventListener('click', async (e) => {
-            // Eliminar Socio
-            if (e.target.classList.contains('btn-elim-s')) {
-                if(confirm("¿Eliminar registro permanentemente?")) { 
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.dataset.id)); 
-                    showToast("Socio eliminado"); cargarDatos(); 
-                }
-            }
-            // Eliminar Pago
-            if (e.target.classList.contains('btn-elim-f')) {
-                if(confirm("¿Eliminar este cobro de la caja?")) { 
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.dataset.id)); 
-                    showToast("Cobro eliminado", "error"); cargarDatos(); 
-                }
-            }
-            // Editar Socio
-            if (e.target.classList.contains('btn-editar-s')) {
-                const socio = listaSociosData.find(s => s.id === e.target.dataset.id);
-                if(socio) {
-                    modoEdicion = true; idEdicion = socio.id;
-                    document.getElementById('socio-nombre').value = socio.nombre;
-                    document.getElementById('socio-telefono').value = socio.telefono;
-                    document.getElementById('socio-servicio').value = socio.servicio;
-                    document.getElementById('socio-membresia').value = socio.membresia;
-                    document.getElementById('socio-vence').value = socio.vence;
-                    document.getElementById('modal-socio-title').innerText = "Modificar Socio";
-                    document.getElementById('modal-socio').classList.remove('hidden');
-                }
-            }
-            // Renovar Rápido (Lleva al modal de pago)
-            if (e.target.classList.contains('btn-renovar-rapido')) {
-                abrirModalPago(e.target.dataset.nombre);
-            }
+            if (e.target.closest('.btn-edit-s')) abrirModalSocio(listaSociosData.find(s => s.id === e.target.closest('.btn-edit-s').dataset.id));
+            if (e.target.closest('.btn-del-s') && confirm("¿Delete member?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); cargarDatos(); }
+            if (e.target.closest('.btn-del-f') && confirm("¿Void transaction?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); cargarDatos(); }
         });
 
-        // --- SUBMIT DE FORMULARIOS ---
-        document.getElementById('form-socio').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            const data = {
-                nombre: document.getElementById('socio-nombre').value, telefono: document.getElementById('socio-telefono').value,
-                servicio: document.getElementById('socio-servicio').value, membresia: document.getElementById('socio-membresia').value, vence: document.getElementById('socio-vence').value
-            };
-            try {
-                if(modoEdicion) {
-                    await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), data);
-                    showToast("Socio actualizado exitosamente");
-                } else {
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), data);
-                    showToast("Nuevo socio registrado");
-                }
-                document.getElementById('modal-socio').classList.add('hidden'); cargarDatos();
-            } catch(e) { showToast("Error al guardar", "error"); }
+        document.getElementById('btn-exportar-csv').addEventListener('click', () => {
+            if(!listaFinanzasData.length) return; let c = "Date,Description,Category,Amount\n";
+            listaFinanzasData.forEach(p => c += `${p.fecha},"${p.concepto}",${p.tipo},${p.monto}\n`);
+            const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], {type:'text/csv'}));
+            l.download = `Revenue_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click();
         });
 
-        document.getElementById('form-pago').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            try {
-                const nombreSocio = document.getElementById('pago-socio').value;
-                await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), {
-                    concepto: "Cuota: " + nombreSocio, monto: document.getElementById('pago-monto').value,
-                    tipo: "Cuota Membresia", fecha: document.getElementById('pago-fecha').value, timestamp: new Date().toISOString()
-                });
-                
-                // Extra de calidad UX: Si se cobra la cuota, sugerimos actualizar la fecha de vencimiento.
-                if(confirm(`Cobro registrado. ¿Deseas actualizar la fecha de vencimiento de ${nombreSocio} ahora?`)) {
-                    document.getElementById('modal-pago').classList.add('hidden');
-                    const socio = listaSociosData.find(s => s.nombre === nombreSocio);
-                    if(socio) {
-                        modoEdicion = true; idEdicion = socio.id;
-                        document.getElementById('socio-nombre').value = socio.nombre;
-                        document.getElementById('socio-telefono').value = socio.telefono;
-                        document.getElementById('socio-servicio').value = socio.servicio;
-                        document.getElementById('socio-membresia').value = socio.membresia;
-                        document.getElementById('socio-vence').value = socio.vence; // Aquí el dueño puede cambiar la fecha nueva
-                        document.getElementById('modal-socio-title').innerText = "Actualizar Vencimiento";
-                        document.getElementById('modal-socio').classList.remove('hidden');
-                    }
-                } else {
-                    document.getElementById('modal-pago').classList.add('hidden'); showToast("Cobro procesado");
-                }
-                cargarDatos();
-            } catch(e) { showToast("Error al cobrar", "error"); }
-        });
-
-        document.getElementById('form-venta').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            try {
-                await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), {
-                    concepto: document.getElementById('venta-articulo').value, monto: document.getElementById('venta-monto').value,
-                    tipo: "Venta Articulo", fecha: document.getElementById('venta-fecha').value, timestamp: new Date().toISOString()
-                });
-                document.getElementById('modal-venta').classList.add('hidden'); showToast("Venta registrada"); cargarDatos();
-            } catch(e) { showToast("Error en venta", "error"); }
-        });
-
+        document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
         cargarDatos();
     </script>
 </body>
