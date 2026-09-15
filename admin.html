@@ -56,10 +56,6 @@
                             <input type="checkbox" id="mod-pilates" class="w-5 h-5 accent-blue-500">
                             <span class="text-sm">Área Pilates</span>
                         </label>
-                        <label class="flex items-center space-x-3 mb-3 cursor-pointer p-2 hover:bg-white/5 rounded-lg transition">
-                            <input type="checkbox" id="mod-biometria" class="w-5 h-5 accent-blue-500">
-                            <span class="text-sm">Control Biométrico API</span>
-                        </label>
                     </div>
                     
                     <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-500 transition shadow-[0_0_15px_rgba(37,99,235,0.4)] mt-4">
@@ -100,17 +96,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Referencias DOM
         const form = document.getElementById('form-nuevo-gym');
         const listaGyms = document.getElementById('lista-gyms');
         const loading = document.getElementById('loading-gyms');
         const colorInput = document.getElementById('gym-color');
         const colorText = document.getElementById('gym-color-text');
 
-        // Sincronizar input color
         colorInput.addEventListener('input', (e) => colorText.value = e.target.value);
 
-        // Cargar gimnasios de Firebase
         async function cargarGimnasios() {
             listaGyms.innerHTML = '';
             const querySnapshot = await getDocs(collection(db, "gimnasios"));
@@ -125,14 +118,14 @@
 
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
+                const id = doc.id; // ¡Este es el ID dinámico!
                 const li = document.createElement('li');
-                li.className = "flex justify-between items-center p-5 rounded-xl bg-gray-800/50 border border-gray-700 hover:bg-gray-800 transition";
+                li.className = "flex flex-col md:flex-row justify-between md:items-center p-5 rounded-xl bg-gray-800/50 border border-gray-700 hover:bg-gray-800 transition gap-4";
                 li.style.borderLeft = `4px solid ${data.colorPrimario || '#3b82f6'}`;
                 
                 let modulosTags = '';
-                if(data.modulos?.funcional) modulosTags += `<span class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">Funcional</span> `;
-                if(data.modulos?.pilates) modulosTags += `<span class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">Pilates</span> `;
-                if(data.modulos?.biometria) modulosTags += `<span class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">Biometría</span> `;
+                if(data.modulos?.funcional) modulosTags += `<span class="text-[10px] bg-gray-700 px-2 py-1 rounded text-gray-300">Funcional</span> `;
+                if(data.modulos?.pilates) modulosTags += `<span class="text-[10px] bg-gray-700 px-2 py-1 rounded text-gray-300">Pilates</span> `;
 
                 li.innerHTML = `
                     <div>
@@ -140,17 +133,20 @@
                             <p class="font-bold text-lg text-white">${data.nombre}</p>
                             <span class="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">${data.estado}</span>
                         </div>
-                        <div class="flex gap-2 mt-2">${modulosTags || '<span class="text-xs text-gray-500">Sin módulos extra</span>'}</div>
+                        <p class="text-xs text-gray-400 font-mono mb-2">ID Acceso: <span class="text-white select-all bg-black/50 px-1 rounded">${id}</span></p>
+                        <div class="flex gap-2">${modulosTags || '<span class="text-xs text-gray-500">Sin módulos extra</span>'}</div>
                     </div>
                     <div class="flex gap-2">
-                        <button class="text-xs bg-gray-700 text-white font-bold px-4 py-2 rounded-lg hover:bg-gray-600 transition">Gestionar</button>
+                        <!-- Botón Dinámico hacia el panel -->
+                        <a href="gym.html?id=${id}" target="_blank" class="text-sm bg-blue-600/20 border border-blue-500/50 text-blue-400 font-bold px-5 py-2.5 rounded-lg hover:bg-blue-600 hover:text-white transition flex items-center gap-2">
+                            <span>🚀</span> Abrir Panel
+                        </a>
                     </div>
                 `;
                 listaGyms.appendChild(li);
             });
         }
 
-        // Guardar nuevo gimnasio en Firebase
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
@@ -164,8 +160,7 @@
                 fechaCreacion: new Date().toISOString(),
                 modulos: {
                     funcional: document.getElementById('mod-funcional').checked,
-                    pilates: document.getElementById('mod-pilates').checked,
-                    biometria: document.getElementById('mod-biometria').checked
+                    pilates: document.getElementById('mod-pilates').checked
                 }
             };
 
@@ -184,7 +179,6 @@
             }
         });
 
-        // Inicializar
         cargarGimnasios();
     </script>
 </body>
