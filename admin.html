@@ -10,9 +10,14 @@
         .glass-card { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .input-dark { background: rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
         .input-dark:focus { outline: none; border-color: #8b5cf6; }
+        .toast-enter { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
-<body class="p-8">
+<body class="p-8 relative">
+
+    <!-- Contenedor de Notificaciones -->
+    <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-50"></div>
 
     <div class="max-w-7xl mx-auto">
         <header class="flex justify-between items-center mb-10 border-b border-gray-800 pb-6">
@@ -26,10 +31,8 @@
         </header>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Formulario de Alta -->
             <div class="glass-card p-6 rounded-2xl lg:col-span-1 h-fit">
                 <h2 class="text-xl font-bold mb-6">➕ Nuevo Inquilino</h2>
-                
                 <form id="form-nuevo-gym" class="space-y-5">
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Nombre del Gimnasio</label>
@@ -59,7 +62,6 @@
                 </form>
             </div>
 
-            <!-- Lista de Gimnasios -->
             <div class="glass-card p-6 rounded-2xl lg:col-span-2">
                 <h2 class="text-xl font-bold mb-6">Inquilinos Activos</h2>
                 <div id="loading-gyms" class="text-center py-10 text-gray-500">Sincronizando con base de datos...</div>
@@ -71,7 +73,7 @@
     <!-- Script Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
@@ -85,31 +87,49 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Sistema de Toasts Premium
+        window.showToast = (msg, tipo = 'success') => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bg = tipo === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-red-500/20 border-red-500/50 text-red-400';
+            toast.className = `toast-enter ${bg} border px-6 py-4 rounded-xl shadow-lg backdrop-blur-md font-bold text-sm flex items-center gap-3`;
+            toast.innerHTML = `<span>${tipo === 'success' ? '✓' : '⚠️'}</span> ${msg}`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+        };
+
         const form = document.getElementById('form-nuevo-gym');
         const listaGyms = document.getElementById('lista-gyms');
-        const loading = document.getElementById('loading-gyms');
         const colorInput = document.getElementById('gym-color');
         const colorText = document.getElementById('gym-color-text');
 
         colorInput.addEventListener('input', (e) => colorText.value = e.target.value);
 
+        window.toggleEstadoGym = async (id, estadoActual) => {
+            const nuevoEstado = estadoActual === 'activo' ? 'suspendido' : 'activo';
+            if(confirm(`¿Estás seguro de cambiar el estado a ${nuevoEstado.toUpperCase()}?`)) {
+                await updateDoc(doc(db, "gimnasios", id), { estado: nuevoEstado });
+                showToast(`Gimnasio ${nuevoEstado}`, nuevoEstado === 'activo' ? 'success' : 'error');
+                cargarGimnasios();
+            }
+        };
+
         async function cargarGimnasios() {
             listaGyms.innerHTML = '';
             const querySnapshot = await getDocs(collection(db, "gimnasios"));
-            loading.classList.add('hidden');
+            document.getElementById('loading-gyms').classList.add('hidden');
             listaGyms.classList.remove('hidden');
 
             if (querySnapshot.empty) {
-                listaGyms.innerHTML = '<li class="text-gray-500 text-center py-5">No hay gimnasios registrados.</li>';
-                return;
+                listaGyms.innerHTML = '<li class="text-gray-500 text-center py-5">No hay gimnasios registrados.</li>'; return;
             }
 
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const id = doc.id; 
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data(); const id = docSnap.id; 
+                const isSuspendido = data.estado === 'suspendido';
                 const li = document.createElement('li');
-                li.className = "flex flex-col md:flex-row justify-between md:items-center p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition gap-4";
-                li.style.borderLeft = `4px solid ${data.colorPrimario || '#3b82f6'}`;
+                li.className = `flex flex-col md:flex-row justify-between md:items-center p-5 rounded-xl border transition gap-4 ${isSuspendido ? 'bg-red-900/10 border-red-500/30' : 'bg-white/5 border-white/10 hover:bg-white/10'}`;
+                li.style.borderLeft = `4px solid ${isSuspendido ? '#ef4444' : (data.colorPrimario || '#3b82f6')}`;
                 
                 let modulosTags = '';
                 if(data.modulos?.musculacion) modulosTags += `<span class="text-[10px] bg-black/50 px-2 py-1 rounded">Musculación</span> `;
@@ -119,11 +139,19 @@
 
                 li.innerHTML = `
                     <div>
-                        <p class="font-bold text-lg text-white">${data.nombre}</p>
+                        <div class="flex items-center gap-3">
+                            <p class="font-bold text-lg text-white ${isSuspendido ? 'line-through text-gray-500' : ''}">${data.nombre}</p>
+                            ${isSuspendido ? '<span class="text-[10px] font-bold uppercase tracking-wider bg-red-500/20 text-red-400 px-2 py-0.5 rounded border border-red-500/30">Suspendido</span>' : '<span class="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">Activo</span>'}
+                        </div>
                         <p class="text-xs text-gray-400 font-mono mb-2 mt-1">ID: <span class="text-white select-all bg-black/50 px-1 rounded">${id}</span></p>
                         <div class="flex gap-2 flex-wrap">${modulosTags}</div>
                     </div>
-                    <a href="gym.html?id=${id}" target="_blank" class="text-sm bg-blue-600/20 border border-blue-500/50 text-blue-400 font-bold px-5 py-2.5 rounded-lg hover:bg-blue-600 hover:text-white transition">Abrir Panel</a>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <button onclick="toggleEstadoGym('${id}', '${data.estado}')" class="text-xs font-bold px-4 py-2 rounded-lg transition ${isSuspendido ? 'bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white' : 'bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white'}">
+                            ${isSuspendido ? '✅ Activar' : '⛔ Suspender'}
+                        </button>
+                        <a href="gym.html?id=${id}" target="_blank" class="text-sm bg-blue-600/20 border border-blue-500/50 text-blue-400 font-bold px-5 py-2.5 rounded-lg hover:bg-blue-600 hover:text-white transition text-center">Abrir Panel</a>
+                    </div>
                 `;
                 listaGyms.appendChild(li);
             });
@@ -131,27 +159,21 @@
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.innerHTML = 'Desplegando...'; btn.disabled = true;
-
-            const nuevoGym = {
-                nombre: document.getElementById('gym-nombre').value,
-                colorPrimario: document.getElementById('gym-color').value,
-                estado: 'activo',
-                fechaCreacion: new Date().toISOString(),
-                modulos: {
-                    musculacion: document.getElementById('mod-musculacion').checked,
-                    funcional: document.getElementById('mod-funcional').checked,
-                    pilates: document.getElementById('mod-pilates').checked,
-                    tienda: document.getElementById('mod-tienda').checked
-                }
-            };
-
+            const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Desplegando...'; btn.disabled = true;
             try {
-                await addDoc(collection(db, "gimnasios"), nuevoGym);
+                await addDoc(collection(db, "gimnasios"), {
+                    nombre: document.getElementById('gym-nombre').value, colorPrimario: document.getElementById('gym-color').value,
+                    estado: 'activo', fechaCreacion: new Date().toISOString(),
+                    modulos: {
+                        musculacion: document.getElementById('mod-musculacion').checked, funcional: document.getElementById('mod-funcional').checked,
+                        pilates: document.getElementById('mod-pilates').checked, tienda: document.getElementById('mod-tienda').checked
+                    }
+                });
                 form.reset(); colorText.value = '#8b5cf6'; colorInput.value = '#8b5cf6';
-                await cargarGimnasios();
-            } catch (error) { alert("Error al guardar"); } finally { btn.innerHTML = 'Desplegar Entorno'; btn.disabled = false; }
+                showToast('Gimnasio desplegado exitosamente');
+                cargarGimnasios();
+            } catch (error) { showToast("Error al guardar", 'error'); } 
+            finally { btn.innerHTML = 'Desplegar Entorno'; btn.disabled = false; }
         });
         cargarGimnasios();
     </script>
