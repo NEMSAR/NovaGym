@@ -3,118 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Super Admin</title>
+    <title>NovaGym | Super Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .input-dark { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; }
+        .input-dark:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+    </style>
 </head>
-<body class="bg-gray-100 p-8">
+<body class="p-8">
 
-    <div class="max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Panel Super Admin (Gestión de Gimnasios)</h1>
-            <a href="index.html" class="text-blue-600 font-bold hover:underline">⬅ Volver al inicio</a>
-        </div>
+    <div class="max-w-7xl mx-auto">
+        <header class="flex justify-between items-center mb-10 border-b border-gray-800 pb-6">
+            <div>
+                <h1 class="text-3xl font-black tracking-tight text-white">Consola <span class="text-blue-500">Super Admin</span></h1>
+                <p class="text-gray-400 text-sm mt-1">Gestión de inquilinos y despliegue de software</p>
+            </div>
+            <a href="index.html" class="text-gray-400 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-gray-700">
+                Salir del sistema
+            </a>
+        </header>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Formulario de Alta -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-bold mb-4">Alta de Nuevo Gimnasio</h2>
-                <form id="form-nuevo-gym" class="space-y-4">
+            <div class="glass-card p-6 rounded-2xl lg:col-span-1 h-fit">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="bg-blue-500/20 text-blue-400 p-2 rounded-lg text-sm">➕</span> Nuevo Despliegue
+                </h2>
+                
+                <form id="form-nuevo-gym" class="space-y-5">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Nombre del Gimnasio</label>
-                        <input type="text" id="gym-nombre" class="mt-1 w-full border border-gray-300 rounded p-2" required>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre del Gimnasio</label>
+                        <input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-3" placeholder="Ej. Titan Fitness" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Color Principal</label>
-                        <input type="color" id="gym-color" class="mt-1 w-full h-10 cursor-pointer" value="#ea580c">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Color Corporativo (Hex)</label>
+                        <div class="flex items-center gap-3">
+                            <input type="color" id="gym-color" class="h-10 w-12 rounded cursor-pointer bg-transparent border-0 p-0" value="#10b981">
+                            <input type="text" id="gym-color-text" class="w-full input-dark rounded-lg p-3 text-sm" value="#10b981" readonly>
+                        </div>
                     </div>
                     
-                    <div class="pt-4 border-t">
-                        <h3 class="font-bold mb-2">Módulos Opcionales</h3>
-                        <label class="flex items-center space-x-2 mb-2">
-                            <input type="checkbox" id="mod-funcional" checked>
-                            <span>Gestión de Funcional</span>
+                    <div class="pt-4 border-t border-gray-800">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Módulos a Habilitar</label>
+                        
+                        <label class="flex items-center space-x-3 mb-3 cursor-pointer p-2 hover:bg-white/5 rounded-lg transition">
+                            <input type="checkbox" id="mod-funcional" class="w-5 h-5 accent-blue-500" checked>
+                            <span class="text-sm">Área Funcional</span>
                         </label>
-                        <label class="flex items-center space-x-2 mb-2">
-                            <input type="checkbox" id="mod-pilates">
-                            <span>Gestión de Pilates</span>
+                        <label class="flex items-center space-x-3 mb-3 cursor-pointer p-2 hover:bg-white/5 rounded-lg transition">
+                            <input type="checkbox" id="mod-pilates" class="w-5 h-5 accent-blue-500">
+                            <span class="text-sm">Área Pilates</span>
                         </label>
-                        <label class="flex items-center space-x-2 mb-2">
-                            <input type="checkbox" id="mod-biometria" checked>
-                            <span>Conexión Biométrica / Huella</span>
+                        <label class="flex items-center space-x-3 mb-3 cursor-pointer p-2 hover:bg-white/5 rounded-lg transition">
+                            <input type="checkbox" id="mod-biometria" class="w-5 h-5 accent-blue-500">
+                            <span class="text-sm">Control Biométrico API</span>
                         </label>
                     </div>
                     
-                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
-                        Crear Gimnasio
+                    <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-500 transition shadow-[0_0_15px_rgba(37,99,235,0.4)] mt-4">
+                        Desplegar Entorno
                     </button>
                 </form>
             </div>
 
             <!-- Lista de Gimnasios -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-bold mb-4">Mis Clientes Activos</h2>
-                <ul id="lista-gyms" class="space-y-3">
-                    <!-- Los gimnasios se agregarán aquí con JS -->
+            <div class="glass-card p-6 rounded-2xl lg:col-span-2">
+                <h2 class="text-xl font-bold mb-6">Inquilinos Activos</h2>
+                
+                <div id="loading-gyms" class="text-center py-10 text-gray-500">
+                    Sincronizando con Firebase...
+                </div>
+                
+                <ul id="lista-gyms" class="space-y-4 hidden">
+                    <!-- Los gimnasios se cargan desde Firebase aquí -->
                 </ul>
             </div>
         </div>
     </div>
 
-    <script>
-        // Lógica temporal con Vanilla JS
+    <!-- Script Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
+            authDomain: "novagym-saas-enterprise.firebaseapp.com",
+            projectId: "novagym-saas-enterprise",
+            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
+            messagingSenderId: "578362101056",
+            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Referencias DOM
         const form = document.getElementById('form-nuevo-gym');
         const listaGyms = document.getElementById('lista-gyms');
+        const loading = document.getElementById('loading-gyms');
+        const colorInput = document.getElementById('gym-color');
+        const colorText = document.getElementById('gym-color-text');
 
-        form.addEventListener('submit', function(e) {
+        // Sincronizar input color
+        colorInput.addEventListener('input', (e) => colorText.value = e.target.value);
+
+        // Cargar gimnasios de Firebase
+        async function cargarGimnasios() {
+            listaGyms.innerHTML = '';
+            const querySnapshot = await getDocs(collection(db, "gimnasios"));
+            
+            loading.classList.add('hidden');
+            listaGyms.classList.remove('hidden');
+
+            if (querySnapshot.empty) {
+                listaGyms.innerHTML = '<li class="text-gray-500 text-center py-5">No hay gimnasios registrados.</li>';
+                return;
+            }
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const li = document.createElement('li');
+                li.className = "flex justify-between items-center p-5 rounded-xl bg-gray-800/50 border border-gray-700 hover:bg-gray-800 transition";
+                li.style.borderLeft = `4px solid ${data.colorPrimario || '#3b82f6'}`;
+                
+                let modulosTags = '';
+                if(data.modulos?.funcional) modulosTags += `<span class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">Funcional</span> `;
+                if(data.modulos?.pilates) modulosTags += `<span class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">Pilates</span> `;
+                if(data.modulos?.biometria) modulosTags += `<span class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">Biometría</span> `;
+
+                li.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <p class="font-bold text-lg text-white">${data.nombre}</p>
+                            <span class="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">${data.estado}</span>
+                        </div>
+                        <div class="flex gap-2 mt-2">${modulosTags || '<span class="text-xs text-gray-500">Sin módulos extra</span>'}</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="text-xs bg-gray-700 text-white font-bold px-4 py-2 rounded-lg hover:bg-gray-600 transition">Gestionar</button>
+                    </div>
+                `;
+                listaGyms.appendChild(li);
+            });
+        }
+
+        // Guardar nuevo gimnasio en Firebase
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const nombre = document.getElementById('gym-nombre').value;
-            const color = document.getElementById('gym-color').value;
-            
-            const li = document.createElement('li');
-            li.className = "border p-4 rounded flex justify-between items-center shadow-sm";
-            li.style.borderLeft = `5px solid ${color}`;
-            
-            li.innerHTML = `
-                <div>
-                    <p class="font-bold text-lg">${nombre}</p>
-                    <p class="text-xs text-green-700 font-bold bg-green-100 px-2 py-1 rounded inline-block mt-1">Activo</p>
-                </div>
-                <button class="text-sm bg-red-100 text-red-600 font-bold px-3 py-1 rounded hover:bg-red-200">Suspender</button>
-            `;
-            
-            listaGyms.appendChild(li);
-            form.reset();
+            const btn = document.getElementById('btn-submit');
+            btn.innerHTML = 'Desplegando...';
+            btn.disabled = true;
+
+            const nuevoGym = {
+                nombre: document.getElementById('gym-nombre').value,
+                colorPrimario: document.getElementById('gym-color').value,
+                estado: 'activo',
+                fechaCreacion: new Date().toISOString(),
+                modulos: {
+                    funcional: document.getElementById('mod-funcional').checked,
+                    pilates: document.getElementById('mod-pilates').checked,
+                    biometria: document.getElementById('mod-biometria').checked
+                }
+            };
+
+            try {
+                await addDoc(collection(db, "gimnasios"), nuevoGym);
+                form.reset();
+                colorText.value = '#10b981';
+                colorInput.value = '#10b981';
+                await cargarGimnasios();
+            } catch (error) {
+                console.error("Error añadiendo documento: ", error);
+                alert("Error al guardar en Firebase");
+            } finally {
+                btn.innerHTML = 'Desplegar Entorno';
+                btn.disabled = false;
+            }
         });
+
+        // Inicializar
+        cargarGimnasios();
     </script>
-<!-- Importamos Firebase como módulo al final del body -->
-<script type="module">
-    // 1. Importar las funciones de Firebase vía CDN
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-    // 2. Tu configuración (Reemplaza con los datos que te dio Firebase)
-    const firebaseConfig = {
-  apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
-  authDomain: "novagym-saas-enterprise.firebaseapp.com",
-  projectId: "novagym-saas-enterprise",
-  storageBucket: "novagym-saas-enterprise.firebasestorage.app",
-  messagingSenderId: "578362101056",
-  appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
-};
-
-    // 3. Inicializar Firebase y Firestore
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-    // Hacemos que la base de datos sea accesible globalmente en la ventana (para usarla en otros scripts si lo necesitas)
-    window.db = db;
-    window.collection = collection;
-    window.addDoc = addDoc;
-    window.getDocs = getDocs;
-
-    console.log("🔥 Firebase conectado con éxito!");
-</script>
-    
 </body>
 </html>
