@@ -3,62 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaGym SaaS Enterprise | Login</title>
+    <title>NovaGym Enterprise | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: linear-gradient(135deg, #0f172a 0%, #000000 100%); }
-        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { background-color: #040814; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .bg-gradient-nems { background: radial-gradient(circle at top left, #111827, #040814); }
+        .input-dark { background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: border-color 0.3s; }
+        .input-dark:focus { outline: none; border-color: #8b5cf6; }
+        .btn-nems { background: linear-gradient(90deg, #60a5fa, #8b5cf6); }
+        .btn-nems:hover { background: linear-gradient(90deg, #3b82f6, #7c3aed); box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+        .glass-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); }
+        .glass-btn:hover { background: rgba(255,255,255,0.08); }
     </style>
 </head>
-<body class="h-screen flex flex-col items-center justify-center text-white font-sans">
+<body class="flex h-screen overflow-hidden">
 
-    <div class="mb-10 text-center">
-        <h1 class="text-5xl font-black tracking-tighter mb-2 bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-            NOVAGYM
-        </h1>
-        <p class="text-gray-400 tracking-widest text-sm uppercase">Enterprise SaaS OS</p>
-    </div>
-    
-    <div class="flex flex-col md:flex-row gap-6 w-full max-w-4xl px-6">
-        <!-- Tarjeta Super Admin -->
-        <div class="glass-panel p-8 rounded-2xl w-full flex flex-col items-center text-center hover:bg-white/10 transition duration-300">
-            <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mb-6 border border-blue-500/50">
-                <span class="text-2xl">👑</span>
+    <!-- Panel Izquierdo: Branding NEMS OS -->
+    <div class="hidden md:flex w-1/2 bg-gradient-nems border-r border-white/5 flex-col justify-center px-20 relative">
+        <div class="absolute top-12 left-20">
+            <div class="w-12 h-12 bg-white text-black font-black text-2xl flex items-center justify-center rounded-xl">
+                N.
             </div>
-            <h2 class="text-2xl font-bold mb-2">Super Admin System</h2>
-            <p class="text-gray-400 mb-8 text-sm">Gestión global de inquilinos, facturación y despliegue de módulos.</p>
-            <a href="admin.html" class="mt-auto w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition shadow-[0_0_15px_rgba(37,99,235,0.5)]">
-                Acceder a Consola
-            </a>
+        </div>
+        
+        <div>
+            <h1 class="text-6xl font-bold tracking-tight mb-4">NovaGym<br>Enterprise.</h1>
+            <p class="text-gray-400 text-lg leading-relaxed max-w-md">
+                Ecosistema de gestión deportiva. Transforma datos crudos operativos en decisiones estratégicas en milisegundos.
+            </p>
         </div>
 
-        <!-- Tarjeta Gimnasio Cliente -->
-        <div class="glass-panel p-8 rounded-2xl w-full flex flex-col items-center text-center hover:bg-white/10 transition duration-300">
-            <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 border border-emerald-500/50">
-                <span class="text-2xl">🏋️</span>
-            </div>
-            <h2 class="text-2xl font-bold mb-2">Gym Dashboard</h2>
-            <p class="text-gray-400 mb-6 text-sm">Portal de gestión de socios, membresías y finanzas.</p>
-            
-            <!-- Nuevo Formulario de Acceso -->
-            <form id="form-login-gym" class="w-full mt-auto flex flex-col gap-3">
-                <input type="text" id="input-gym-id" placeholder="ID de tu Gimnasio (Ej: gym_001)" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-center focus:outline-none focus:border-emerald-500 transition" required>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-8 rounded-lg transition shadow-[0_0_15px_rgba(16,185,129,0.5)]">
-                    Ingresar al Sistema
+        <div class="absolute bottom-12 left-20">
+            <p class="text-xs text-gray-600 tracking-wider">© 2026 NEMS Tech Enterprise. Recreo, Catamarca.</p>
+        </div>
+    </div>
+
+    <!-- Panel Derecho: Login -->
+    <div class="w-full md:w-1/2 flex items-center justify-center p-10 bg-[#040814]">
+        <div class="w-full max-w-md">
+            <h2 class="text-3xl font-bold mb-2">Bienvenido al Sistema</h2>
+            <p class="text-gray-400 text-sm mb-10">Ingresa tus credenciales operativas.</p>
+
+            <form id="form-login-gym" class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-2">ID de Operador (Ej. gym_001)</label>
+                    <input type="text" id="input-gym-id" class="w-full input-dark rounded-xl p-4 text-sm" placeholder="Ingresa el ID de tu gimnasio" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-2">Clave de Acceso</label>
+                    <input type="password" class="w-full input-dark rounded-xl p-4 text-sm" placeholder="••••••••" value="password" required readonly title="Autenticación sin contraseña activada en esta versión">
+                </div>
+
+                <button type="submit" class="w-full btn-nems text-white font-bold py-4 rounded-xl transition duration-300">
+                    Autorizar Sesión Segura
                 </button>
             </form>
+
+            <div class="my-8 flex items-center justify-center">
+                <div class="w-full h-px bg-white/10"></div>
+                <span class="px-4 text-xs text-gray-500 bg-[#040814]">O ingresa con</span>
+                <div class="w-full h-px bg-white/10"></div>
+            </div>
+
+            <!-- Acceso Super Admin -->
+            <a href="admin.html" class="w-full glass-btn text-white text-sm font-semibold py-4 rounded-xl transition duration-300 flex items-center justify-center gap-3">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                Credenciales Corporativas
+            </a>
         </div>
     </div>
 
-    <!-- Script de redirección dinámica -->
     <script>
         document.getElementById('form-login-gym').addEventListener('submit', (e) => {
             e.preventDefault();
             const gymId = document.getElementById('input-gym-id').value.trim();
-            if(gymId) {
-                // Redirige pasando el ID por la URL
-                window.location.href = `gym.html?id=${gymId}`;
-            }
+            if(gymId) window.location.href = `gym.html?id=${gymId}`;
         });
     </script>
 </body>
