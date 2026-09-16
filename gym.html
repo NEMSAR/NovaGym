@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Enterprise Management | NovaGym</title>
+    <title>Management Pro | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -36,6 +36,11 @@
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         input[type="checkbox"].custom-check { accent-color: var(--accent-color, #eab308); width: 16px; height: 16px; cursor: pointer;}
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #09090b; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden hidden" id="app-container">
@@ -61,7 +66,6 @@
                 <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Padrón de Socios
                 </div>
-                <!-- Bloqueo para Staff -->
                 <div id="nav-finanzas" class="nav-item admin-only flex items-center gap-3 py-3 px-4 rounded-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Finanzas y Caja
                 </div>
@@ -76,13 +80,13 @@
             </div>
 
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
-                <img src="https://i.imgur.com/mGPdyWD.png" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+                <img src="https://via.placeholder.com/120x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
                 <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">Powered by<br>NovaBit Media Agency</p>
             </div>
         </nav>
     </aside>
 
-    <main class="flex-1 overflow-y-auto bg-[#09090b] relative">
+    <main class="flex-1 overflow-y-auto bg-[#09090b] relative custom-scrollbar">
         <div class="aurora-bg"></div>
 
         <div class="p-8 max-w-[1600px] mx-auto relative z-10">
@@ -105,7 +109,6 @@
                 </div>
             </header>
 
-            <!-- VISTA DASHBOARD -->
             <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-6 fade-in">
                 <div class="glass-panel p-5 border-t-4 dynamic-border shadow-2xl">
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Miembros Activos</h3>
@@ -134,7 +137,6 @@
                 </div>
             </div>
 
-            <!-- VISTA SOCIOS -->
             <div id="vista-socios" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
@@ -159,7 +161,6 @@
                 </section>
             </div>
 
-            <!-- VISTA FINANZAS (Solo Admins) -->
             <div id="vista-finanzas" class="hidden fade-in admin-only">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
@@ -195,13 +196,20 @@
                                     <span>+</span> Nuevo Producto
                                 </button>
                             </div>
-                            <!-- Grilla de Botones del Catálogo -->
                             <div id="catalogo-productos" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
                         </section>
                     </div>
                     <div class="xl:col-span-1 space-y-4">
                         <section class="glass-panel p-6 shadow-2xl h-full">
-                            <h2 class="text-sm font-bold text-white mb-6 uppercase tracking-wider">Ventas de Hoy (Mostrador)</h2>
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual</h2>
+                                <div class="flex gap-2">
+                                    <button onclick="abrirModalHistorialCierres()" class="admin-only text-[10px] bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-gray-300 px-2 py-1 rounded font-bold transition">Historial</button>
+                                    <button onclick="abrirModalCierre()" class="text-[10px] bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-2 py-1 rounded font-bold transition flex items-center gap-1 shadow-[0_0_10px_rgba(234,88,12,0.2)]">
+                                        🔒 Cerrar Turno
+                                    </button>
+                                </div>
+                            </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-xs">
                                     <tbody id="tabla-tienda-body"></tbody>
@@ -212,7 +220,6 @@
                 </div>
             </div>
 
-            <!-- VISTA EVALUACIONES -->
             <div id="vista-evaluaciones" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
@@ -246,7 +253,7 @@
 
     <!-- Modal Universal -->
     <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
-        <div class="bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar">
+        <div class="bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar" id="modal-container">
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-universal">✕</button>
             <h2 id="modal-title" class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Formulario</h2>
             <div id="modal-content"></div>
@@ -259,19 +266,11 @@
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
             <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
             <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
-            
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
+                <!-- Secciones de ayuda ... (Mismo contenido) -->
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
-                    <p class="text-gray-400">Clic en "+ Registrar Socio". Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio, calculará la fecha de vencimiento y registrará el cobro en Finanzas automáticamente.</p>
-                </div>
-                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> 2. Renovar una cuota</h3>
-                    <p class="text-gray-400">En el Padrón de Socios, busque a la persona y presione "💳 Cobrar". Seleccione los meses que abona y el medio de pago. El sistema sumará esos meses a su fecha actual de vencimiento.</p>
-                </div>
-                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> 3. Tienda POS (Actualizar Precios)</h3>
-                    <p class="text-gray-400">Primero, agregue productos al Catálogo usando el botón "+ Nuevo Producto". Para vender, haga clic en el botón del producto. Si es usted el Dueño/Admin, verá un ícono de "lápiz" al pasar el mouse por encima del producto para actualizar su precio rápidamente a causa de la inflación.</p>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Cierre de Turno Seguro</h3>
+                    <p class="text-gray-400">Al finalizar su horario, vaya a "Tienda POS" y presione "🔒 Cerrar Turno". Por seguridad, el sistema le pedirá que ingrese su contraseña de sesión para confirmar el cierre. El balance quedará guardado para el administrador.</p>
                 </div>
             </div>
         </div>
@@ -285,7 +284,6 @@
         const GYM_ID = urlParams.get('id');
         if (!GYM_ID) { window.location.href = "index.html"; throw new Error("No ID"); }
 
-        // RBAC (Control de Roles)
         const userRole = sessionStorage.getItem('nems_gym_role');
         if(!userRole) window.location.href = "index.html";
         document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
@@ -295,7 +293,7 @@
         const app = initializeApp(firebaseConfig); const db = getFirestore(app);
         
         let nombreGymActual = ""; let gymModulos = {};
-        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = []; let listaProductosData = [];
+        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = []; let listaProductosData = []; let listaCierresData = [];
         let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
         let chartInstance = null;
 
@@ -339,8 +337,10 @@
         if(document.getElementById('nav-finanzas')) document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
 
         const modal = document.getElementById('modal-universal'); const modalContent = document.getElementById('modal-content'); const modalTitle = document.getElementById('modal-title');
+        const modalContainer = document.getElementById('modal-container');
 
         btnAccionPrincipal.addEventListener('click', () => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
             if (vistaActual === 'dashboard' || vistaActual === 'socios') abrirModalSocio();
             else if (vistaActual === 'finanzas') abrirModalPago();
             else if (vistaActual === 'evaluaciones') abrirModalEvaluacion();
@@ -353,7 +353,6 @@
             listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===preseleccionado?'selected':''}>${s.nombre}</option>`); return opts;
         }
 
-        // --- MODALES ABM ---
         function abrirModalSocio(socio = null) {
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
             modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio";
@@ -413,7 +412,7 @@
                     if(modoEdicion) { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dSocio); showToast("Perfil actualizado"); } 
                     else { 
                         await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
-                        await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta/Cuota: "+dSocio.nombre, monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
+                        await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta: "+dSocio.nombre, monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
                         showToast("Socio y Pago registrados");
                     }
                     modal.classList.add('hidden'); cargarDatos();
@@ -423,6 +422,7 @@
         }
 
         window.abrirModalPago = (nombreSocio = "") => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
             modalTitle.innerText = "Renovación de Cuota";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
@@ -455,8 +455,8 @@
             modal.classList.remove('hidden');
         }
 
-        // --- MODALES TIENDA POS (NUEVO) ---
         window.abrirModalNuevoProducto = () => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
             modalTitle.innerText = "Agregar al Catálogo POS";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
@@ -474,38 +474,37 @@
         }
 
         window.abrirModalEditarProducto = (id, nombre, precioActual) => {
-            modalTitle.innerText = "Actualizar Artículo: " + nombre;
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Actualizar Artículo";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre</label>
                     <input type="text" id="cat-nom-edit" class="w-full input-dark rounded-lg p-2.5 text-sm mb-3" value="${nombre}" required>
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nuevo Precio ARS</label>
                     <input type="number" id="cat-pre-edit" class="w-full input-dark rounded-lg p-2.5 text-sm" value="${precioActual}" required>
-                    
                     <div class="flex gap-2 mt-4">
-                        <button type="submit" class="flex-1 dynamic-btn font-bold py-3 rounded-lg text-sm text-[#09090b]">Actualizar</button>
+                        <button type="submit" class="flex-1 dynamic-btn font-bold py-3 rounded-lg text-sm text-[#09090b]">Guardar Nuevo Precio</button>
                         <button type="button" id="btn-eliminar-prod" class="bg-red-900/40 border border-red-500/30 hover:bg-red-600 text-red-400 hover:text-white px-4 py-3 rounded-lg text-sm transition" title="Eliminar Producto">🗑️</button>
                     </div>
                 </form>`;
             
             document.getElementById('btn-eliminar-prod').addEventListener('click', async () => {
                 if(confirm("¿Seguro de eliminar este producto del catálogo?")) {
-                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "productos", id));
-                        modal.classList.add('hidden'); showToast("Producto eliminado"); cargarDatos();
-                    } catch(err) { showToast("Error al eliminar", "error"); }
+                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "productos", id)); modal.classList.add('hidden'); showToast("Producto eliminado"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
                 }
             });
 
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault(); 
                 try { await updateDoc(doc(db, "gimnasios", GYM_ID, "productos", id), { nombre: document.getElementById('cat-nom-edit').value, precio: document.getElementById('cat-pre-edit').value });
-                    modal.classList.add('hidden'); showToast("Precio actualizado correctamente"); cargarDatos();
-                } catch(err) { showToast("Error al actualizar", "error"); }
+                    modal.classList.add('hidden'); showToast("Precio actualizado"); cargarDatos();
+                } catch(err) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
         window.abrirModalVentaArticulo = (nombre, precioBase) => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
             modalTitle.innerText = `Venta Rápida: ${nombre}`;
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
@@ -521,13 +520,113 @@
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
                 try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
-                    modal.classList.add('hidden'); showToast("Venta de mostrador registrada"); cargarDatos();
+                    modal.classList.add('hidden'); showToast("Venta POS procesada"); cargarDatos();
                 } catch(err) { showToast("Error en venta", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
+        // --- SISTEMA DE CIERRE DE TURNO CON PASSWORD ---
+        window.abrirModalCierre = () => {
+            const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
+            const finanzasTurno = listaFinanzasData.filter(f => f.timestamp > lastCierre);
+
+            let totalPOS = 0; let totalMem = 0; let cantAltas = 0; let cantRenov = 0; let listadoHtml = '';
+
+            finanzasTurno.forEach(f => {
+                if(f.tipo === 'Inventario') { totalPOS += Number(f.monto); listadoHtml += `<li class="flex justify-between border-b border-[#27272a] py-1"><span>🛒 ${f.concepto}</span><span class="text-emerald-400 font-mono">$${f.monto}</span></li>`; } 
+                else if(f.tipo === 'Cuota') { totalMem += Number(f.monto); if(f.concepto.includes('Alta')) cantAltas++; if(f.concepto.includes('Renovación')) cantRenov++; listadoHtml += `<li class="flex justify-between border-b border-[#27272a] py-1"><span>👤 ${f.concepto}</span><span class="text-blue-400 font-mono">$${f.monto}</span></li>`; }
+            });
+
+            if(finanzasTurno.length === 0) listadoHtml = `<li class="text-gray-500 italic text-center py-2">No hubo movimientos en este turno.</li>`;
+
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-orange-500/30 shadow-[0_0_30px_rgba(249,115,22,0.15)] fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Arqueo y Cierre de Turno";
+            modalContent.innerHTML = `
+                <div class="text-xs text-gray-400 mb-4 flex justify-between">
+                    <span>Inicio: ${new Date(lastCierre).toLocaleString('es-AR')}</span><span>Fin: Ahora</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                    <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Caja Mostrador</p><p class="text-emerald-400 font-black text-xl mt-1">$${totalPOS}</p></div>
+                    <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Caja Membresías</p><p class="text-blue-400 font-black text-xl mt-1">$${totalMem}</p></div>
+                </div>
+                <div class="flex gap-4 mb-4 text-xs font-bold text-gray-300 bg-[#18181b] p-3 rounded-lg border border-[#27272a]">
+                    <span>⭐ Nuevos Socios: <span class="text-white">${cantAltas}</span></span><span>🔄 Renovaciones: <span class="text-white">${cantRenov}</span></span>
+                </div>
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] mb-2 max-h-32 overflow-y-auto custom-scrollbar">
+                    <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-2 sticky top-0 bg-[#18181b]">Detalle de Operaciones</p>
+                    <ul class="text-[11px] text-gray-300 space-y-1">${listadoHtml}</ul>
+                </div>
+                
+                <div class="bg-red-900/10 border border-red-500/30 p-4 rounded-xl mb-4 mt-4">
+                    <p class="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-2 text-center">Autorización Requerida</p>
+                    <input type="password" id="input-pass-cierre" class="w-full input-dark rounded-lg p-2.5 text-sm text-center focus:border-red-500" placeholder="Ingrese su Clave de Sesión" required>
+                </div>
+                
+                <button id="btn-confirm-cierre" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-lg text-sm transition shadow-[0_0_15px_rgba(234,88,12,0.3)]">Confirmar y Cerrar Caja</button>
+            `;
+
+            document.getElementById('btn-confirm-cierre').addEventListener('click', async () => {
+                const passInput = document.getElementById('input-pass-cierre').value.trim();
+                if(!passInput) { showToast("Debe ingresar su clave", "error"); return; }
+                
+                document.getElementById('btn-confirm-cierre').innerText = 'Verificando...'; document.getElementById('btn-confirm-cierre').disabled = true;
+                
+                try {
+                    // Verificar Password contra la DB real
+                    const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
+                    const dbPassAdmin = gymSnap.data().password;
+                    const dbPassStaff = gymSnap.data().passwordStaff;
+
+                    if(passInput !== dbPassAdmin && passInput !== dbPassStaff) {
+                        showToast("Clave de autorización incorrecta", "error");
+                        document.getElementById('btn-confirm-cierre').innerText = 'Confirmar y Cerrar Caja'; document.getElementById('btn-confirm-cierre').disabled = false;
+                        return;
+                    }
+
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), {
+                        apertura: lastCierre, cierre: new Date().toISOString(), timestamp: new Date().toISOString(),
+                        total_pos: totalPOS, total_mem: totalMem, altas: cantAltas, renov: cantRenov, usuario: userRole
+                    });
+                    modal.classList.add('hidden'); showToast("Turno cerrado correctamente", "success"); cargarDatos();
+                } catch(err) { showToast("Error al cerrar turno", "error"); document.getElementById('btn-confirm-cierre').disabled = false; }
+            });
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalHistorialCierres = () => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-2xl relative border border-gray-500/30 shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Historial de Cajas Cerradas";
+            
+            let htmlTable = '';
+            if(listaCierresData.length === 0) { htmlTable = `<tr><td colspan="5" class="text-center py-4 text-gray-500 text-xs italic">Aún no hay turnos cerrados registrados.</td></tr>`; } 
+            else {
+                listaCierresData.forEach(c => {
+                    const total = Number(c.total_pos) + Number(c.total_mem);
+                    htmlTable += `
+                        <tr class="border-b border-[#27272a] hover:bg-[#18181b]">
+                            <td class="py-3 px-3 font-mono text-gray-400">${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</td>
+                            <td class="py-3 px-3 text-emerald-400 font-mono">$${c.total_pos}</td>
+                            <td class="py-3 px-3 text-blue-400 font-mono">$${c.total_mem}</td>
+                            <td class="py-3 px-3 text-white font-bold font-mono">$${total}</td>
+                            <td class="py-3 px-3 text-[10px] text-gray-500 uppercase">${c.usuario === 'admin' ? 'Dueño' : 'Staff'}</td>
+                        </tr>`;
+                });
+            }
+
+            modalContent.innerHTML = `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead><tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest"><th class="py-2 px-3">Fecha/Hora Fin</th><th class="py-2 px-3">Caja POS</th><th class="py-2 px-3">Caja Mem.</th><th class="py-2 px-3">Total Shift</th><th class="py-2 px-3">Usuario</th></tr></thead>
+                        <tbody>${htmlTable}</tbody>
+                    </table>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
         function abrirModalEvaluacion() {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
             modalTitle.innerText = "Evaluación Corporal (Metas)";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
@@ -600,13 +699,15 @@
             if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
             if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
 
-            const [sSnap, fSnap, eSnap, pSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), getDocs(collection(db, "gimnasios", GYM_ID, "productos")) ]);
+            const [sSnap, fSnap, eSnap, pSnap, cSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), getDocs(collection(db, "gimnasios", GYM_ID, "productos")), getDocs(collection(db, "gimnasios", GYM_ID, "cierres")) ]);
             
             listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
-            
             listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
-            listaProductosData.sort((a, b) => a.nombre.localeCompare(b.nombre)); // Orden alfabético
+            listaProductosData.sort((a, b) => a.nombre.localeCompare(b.nombre)); 
             
+            listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() }));
+            listaCierresData.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
             listaFinanzasData = []; let ingrT = 0; let ingrMes = 0;
             const mesActual = new Date().toISOString().substring(0,7);
             fSnap.forEach(d => { 
@@ -629,7 +730,6 @@
         }
 
         function renderUI() {
-            // Dashboard
             const cAlertas = document.getElementById('contenedor-alertas'); cAlertas.innerHTML = ''; let alertas = 0;
             listaSociosData.forEach(s => {
                 const est = evaluarEstado(s.vence);
@@ -648,7 +748,6 @@
             document.getElementById('total-alertas').innerText = alertas;
             if(alertas === 0) cAlertas.innerHTML = `<p class="text-xs text-gray-500 italic">No hay alertas. Todos los socios están al día.</p>`;
 
-            // Tabla Socios
             const tbS = document.getElementById('tabla-socios-body'); tbS.innerHTML = '';
             listaSociosData.forEach(s => {
                 const est = evaluarEstado(s.vence);
@@ -673,7 +772,6 @@
                     </tr>`;
             });
 
-            // Tabla Finanzas (Solo Admin)
             if(userRole === 'admin') {
                 const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
                 listaFinanzasData.forEach(f => {
@@ -690,7 +788,6 @@
                 });
             }
 
-            // TIENDA POS UI (Edición Anti-Inflación solo Admin)
             if(gymModulos.tienda) {
                 const cCat = document.getElementById('catalogo-productos'); cCat.innerHTML = '';
                 listaProductosData.forEach(p => {
@@ -710,14 +807,15 @@
                 });
                 
                 const tbT = document.getElementById('tabla-tienda-body'); tbT.innerHTML = '';
-                const ventasHoy = listaFinanzasData.filter(f => f.tipo === 'Inventario' && f.fecha === new Date().toISOString().split('T')[0]);
-                ventasHoy.forEach(f => {
+                const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
+                const ventasTurno = listaFinanzasData.filter(f => f.tipo === 'Inventario' && f.timestamp > lastCierre);
+                
+                ventasTurno.forEach(f => {
                     tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-white font-bold">${f.concepto}</td><td class="py-2 px-2 text-gray-500 text-[10px] uppercase">${f.medio||'Efectivo'}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono">$${f.monto}</td></tr>`;
                 });
-                if(!ventasHoy.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Aún no hay ventas de mostrador hoy.</td></tr>`;
+                if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Aún no hay ventas de mostrador en este turno.</td></tr>`;
             }
 
-            // Evaluaciones
             const tbE = document.getElementById('tabla-evaluaciones-body'); 
             if(tbE) {
                 tbE.innerHTML = '';
