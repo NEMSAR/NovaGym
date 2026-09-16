@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Admin | NEMS OS</title>
+    <title>Super Admin | NEMS Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>if(sessionStorage.getItem('nems_admin_token') !== 'autorizado_2026') window.location.href = 'index.html';</script>
     <style>
@@ -29,18 +29,32 @@
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-50"></div>
 
     <div class="max-w-[1400px] mx-auto relative z-10">
-        <header class="flex justify-between items-center mb-10 border-b border-[#27272a] pb-6">
+        
+        <!-- CABECERA REDISEÑADA ESTILO ENTERPRISE -->
+        <header class="flex justify-between items-end mb-10 pb-6 relative">
+            <!-- Línea separadora con gradiente -->
+            <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-[#27272a] via-[#27272a] to-transparent"></div>
+            
             <div>
-                <h1 class="text-3xl font-black tracking-tight text-white">Consola <span class="text-blue-500">Super Admin</span></h1>
-                <p class="text-gray-400 text-sm mt-1">Gestión Global de Franquicias y Licencias</p>
+                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tighter mb-1">
+                    Consola <span class="text-blue-500">Super Admin</span>
+                </h1>
+                <p class="text-[10px] font-bold text-blue-500/80 uppercase tracking-[0.2em] mt-2">
+                    Gestión Global de Franquicias y Licencias
+                </p>
             </div>
+            
             <div class="flex items-center gap-4">
-                <button id="btn-toggle-fx" class="bg-gradient-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/50 text-blue-300 hover:text-white px-4 py-2 rounded-full text-xs font-bold transition shadow-[0_0_15px_rgba(59,130,246,0.3)] flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    Fx Visuales
+                <!-- Botón Fx Minimalista Premium -->
+                <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-5 py-2 bg-[#121214] border border-[#27272a] rounded-full text-[11px] font-bold text-gray-400 hover:text-white hover:border-gray-500 transition-all shadow-lg" title="Activar/Desactivar Fx Visuales">
+                    <svg class="w-4 h-4 text-blue-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                    </svg>
+                    <span class="tracking-wider uppercase">Efectos Visuales</span>
                 </button>
-                <button id="btn-logout" class="bg-[#18181b] border border-[#27272a] text-gray-300 hover:text-white transition px-4 py-2 rounded-lg hover:bg-red-900/30 hover:text-red-400 hover:border-red-500/30">
-                    Cerrar Sesión Corporativa
+                
+                <button id="btn-logout" class="bg-[#121214] border border-[#27272a] text-gray-400 hover:text-white transition px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider hover:bg-red-900/20 hover:border-red-500/30">
+                    Cerrar Sesión
                 </button>
             </div>
         </header>
@@ -133,14 +147,14 @@
 
         window.showToast = (msg, tipo = 'success') => {
             const container = document.getElementById('toast-container'); const toast = document.createElement('div');
-            const bg = tipo === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-red-500/20 border-red-500/50 text-red-400';
+            const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500' : 'bg-[#18181b] border-l-4 border-red-500';
             toast.className = `toast-enter ${bg} border px-6 py-4 rounded-xl shadow-lg backdrop-blur-md font-bold text-sm flex items-center gap-3`;
             toast.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${tipo==='success'?'M5 13l4 4L19 7':'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}"></path></svg> ${msg}`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+            container.appendChild(toast); setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        const form = document.getElementById('form-gym'); 
+        const form = document.getElementById('form-gym'); const colorInput = document.getElementById('gym-color'); const colorText = document.getElementById('gym-color-text');
+        colorInput.addEventListener('input', (e) => colorText.value = e.target.value); colorText.addEventListener('input', (e) => colorInput.value = e.target.value);
 
         async function cargarGimnasios() {
             const tbody = document.getElementById('lista-gyms'); tbody.innerHTML = '';
