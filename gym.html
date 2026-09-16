@@ -13,6 +13,7 @@
         .dynamic-btn { background-color: var(--accent-color, #eab308); color: #000; }
         .dynamic-btn:hover { filter: brightness(0.85); box-shadow: 0 0 20px var(--accent-color, #eab308); opacity: 0.9; }
         .nav-item.active { background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent-color, #eab308); color: white; }
+        .nav-item.active svg { color: var(--accent-color, #eab308); }
         
         .glass-panel { background: #121214; border: 1px solid #27272a; border-radius: 1rem; position: relative; z-index: 10;}
         .glass-row:hover { background: #18181b; }
@@ -36,16 +37,18 @@
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         
-        /* Checkbox Custom */
         input[type="checkbox"].custom-check { accent-color: var(--accent-color, #eab308); width: 16px; height: 16px; cursor: pointer;}
     </style>
 </head>
 <body class="flex h-screen overflow-hidden hidden" id="app-container">
 
-    <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[100]"></div>
+    <!-- Toasts arriba a la derecha -->
+    <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
-    <!-- Botón Flotante Asistente -->
-    <button id="btn-help" class="fixed bottom-5 left-5 w-12 h-12 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)] flex items-center justify-center text-white text-xl z-50 bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] transition" title="Guía de Usuario">?</button>
+    <!-- Botón Flotante Asistente (Reubicado a la derecha) -->
+    <button id="btn-help" class="fixed bottom-5 right-5 w-12 h-12 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)] flex items-center justify-center text-gray-300 z-50 bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] hover:text-white transition" title="Guía de Usuario">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    </button>
 
     <!-- Menú Lateral -->
     <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-30 relative shadow-2xl">
@@ -57,13 +60,25 @@
         <nav id="ui-nav-menu" class="flex-1 p-4 flex flex-col text-xs font-bold uppercase tracking-wider overflow-y-auto custom-scrollbar">
             <div class="space-y-1">
                 <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
-                <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Dashboard Ejecutivo</div>
-                <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Padrón de Socios</div>
-                <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Finanzas y Caja</div>
+                <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard Ejecutivo
+                </div>
+                <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Padrón de Socios
+                </div>
+                <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    Finanzas y Caja
+                </div>
                 
                 <div id="modulos-container"></div>
                 
-                <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
+                <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Cerrar Sesión
+                </a>
             </div>
 
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
@@ -86,7 +101,8 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <button id="btn-toggle-fx" class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-500/30 text-blue-300 hover:text-white px-4 py-2.5 rounded-full text-xs font-bold transition shadow-[0_0_15px_rgba(59,130,246,0.2)] flex items-center gap-2">
-                        ✨ Fx Visuales
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Fx Visuales
                     </button>
                     <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-full shadow-lg transition text-sm text-[#09090b]">
                         + Registrar Socio
@@ -157,7 +173,10 @@
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Registro de Transacciones</h2>
-                        <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">Descargar CSV</button>
+                        <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Descargar CSV
+                        </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
@@ -202,10 +221,10 @@
             </div>
             
             <!-- VISTA ASISTENCIA -->
-            <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 text-center shadow-2xl">
-                <span class="text-4xl mb-4 block">📱</span>
+            <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 flex flex-col items-center justify-center text-center shadow-2xl">
+                <svg class="w-16 h-16 text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 <h2 class="text-xl font-bold text-white mb-2">Módulo de Control de Asistencia</h2>
-                <p class="text-gray-400 text-sm">Aquí se conectará el sistema de escaneo QR y registro de huella biométrica.</p>
+                <p class="text-gray-400 text-sm">Aquí se conectará el sistema de escaneo QR y registro biométrico.</p>
             </div>
         </div>
     </main>
@@ -228,19 +247,19 @@
             
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1">1. ¿Cómo registrar un socio nuevo?</h3>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. ¿Cómo registrar un socio nuevo?</h3>
                     <p class="text-gray-400">Haga clic en "+ Registrar Socio" arriba a la derecha. Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio y registrará el cobro en la caja de Finanzas automáticamente.</p>
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1">2. ¿Cómo renovar una cuota vencida?</h3>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> 2. ¿Cómo renovar una cuota vencida?</h3>
                     <p class="text-gray-400">En el Padrón de Socios, busque a la persona y presione el botón "💳 Cobrar". Seleccione los meses que abona y el medio de pago. El sistema extenderá su fecha de vencimiento automáticamente.</p>
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1">3. ¿Qué es el Punto de Venta (POS)?</h3>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> 3. ¿Qué es el Punto de Venta (POS)?</h3>
                     <p class="text-gray-400">Es una caja registradora rápida para ventas de mostrador (aguas, energizantes, remeras). Al registrar una venta, el dinero se suma directamente a sus Ingresos del Mes sin asociarlo a ninguna membresía.</p>
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1">4. ¿Para qué sirven las Evaluaciones Físicas?</h3>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 4. ¿Para qué sirven las Evaluaciones Físicas?</h3>
                     <p class="text-gray-400">Le permite llevar un historial de peso y altura de sus clientes. El sistema calculará el IMC (Índice de Masa Corporal) y le asignará un color (Azul=Bajo, Gris=Normal, Naranja/Rojo=Alerta).</p>
                 </div>
             </div>
@@ -281,8 +300,9 @@
         window.showToast = (msg, tipo = 'success') => {
             const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500' : 'bg-[#18181b] border-l-4 border-red-500';
-            toast.className = `toast-enter ${bg} border-y border-r border-[#27272a] text-white px-6 py-4 shadow-2xl font-bold text-sm`;
-            toast.innerHTML = msg; container.appendChild(toast);
+            toast.className = `toast-enter ${bg} border-y border-l border-[#27272a] text-white px-6 py-4 shadow-2xl font-bold text-sm flex items-center gap-3`;
+            toast.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${tipo==='success'?'M5 13l4 4L19 7':'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}"></path></svg> ${msg}`;
+            container.appendChild(toast);
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
@@ -328,19 +348,16 @@
             return opts;
         }
 
-        // --- ALTA / EDICIÓN SOCIOS CON AUTO-FECHA Y MULTI-SERVICIO ---
         function abrirModalSocio(socio = null) {
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
             modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio (Perfil + Pago)";
             
-            // Checkboxes Dinámicos de Servicios
             let chkServ = '';
             const currServ = socio ? (socio.servicio || "") : "";
             if(gymModulos.musculacion) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Musculación" class="custom-check" ${currServ.includes('Musculación')?'checked':''}> <span class="text-sm">Musc.</span></label>`;
             if(gymModulos.funcional) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Funcional" class="custom-check" ${currServ.includes('Funcional')?'checked':''}> <span class="text-sm">Func.</span></label>`;
             if(gymModulos.pilates) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Pilates" class="custom-check" ${currServ.includes('Pilates')?'checked':''}> <span class="text-sm">Pilates</span></label>`;
 
-            // Opciones de Pago (Solo visibles si es alta nueva)
             const boxPago = !socio ? `
                 <div class="border-t border-[#27272a] pt-4 mt-4">
                     <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">1er Pago y Vencimiento Automático</h3>
@@ -382,7 +399,6 @@
                     <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-xl mt-4 text-sm text-[#09090b]">Guardar Registro</button>
                 </form>`;
 
-            // Lógica Auto-Fecha
             if(!socio) {
                 const fPago = document.getElementById('s-fec-pago'); const fMeses = document.getElementById('s-meses'); const fVence = document.getElementById('s-vence');
                 fPago.valueAsDate = new Date();
@@ -390,13 +406,11 @@
                 fPago.addEventListener('change', calcFecha); fMeses.addEventListener('input', calcFecha); calcFecha();
             }
 
-            // Preview Foto
             document.getElementById('s-foto').addEventListener('input', (e) => { const url = e.target.value; if(url) document.getElementById('s-preview').src = url; else document.getElementById('s-preview').src = 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'; });
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault(); const btn = e.target.querySelector('button'); btn.innerText = 'Procesando...'; btn.disabled = true;
                 
-                // Recolectar checkboxes
                 const servs = Array.from(document.querySelectorAll('input[name="s-serv"]:checked')).map(cb => cb.value).join(' + ');
                 if(!servs) { showToast("Selecciona al menos un servicio", "error"); btn.disabled = false; btn.innerText = 'Guardar Registro'; return; }
 
@@ -408,7 +422,6 @@
                         showToast("Perfil actualizado");
                     } else {
                         await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
-                        // Registrar pago inicial
                         await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta/Cuota: "+dSocio.nombre, monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
                         showToast("Socio y Pago registrados (Alta Integral)");
                     }
@@ -440,7 +453,6 @@
                 try {
                     await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Renovación ("+meses+"m): "+nom, monto: document.getElementById('p-mon').value, medio: document.getElementById('p-medio').value, tipo: "Cuota", fecha: document.getElementById('p-fec').value, timestamp: new Date().toISOString() });
                     
-                    // Auto-actualizar Vencimiento
                     const s = listaSociosData.find(x => x.nombre === nom);
                     if(s) {
                         const [y,m,d] = s.vence.split('-'); const nDate = new Date(y, m-1, d); nDate.setMonth(nDate.getMonth() + meses);
@@ -457,7 +469,7 @@
             modalTitle.innerText = "Punto de Venta (Mostrador)";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
-                    <input type="text" id="v-art" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Producto (Agua, Suplemento)..." required>
+                    <input type="text" id="v-art" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Producto (Agua, Toalla, Suplemento)..." required>
                     <div class="grid grid-cols-2 gap-3">
                         <select id="v-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
                         <input type="number" id="v-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
@@ -541,9 +553,9 @@
             else { logoCont.innerHTML = `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase(); }
 
             const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
-            if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><span>🛒</span> Tienda POS</div>`;
-            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Metas y Evals</div>`;
-            if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><span>📱</span> Asistencia</div>`;
+            if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
+            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Metas y Evals</div>`;
+            if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg> Asistencia</div>`;
             
             if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
             if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
@@ -595,7 +607,7 @@
                 const est = evaluarEstado(s.vence);
                 tbS.innerHTML += `
                     <tr class="border-b border-[#27272a] glass-row">
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${est.c}">${est.t}</span></td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${est.c}">${est.t}</span></td>
                         <td class="py-3 px-4">
                             <div class="flex items-center gap-3">
                                 <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-8 h-8 rounded-full object-cover border border-[#27272a]">
@@ -620,7 +632,7 @@
                     <tr class="border-b border-[#27272a] glass-row">
                         <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha.split('-').reverse().join('/')}</td>
                         <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] ${tColor}">${f.tipo}</span></td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] border ${tColor}">${f.tipo}</span></td>
                         <td class="py-3 px-4 text-gray-400 text-xs uppercase">${f.medio || 'Efectivo'}</td>
                         <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
                         <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-500 hover:text-red-500" data-id="${f.id}">✕</button></td>
@@ -643,7 +655,7 @@
                             <td class="py-3 px-4 text-white font-bold">${e.socio}</td>
                             <td class="py-3 px-4 text-gray-300">${e.peso} kg</td>
                             <td class="py-3 px-4 text-gray-300">${e.altura} cm</td>
-                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeImc}">${e.imc}</span></td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeImc}">${e.imc}</span></td>
                             <td class="py-3 px-4 text-center"><button class="btn-del-e text-gray-500 hover:text-red-500" data-id="${e.id}">✕</button></td>
                         </tr>`;
                 });
