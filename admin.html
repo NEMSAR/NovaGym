@@ -6,6 +6,7 @@
     <title>Super Admin | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // ESCUDO DE SEGURIDAD
         if(sessionStorage.getItem('nems_admin_token') !== 'autorizado_2026') {
             window.location.href = 'index.html';
         }
@@ -18,12 +19,16 @@
         .toast-enter { animation: slideIn 0.4s forwards; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
-        /* Aurora UI Fx */
+        /* Aurora UI Fx - MÁS INTENSO Y RÁPIDO */
         .aurora-bg {
             position: absolute; top: -50px; left: -10%; width: 120%; height: 350px;
             background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
-            background-size: 600% 600%; filter: blur(80px); opacity: 0.15; z-index: 0;
-            animation: auroraSweep 15s ease infinite; pointer-events: none; transition: opacity 0.5s ease;
+            background-size: 400% 400%; 
+            filter: blur(60px); 
+            opacity: 0.4; 
+            z-index: 0;
+            animation: auroraSweep 6s ease infinite; 
+            pointer-events: none; transition: opacity 0.5s ease;
         }
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
