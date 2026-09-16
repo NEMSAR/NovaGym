@@ -26,12 +26,16 @@
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Aurora UI Fx */
+        /* Aurora UI Fx - MÁS INTENSO Y RÁPIDO */
         .aurora-bg {
             position: absolute; top: -50px; left: 0; width: 100%; height: 350px;
             background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
-            background-size: 600% 600%; filter: blur(80px); opacity: 0.15; z-index: 0;
-            animation: auroraSweep 15s ease infinite; pointer-events: none; transition: opacity 0.5s ease;
+            background-size: 400% 400%; 
+            filter: blur(60px); 
+            opacity: 0.4; 
+            z-index: 0;
+            animation: auroraSweep 6s ease infinite; 
+            pointer-events: none; transition: opacity 0.5s ease;
         }
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -54,7 +58,9 @@
                 <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Executive Dashboard</div>
                 <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Gestión de Socios</div>
                 <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Finanzas y Caja</div>
+                
                 <div id="modulos-container"></div>
+                
                 <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
             </div>
 
@@ -233,12 +239,15 @@
         // Control Fx Aurora
         const btnFx = document.getElementById('btn-toggle-fx');
         if (localStorage.getItem('nems_fx_disabled') === 'true') {
-            document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50');
+            document.body.classList.add('aurora-disabled');
+            document.getElementById('fx-icon').innerText = '✨';
+            btnFx.classList.add('opacity-50');
         }
         btnFx.addEventListener('click', () => {
             document.body.classList.toggle('aurora-disabled');
-            localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled'));
-            btnFx.classList.toggle('opacity-50');
+            const isDisabled = document.body.classList.contains('aurora-disabled');
+            localStorage.setItem('nems_fx_disabled', isDisabled);
+            btnFx.classList.toggle('opacity-50', isDisabled);
         });
 
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
@@ -487,7 +496,7 @@
                 const est = evaluarEstado(s.vence);
                 tbS.innerHTML += `
                     <tr class="border-b border-[#27272a] glass-row">
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${est.c}">${est.t}</span></td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${est.c}">${est.t}</span></td>
                         <td class="py-3 px-4"><p class="text-white font-bold">${s.nombre}</p><a href="https://wa.me/${s.telefono}" target="_blank" class="text-[10px] text-[#25D366] hover:underline">${s.telefono}</a></td>
                         <td class="py-3 px-4 text-gray-300">${s.servicio}</td>
                         <td class="py-3 px-4 text-gray-400">${s.membresia}</td>
