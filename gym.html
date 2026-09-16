@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Management | NovaGym</title>
+    <title>Management Pro | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -47,8 +47,10 @@
 
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
+    <!-- Controles Flotantes Inferiores -->
     <div class="fixed bottom-5 right-5 z-50 flex items-center gap-3 fade-in">
-        <button onclick="abrirModalCierre()" class="bg-[#121214] border border-orange-500/50 text-orange-400 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] uppercase tracking-wider font-bold transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
+        <!-- Cerrar Turno: Visible SÓLO para Staff (Ocultado por JS para el admin) -->
+        <button onclick="abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
             Cerrar Turno
         </button>
@@ -73,7 +75,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Padrón de Socios
                 </div>
                 <div id="nav-finanzas" class="nav-item admin-only flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Finanzas y Caja
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Finanzas y Cajas
                 </div>
                 <div id="modulos-container"></div>
                 
@@ -86,7 +88,7 @@
             </div>
 
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
-                <img src="https://i.imgur.com/mGPdyWD.png" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+                <img src="https://via.placeholder.com/120x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
                 <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">Powered by<br>NovaBit Media Agency</p>
             </div>
         </nav>
@@ -96,7 +98,7 @@
         <div class="aurora-bg"></div>
 
         <div class="p-8 max-w-[1600px] mx-auto relative z-10">
-            <!-- CABECERA REDISEÑADA ESTILO ENTERPRISE -->
+            <!-- Cabecera Premium -->
             <header class="flex justify-between items-end mb-10 pb-6 relative">
                 <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-[#27272a] via-[#27272a] to-transparent"></div>
                 <div>
@@ -170,10 +172,34 @@
                 </section>
             </div>
 
-            <div id="vista-finanzas" class="hidden fade-in admin-only">
-                <section class="glass-panel p-6 shadow-2xl">
+            <!-- VISTA FINANZAS: Modificada para el Administrador (Turnos y General) -->
+            <div id="vista-finanzas" class="hidden fade-in admin-only space-y-6">
+                <!-- Seccion 1: Turnos y Arqueos -->
+                <section class="glass-panel p-6 shadow-2xl border-l-4 border-orange-500">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Registro Global de Transacciones</h2>
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Control de Turnos (Cajas Cerradas)</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
+                                    <th class="py-3 px-4">Cierre (Fecha/Hora)</th>
+                                    <th class="py-3 px-4">Caja POS</th>
+                                    <th class="py-3 px-4">Caja Membresías</th>
+                                    <th class="py-3 px-4">Recaudación Turno</th>
+                                    <th class="py-3 px-4">Usuario</th>
+                                    <th class="py-3 px-4 text-center">Del</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-turnos-admin-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Seccion 2: Transacciones Globales -->
+                <section class="glass-panel p-6 shadow-2xl border-l-4 dynamic-border">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Flujo Global de Transacciones</h2>
                         <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">Descargar CSV</button>
                     </div>
                     <div class="overflow-x-auto">
@@ -194,6 +220,7 @@
                 </section>
             </div>
 
+            <!-- VISTA TIENDA POS -->
             <div id="vista-tienda" class="hidden fade-in">
                 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     <div class="xl:col-span-2 space-y-4">
@@ -210,10 +237,7 @@
                     <div class="xl:col-span-1 space-y-4">
                         <section class="glass-panel p-6 shadow-2xl h-full">
                             <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual</h2>
-                                <div class="flex gap-2">
-                                    <button onclick="abrirModalHistorialCierres()" class="admin-only text-[10px] bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-1.5 rounded font-bold transition">Ver Historial</button>
-                                </div>
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual (Mostrador)</h2>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-xs">
@@ -272,6 +296,7 @@
             <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
             <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
+                <!-- Secciones de ayuda ... -->
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
                     <p class="text-gray-400">Clic en "+ Registrar Socio". Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio, calculará la fecha de vencimiento y registrará el cobro en Finanzas automáticamente.</p>
@@ -286,7 +311,7 @@
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> 4. Cierre de Turno Seguro</h3>
-                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". Por seguridad, el sistema le pedirá que ingrese su contraseña de sesión para confirmar el cierre. El balance quedará guardado para el administrador.</p>
+                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". Por seguridad, el sistema le pedirá que ingrese su contraseña de sesión para confirmar el cierre. El balance quedará guardado en el módulo de Finanzas para que lo vea el administrador.</p>
                 </div>
             </div>
         </div>
@@ -303,6 +328,9 @@
         const userRole = sessionStorage.getItem('nems_gym_role');
         if(!userRole) window.location.href = "index.html";
         document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
+        
+        // Ejecución de RBAC UI
+        if(userRole === 'admin') { document.querySelectorAll('.staff-only').forEach(el => el.remove()); }
         if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
 
         const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
@@ -342,7 +370,7 @@
 
             if (vista === 'dashboard') { title.innerText = "Dashboard Ejecutivo"; subtitle.innerText = "Métricas en tiempo real"; txtAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'flex'; } 
             else if (vista === 'socios') { title.innerText = "Padrón de Socios"; subtitle.innerText = "Directorio completo"; txtAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'flex'; } 
-            else if (vista === 'finanzas' && userRole === 'admin') { title.innerText = "Finanzas y Caja"; subtitle.innerText = "Registro contable"; txtAccionPrincipal.innerText = 'Cobrar Cuota'; btnAccionPrincipal.style.display = 'flex'; } 
+            else if (vista === 'finanzas' && userRole === 'admin') { title.innerText = "Finanzas y Cajas"; subtitle.innerText = "Registro contable y turnos"; txtAccionPrincipal.innerText = 'Cobrar Cuota'; btnAccionPrincipal.style.display = 'flex'; } 
             else if (vista === 'tienda') { title.innerText = "Punto de Venta (POS)"; subtitle.innerText = "Venta rápida de mostrador"; btnAccionPrincipal.style.display = 'none'; } 
             else if (vista === 'evaluaciones') { title.innerText = "Metas y Evaluaciones"; subtitle.innerText = "Control corporal"; txtAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'flex'; } 
             else { title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise"; btnAccionPrincipal.style.display = 'none'; }
@@ -355,12 +383,14 @@
         const modal = document.getElementById('modal-universal'); const modalContent = document.getElementById('modal-content'); const modalTitle = document.getElementById('modal-title');
         const modalContainer = document.getElementById('modal-container');
 
-        btnAccionPrincipal.addEventListener('click', () => {
-            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
-            if (vistaActual === 'dashboard' || vistaActual === 'socios') abrirModalSocio();
-            else if (vistaActual === 'finanzas') abrirModalPago();
-            else if (vistaActual === 'evaluaciones') abrirModalEvaluacion();
-        });
+        if(btnAccionPrincipal) {
+            btnAccionPrincipal.addEventListener('click', () => {
+                modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+                if (vistaActual === 'dashboard' || vistaActual === 'socios') abrirModalSocio();
+                else if (vistaActual === 'finanzas') abrirModalPago();
+                else if (vistaActual === 'evaluaciones') abrirModalEvaluacion();
+            });
+        }
 
         document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => document.getElementById(e.target.dataset.modal).classList.add('hidden')));
 
@@ -369,6 +399,7 @@
             listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===preseleccionado?'selected':''}>${s.nombre}</option>`); return opts;
         }
 
+        // --- MODALES ABM ---
         function abrirModalSocio(socio = null) {
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
             modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio";
@@ -604,37 +635,6 @@
             modal.classList.remove('hidden');
         }
 
-        window.abrirModalHistorialCierres = () => {
-            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-2xl relative border border-gray-500/30 shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
-            modalTitle.innerText = "Historial de Cajas Cerradas";
-            
-            let htmlTable = '';
-            if(listaCierresData.length === 0) { htmlTable = `<tr><td colspan="5" class="text-center py-4 text-gray-500 text-xs italic">Aún no hay turnos cerrados registrados.</td></tr>`; } 
-            else {
-                listaCierresData.forEach(c => {
-                    const total = Number(c.total_pos) + Number(c.total_mem);
-                    htmlTable += `
-                        <tr class="border-b border-[#27272a] hover:bg-[#18181b]">
-                            <td class="py-3 px-3 font-mono text-gray-400">${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</td>
-                            <td class="py-3 px-3 text-emerald-400 font-mono">$${c.total_pos}</td>
-                            <td class="py-3 px-3 text-blue-400 font-mono">$${c.total_mem}</td>
-                            <td class="py-3 px-3 text-white font-bold font-mono">$${total}</td>
-                            <td class="py-3 px-3 text-[10px] text-gray-500 uppercase">${c.usuario === 'admin' ? 'Dueño' : 'Staff'}</td>
-                        </tr>`;
-                });
-            }
-
-            modalContent.innerHTML = `
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead><tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest"><th class="py-2 px-3">Fecha/Hora Fin</th><th class="py-2 px-3">Caja POS</th><th class="py-2 px-3">Caja Mem.</th><th class="py-2 px-3">Total Shift</th><th class="py-2 px-3">Usuario</th></tr></thead>
-                        <tbody>${htmlTable}</tbody>
-                    </table>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-        }
-
         function abrirModalEvaluacion() {
             modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
             modalTitle.innerText = "Evaluación Corporal (Metas)";
@@ -796,6 +796,26 @@
                             <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-600 hover:text-red-500 transition" data-id="${f.id}">✕</button></td>
                         </tr>`;
                 });
+
+                const tbCierres = document.getElementById('tabla-turnos-admin-body');
+                if(tbCierres) {
+                    tbCierres.innerHTML = '';
+                    if(listaCierresData.length === 0) { tbCierres.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-500 text-xs italic">Aún no hay turnos cerrados.</td></tr>`; } 
+                    else {
+                        listaCierresData.forEach(c => {
+                            const total = Number(c.total_pos) + Number(c.total_mem);
+                            tbCierres.innerHTML += `
+                                <tr class="border-b border-[#27272a] glass-row">
+                                    <td class="py-3 px-4 font-mono text-xs text-gray-400">${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</td>
+                                    <td class="py-3 px-4 text-emerald-400 font-mono">$${c.total_pos}</td>
+                                    <td class="py-3 px-4 text-blue-400 font-mono">$${c.total_mem}</td>
+                                    <td class="py-3 px-4 font-bold text-white font-mono">$${total}</td>
+                                    <td class="py-3 px-4 text-[10px] text-gray-500 uppercase">${c.usuario === 'admin' ? 'Dueño' : 'Staff'}</td>
+                                    <td class="py-3 px-4 text-center"><button class="btn-del-cierre text-gray-600 hover:text-red-500 transition" data-id="${c.id}">✕</button></td>
+                                </tr>`;
+                        });
+                    }
+                }
             }
 
             if(gymModulos.tienda) {
@@ -854,6 +874,7 @@
             if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); cargarDatos(); }
             if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); cargarDatos(); }
             if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); cargarDatos(); }
+            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar este arqueo de caja?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); cargarDatos(); }
         });
 
         document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
