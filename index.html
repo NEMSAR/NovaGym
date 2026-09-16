@@ -19,28 +19,18 @@
 </head>
 <body class="flex h-screen overflow-hidden bg-[#09090b]">
 
-    <!-- Panel Izquierdo: Branding Corporativo con Video Background Responsivo -->
     <div class="hidden md:flex w-1/2 border-r border-[#27272a] flex-col justify-center px-20 relative overflow-hidden">
-        
-        <!-- CONTENEDOR DEL VIDEO -->
-        <!-- object-cover garantiza que el video se adapte a cualquier tamaño de pantalla sin deformarse -->
-        <!-- scale-110 evita que se vean bordes borrosos por el blur -->
         <div class="absolute inset-0 w-full h-full z-0 overflow-hidden">
             <video autoplay loop muted playsinline class="w-full h-full object-cover scale-110 blur-[8px] opacity-50">
-                <!-- ========================================================================= -->
-                <!-- SUGERENCIA: Sube tu video .mp4 a GitHub y cambia este enlace por "tu-video.mp4" -->
+                <!-- Sube tu video mp4 y reemplaza aquí -->
                 <source src="mi-video.mp4" type="video/mp4">
-                <!-- ========================================================================= -->
             </video>
-            
-            <!-- CAPA DE CONTRASTE (Overlay para fusionar el video con el fondo oscuro y leer bien el texto) -->
             <div class="absolute inset-0 bg-gradient-to-r from-[#09090b]/80 via-[#09090b]/50 to-[#09090b]"></div>
         </div>
 
-        <!-- CONTENIDO FRONTAL (Sobre el video) -->
         <div class="absolute top-12 left-20 z-10">
-            <!-- Espacio para el logo de tu software NovaGym -->
-            <img src="https://i.imgur.com/2x8qbxi.png" alt="Logo Software" class="w-72 h-auto rounded-xl drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
+            <!-- Aumenté el tamaño del logo como pediste (w-32) -->
+            <img src="https://i.imgur.com/2x8qbxi.png" alt="Logo Software" class="w-72 h-auto drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)]">
         </div>
         
         <div class="relative z-10">
@@ -51,13 +41,11 @@
         </div>
         
         <div class="absolute bottom-12 left-20 flex items-center gap-3 z-10 opacity-60 hover:opacity-100 transition duration-300">
-            <!-- Espacio para tu firma NovaBit -->
             <img src="https://i.imgur.com/GG4a01Z.png" alt="NovaBit Logo" class="h-6 w-auto grayscale drop-shadow-md">
             <p class="text-xs text-gray-300 tracking-wider drop-shadow-md border-l border-gray-600 pl-3">© 2026 NovaBit Media Agency.</p>
         </div>
     </div>
 
-    <!-- Panel Derecho: Login Gimnasios -->
     <div class="w-full md:w-1/2 flex items-center justify-center p-10 relative z-10 bg-[#09090b] shadow-[-25px_0_35px_rgba(0,0,0,0.5)]">
         <div class="w-full max-w-md">
             <h2 class="text-3xl font-bold mb-2 text-white">Bienvenido al Sistema</h2>
@@ -82,11 +70,10 @@
 
             <div class="my-8 flex items-center justify-center">
                 <div class="w-full h-px bg-[#27272a]"></div>
-                <span class="px-4 text-xs text-gray-500 bg-[#09090b]">Si posee credenciales corporativas ingrese utilizando Single Sign On aquí:</span>
+                <span class="px-4 text-xs text-gray-500 bg-[#09090b]">Si posee credenciales corporativas ingrese aquí:</span>
                 <div class="w-full h-px bg-[#27272a]"></div>
             </div>
 
-            <!-- Botón para abrir modal del Super Admin -->
             <button id="btn-abrir-corp" class="w-full glass-btn text-white text-sm font-semibold py-4 rounded-xl transition duration-300 flex items-center justify-center gap-3">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                 Ingresar
@@ -94,7 +81,7 @@
         </div>
     </div>
 
-    <!-- Modal Login Corporativo (Super Admin) -->
+    <!-- Modal Login Corporativo -->
     <div id="modal-corp" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/90 backdrop-blur-md fade-in">
         <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-sm border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] relative">
             <button id="btn-cerrar-corp" class="absolute top-4 right-4 text-gray-500 hover:text-white transition">✕</button>
@@ -109,29 +96,19 @@
         </div>
     </div>
 
-    <!-- Lógica de Conexión y Seguridad -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8",
-            authDomain: "novagym-saas-enterprise.firebaseapp.com",
-            projectId: "novagym-saas-enterprise",
-            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
-            messagingSenderId: "578362101056",
-            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
 
-        // LOGIN DE GIMNASIOS
+        // LOGIN INTELIGENTE (RBAC)
         document.getElementById('form-login-gym').addEventListener('submit', async (e) => {
             e.preventDefault();
             const gymUser = document.getElementById('input-gym-user').value.trim();
             const password = document.getElementById('input-password').value.trim();
-            const btn = document.getElementById('btn-login');
-            const errorDiv = document.getElementById('login-error');
+            const btn = document.getElementById('btn-login'); const errorDiv = document.getElementById('login-error');
             
             btn.innerHTML = 'Verificando...'; btn.disabled = true; errorDiv.classList.add('hidden');
 
@@ -140,46 +117,36 @@
                 const snap = await getDocs(q);
 
                 if (!snap.empty) {
-                    const docSnap = snap.docs[0];
-                    const data = docSnap.data();
+                    const docSnap = snap.docs[0]; const data = docSnap.data();
 
                     if(data.estado === 'suspendido') {
-                        errorDiv.innerText = "ACCESO DENEGADO: Cuenta suspendida por NEMS Tech.";
-                        errorDiv.classList.remove('hidden');
+                        errorDiv.innerText = "ACCESO DENEGADO: Cuenta suspendida por NEMS Tech."; errorDiv.classList.remove('hidden');
                     } else if (data.password === password) {
+                        // Es el Dueño
+                        sessionStorage.setItem('nems_gym_role', 'admin');
+                        window.location.href = `gym.html?id=${docSnap.id}`;
+                    } else if (data.passwordStaff && data.passwordStaff === password) {
+                        // Es un Empleado (Recepcionista)
+                        sessionStorage.setItem('nems_gym_role', 'staff');
                         window.location.href = `gym.html?id=${docSnap.id}`;
                     } else {
-                        errorDiv.innerText = "Clave de acceso incorrecta.";
-                        errorDiv.classList.remove('hidden');
+                        errorDiv.innerText = "Clave de acceso incorrecta."; errorDiv.classList.remove('hidden');
                     }
                 } else {
-                    errorDiv.innerText = "El usuario ingresado no existe.";
-                    errorDiv.classList.remove('hidden');
+                    errorDiv.innerText = "El usuario ingresado no existe."; errorDiv.classList.remove('hidden');
                 }
-            } catch (error) {
-                errorDiv.innerText = "Error de conexión con la base de datos.";
-                errorDiv.classList.remove('hidden');
-            } finally {
-                btn.innerHTML = 'Autorizar Sesión'; btn.disabled = false;
-            }
+            } catch (error) { errorDiv.innerText = "Error de conexión con la base de datos."; errorDiv.classList.remove('hidden');
+            } finally { btn.innerHTML = 'Autorizar Sesión'; btn.disabled = false; }
         });
 
-        // LOGIN CORPORATIVO (Super Admin)
+        // LOGIN CORPORATIVO
         const modalCorp = document.getElementById('modal-corp');
         document.getElementById('btn-abrir-corp').addEventListener('click', () => modalCorp.classList.remove('hidden'));
         document.getElementById('btn-cerrar-corp').addEventListener('click', () => modalCorp.classList.add('hidden'));
-
         document.getElementById('form-corp').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const u = document.getElementById('corp-user').value;
-            const p = document.getElementById('corp-pass').value;
-
-            if(u === 'nems' && p === 'novabit2026') {
-                sessionStorage.setItem('nems_admin_token', 'autorizado_2026');
-                window.location.href = 'admin.html';
-            } else {
-                alert("Violación de seguridad. Credenciales incorrectas.");
-            }
+            e.preventDefault(); const u = document.getElementById('corp-user').value; const p = document.getElementById('corp-pass').value;
+            if(u === 'nems' && p === 'novabit2026') { sessionStorage.setItem('nems_admin_token', 'autorizado_2026'); window.location.href = 'admin.html'; } 
+            else { alert("Violación de seguridad. Credenciales incorrectas."); }
         });
     </script>
 </body>
