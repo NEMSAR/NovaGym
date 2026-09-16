@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Management Pro | NEMS OS</title>
+    <title> Enterprise Management | NovaGym</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -27,7 +27,6 @@
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Aurora UI Fx */
         .aurora-bg {
             position: absolute; top: -50px; left: 0; width: 100%; height: 450px;
             background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
@@ -36,21 +35,17 @@
         }
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        
         input[type="checkbox"].custom-check { accent-color: var(--accent-color, #eab308); width: 16px; height: 16px; cursor: pointer;}
     </style>
 </head>
 <body class="flex h-screen overflow-hidden hidden" id="app-container">
 
-    <!-- Toasts arriba a la derecha -->
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
-    <!-- Botón Flotante Asistente (Reubicado a la derecha) -->
     <button id="btn-help" class="fixed bottom-5 right-5 w-12 h-12 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)] flex items-center justify-center text-gray-300 z-50 bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] hover:text-white transition" title="Guía de Usuario">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
     </button>
 
-    <!-- Menú Lateral -->
     <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-30 relative shadow-2xl">
         <div class="p-6 flex flex-col items-center justify-center border-b border-[#27272a] min-h-[120px]">
             <div id="ui-gym-logo-container" class="mb-2"></div>
@@ -61,31 +56,28 @@
             <div class="space-y-1">
                 <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
                 <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    Dashboard Ejecutivo
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg> Dashboard Ejecutivo
                 </div>
                 <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    Padrón de Socios
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Padrón de Socios
                 </div>
-                <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                    Finanzas y Caja
+                <!-- Bloqueo para Staff -->
+                <div id="nav-finanzas" class="nav-item admin-only flex items-center gap-3 py-3 px-4 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Finanzas y Caja
                 </div>
-                
                 <div id="modulos-container"></div>
                 
-                <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    Cerrar Sesión
-                </a>
+                <div class="mt-8 pt-4 border-t border-[#27272a] text-center">
+                    <span id="ui-role-badge" class="text-[9px] bg-[#18181b] border border-[#27272a] text-gray-400 px-2 py-1 rounded-full font-mono">Role</span>
+                </div>
+                <button id="btn-logout-gym" class="w-full nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-2 text-gray-500 hover:text-red-400 text-left">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Cerrar Sesión
+                </button>
             </div>
 
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
-                <img src="https://i.imgur.com/GG4a01Z.png" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
-                <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">
-                    Powered by<br>NovaBit Media Agency
-                </p>
+                <img src="https://i.imgur.com/mGPdyWD.png" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+                <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">Powered by<br>NovaBit Media Agency</p>
             </div>
         </nav>
     </aside>
@@ -101,13 +93,12 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <button id="btn-toggle-fx" class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-500/30 text-blue-300 hover:text-white px-4 py-2.5 rounded-full text-xs font-bold transition shadow-[0_0_15px_rgba(59,130,246,0.2)] flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        Fx Visuales
+                        ✨ Fx Visuales
                     </button>
-                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-full shadow-lg transition text-sm text-[#09090b]">
-                        + Registrar Socio
+                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-full shadow-lg transition text-sm text-[#09090b] flex items-center gap-2">
+                        <span>+</span> <span id="text-accion-principal">Registrar Socio</span>
                     </button>
-                    <div class="glass-panel px-5 py-2 text-right hidden lg:block">
+                    <div class="glass-panel px-5 py-2 text-right hidden lg:block admin-only">
                         <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Ingreso Anual</p>
                         <p id="ui-ingresos-totales" class="text-lg font-bold dynamic-text">$0</p>
                     </div>
@@ -120,7 +111,7 @@
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Miembros Activos</h3>
                     <p id="total-socios" class="text-3xl font-black text-white mt-1">0</p>
                 </div>
-                <div class="glass-panel p-5 border-t-4 border-emerald-500/50 shadow-2xl">
+                <div class="glass-panel p-5 border-t-4 border-emerald-500/50 shadow-2xl admin-only">
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Ingresos del Mes</h3>
                     <p id="ingresos-mes" class="text-3xl font-black text-emerald-400 mt-1">$0</p>
                 </div>
@@ -129,14 +120,14 @@
                     <p id="total-alertas" class="text-3xl font-black text-red-400 mt-1">0</p>
                 </div>
                 
-                <div class="xl:col-span-2 space-y-6 mt-2">
+                <div class="xl:col-span-2 space-y-6 mt-2 admin-only">
                     <section class="glass-panel p-6 h-full shadow-2xl">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Crecimiento Financiero</h2>
                         <div class="w-full h-[300px]"><canvas id="revenueChart"></canvas></div>
                     </section>
                 </div>
                 <div class="xl:col-span-1 space-y-6 mt-2">
-                    <section class="glass-panel p-6 shadow-2xl">
+                    <section class="glass-panel p-6 shadow-2xl h-full">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Atención Requerida</h2>
                         <div id="contenedor-alertas" class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"></div>
                     </section>
@@ -168,15 +159,12 @@
                 </section>
             </div>
 
-            <!-- VISTA FINANZAS -->
-            <div id="vista-finanzas" class="hidden fade-in">
+            <!-- VISTA FINANZAS (Solo Admins) -->
+            <div id="vista-finanzas" class="hidden fade-in admin-only">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Registro de Transacciones</h2>
-                        <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            Descargar CSV
-                        </button>
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Registro Global de Transacciones</h2>
+                        <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">Descargar CSV</button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
@@ -196,6 +184,34 @@
                 </section>
             </div>
 
+            <!-- VISTA TIENDA POS -->
+            <div id="vista-tienda" class="hidden fade-in">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="xl:col-span-2 space-y-4">
+                        <section class="glass-panel p-6 shadow-2xl min-h-[400px]">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Catálogo Rápido (POS)</h2>
+                                <button onclick="abrirModalNuevoProducto()" class="text-xs bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-1.5 rounded font-bold transition flex items-center gap-2">
+                                    <span>+</span> Nuevo Producto
+                                </button>
+                            </div>
+                            <!-- Grilla de Botones del Catálogo -->
+                            <div id="catalogo-productos" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+                        </section>
+                    </div>
+                    <div class="xl:col-span-1 space-y-4">
+                        <section class="glass-panel p-6 shadow-2xl h-full">
+                            <h2 class="text-sm font-bold text-white mb-6 uppercase tracking-wider">Ventas de Hoy (Mostrador)</h2>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <tbody id="tabla-tienda-body"></tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
             <!-- VISTA EVALUACIONES -->
             <div id="vista-evaluaciones" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
@@ -211,7 +227,7 @@
                                     <th class="py-3 px-4">Peso (Kg)</th>
                                     <th class="py-3 px-4">Altura (cm)</th>
                                     <th class="py-3 px-4">IMC Resultante</th>
-                                    <th class="py-3 px-4 text-center">Borrar</th>
+                                    <th class="py-3 px-4 text-center admin-only">Borrar</th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-evaluaciones-body"></tbody>
@@ -220,7 +236,6 @@
                 </section>
             </div>
             
-            <!-- VISTA ASISTENCIA -->
             <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 flex flex-col items-center justify-center text-center shadow-2xl">
                 <svg class="w-16 h-16 text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 <h2 class="text-xl font-bold text-white mb-2">Módulo de Control de Asistencia</h2>
@@ -238,7 +253,7 @@
         </div>
     </div>
 
-    <!-- Modal NEMS Guide (Asistente) -->
+    <!-- Modal NEMS Guide -->
     <div id="modal-ayuda" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
         <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
@@ -247,20 +262,16 @@
             
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. ¿Cómo registrar un socio nuevo?</h3>
-                    <p class="text-gray-400">Haga clic en "+ Registrar Socio" arriba a la derecha. Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio y registrará el cobro en la caja de Finanzas automáticamente.</p>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
+                    <p class="text-gray-400">Clic en "+ Registrar Socio". Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio, calculará la fecha de vencimiento y registrará el cobro en Finanzas automáticamente.</p>
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> 2. ¿Cómo renovar una cuota vencida?</h3>
-                    <p class="text-gray-400">En el Padrón de Socios, busque a la persona y presione el botón "💳 Cobrar". Seleccione los meses que abona y el medio de pago. El sistema extenderá su fecha de vencimiento automáticamente.</p>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> 2. Renovar una cuota</h3>
+                    <p class="text-gray-400">En el Padrón de Socios, busque a la persona y presione "💳 Cobrar". Seleccione los meses que abona y el medio de pago. El sistema sumará esos meses a su fecha actual de vencimiento.</p>
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> 3. ¿Qué es el Punto de Venta (POS)?</h3>
-                    <p class="text-gray-400">Es una caja registradora rápida para ventas de mostrador (aguas, energizantes, remeras). Al registrar una venta, el dinero se suma directamente a sus Ingresos del Mes sin asociarlo a ninguna membresía.</p>
-                </div>
-                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 4. ¿Para qué sirven las Evaluaciones Físicas?</h3>
-                    <p class="text-gray-400">Le permite llevar un historial de peso y altura de sus clientes. El sistema calculará el IMC (Índice de Masa Corporal) y le asignará un color (Azul=Bajo, Gris=Normal, Naranja/Rojo=Alerta).</p>
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> 3. Tienda POS (Actualizar Precios)</h3>
+                    <p class="text-gray-400">Primero, agregue productos al Catálogo usando el botón "+ Nuevo Producto". Para vender, haga clic en el botón del producto. Si es usted el Dueño/Admin, verá un ícono de "lápiz" al pasar el mouse por encima del producto para actualizar su precio rápidamente a causa de la inflación.</p>
                 </div>
             </div>
         </div>
@@ -274,69 +285,64 @@
         const GYM_ID = urlParams.get('id');
         if (!GYM_ID) { window.location.href = "index.html"; throw new Error("No ID"); }
 
+        // RBAC (Control de Roles)
+        const userRole = sessionStorage.getItem('nems_gym_role');
+        if(!userRole) window.location.href = "index.html";
+        document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
+        if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
+
         const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
         
         let nombreGymActual = ""; let gymModulos = {};
-        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = [];
+        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = []; let listaProductosData = [];
         let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
         let chartInstance = null;
 
         const btnFx = document.getElementById('btn-toggle-fx');
-        if (localStorage.getItem('nems_fx_disabled') === 'true') {
-            document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50', 'grayscale');
-        }
-        btnFx.addEventListener('click', () => {
-            document.body.classList.toggle('aurora-disabled');
-            localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled'));
-            btnFx.classList.toggle('opacity-50'); btnFx.classList.toggle('grayscale');
-        });
+        if (localStorage.getItem('nems_fx_disabled') === 'true') { document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50', 'grayscale'); }
+        btnFx.addEventListener('click', () => { document.body.classList.toggle('aurora-disabled'); localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled')); btnFx.classList.toggle('opacity-50'); btnFx.classList.toggle('grayscale'); });
 
         document.getElementById('btn-help').addEventListener('click', () => document.getElementById('modal-ayuda').classList.remove('hidden'));
+        document.getElementById('btn-logout-gym').addEventListener('click', () => { sessionStorage.removeItem('nems_gym_role'); window.location.href = 'index.html'; });
 
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
+        const txtAccionPrincipal = document.getElementById('text-accion-principal');
 
         window.showToast = (msg, tipo = 'success') => {
             const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500' : 'bg-[#18181b] border-l-4 border-red-500';
             toast.className = `toast-enter ${bg} border-y border-l border-[#27272a] text-white px-6 py-4 shadow-2xl font-bold text-sm flex items-center gap-3`;
             toast.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${tipo==='success'?'M5 13l4 4L19 7':'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}"></path></svg> ${msg}`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+            container.appendChild(toast); setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
         function cambiarVista(vista) {
             vistaActual = vista;
-            ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-asistencia', 'vista-evaluaciones'].forEach(id => {
-                const el = document.getElementById(id); if(el) el.classList.add('hidden');
-            });
+            ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-tienda', 'vista-asistencia', 'vista-evaluaciones'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('hidden'); });
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
             const title = document.getElementById('header-title'); const subtitle = document.getElementById('header-subtitle');
             if(document.getElementById(`nav-${vista}`)) document.getElementById(`nav-${vista}`).classList.add('active');
             if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
 
-            if (vista === 'dashboard') { title.innerText = "Dashboard Ejecutivo"; subtitle.innerText = "Métricas financieras y operativas"; btnAccionPrincipal.innerText = '+ Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'socios') { title.innerText = "Padrón de Socios"; subtitle.innerText = "Padrón completo de socios"; btnAccionPrincipal.innerText = '+ Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'finanzas') { title.innerText = "Finanzas y Caja"; subtitle.innerText = "Registro contable"; btnAccionPrincipal.innerText = '💳 Renovar Cuota'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'tienda') { document.getElementById('vista-finanzas').classList.remove('hidden'); title.innerText = "Punto de Venta (POS)"; subtitle.innerText = "Tienda de Mostrador"; btnAccionPrincipal.innerText = '🛒 Registrar Venta'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'evaluaciones') { title.innerText = "Metas y Evaluaciones"; subtitle.innerText = "Control de mediciones corporales"; btnAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'block'; } 
+            if (vista === 'dashboard') { title.innerText = "Dashboard Ejecutivo"; subtitle.innerText = "Métricas en tiempo real"; txtAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'flex'; } 
+            else if (vista === 'socios') { title.innerText = "Padrón de Socios"; subtitle.innerText = "Directorio completo"; txtAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'flex'; } 
+            else if (vista === 'finanzas' && userRole === 'admin') { title.innerText = "Finanzas y Caja"; subtitle.innerText = "Registro contable"; txtAccionPrincipal.innerText = 'Cobrar Cuota'; btnAccionPrincipal.style.display = 'flex'; } 
+            else if (vista === 'tienda') { title.innerText = "Punto de Venta (POS)"; subtitle.innerText = "Venta rápida de mostrador"; btnAccionPrincipal.style.display = 'none'; } 
+            else if (vista === 'evaluaciones') { title.innerText = "Metas y Evaluaciones"; subtitle.innerText = "Control corporal"; txtAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'flex'; } 
             else { title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise"; btnAccionPrincipal.style.display = 'none'; }
         }
 
         document.getElementById('nav-dashboard').addEventListener('click', () => cambiarVista('dashboard'));
         document.getElementById('nav-socios').addEventListener('click', () => cambiarVista('socios'));
-        document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
+        if(document.getElementById('nav-finanzas')) document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
 
-        const modal = document.getElementById('modal-universal');
-        const modalContent = document.getElementById('modal-content');
-        const modalTitle = document.getElementById('modal-title');
+        const modal = document.getElementById('modal-universal'); const modalContent = document.getElementById('modal-content'); const modalTitle = document.getElementById('modal-title');
 
         btnAccionPrincipal.addEventListener('click', () => {
             if (vistaActual === 'dashboard' || vistaActual === 'socios') abrirModalSocio();
             else if (vistaActual === 'finanzas') abrirModalPago();
-            else if (vistaActual === 'tienda') abrirModalVenta();
             else if (vistaActual === 'evaluaciones') abrirModalEvaluacion();
         });
 
@@ -344,23 +350,22 @@
 
         function getSocioOptions(preseleccionado = "") {
             let opts = '<option value="">Seleccione el Socio...</option>';
-            listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===preseleccionado?'selected':''}>${s.nombre}</option>`);
-            return opts;
+            listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===preseleccionado?'selected':''}>${s.nombre}</option>`); return opts;
         }
 
+        // --- MODALES ABM ---
         function abrirModalSocio(socio = null) {
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
-            modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio (Perfil + Pago)";
+            modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio";
             
-            let chkServ = '';
-            const currServ = socio ? (socio.servicio || "") : "";
+            let chkServ = ''; const currServ = socio ? (socio.servicio || "") : "";
             if(gymModulos.musculacion) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Musculación" class="custom-check" ${currServ.includes('Musculación')?'checked':''}> <span class="text-sm">Musc.</span></label>`;
             if(gymModulos.funcional) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Funcional" class="custom-check" ${currServ.includes('Funcional')?'checked':''}> <span class="text-sm">Func.</span></label>`;
             if(gymModulos.pilates) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Pilates" class="custom-check" ${currServ.includes('Pilates')?'checked':''}> <span class="text-sm">Pilates</span></label>`;
 
             const boxPago = !socio ? `
                 <div class="border-t border-[#27272a] pt-4 mt-4">
-                    <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">1er Pago y Vencimiento Automático</h3>
+                    <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3">1er Pago y Vencimiento Automático</h3>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div><label class="text-[10px] text-gray-500 uppercase">Fecha Pago</label><input type="date" id="s-fec-pago" class="w-full input-dark rounded-lg p-2 text-sm" required></div>
                         <div><label class="text-[10px] text-gray-500 uppercase">Meses Abona</label><input type="number" id="s-meses" class="w-full input-dark rounded-lg p-2 text-sm" value="1" min="1" required></div>
@@ -369,8 +374,7 @@
                         <select id="s-medio" class="w-full input-dark rounded-lg p-2 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
                         <input type="number" id="s-monto" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="Importe ARS" required>
                     </div>
-                </div>
-            ` : '';
+                </div>` : '';
 
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-3">
@@ -382,20 +386,12 @@
                         </div>
                     </div>
                     <input type="url" id="s-foto" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="URL Foto de Perfil (Opcional)" value="${socio?socio.foto||'':''}">
-                    
                     <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-[10px] text-gray-500 uppercase mb-2">Servicios Asignados</p><div class="flex flex-wrap gap-4">${chkServ}</div></div>
-                    
                     <div class="grid grid-cols-2 gap-3">
-                        <select id="s-mem" class="w-full input-dark rounded-lg p-2 text-sm" required>
-                            <option value="">Plan...</option>
-                            <option value="3 Días a la Semana" ${socio&&socio.membresia==="3 Días a la Semana"?'selected':''}>3 Días a la Semana</option>
-                            <option value="Pase Libre (5 Días)" ${socio&&socio.membresia==="Pase Libre (5 Días)"?'selected':''}>Pase Libre (5 Días)</option>
-                        </select>
+                        <select id="s-mem" class="w-full input-dark rounded-lg p-2 text-sm" required><option value="">Plan...</option><option value="3 Días a la Semana" ${socio&&socio.membresia==="3 Días a la Semana"?'selected':''}>3 Días a la Semana</option><option value="Pase Libre (5 Días)" ${socio&&socio.membresia==="Pase Libre (5 Días)"?'selected':''}>Pase Libre (5 Días)</option></select>
                         <input type="date" id="s-vence" class="w-full input-dark rounded-lg p-2 text-sm" value="${socio?socio.vence:''}" required ${!socio ? 'readonly title="Se calcula automáticamente"' : ''}>
                     </div>
-
                     ${boxPago}
-
                     <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-xl mt-4 text-sm text-[#09090b]">Guardar Registro</button>
                 </form>`;
 
@@ -410,20 +406,15 @@
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault(); const btn = e.target.querySelector('button'); btn.innerText = 'Procesando...'; btn.disabled = true;
-                
                 const servs = Array.from(document.querySelectorAll('input[name="s-serv"]:checked')).map(cb => cb.value).join(' + ');
                 if(!servs) { showToast("Selecciona al menos un servicio", "error"); btn.disabled = false; btn.innerText = 'Guardar Registro'; return; }
-
                 const dSocio = { nombre: document.getElementById('s-nom').value, telefono: document.getElementById('s-tel').value, foto: document.getElementById('s-foto').value, servicio: servs, membresia: document.getElementById('s-mem').value, vence: document.getElementById('s-vence').value };
-                
                 try {
-                    if(modoEdicion) {
-                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dSocio);
-                        showToast("Perfil actualizado");
-                    } else {
+                    if(modoEdicion) { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dSocio); showToast("Perfil actualizado"); } 
+                    else { 
                         await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
                         await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta/Cuota: "+dSocio.nombre, monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
-                        showToast("Socio y Pago registrados (Alta Integral)");
+                        showToast("Socio y Pago registrados");
                     }
                     modal.classList.add('hidden'); cargarDatos();
                 } catch(err) { showToast("Error de conexión", "error"); btn.disabled = false; }
@@ -452,7 +443,6 @@
                 e.preventDefault(); const nom = document.getElementById('p-soc').value; const meses = parseInt(document.getElementById('p-meses').value);
                 try {
                     await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Renovación ("+meses+"m): "+nom, monto: document.getElementById('p-mon').value, medio: document.getElementById('p-medio').value, tipo: "Cuota", fecha: document.getElementById('p-fec').value, timestamp: new Date().toISOString() });
-                    
                     const s = listaSociosData.find(x => x.nombre === nom);
                     if(s) {
                         const [y,m,d] = s.vence.split('-'); const nDate = new Date(y, m-1, d); nDate.setMonth(nDate.getMonth() + meses);
@@ -465,31 +455,80 @@
             modal.classList.remove('hidden');
         }
 
-        function abrirModalVenta() {
-            modalTitle.innerText = "Punto de Venta (Mostrador)";
+        // --- MODALES TIENDA POS (NUEVO) ---
+        window.abrirModalNuevoProducto = () => {
+            modalTitle.innerText = "Agregar al Catálogo POS";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
-                    <input type="text" id="v-art" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Producto (Agua, Toalla, Suplemento)..." required>
+                    <input type="text" id="cat-nom" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Nombre del Artículo (Ej: Agua 500ml)" required>
+                    <input type="number" id="cat-pre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Precio Base ARS" required>
+                    <button type="submit" class="w-full bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-white font-bold py-3 rounded-lg mt-2 text-sm transition">Guardar en Catálogo</button>
+                </form>`;
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); 
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "productos"), { nombre: document.getElementById('cat-nom').value, precio: document.getElementById('cat-pre').value });
+                    modal.classList.add('hidden'); showToast("Producto agregado"); cargarDatos();
+                } catch(err) { showToast("Error al guardar", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalEditarProducto = (id, nombre, precioActual) => {
+            modalTitle.innerText = "Actualizar Artículo: " + nombre;
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre</label>
+                    <input type="text" id="cat-nom-edit" class="w-full input-dark rounded-lg p-2.5 text-sm mb-3" value="${nombre}" required>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nuevo Precio ARS</label>
+                    <input type="number" id="cat-pre-edit" class="w-full input-dark rounded-lg p-2.5 text-sm" value="${precioActual}" required>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button type="submit" class="flex-1 dynamic-btn font-bold py-3 rounded-lg text-sm text-[#09090b]">Actualizar</button>
+                        <button type="button" id="btn-eliminar-prod" class="bg-red-900/40 border border-red-500/30 hover:bg-red-600 text-red-400 hover:text-white px-4 py-3 rounded-lg text-sm transition" title="Eliminar Producto">🗑️</button>
+                    </div>
+                </form>`;
+            
+            document.getElementById('btn-eliminar-prod').addEventListener('click', async () => {
+                if(confirm("¿Seguro de eliminar este producto del catálogo?")) {
+                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "productos", id));
+                        modal.classList.add('hidden'); showToast("Producto eliminado"); cargarDatos();
+                    } catch(err) { showToast("Error al eliminar", "error"); }
+                }
+            });
+
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); 
+                try { await updateDoc(doc(db, "gimnasios", GYM_ID, "productos", id), { nombre: document.getElementById('cat-nom-edit').value, precio: document.getElementById('cat-pre-edit').value });
+                    modal.classList.add('hidden'); showToast("Precio actualizado correctamente"); cargarDatos();
+                } catch(err) { showToast("Error al actualizar", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalVentaArticulo = (nombre, precioBase) => {
+            modalTitle.innerText = `Venta Rápida: ${nombre}`;
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
                     <div class="grid grid-cols-2 gap-3">
                         <select id="v-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
-                        <input type="number" id="v-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
+                        <input type="number" id="v-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" value="${precioBase}" required>
                     </div>
                     <input type="date" id="v-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg mt-2 text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)]">Registrar Venta POS</button>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg mt-2 text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)]">Confirmar Pago</button>
                 </form>`;
             document.getElementById('v-fec').valueAsDate = new Date();
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
-                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('v-art').value, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
-                    modal.classList.add('hidden'); showToast("Venta POS procesada"); cargarDatos();
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
+                    modal.classList.add('hidden'); showToast("Venta de mostrador registrada"); cargarDatos();
                 } catch(err) { showToast("Error en venta", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
         function abrirModalEvaluacion() {
-            modalTitle.innerText = "Physical Assessment (Metas)";
+            modalTitle.innerText = "Evaluación Corporal (Metas)";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
                     <select id="e-soc" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${getSocioOptions()}</select>
@@ -507,11 +546,12 @@
                 const imc = (peso / Math.pow(alturaCm/100, 2)).toFixed(1); 
                 try { await addDoc(collection(db, "gimnasios", GYM_ID, "evaluaciones"), { socio: document.getElementById('e-soc').value, peso: peso, altura: alturaCm, imc: imc, fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() });
                     modal.classList.add('hidden'); showToast(`Medición guardada. IMC: ${imc}`); cargarDatos();
-                } catch(err) { showToast("Error al guardar meta", "error"); }
+                } catch(err) { showToast("Error al guardar", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
+        // --- CEREBRO & RENDER ---
         function evaluarEstado(vence) {
             const h = new Date(); h.setHours(0,0,0,0); const v = new Date(vence); v.setHours(23,59,59,999);
             const d = Math.ceil((v - h) / (1000 * 60 * 60 * 24));
@@ -533,8 +573,7 @@
             const colorAcento = style.getPropertyValue('--accent-color').trim() || '#eab308';
 
             chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: { labels: etiquetas, datasets: [{ label: 'Ingresos (ARS)', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#09090b', pointBorderColor: colorAcento, pointRadius: 5, fill: true, tension: 0.4 }] },
+                type: 'line', data: { labels: etiquetas, datasets: [{ label: 'Ingresos (ARS)', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#09090b', pointBorderColor: colorAcento, pointRadius: 5, fill: true, tension: 0.4 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#18181b', titleColor: '#fff', bodyColor: colorAcento, borderColor: '#27272a', borderWidth: 1 } }, scales: { x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } }, y: { beginAtZero: true, grid: { color: '#27272a' }, ticks: { color: '#a1a1aa', callback: function(value) { return '$' + value.toLocaleString(); } } } } }
             });
         }
@@ -561,9 +600,12 @@
             if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
             if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
 
-            const [sSnap, fSnap, eSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")) ]);
+            const [sSnap, fSnap, eSnap, pSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), getDocs(collection(db, "gimnasios", GYM_ID, "productos")) ]);
             
             listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
+            
+            listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
+            listaProductosData.sort((a, b) => a.nombre.localeCompare(b.nombre)); // Orden alfabético
             
             listaFinanzasData = []; let ingrT = 0; let ingrMes = 0;
             const mesActual = new Date().toISOString().substring(0,7);
@@ -577,22 +619,26 @@
             listaEvalsData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
             document.getElementById('total-socios').innerText = listaSociosData.length;
-            document.getElementById('ui-ingresos-totales').innerText = `$${ingrT.toLocaleString('es-AR')}`;
-            document.getElementById('ingresos-mes').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
+            if(userRole === 'admin') {
+                document.getElementById('ui-ingresos-totales').innerText = `$${ingrT.toLocaleString('es-AR')}`;
+                document.getElementById('ingresos-mes').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
+                renderizarGrafico(listaFinanzasData);
+            }
             
-            renderUI(listaSociosData); renderizarGrafico(listaFinanzasData);
+            renderUI(); 
         }
 
-        function renderUI(sociosArray) {
+        function renderUI() {
+            // Dashboard
             const cAlertas = document.getElementById('contenedor-alertas'); cAlertas.innerHTML = ''; let alertas = 0;
-            sociosArray.forEach(s => {
+            listaSociosData.forEach(s => {
                 const est = evaluarEstado(s.vence);
                 if(est.t !== 'Active') {
                     alertas++;
                     cAlertas.innerHTML += `
                         <div class="p-3 bg-[#18181b] border border-[#27272a] rounded-xl flex justify-between items-center transition hover:bg-[#27272a]">
                             <div class="flex items-center gap-3">
-                                <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-10 h-10 rounded-lg object-cover border border-[#27272a]">
+                                <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'}" class="w-10 h-10 rounded-lg object-cover border border-[#27272a]">
                                 <div><p class="text-sm font-bold text-white">${s.nombre}</p><p class="text-[10px] text-gray-500">${s.vence} • <span class="${est.c.split(' ')[0]}">${est.t}</span></p></div>
                             </div>
                             <button class="bg-[#27272a] text-white hover:bg-white hover:text-black px-3 py-1 text-xs rounded-lg font-bold transition" onclick="abrirModalPago('${s.nombre}')">Renovar</button>
@@ -602,9 +648,11 @@
             document.getElementById('total-alertas').innerText = alertas;
             if(alertas === 0) cAlertas.innerHTML = `<p class="text-xs text-gray-500 italic">No hay alertas. Todos los socios están al día.</p>`;
 
+            // Tabla Socios
             const tbS = document.getElementById('tabla-socios-body'); tbS.innerHTML = '';
-            sociosArray.forEach(s => {
+            listaSociosData.forEach(s => {
                 const est = evaluarEstado(s.vence);
+                const btnEliminar = userRole === 'admin' ? `<button class="btn-del-s text-gray-500 hover:text-red-400 bg-[#18181b] p-1.5 rounded transition" data-id="${s.id}" title="Eliminar">🗑️</button>` : '';
                 tbS.innerHTML += `
                     <tr class="border-b border-[#27272a] glass-row">
                         <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${est.c}">${est.t}</span></td>
@@ -618,27 +666,58 @@
                         <td class="py-3 px-4 text-gray-400">${s.membresia}</td>
                         <td class="py-3 px-4 text-white font-mono text-xs">${s.vence}</td>
                         <td class="py-3 px-4 flex justify-end gap-1">
-                            <button class="text-gray-400 hover:text-white bg-[#27272a] p-1.5 rounded" onclick="abrirModalPago('${s.nombre}')" title="Cobrar">💳</button>
-                            <button class="btn-edit-s text-gray-400 hover:text-blue-400 bg-[#27272a] p-1.5 rounded" data-id="${s.id}" title="Editar">✏️</button>
-                            <button class="btn-del-s text-gray-400 hover:text-red-400 bg-[#27272a] p-1.5 rounded" data-id="${s.id}" title="Eliminar">🗑️</button>
+                            <button class="text-gray-400 hover:text-white bg-[#18181b] p-1.5 rounded transition" onclick="abrirModalPago('${s.nombre}')" title="Cobrar">💳</button>
+                            <button class="btn-edit-s text-gray-400 hover:text-blue-400 bg-[#18181b] p-1.5 rounded transition" data-id="${s.id}" title="Editar">✏️</button>
+                            ${btnEliminar}
                         </td>
                     </tr>`;
             });
 
-            const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
-            listaFinanzasData.forEach(f => {
-                const tColor = f.tipo === 'Inventario' ? 'text-emerald-400 bg-emerald-900/20 border border-emerald-500/30' : 'text-blue-400 bg-blue-900/20 border border-blue-500/30';
-                tbF.innerHTML += `
-                    <tr class="border-b border-[#27272a] glass-row">
-                        <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha.split('-').reverse().join('/')}</td>
-                        <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] border ${tColor}">${f.tipo}</span></td>
-                        <td class="py-3 px-4 text-gray-400 text-xs uppercase">${f.medio || 'Efectivo'}</td>
-                        <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
-                        <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-500 hover:text-red-500" data-id="${f.id}">✕</button></td>
-                    </tr>`;
-            });
+            // Tabla Finanzas (Solo Admin)
+            if(userRole === 'admin') {
+                const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
+                listaFinanzasData.forEach(f => {
+                    const tColor = f.tipo === 'Inventario' ? 'text-emerald-400 bg-emerald-900/20 border border-emerald-500/30' : 'text-blue-400 bg-blue-900/20 border border-blue-500/30';
+                    tbF.innerHTML += `
+                        <tr class="border-b border-[#27272a] glass-row">
+                            <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha.split('-').reverse().join('/')}</td>
+                            <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] ${tColor}">${f.tipo}</span></td>
+                            <td class="py-3 px-4 text-gray-400 text-xs uppercase">${f.medio || 'Efectivo'}</td>
+                            <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
+                            <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-600 hover:text-red-500 transition" data-id="${f.id}">✕</button></td>
+                        </tr>`;
+                });
+            }
 
+            // TIENDA POS UI (Edición Anti-Inflación solo Admin)
+            if(gymModulos.tienda) {
+                const cCat = document.getElementById('catalogo-productos'); cCat.innerHTML = '';
+                listaProductosData.forEach(p => {
+                    const btnEditAdmin = userRole === 'admin' ? `
+                        <button onclick="abrirModalEditarProducto('${p.id}', '${p.nombre}', '${p.precio}')" class="absolute top-2 right-2 bg-[#27272a] hover:bg-blue-600 text-gray-400 hover:text-white p-1.5 rounded-lg z-10 transition opacity-0 group-hover:opacity-100" title="Editar Precio / Eliminar">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>` : '';
+
+                    cCat.innerHTML += `
+                        <div class="relative bg-[#18181b] border border-[#27272a] hover:border-emerald-500/50 rounded-xl transition flex flex-col justify-between h-24 overflow-hidden group">
+                            <button onclick="abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="absolute inset-0 w-full h-full text-left p-4 hover:bg-emerald-900/10 transition z-0 flex flex-col justify-between">
+                                <span class="text-sm font-bold text-white leading-tight w-[80%]">${p.nombre}</span>
+                                <span class="text-xs font-mono text-emerald-400 bg-emerald-900/20 px-2 py-1 rounded w-fit mt-1">$${p.precio}</span>
+                            </button>
+                            ${btnEditAdmin}
+                        </div>`;
+                });
+                
+                const tbT = document.getElementById('tabla-tienda-body'); tbT.innerHTML = '';
+                const ventasHoy = listaFinanzasData.filter(f => f.tipo === 'Inventario' && f.fecha === new Date().toISOString().split('T')[0]);
+                ventasHoy.forEach(f => {
+                    tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-white font-bold">${f.concepto}</td><td class="py-2 px-2 text-gray-500 text-[10px] uppercase">${f.medio||'Efectivo'}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono">$${f.monto}</td></tr>`;
+                });
+                if(!ventasHoy.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Aún no hay ventas de mostrador hoy.</td></tr>`;
+            }
+
+            // Evaluaciones
             const tbE = document.getElementById('tabla-evaluaciones-body'); 
             if(tbE) {
                 tbE.innerHTML = '';
@@ -648,15 +727,15 @@
                     if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border border-blue-500/30'; 
                     if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border border-orange-500/30'; 
                     if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border border-red-500/30'; 
-
+                    const btnEliminar = userRole === 'admin' ? `<button class="btn-del-e text-gray-600 hover:text-red-500 transition" data-id="${e.id}">✕</button>` : '';
                     tbE.innerHTML += `
                         <tr class="border-b border-[#27272a] glass-row">
                             <td class="py-3 px-4 text-gray-400 font-mono text-xs">${e.fecha.split('-').reverse().join('/')}</td>
                             <td class="py-3 px-4 text-white font-bold">${e.socio}</td>
                             <td class="py-3 px-4 text-gray-300">${e.peso} kg</td>
                             <td class="py-3 px-4 text-gray-300">${e.altura} cm</td>
-                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeImc}">${e.imc}</span></td>
-                            <td class="py-3 px-4 text-center"><button class="btn-del-e text-gray-500 hover:text-red-500" data-id="${e.id}">✕</button></td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeImc}">${e.imc}</span></td>
+                            <td class="py-3 px-4 text-center">${btnEliminar}</td>
                         </tr>`;
                 });
             }
@@ -671,12 +750,14 @@
 
         document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
         
-        document.getElementById('btn-exportar-csv').addEventListener('click', () => {
-            if(!listaFinanzasData.length) return; let c = "Fecha,Descripcion,Categoria,Medio_Pago,Importe\n";
-            listaFinanzasData.forEach(p => c += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.medio||'Efectivo'},${p.monto}\n`);
-            const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], {type:'text/csv'}));
-            l.download = `Ingresos_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); showToast("Reporte Descargado");
-        });
+        if(document.getElementById('btn-exportar-csv')) {
+            document.getElementById('btn-exportar-csv').addEventListener('click', () => {
+                if(!listaFinanzasData.length) return; let c = "Fecha,Descripcion,Categoria,Medio_Pago,Importe\n";
+                listaFinanzasData.forEach(p => c += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.medio||'Efectivo'},${p.monto}\n`);
+                const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], {type:'text/csv'}));
+                l.download = `Ingresos_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); showToast("Reporte Descargado");
+            });
+        }
 
         cargarDatos();
     </script>
