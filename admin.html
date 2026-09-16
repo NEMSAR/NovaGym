@@ -6,64 +6,71 @@
     <title>Super Admin | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // ESCUDO DE SEGURIDAD
         if(sessionStorage.getItem('nems_admin_token') !== 'autorizado_2026') {
             window.location.href = 'index.html';
         }
     </script>
     <style>
-        body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        .glass-card { background: #121214; border: 1px solid #27272a; }
+        body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; }
+        .glass-card { background: #121214; border: 1px solid #27272a; position: relative; z-index: 10; }
         .input-dark { background: #18181b; border: 1px solid #27272a; color: white; transition: all 0.3s; }
         .input-dark:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
         .toast-enter { animation: slideIn 0.4s forwards; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        /* Aurora UI Fx */
+        .aurora-bg {
+            position: absolute; top: -50px; left: -10%; width: 120%; height: 350px;
+            background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
+            background-size: 600% 600%; filter: blur(80px); opacity: 0.15; z-index: 0;
+            animation: auroraSweep 15s ease infinite; pointer-events: none; transition: opacity 0.5s ease;
+        }
+        .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
+        @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     </style>
 </head>
-<body class="p-8 relative">
+<body class="p-8 relative min-h-screen">
+
+    <!-- Efecto Aurora -->
+    <div class="aurora-bg"></div>
 
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-50"></div>
 
-    <div class="max-w-[1400px] mx-auto">
+    <div class="max-w-[1400px] mx-auto relative z-10">
         <header class="flex justify-between items-center mb-10 border-b border-[#27272a] pb-6">
             <div>
                 <h1 class="text-3xl font-black tracking-tight text-white">Consola <span class="text-blue-500">Super Admin</span></h1>
                 <p class="text-gray-400 text-sm mt-1">Gestión Global de Franquicias y Licencias</p>
             </div>
-            <button id="btn-logout" class="bg-[#18181b] border border-[#27272a] text-gray-300 hover:text-white transition px-4 py-2 rounded-lg hover:bg-[#27272a]">
-                Cerrar Sesión Corporativa
-            </button>
+            <div class="flex items-center gap-4">
+                <!-- Botón Toggle Fx -->
+                <button id="btn-toggle-fx" class="bg-[#18181b] border border-[#27272a] text-gray-400 hover:text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2" title="Activar/Desactivar efectos visuales">
+                    <span id="fx-icon">✨</span> Fx
+                </button>
+                <button id="btn-logout" class="bg-[#18181b] border border-[#27272a] text-gray-300 hover:text-white transition px-4 py-2 rounded-lg hover:bg-red-900/30 hover:text-red-400 hover:border-red-500/30">
+                    Cerrar Sesión Corporativa
+                </button>
+            </div>
         </header>
         
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
-            <!-- Formulario ALTA / EDICIÓN -->
-            <div class="glass-card p-6 rounded-2xl xl:col-span-4 h-fit">
+            <div class="glass-card p-6 rounded-2xl xl:col-span-4 h-fit shadow-2xl">
                 <div class="flex justify-between items-center mb-6">
                     <h2 id="form-title" class="text-xl font-bold">➕ Nuevo Despliegue</h2>
-                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-red-900/50 text-red-400 px-3 py-1 rounded hover:bg-red-900">Cancelar Edición</button>
+                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-red-900/50 text-red-400 px-3 py-1 rounded hover:bg-red-900">Cancelar</button>
                 </div>
                 
                 <form id="form-gym" class="space-y-4">
                     <input type="hidden" id="edit-gym-id">
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre Comercial</label>
-                            <input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Ej. Titan Gym" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-blue-400 uppercase mb-1">Usuario Login</label>
-                            <input type="text" id="gym-username" class="w-full input-dark rounded-lg p-2.5 text-sm border-blue-500/30" placeholder="Ej. titangym" required>
-                        </div>
+                        <div><label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre Comercial</label><input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Ej. Titan Gym" required></div>
+                        <div><label class="block text-xs font-bold text-blue-400 uppercase mb-1">Usuario Login</label><input type="text" id="gym-username" class="w-full input-dark rounded-lg p-2.5 text-sm border-blue-500/30" placeholder="Ej. titangym" required></div>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Clave de Acceso</label>
-                            <input type="text" id="gym-password" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Asigna contraseña" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Color (Hex)</label>
+                        <div><label class="block text-xs font-bold text-gray-400 uppercase mb-1">Clave de Acceso</label><input type="text" id="gym-password" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Asigna contraseña" required></div>
+                        <div><label class="block text-xs font-bold text-gray-400 uppercase mb-1">Color (Hex)</label>
                             <div class="flex gap-2">
                                 <input type="color" id="gym-color" class="h-10 w-10 rounded cursor-pointer bg-transparent border-0 p-0" value="#eab308">
                                 <input type="text" id="gym-color-text" class="w-full input-dark rounded-lg p-2.5 text-xs" value="#eab308">
@@ -71,10 +78,7 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">URL Logo del Gimnasio (Opcional)</label>
-                        <input type="url" id="gym-logo" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="https://ejemplo.com/logo.png">
-                    </div>
+                    <div><label class="block text-xs font-bold text-gray-400 uppercase mb-1">URL Logo del Gimnasio (Opcional)</label><input type="url" id="gym-logo" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="https://ejemplo.com/logo.png"></div>
                     
                     <div class="pt-4 border-t border-[#27272a]">
                         <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Servicios Base</label>
@@ -92,14 +96,11 @@
                         </div>
                     </div>
                     
-                    <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-500 transition mt-4">
-                        Crear e Iniciar Entorno
-                    </button>
+                    <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-500 transition mt-4 shadow-[0_0_15px_rgba(37,99,235,0.4)]">Crear e Iniciar Entorno</button>
                 </form>
             </div>
 
-            <!-- Lista de Gimnasios -->
-            <div class="glass-card p-6 rounded-2xl xl:col-span-8">
+            <div class="glass-card p-6 rounded-2xl xl:col-span-8 shadow-2xl">
                 <h2 class="text-xl font-bold mb-6">Directorio de Inquilinos</h2>
                 <div id="loading-gyms" class="text-center py-10 text-gray-500">Sincronizando con base de datos...</div>
                 
@@ -130,9 +131,22 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Control del Efecto Visual (Aurora)
+        const btnFx = document.getElementById('btn-toggle-fx');
+        if (localStorage.getItem('nems_fx_disabled') === 'true') {
+            document.body.classList.add('aurora-disabled');
+            document.getElementById('fx-icon').innerText = '✨';
+            btnFx.classList.add('opacity-50');
+        }
+        btnFx.addEventListener('click', () => {
+            document.body.classList.toggle('aurora-disabled');
+            const isDisabled = document.body.classList.contains('aurora-disabled');
+            localStorage.setItem('nems_fx_disabled', isDisabled);
+            btnFx.classList.toggle('opacity-50', isDisabled);
+        });
+
         document.getElementById('btn-logout').addEventListener('click', () => {
-            sessionStorage.removeItem('nems_admin_token');
-            window.location.href = 'index.html';
+            sessionStorage.removeItem('nems_admin_token'); window.location.href = 'index.html';
         });
 
         let gymsData = [];
@@ -159,12 +173,10 @@
             document.getElementById('loading-gyms').classList.add('hidden');
             document.getElementById('table-gyms').classList.remove('hidden');
 
-            gymsData = [];
-            querySnapshot.forEach((docSnap) => gymsData.push({id: docSnap.id, ...docSnap.data()}));
+            gymsData = []; querySnapshot.forEach((docSnap) => gymsData.push({id: docSnap.id, ...docSnap.data()}));
 
             gymsData.forEach((data) => {
                 const isSuspendido = data.estado === 'suspendido';
-                
                 const tr = document.createElement('tr');
                 tr.className = `border-b border-[#27272a] transition ${isSuspendido ? 'bg-red-900/5' : 'hover:bg-[#18181b]'}`;
                 tr.innerHTML = `
@@ -186,87 +198,51 @@
             });
         }
 
-        // DELEGACIÓN BOTONES TABLA
         document.body.addEventListener('click', async (e) => {
-            // Suspender/Activar
             if (e.target.classList.contains('btn-toggle')) {
-                const id = e.target.dataset.id;
-                const nuevoEstado = e.target.dataset.estado === 'activo' ? 'suspendido' : 'activo';
+                const id = e.target.dataset.id; const nuevoEstado = e.target.dataset.estado === 'activo' ? 'suspendido' : 'activo';
                 if(confirm(`¿Cambiar estado de la franquicia a ${nuevoEstado.toUpperCase()}?`)) {
                     await updateDoc(doc(db, "gimnasios", id), { estado: nuevoEstado });
                     showToast(`Franquicia ${nuevoEstado}`, nuevoEstado === 'activo' ? 'success' : 'error'); cargarGimnasios();
                 }
             }
-            // Modo Edición
             if (e.target.classList.contains('btn-editar')) {
                 const gym = gymsData.find(g => g.id === e.target.dataset.id);
                 document.getElementById('form-title').innerText = "✏️ Modificar Franquicia";
-                document.getElementById('edit-gym-id').value = gym.id;
-                document.getElementById('gym-nombre').value = gym.nombre;
-                document.getElementById('gym-username').value = gym.username || '';
-                document.getElementById('gym-password').value = gym.password || '';
-                document.getElementById('gym-color').value = gym.colorPrimario;
-                document.getElementById('gym-color-text').value = gym.colorPrimario;
+                document.getElementById('edit-gym-id').value = gym.id; document.getElementById('gym-nombre').value = gym.nombre;
+                document.getElementById('gym-username').value = gym.username || ''; document.getElementById('gym-password').value = gym.password || '';
+                document.getElementById('gym-color').value = gym.colorPrimario; document.getElementById('gym-color-text').value = gym.colorPrimario;
                 document.getElementById('gym-logo').value = gym.logoUrl || '';
-                
                 const m = gym.modulos || {};
-                document.getElementById('mod-musculacion').checked = !!m.musculacion;
-                document.getElementById('mod-funcional').checked = !!m.funcional;
-                document.getElementById('mod-pilates').checked = !!m.pilates;
-                document.getElementById('mod-tienda').checked = !!m.tienda;
-                document.getElementById('mod-asistencia').checked = !!m.asistencia;
-                document.getElementById('mod-evaluaciones').checked = !!m.evaluaciones;
-
-                document.getElementById('btn-submit').innerText = "Guardar Cambios";
-                document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
+                document.getElementById('mod-musculacion').checked = !!m.musculacion; document.getElementById('mod-funcional').checked = !!m.funcional;
+                document.getElementById('mod-pilates').checked = !!m.pilates; document.getElementById('mod-tienda').checked = !!m.tienda;
+                document.getElementById('mod-asistencia').checked = !!m.asistencia; document.getElementById('mod-evaluaciones').checked = !!m.evaluaciones;
+                document.getElementById('btn-submit').innerText = "Guardar Cambios"; document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
             }
         });
 
         document.getElementById('btn-cancelar-edicion').addEventListener('click', () => {
-            form.reset();
-            document.getElementById('edit-gym-id').value = "";
-            document.getElementById('form-title').innerText = "➕ Nuevo Despliegue";
-            document.getElementById('btn-submit').innerText = "Crear e Iniciar Entorno";
-            document.getElementById('btn-cancelar-edicion').classList.add('hidden');
+            form.reset(); document.getElementById('edit-gym-id').value = ""; document.getElementById('form-title').innerText = "➕ Nuevo Despliegue";
+            document.getElementById('btn-submit').innerText = "Crear e Iniciar Entorno"; document.getElementById('btn-cancelar-edicion').classList.add('hidden');
         });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Procesando...'; btn.disabled = true;
-            
             const editId = document.getElementById('edit-gym-id').value;
-            
             const gymData = {
-                nombre: document.getElementById('gym-nombre').value, 
-                username: document.getElementById('gym-username').value.trim(),
-                colorPrimario: document.getElementById('gym-color').value,
-                password: document.getElementById('gym-password').value,
+                nombre: document.getElementById('gym-nombre').value, username: document.getElementById('gym-username').value.trim(),
+                colorPrimario: document.getElementById('gym-color').value, password: document.getElementById('gym-password').value,
                 logoUrl: document.getElementById('gym-logo').value.trim(),
-                modulos: {
-                    musculacion: document.getElementById('mod-musculacion').checked, 
-                    funcional: document.getElementById('mod-funcional').checked,
-                    pilates: document.getElementById('mod-pilates').checked, 
-                    tienda: document.getElementById('mod-tienda').checked,
-                    asistencia: document.getElementById('mod-asistencia').checked,
-                    evaluaciones: document.getElementById('mod-evaluaciones').checked
-                }
+                modulos: { musculacion: document.getElementById('mod-musculacion').checked, funcional: document.getElementById('mod-funcional').checked,
+                    pilates: document.getElementById('mod-pilates').checked, tienda: document.getElementById('mod-tienda').checked,
+                    asistencia: document.getElementById('mod-asistencia').checked, evaluaciones: document.getElementById('mod-evaluaciones').checked }
             };
-
             try {
-                if (editId) {
-                    await updateDoc(doc(db, "gimnasios", editId), gymData);
-                    showToast('Configuración actualizada');
-                } else {
-                    gymData.estado = 'activo';
-                    gymData.fechaCreacion = new Date().toISOString();
-                    await addDoc(collection(db, "gimnasios"), gymData);
-                    showToast('Nuevo entorno desplegado exitosamente');
-                }
-                
-                document.getElementById('btn-cancelar-edicion').click(); // Limpia form
-                cargarGimnasios();
-            } catch (error) { showToast("Error en base de datos", 'error'); console.error(error); } 
-            finally { btn.disabled = false; }
+                if (editId) { await updateDoc(doc(db, "gimnasios", editId), gymData); showToast('Configuración actualizada'); } 
+                else { gymData.estado = 'activo'; gymData.fechaCreacion = new Date().toISOString(); await addDoc(collection(db, "gimnasios"), gymData); showToast('Nuevo entorno desplegado exitosamente'); }
+                document.getElementById('btn-cancelar-edicion').click(); cargarGimnasios();
+            } catch (error) { showToast("Error en base de datos", 'error'); console.error(error); } finally { btn.disabled = false; }
         });
 
         cargarGimnasios();
