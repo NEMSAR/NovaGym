@@ -11,7 +11,7 @@
         .dynamic-text { color: var(--accent-color, #eab308); } 
         .dynamic-border { border-color: var(--accent-color, #eab308); }
         .dynamic-btn { background-color: var(--accent-color, #eab308); color: #000; }
-        .dynamic-btn:hover { filter: brightness(0.85); box-shadow: 0 0 20px var(--accent-color, #eab308); opacity: 0.8; }
+        .dynamic-btn:hover { filter: brightness(0.85); box-shadow: 0 0 20px var(--accent-color, #eab308); opacity: 0.9; }
         .nav-item.active { background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent-color, #eab308); color: white; }
         
         .glass-panel { background: #121214; border: 1px solid #27272a; border-radius: 1rem; position: relative; z-index: 10;}
@@ -26,24 +26,26 @@
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Aurora UI Fx - MÁXIMA INTENSIDAD */
+        /* Aurora UI Fx */
         .aurora-bg {
-            position: absolute; top: -50px; left: -10%; width: 120%; height: 450px;
+            position: absolute; top: -50px; left: 0; width: 100%; height: 450px;
             background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
-            background-size: 400% 400%; 
-            filter: blur(45px); 
-            opacity: 0.75; 
-            z-index: 0;
-            animation: auroraSweep 6s ease infinite; 
-            pointer-events: none; transition: opacity 0.5s ease;
+            background-size: 400% 400%; filter: blur(45px); opacity: 0.75; z-index: 0;
+            animation: auroraSweep 6s ease infinite; pointer-events: none; transition: opacity 0.5s ease;
         }
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        /* Checkbox Custom */
+        input[type="checkbox"].custom-check { accent-color: var(--accent-color, #eab308); width: 16px; height: 16px; cursor: pointer;}
     </style>
 </head>
 <body class="flex h-screen overflow-hidden hidden" id="app-container">
 
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[100]"></div>
+
+    <!-- Botón Flotante Asistente -->
+    <button id="btn-help" class="fixed bottom-5 left-5 w-12 h-12 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)] flex items-center justify-center text-white text-xl z-50 bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] transition" title="Guía de Usuario">?</button>
 
     <!-- Menú Lateral -->
     <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-30 relative shadow-2xl">
@@ -55,8 +57,8 @@
         <nav id="ui-nav-menu" class="flex-1 p-4 flex flex-col text-xs font-bold uppercase tracking-wider overflow-y-auto custom-scrollbar">
             <div class="space-y-1">
                 <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
-                <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Executive Dashboard</div>
-                <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Gestión de Socios</div>
+                <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Dashboard Ejecutivo</div>
+                <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Padrón de Socios</div>
                 <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Finanzas y Caja</div>
                 
                 <div id="modulos-container"></div>
@@ -74,22 +76,23 @@
     </aside>
 
     <main class="flex-1 overflow-y-auto bg-[#09090b] relative">
-        <!-- Efecto Aurora -->
         <div class="aurora-bg"></div>
 
         <div class="p-8 max-w-[1600px] mx-auto relative z-10">
             <header class="flex justify-between items-end mb-10 border-b border-[#27272a] pb-6">
                 <div>
-                    <h1 id="header-title" class="text-3xl font-black text-white tracking-tight mb-1">Executive Dashboard</h1>
+                    <h1 id="header-title" class="text-3xl font-black text-white tracking-tight mb-1">Dashboard Ejecutivo</h1>
                     <p id="header-subtitle" class="text-gray-400 text-sm">Visión general y métricas en tiempo real</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button id="btn-toggle-fx" class="text-xs bg-[#18181b] border border-[#27272a] text-gray-400 hover:text-white px-3 py-2 rounded-lg transition" title="Toggle Fx Visuales">✨ Fx</button>
-                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-lg shadow-lg transition text-sm text-[#09090b]">
+                    <button id="btn-toggle-fx" class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-500/30 text-blue-300 hover:text-white px-4 py-2.5 rounded-full text-xs font-bold transition shadow-[0_0_15px_rgba(59,130,246,0.2)] flex items-center gap-2">
+                        ✨ Fx Visuales
+                    </button>
+                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-full shadow-lg transition text-sm text-[#09090b]">
                         + Registrar Socio
                     </button>
                     <div class="glass-panel px-5 py-2 text-right hidden lg:block">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Revenue Anual</p>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Ingreso Anual</p>
                         <p id="ui-ingresos-totales" class="text-lg font-bold dynamic-text">$0</p>
                     </div>
                 </div>
@@ -112,17 +115,14 @@
                 
                 <div class="xl:col-span-2 space-y-6 mt-2">
                     <section class="glass-panel p-6 h-full shadow-2xl">
-                        <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Crecimiento de Revenue</h2>
-                        <div class="w-full h-[300px]">
-                            <canvas id="revenueChart"></canvas>
-                        </div>
+                        <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Crecimiento Financiero</h2>
+                        <div class="w-full h-[300px]"><canvas id="revenueChart"></canvas></div>
                     </section>
                 </div>
-
                 <div class="xl:col-span-1 space-y-6 mt-2">
                     <section class="glass-panel p-6 shadow-2xl">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Atención Requerida</h2>
-                        <div id="contenedor-alertas" class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2"></div>
+                        <div id="contenedor-alertas" class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"></div>
                     </section>
                 </div>
             </div>
@@ -138,9 +138,9 @@
                         <table class="w-full text-left border-collapse text-sm">
                             <thead>
                                 <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
-                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4">Estado</th>
                                     <th class="py-3 px-4">Miembro / Contacto</th>
-                                    <th class="py-3 px-4">Servicio Asignado</th>
+                                    <th class="py-3 px-4">Servicios Asignados</th>
                                     <th class="py-3 px-4">Plan (Membresía)</th>
                                     <th class="py-3 px-4">Fecha Exp.</th>
                                     <th class="py-3 px-4 text-right">Acciones</th>
@@ -166,6 +166,7 @@
                                     <th class="py-3 px-4">Fecha</th>
                                     <th class="py-3 px-4">Descripción</th>
                                     <th class="py-3 px-4">Categoría</th>
+                                    <th class="py-3 px-4">Medio Pago</th>
                                     <th class="py-3 px-4">Importe</th>
                                     <th class="py-3 px-4 text-center">Del</th>
                                 </tr>
@@ -199,7 +200,7 @@
                     </div>
                 </section>
             </div>
-
+            
             <!-- VISTA ASISTENCIA -->
             <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 text-center shadow-2xl">
                 <span class="text-4xl mb-4 block">📱</span>
@@ -211,10 +212,38 @@
 
     <!-- Modal Universal -->
     <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
-        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-md relative border border-[#27272a] shadow-2xl fade-in">
+        <div class="bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar">
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-universal">✕</button>
             <h2 id="modal-title" class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Formulario</h2>
             <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Modal NEMS Guide (Asistente) -->
+    <div id="modal-ayuda" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
+            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
+            <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
+            <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
+            
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1">1. ¿Cómo registrar un socio nuevo?</h3>
+                    <p class="text-gray-400">Haga clic en "+ Registrar Socio" arriba a la derecha. Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio y registrará el cobro en la caja de Finanzas automáticamente.</p>
+                </div>
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1">2. ¿Cómo renovar una cuota vencida?</h3>
+                    <p class="text-gray-400">En el Padrón de Socios, busque a la persona y presione el botón "💳 Cobrar". Seleccione los meses que abona y el medio de pago. El sistema extenderá su fecha de vencimiento automáticamente.</p>
+                </div>
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1">3. ¿Qué es el Punto de Venta (POS)?</h3>
+                    <p class="text-gray-400">Es una caja registradora rápida para ventas de mostrador (aguas, energizantes, remeras). Al registrar una venta, el dinero se suma directamente a sus Ingresos del Mes sin asociarlo a ninguna membresía.</p>
+                </div>
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1">4. ¿Para qué sirven las Evaluaciones Físicas?</h3>
+                    <p class="text-gray-400">Le permite llevar un historial de peso y altura de sus clientes. El sistema calculará el IMC (Índice de Masa Corporal) y le asignará un color (Azul=Bajo, Gris=Normal, Naranja/Rojo=Alerta).</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -235,19 +264,17 @@
         let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
         let chartInstance = null;
 
-        // Control Fx
         const btnFx = document.getElementById('btn-toggle-fx');
         if (localStorage.getItem('nems_fx_disabled') === 'true') {
-            document.body.classList.add('aurora-disabled');
-            document.getElementById('fx-icon').innerText = '✨';
-            btnFx.classList.add('opacity-50');
+            document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50', 'grayscale');
         }
         btnFx.addEventListener('click', () => {
             document.body.classList.toggle('aurora-disabled');
-            const isDisabled = document.body.classList.contains('aurora-disabled');
-            localStorage.setItem('nems_fx_disabled', isDisabled);
-            btnFx.classList.toggle('opacity-50', isDisabled);
+            localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled'));
+            btnFx.classList.toggle('opacity-50'); btnFx.classList.toggle('grayscale');
         });
+
+        document.getElementById('btn-help').addEventListener('click', () => document.getElementById('modal-ayuda').classList.remove('hidden'));
 
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
 
@@ -270,11 +297,11 @@
             if(document.getElementById(`nav-${vista}`)) document.getElementById(`nav-${vista}`).classList.add('active');
             if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
 
-            if (vista === 'dashboard') { title.innerText = "Executive Dashboard"; subtitle.innerText = "Métricas financieras y operativas"; btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'socios') { title.innerText = "Member Management"; subtitle.innerText = "Padrón completo de socios"; btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'finanzas') { title.innerText = "Billing & Invoicing"; subtitle.innerText = "Registro contable"; btnAccionPrincipal.innerText = 'Cobrar Membresía'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'tienda') { document.getElementById('vista-finanzas').classList.remove('hidden'); title.innerText = "Point of Sale (POS)"; subtitle.innerText = "Tienda de Mostrador"; btnAccionPrincipal.innerText = 'Registrar Venta'; btnAccionPrincipal.style.display = 'block'; } 
-            else if (vista === 'evaluaciones') { title.innerText = "Assessments & Goals"; subtitle.innerText = "Control de mediciones corporales"; btnAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'block'; } 
+            if (vista === 'dashboard') { title.innerText = "Dashboard Ejecutivo"; subtitle.innerText = "Métricas financieras y operativas"; btnAccionPrincipal.innerText = '+ Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'socios') { title.innerText = "Padrón de Socios"; subtitle.innerText = "Padrón completo de socios"; btnAccionPrincipal.innerText = '+ Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'finanzas') { title.innerText = "Finanzas y Caja"; subtitle.innerText = "Registro contable"; btnAccionPrincipal.innerText = '💳 Renovar Cuota'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'tienda') { document.getElementById('vista-finanzas').classList.remove('hidden'); title.innerText = "Punto de Venta (POS)"; subtitle.innerText = "Tienda de Mostrador"; btnAccionPrincipal.innerText = '🛒 Registrar Venta'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'evaluaciones') { title.innerText = "Metas y Evaluaciones"; subtitle.innerText = "Control de mediciones corporales"; btnAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'block'; } 
             else { title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise"; btnAccionPrincipal.style.display = 'none'; }
         }
 
@@ -301,70 +328,140 @@
             return opts;
         }
 
+        // --- ALTA / EDICIÓN SOCIOS CON AUTO-FECHA Y MULTI-SERVICIO ---
         function abrirModalSocio(socio = null) {
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
-            modalTitle.innerText = socio ? "Modificar Member Profile" : "New Member Registration";
-            let servOpts = '<option value="">Seleccione el Servicio...</option>';
-            if(gymModulos.musculacion) servOpts += '<option value="Musculación">Musculación</option>';
-            if(gymModulos.funcional) servOpts += '<option value="Funcional">Funcional</option>';
-            if(gymModulos.pilates) servOpts += '<option value="Pilates">Pilates</option>';
+            modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio (Perfil + Pago)";
+            
+            // Checkboxes Dinámicos de Servicios
+            let chkServ = '';
+            const currServ = socio ? (socio.servicio || "") : "";
+            if(gymModulos.musculacion) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Musculación" class="custom-check" ${currServ.includes('Musculación')?'checked':''}> <span class="text-sm">Musc.</span></label>`;
+            if(gymModulos.funcional) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Funcional" class="custom-check" ${currServ.includes('Funcional')?'checked':''}> <span class="text-sm">Func.</span></label>`;
+            if(gymModulos.pilates) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Pilates" class="custom-check" ${currServ.includes('Pilates')?'checked':''}> <span class="text-sm">Pilates</span></label>`;
+
+            // Opciones de Pago (Solo visibles si es alta nueva)
+            const boxPago = !socio ? `
+                <div class="border-t border-[#27272a] pt-4 mt-4">
+                    <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">1er Pago y Vencimiento Automático</h3>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div><label class="text-[10px] text-gray-500 uppercase">Fecha Pago</label><input type="date" id="s-fec-pago" class="w-full input-dark rounded-lg p-2 text-sm" required></div>
+                        <div><label class="text-[10px] text-gray-500 uppercase">Meses Abona</label><input type="number" id="s-meses" class="w-full input-dark rounded-lg p-2 text-sm" value="1" min="1" required></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <select id="s-medio" class="w-full input-dark rounded-lg p-2 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
+                        <input type="number" id="s-monto" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="Importe ARS" required>
+                    </div>
+                </div>
+            ` : '';
 
             modalContent.innerHTML = `
-                <form id="form-dinamico" class="space-y-4">
-                    <input type="text" id="s-nom" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Nombre completo" value="${socio?socio.nombre:''}" required>
-                    <input type="tel" id="s-tel" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="WhatsApp (Ej: 54911...)" value="${socio?socio.telefono:''}" required>
-                    <select id="s-serv" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${servOpts}</select>
-                    <select id="s-mem" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                        <option value="">Seleccione el Plan...</option>
-                        <option value="3 Días a la Semana" ${socio&&socio.membresia==="3 Días a la Semana"?'selected':''}>3 Días a la Semana</option>
-                        <option value="Pase Libre (5 Días)" ${socio&&socio.membresia==="Pase Libre (5 Días)"?'selected':''}>Pase Libre (5 Días)</option>
-                    </select>
-                    <input type="date" id="s-vence" class="w-full input-dark rounded-lg p-2.5 text-sm" value="${socio?socio.vence:''}" required>
-                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm text-[#09090b]">Guardar Perfil</button>
+                <form id="form-dinamico" class="space-y-3">
+                    <div class="flex gap-3">
+                        <div class="w-1/4"><img id="s-preview" src="${socio && socio.foto ? socio.foto : 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'}" class="w-full aspect-square rounded-xl object-cover border border-[#27272a]"></div>
+                        <div class="w-3/4 space-y-3">
+                            <input type="text" id="s-nom" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="Nombre completo" value="${socio?socio.nombre:''}" required>
+                            <input type="tel" id="s-tel" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="WhatsApp (Ej: 54911...)" value="${socio?socio.telefono:''}" required>
+                        </div>
+                    </div>
+                    <input type="url" id="s-foto" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="URL Foto de Perfil (Opcional)" value="${socio?socio.foto||'':''}">
+                    
+                    <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-[10px] text-gray-500 uppercase mb-2">Servicios Asignados</p><div class="flex flex-wrap gap-4">${chkServ}</div></div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <select id="s-mem" class="w-full input-dark rounded-lg p-2 text-sm" required>
+                            <option value="">Plan...</option>
+                            <option value="3 Días a la Semana" ${socio&&socio.membresia==="3 Días a la Semana"?'selected':''}>3 Días a la Semana</option>
+                            <option value="Pase Libre (5 Días)" ${socio&&socio.membresia==="Pase Libre (5 Días)"?'selected':''}>Pase Libre (5 Días)</option>
+                        </select>
+                        <input type="date" id="s-vence" class="w-full input-dark rounded-lg p-2 text-sm" value="${socio?socio.vence:''}" required ${!socio ? 'readonly title="Se calcula automáticamente"' : ''}>
+                    </div>
+
+                    ${boxPago}
+
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-xl mt-4 text-sm text-[#09090b]">Guardar Registro</button>
                 </form>`;
-            if(socio) document.getElementById('s-serv').value = socio.servicio;
+
+            // Lógica Auto-Fecha
+            if(!socio) {
+                const fPago = document.getElementById('s-fec-pago'); const fMeses = document.getElementById('s-meses'); const fVence = document.getElementById('s-vence');
+                fPago.valueAsDate = new Date();
+                const calcFecha = () => { if(fPago.value && fMeses.value) { const [y,m,d] = fPago.value.split('-'); const date = new Date(y, m-1, d); date.setMonth(date.getMonth() + parseInt(fMeses.value)); fVence.value = date.toISOString().split('T')[0]; } };
+                fPago.addEventListener('change', calcFecha); fMeses.addEventListener('input', calcFecha); calcFecha();
+            }
+
+            // Preview Foto
+            document.getElementById('s-foto').addEventListener('input', (e) => { const url = e.target.value; if(url) document.getElementById('s-preview').src = url; else document.getElementById('s-preview').src = 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'; });
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault(); const btn = e.target.querySelector('button'); btn.innerText = 'Procesando...'; btn.disabled = true;
-                const d = { nombre: document.getElementById('s-nom').value, telefono: document.getElementById('s-tel').value, servicio: document.getElementById('s-serv').value, membresia: document.getElementById('s-mem').value, vence: document.getElementById('s-vence').value };
+                
+                // Recolectar checkboxes
+                const servs = Array.from(document.querySelectorAll('input[name="s-serv"]:checked')).map(cb => cb.value).join(' + ');
+                if(!servs) { showToast("Selecciona al menos un servicio", "error"); btn.disabled = false; btn.innerText = 'Guardar Registro'; return; }
+
+                const dSocio = { nombre: document.getElementById('s-nom').value, telefono: document.getElementById('s-tel').value, foto: document.getElementById('s-foto').value, servicio: servs, membresia: document.getElementById('s-mem').value, vence: document.getElementById('s-vence').value };
+                
                 try {
-                    if(modoEdicion) await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), d); else await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), d);
-                    modal.classList.add('hidden'); showToast("Perfil actualizado correctamente"); cargarDatos();
-                } catch(err) { showToast("Error al conectar con DB", "error"); btn.disabled = false; }
+                    if(modoEdicion) {
+                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dSocio);
+                        showToast("Perfil actualizado");
+                    } else {
+                        await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
+                        // Registrar pago inicial
+                        await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta/Cuota: "+dSocio.nombre, monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
+                        showToast("Socio y Pago registrados (Alta Integral)");
+                    }
+                    modal.classList.add('hidden'); cargarDatos();
+                } catch(err) { showToast("Error de conexión", "error"); btn.disabled = false; }
             };
             modal.classList.remove('hidden');
         }
 
         window.abrirModalPago = (nombreSocio = "") => {
-            modalTitle.innerText = "Billing: Renovar Cuota";
+            modalTitle.innerText = "Renovación de Cuota";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
                     <select id="p-soc" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${getSocioOptions(nombreSocio)}</select>
-                    <input type="number" id="p-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
-                    <input type="date" id="p-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm text-[#09090b]">Procesar Invoice</button>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="number" id="p-meses" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Meses a pagar" value="1" min="1" required>
+                        <select id="p-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="date" id="p-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
+                        <input type="number" id="p-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe Total (ARS)" required>
+                    </div>
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm text-[#09090b]">Procesar Renovación</button>
                 </form>`;
             document.getElementById('p-fec').valueAsDate = new Date();
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
-                e.preventDefault(); const nom = document.getElementById('p-soc').value;
+                e.preventDefault(); const nom = document.getElementById('p-soc').value; const meses = parseInt(document.getElementById('p-meses').value);
                 try {
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Membresía: "+nom, monto: document.getElementById('p-mon').value, tipo: "Cuota", fecha: document.getElementById('p-fec').value, timestamp: new Date().toISOString() });
-                    if(confirm("¿Actualizar fecha de expiración del socio en el padrón?")) {
-                        const s = listaSociosData.find(x => x.nombre === nom);
-                        if(s) abrirModalSocio(s); else { modal.classList.add('hidden'); cargarDatos(); }
-                    } else { modal.classList.add('hidden'); showToast("Cobro registrado exitosamente"); cargarDatos(); }
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Renovación ("+meses+"m): "+nom, monto: document.getElementById('p-mon').value, medio: document.getElementById('p-medio').value, tipo: "Cuota", fecha: document.getElementById('p-fec').value, timestamp: new Date().toISOString() });
+                    
+                    // Auto-actualizar Vencimiento
+                    const s = listaSociosData.find(x => x.nombre === nom);
+                    if(s) {
+                        const [y,m,d] = s.vence.split('-'); const nDate = new Date(y, m-1, d); nDate.setMonth(nDate.getMonth() + meses);
+                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), { vence: nDate.toISOString().split('T')[0] });
+                        showToast(`Pago registrado y vencimiento extendido al ${nDate.toISOString().split('T')[0]}`);
+                    } else { showToast("Pago registrado"); }
+                    modal.classList.add('hidden'); cargarDatos();
                 } catch(err) { showToast("Error al facturar", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
         function abrirModalVenta() {
-            modalTitle.innerText = "Point of Sale (Mostrador)";
+            modalTitle.innerText = "Punto de Venta (Mostrador)";
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
-                    <input type="text" id="v-art" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Producto (Agua, Toalla, Suplemento)..." required>
-                    <input type="number" id="v-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
+                    <input type="text" id="v-art" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Producto (Agua, Suplemento)..." required>
+                    <div class="grid grid-cols-2 gap-3">
+                        <select id="v-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
+                        <input type="number" id="v-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
+                    </div>
                     <input type="date" id="v-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
                     <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg mt-2 text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)]">Registrar Venta POS</button>
                 </form>`;
@@ -372,7 +469,7 @@
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
-                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('v-art').value, monto: document.getElementById('v-mon').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('v-art').value, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
                     modal.classList.add('hidden'); showToast("Venta POS procesada"); cargarDatos();
                 } catch(err) { showToast("Error en venta", "error"); }
             };
@@ -425,7 +522,7 @@
 
             chartInstance = new Chart(ctx, {
                 type: 'line',
-                data: { labels: etiquetas, datasets: [{ label: 'Revenue (ARS)', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#09090b', pointBorderColor: colorAcento, pointRadius: 5, fill: true, tension: 0.4 }] },
+                data: { labels: etiquetas, datasets: [{ label: 'Ingresos (ARS)', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#09090b', pointBorderColor: colorAcento, pointRadius: 5, fill: true, tension: 0.4 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#18181b', titleColor: '#fff', bodyColor: colorAcento, borderColor: '#27272a', borderWidth: 1 } }, scales: { x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } }, y: { beginAtZero: true, grid: { color: '#27272a' }, ticks: { color: '#a1a1aa', callback: function(value) { return '$' + value.toLocaleString(); } } } } }
             });
         }
@@ -445,8 +542,8 @@
 
             const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
             if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><span>🛒</span> Tienda POS</div>`;
-            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Assessments</div>`;
-            if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><span>📱</span> Attendance</div>`;
+            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Metas y Evals</div>`;
+            if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><span>📱</span> Asistencia</div>`;
             
             if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
             if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
@@ -482,22 +579,30 @@
                     alertas++;
                     cAlertas.innerHTML += `
                         <div class="p-3 bg-[#18181b] border border-[#27272a] rounded-xl flex justify-between items-center transition hover:bg-[#27272a]">
-                            <div><p class="text-sm font-bold text-white">${s.nombre}</p><p class="text-[10px] text-gray-500">${s.vence} • <span class="${est.c.split(' ')[0]}">${est.t}</span></p></div>
-                            <button class="bg-[#27272a] text-white hover:bg-white hover:text-black px-3 py-1 text-xs rounded-lg font-bold transition" onclick="abrirModalPago('${s.nombre}')">Pay</button>
+                            <div class="flex items-center gap-3">
+                                <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-10 h-10 rounded-lg object-cover border border-[#27272a]">
+                                <div><p class="text-sm font-bold text-white">${s.nombre}</p><p class="text-[10px] text-gray-500">${s.vence} • <span class="${est.c.split(' ')[0]}">${est.t}</span></p></div>
+                            </div>
+                            <button class="bg-[#27272a] text-white hover:bg-white hover:text-black px-3 py-1 text-xs rounded-lg font-bold transition" onclick="abrirModalPago('${s.nombre}')">Renovar</button>
                         </div>`;
                 }
             });
             document.getElementById('total-alertas').innerText = alertas;
-            if(alertas === 0) cAlertas.innerHTML = `<p class="text-xs text-gray-500 italic">No action required. All members are active.</p>`;
+            if(alertas === 0) cAlertas.innerHTML = `<p class="text-xs text-gray-500 italic">No hay alertas. Todos los socios están al día.</p>`;
 
             const tbS = document.getElementById('tabla-socios-body'); tbS.innerHTML = '';
             sociosArray.forEach(s => {
                 const est = evaluarEstado(s.vence);
                 tbS.innerHTML += `
                     <tr class="border-b border-[#27272a] glass-row">
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${est.c}">${est.t}</span></td>
-                        <td class="py-3 px-4"><p class="text-white font-bold">${s.nombre}</p><a href="https://wa.me/${s.telefono}" target="_blank" class="text-[10px] text-[#25D366] hover:underline">${s.telefono}</a></td>
-                        <td class="py-3 px-4 text-gray-300">${s.servicio}</td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${est.c}">${est.t}</span></td>
+                        <td class="py-3 px-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-8 h-8 rounded-full object-cover border border-[#27272a]">
+                                <div><p class="text-white font-bold">${s.nombre}</p><a href="https://wa.me/${s.telefono}" target="_blank" class="text-[10px] text-[#25D366] hover:underline">${s.telefono}</a></div>
+                            </div>
+                        </td>
+                        <td class="py-3 px-4"><span class="text-xs text-gray-300 font-bold bg-[#18181b] px-2 py-1 border border-[#27272a] rounded">${s.servicio}</span></td>
                         <td class="py-3 px-4 text-gray-400">${s.membresia}</td>
                         <td class="py-3 px-4 text-white font-mono text-xs">${s.vence}</td>
                         <td class="py-3 px-4 flex justify-end gap-1">
@@ -516,6 +621,7 @@
                         <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha.split('-').reverse().join('/')}</td>
                         <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
                         <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] ${tColor}">${f.tipo}</span></td>
+                        <td class="py-3 px-4 text-gray-400 text-xs uppercase">${f.medio || 'Efectivo'}</td>
                         <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
                         <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-500 hover:text-red-500" data-id="${f.id}">✕</button></td>
                     </tr>`;
@@ -554,10 +660,10 @@
         document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
         
         document.getElementById('btn-exportar-csv').addEventListener('click', () => {
-            if(!listaFinanzasData.length) return; let c = "Date,Description,Category,Amount\n";
-            listaFinanzasData.forEach(p => c += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.monto}\n`);
+            if(!listaFinanzasData.length) return; let c = "Fecha,Descripcion,Categoria,Medio_Pago,Importe\n";
+            listaFinanzasData.forEach(p => c += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.medio||'Efectivo'},${p.monto}\n`);
             const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], {type:'text/csv'}));
-            l.download = `Revenue_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); showToast("Reporte Descargado");
+            l.download = `Ingresos_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); showToast("Reporte Descargado");
         });
 
         cargarDatos();
