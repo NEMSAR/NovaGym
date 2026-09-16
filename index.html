@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #09090b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        .bg-gradient-nems { background: radial-gradient(circle at top left, #18181b, #09090b); }
         .input-dark { background: #18181b; border: 1px solid #27272a; color: white; transition: all 0.3s; }
         .input-dark:focus { outline: none; border-color: #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.15); }
         .btn-nems { background: linear-gradient(90deg, #ca8a04, #eab308); color: #000; }
@@ -20,25 +19,41 @@
 </head>
 <body class="flex h-screen overflow-hidden">
 
-    <!-- Panel Izquierdo: Branding Corporativo -->
-    <div class="hidden md:flex w-1/2 bg-gradient-nems border-r border-[#27272a] flex-col justify-center px-20 relative">
-        <div class="absolute top-12 left-20">
-            <!-- Espacio para el logo del software que estás creando -->
-            <img src="https://via.placeholder.com/150x150.png?text=LOGO+APP" alt="Logo Software" class="w-16 h-auto drop-shadow-2xl rounded-xl">
+    <!-- Panel Izquierdo: Branding Corporativo con Video Background -->
+    <div class="hidden md:flex w-1/2 border-r border-[#27272a] flex-col justify-center px-20 relative overflow-hidden bg-[#09090b]">
+        
+        <!-- VIDEO DE FONDO -->
+        <!-- Las clases 'blur-[8px] scale-110' logran el efecto desenfocado profesional sin bordes rotos -->
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 blur-[8px] scale-110 opacity-60">
+            <!-- ========================================================================= -->
+            <!-- PEGA AQUÍ EL ENLACE DE TU VIDEO .mp4 (REEMPLAZA EL CONTENIDO DE 'src') -->
+            <source src="https://cdn.coverr.co/videos/coverr-man-lifting-weights-in-a-gym-5264/1080p.mp4" type="video/mp4">
+            <!-- ========================================================================= -->
+        </video>
+
+        <!-- CAPA DE CONTRASTE (Overlay para que el texto se lea perfecto) -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-[#09090b] z-0"></div>
+
+        <!-- CONTENIDO FRONTAL -->
+        <div class="absolute top-12 left-20 z-10">
+            <!-- Espacio para el logo del software -->
+            <img src="https://via.placeholder.com/150x150.png?text=LOGO+APP" alt="Logo Software" class="w-16 h-auto rounded-xl drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]">
         </div>
-        <div>
-            <h1 class="text-6xl font-black tracking-tight mb-4">Intelligence<br>Amplified.</h1>
-            <p class="text-gray-400 text-lg leading-relaxed max-w-md">
+        
+        <div class="relative z-10">
+            <h1 class="text-6xl font-black tracking-tight mb-4 text-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.9)]">Intelligence<br>Amplified.</h1>
+            <p class="text-gray-300 text-lg leading-relaxed max-w-md drop-shadow-[0_3px_5px_rgba(0,0,0,0.9)] font-medium">
                 NEMS OS transforma datos crudos operativos en decisiones estratégicas en milisegundos. Ecosistema de gestión deportiva.
             </p>
         </div>
-        <div class="absolute bottom-12 left-20 flex items-center gap-3 opacity-50">
-            <p class="text-xs text-gray-500 tracking-wider">© 2026 NovaBit Media Agency.</p>
+        
+        <div class="absolute bottom-12 left-20 flex items-center gap-3 z-10 opacity-70">
+            <p class="text-xs text-gray-300 tracking-wider drop-shadow-md">© 2026 NovaBit Media Agency.</p>
         </div>
     </div>
 
     <!-- Panel Derecho: Login Gimnasios -->
-    <div class="w-full md:w-1/2 flex items-center justify-center p-10 bg-[#09090b] relative">
+    <div class="w-full md:w-1/2 flex items-center justify-center p-10 bg-[#09090b] relative z-10 shadow-[-20px_0_30px_rgba(0,0,0,0.5)]">
         <div class="w-full max-w-md">
             <h2 class="text-3xl font-bold mb-2">Bienvenido al Sistema</h2>
             <p class="text-gray-400 text-sm mb-10">Ingresa las credenciales de tu gimnasio.</p>
@@ -97,7 +112,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // LOGIN DE GIMNASIOS (Busca por Username en Firebase)
+        // LOGIN DE GIMNASIOS (Busca por Username)
         document.getElementById('form-login-gym').addEventListener('submit', async (e) => {
             e.preventDefault();
             const gymUser = document.getElementById('input-gym-user').value.trim();
@@ -108,19 +123,17 @@
             btn.innerHTML = 'Verificando...'; btn.disabled = true; errorDiv.classList.add('hidden');
 
             try {
-                // Buscamos el documento donde el campo 'username' coincida
                 const q = query(collection(db, "gimnasios"), where("username", "==", gymUser));
                 const snap = await getDocs(q);
 
                 if (!snap.empty) {
-                    const docSnap = snap.docs[0]; // Tomamos el primero que coincida
+                    const docSnap = snap.docs[0];
                     const data = docSnap.data();
 
                     if(data.estado === 'suspendido') {
                         errorDiv.innerText = "ACCESO DENEGADO: Cuenta suspendida por NEMS Tech.";
                         errorDiv.classList.remove('hidden');
                     } else if (data.password === password) {
-                        // Redirigimos usando el ID real de Firestore en la URL (invisible para el cliente)
                         window.location.href = `gym.html?id=${docSnap.id}`;
                     } else {
                         errorDiv.innerText = "Clave de acceso incorrecta.";
@@ -148,7 +161,7 @@
             const u = document.getElementById('corp-user').value;
             const p = document.getElementById('corp-pass').value;
 
-            // Credenciales de acceso a tu panel Super Admin (puedes cambiarlas aquí)
+            // Credenciales Super Admin (nems / novabit2026)
             if(u === 'nems' && p === 'novabit2026') {
                 sessionStorage.setItem('nems_admin_token', 'autorizado_2026');
                 window.location.href = 'admin.html';
