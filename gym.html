@@ -7,14 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; overflow-x: hidden;}
         .dynamic-text { color: var(--accent-color, #eab308); } 
         .dynamic-border { border-color: var(--accent-color, #eab308); }
         .dynamic-btn { background-color: var(--accent-color, #eab308); color: #000; }
-        .dynamic-btn:hover { filter: brightness(0.85); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        .dynamic-btn:hover { filter: brightness(0.85); box-shadow: 0 0 20px var(--accent-color, #eab308); opacity: 0.8; }
         .nav-item.active { background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent-color, #eab308); color: white; }
         
-        .glass-panel { background: #121214; border: 1px solid #27272a; border-radius: 1rem; }
+        .glass-panel { background: #121214; border: 1px solid #27272a; border-radius: 1rem; position: relative; z-index: 10;}
         .glass-row:hover { background: #18181b; }
         .input-dark { background: #09090b; border: 1px solid #27272a; color: white; transition: all 0.2s; }
         .input-dark:focus { outline: none; border-color: var(--accent-color, #eab308); }
@@ -25,6 +25,16 @@
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Aurora UI Fx */
+        .aurora-bg {
+            position: absolute; top: -50px; left: 0; width: 100%; height: 350px;
+            background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
+            background-size: 600% 600%; filter: blur(80px); opacity: 0.15; z-index: 0;
+            animation: auroraSweep 15s ease infinite; pointer-events: none; transition: opacity 0.5s ease;
+        }
+        .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
+        @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden hidden" id="app-container">
@@ -32,28 +42,25 @@
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
     <!-- Menú Lateral -->
-    <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-20">
+    <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-30 relative shadow-2xl">
         <div class="p-6 flex flex-col items-center justify-center border-b border-[#27272a] min-h-[120px]">
             <div id="ui-gym-logo-container" class="mb-2"></div>
             <h2 id="ui-gym-name" class="font-black text-lg tracking-wider text-white text-center">N.OS PRO</h2>
         </div>
         
-        <nav id="ui-nav-menu" class="flex-1 p-4 flex flex-col text-xs font-bold uppercase tracking-wider overflow-y-auto">
+        <nav id="ui-nav-menu" class="flex-1 p-4 flex flex-col text-xs font-bold uppercase tracking-wider overflow-y-auto custom-scrollbar">
             <div class="space-y-1">
                 <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
                 <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg"><span>📊</span> Executive Dashboard</div>
                 <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>👥</span> Gestión de Socios</div>
                 <div id="nav-finanzas" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg"><span>💳</span> Finanzas y Caja</div>
-                
                 <div id="modulos-container"></div>
-                
                 <a href="index.html" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg mt-8 text-gray-500 hover:text-red-400"><span>🚪</span> Cerrar Sesión</a>
             </div>
 
-            <!-- Footer NovaBit (Se adapta al fondo) -->
-            <div class="mt-auto pt-8 flex flex-col items-center justify-center opacity-40 hover:opacity-100 transition duration-300">
-                <!-- Puedes cambiar el placeholder por el link del logo de NovaBit -->
-                <img src="https://via.placeholder.com/100x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-16 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+            <!-- Footer Corporativo NovaBit -->
+            <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
+                <img src="https://via.placeholder.com/120x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
                 <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">
                     Powered by<br>NovaBit Media Agency
                 </p>
@@ -61,15 +68,19 @@
         </nav>
     </aside>
 
-    <main class="flex-1 overflow-y-auto bg-[#09090b]">
-        <div class="p-8 max-w-[1600px] mx-auto">
+    <main class="flex-1 overflow-y-auto bg-[#09090b] relative">
+        <!-- Efecto Aurora -->
+        <div class="aurora-bg"></div>
+
+        <div class="p-8 max-w-[1600px] mx-auto relative z-10">
             <header class="flex justify-between items-end mb-10 border-b border-[#27272a] pb-6">
                 <div>
                     <h1 id="header-title" class="text-3xl font-black text-white tracking-tight mb-1">Executive Dashboard</h1>
                     <p id="header-subtitle" class="text-gray-400 text-sm">Visión general y métricas en tiempo real</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-lg shadow-lg transition text-sm">
+                    <button id="btn-toggle-fx" class="text-xs bg-[#18181b] border border-[#27272a] text-gray-400 hover:text-white px-3 py-2 rounded-lg transition" title="Toggle Fx Visuales">✨ Fx</button>
+                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-lg shadow-lg transition text-sm text-[#09090b]">
                         + Registrar Socio
                     </button>
                     <div class="glass-panel px-5 py-2 text-right hidden lg:block">
@@ -81,21 +92,21 @@
 
             <!-- VISTA DASHBOARD -->
             <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-6 fade-in">
-                <div class="glass-panel p-5 border-t-4 dynamic-border">
+                <div class="glass-panel p-5 border-t-4 dynamic-border shadow-2xl">
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Miembros Activos</h3>
                     <p id="total-socios" class="text-3xl font-black text-white mt-1">0</p>
                 </div>
-                <div class="glass-panel p-5 border-t-4 border-emerald-500/50">
+                <div class="glass-panel p-5 border-t-4 border-emerald-500/50 shadow-2xl">
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Ingresos del Mes</h3>
                     <p id="ingresos-mes" class="text-3xl font-black text-emerald-400 mt-1">$0</p>
                 </div>
-                <div class="glass-panel p-5 border-t-4 border-red-500/50">
+                <div class="glass-panel p-5 border-t-4 border-red-500/50 shadow-2xl">
                     <h3 class="text-xs font-bold text-gray-500 uppercase">Alertas / Vencidos</h3>
                     <p id="total-alertas" class="text-3xl font-black text-red-400 mt-1">0</p>
                 </div>
                 
                 <div class="xl:col-span-2 space-y-6 mt-2">
-                    <section class="glass-panel p-6 h-full">
+                    <section class="glass-panel p-6 h-full shadow-2xl">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Crecimiento de Revenue</h2>
                         <div class="w-full h-[300px]">
                             <canvas id="revenueChart"></canvas>
@@ -104,7 +115,7 @@
                 </div>
 
                 <div class="xl:col-span-1 space-y-6 mt-2">
-                    <section class="glass-panel p-6">
+                    <section class="glass-panel p-6 shadow-2xl">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Atención Requerida</h2>
                         <div id="contenedor-alertas" class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2"></div>
                     </section>
@@ -113,10 +124,10 @@
 
             <!-- VISTA SOCIOS -->
             <div id="vista-socios" class="hidden fade-in">
-                <section class="glass-panel p-6">
+                <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Directorio de Miembros</h2>
-                        <input type="text" id="input-busqueda-socio" class="w-64 input-dark rounded-lg py-2 px-4 text-xs" placeholder="Buscar socio...">
+                        <input type="text" id="input-busqueda-socio" class="w-64 input-dark rounded-lg py-2 px-4 text-xs" placeholder="Buscar socio por nombre...">
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
@@ -138,7 +149,7 @@
 
             <!-- VISTA FINANZAS -->
             <div id="vista-finanzas" class="hidden fade-in">
-                <section class="glass-panel p-6">
+                <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Registro de Transacciones</h2>
                         <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">Descargar CSV</button>
@@ -160,9 +171,9 @@
                 </section>
             </div>
 
-            <!-- VISTA EVALUACIONES / METAS -->
+            <!-- VISTA EVALUACIONES -->
             <div id="vista-evaluaciones" class="hidden fade-in">
-                <section class="glass-panel p-6">
+                <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Historial de Mediciones e IMC</h2>
                     </div>
@@ -185,7 +196,7 @@
             </div>
 
             <!-- VISTA ASISTENCIA -->
-            <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 text-center">
+            <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 text-center shadow-2xl">
                 <span class="text-4xl mb-4 block">📱</span>
                 <h2 class="text-xl font-bold text-white mb-2">Módulo de Control de Asistencia</h2>
                 <p class="text-gray-400 text-sm">Aquí se conectará el sistema de escaneo QR y registro de huella biométrica.</p>
@@ -193,9 +204,9 @@
         </div>
     </main>
 
-    <!-- Modal Formulario Único -->
-    <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
-        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-md relative border border-[#27272a] shadow-2xl">
+    <!-- Modal Universal -->
+    <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-md relative border border-[#27272a] shadow-2xl fade-in">
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-universal">✕</button>
             <h2 id="modal-title" class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Formulario</h2>
             <div id="modal-content"></div>
@@ -219,6 +230,17 @@
         let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
         let chartInstance = null;
 
+        // Control Fx Aurora
+        const btnFx = document.getElementById('btn-toggle-fx');
+        if (localStorage.getItem('nems_fx_disabled') === 'true') {
+            document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50');
+        }
+        btnFx.addEventListener('click', () => {
+            document.body.classList.toggle('aurora-disabled');
+            localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled'));
+            btnFx.classList.toggle('opacity-50');
+        });
+
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
 
         window.showToast = (msg, tipo = 'success') => {
@@ -229,7 +251,6 @@
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        // --- SISTEMA SPA ---
         function cambiarVista(vista) {
             vistaActual = vista;
             ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-asistencia', 'vista-evaluaciones'].forEach(id => {
@@ -241,33 +262,18 @@
             if(document.getElementById(`nav-${vista}`)) document.getElementById(`nav-${vista}`).classList.add('active');
             if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
 
-            if (vista === 'dashboard') {
-                title.innerText = "Executive Dashboard"; subtitle.innerText = "Métricas financieras y operativas";
-                btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block';
-            } else if (vista === 'socios') {
-                title.innerText = "Member Management"; subtitle.innerText = "Padrón completo de socios";
-                btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block';
-            } else if (vista === 'finanzas') {
-                title.innerText = "Billing & Invoicing"; subtitle.innerText = "Registro contable";
-                btnAccionPrincipal.innerText = 'Cobrar Membresía'; btnAccionPrincipal.style.display = 'block';
-            } else if (vista === 'tienda') {
-                document.getElementById('vista-finanzas').classList.remove('hidden');
-                title.innerText = "Point of Sale (POS)"; subtitle.innerText = "Tienda de Mostrador";
-                btnAccionPrincipal.innerText = 'Registrar Venta'; btnAccionPrincipal.style.display = 'block';
-            } else if (vista === 'evaluaciones') {
-                title.innerText = "Assessments & Goals"; subtitle.innerText = "Control de mediciones corporales";
-                btnAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'block';
-            } else {
-                title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise";
-                btnAccionPrincipal.style.display = 'none';
-            }
+            if (vista === 'dashboard') { title.innerText = "Executive Dashboard"; subtitle.innerText = "Métricas financieras y operativas"; btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'socios') { title.innerText = "Member Management"; subtitle.innerText = "Padrón completo de socios"; btnAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'finanzas') { title.innerText = "Billing & Invoicing"; subtitle.innerText = "Registro contable"; btnAccionPrincipal.innerText = 'Cobrar Membresía'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'tienda') { document.getElementById('vista-finanzas').classList.remove('hidden'); title.innerText = "Point of Sale (POS)"; subtitle.innerText = "Tienda de Mostrador"; btnAccionPrincipal.innerText = 'Registrar Venta'; btnAccionPrincipal.style.display = 'block'; } 
+            else if (vista === 'evaluaciones') { title.innerText = "Assessments & Goals"; subtitle.innerText = "Control de mediciones corporales"; btnAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'block'; } 
+            else { title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise"; btnAccionPrincipal.style.display = 'none'; }
         }
 
         document.getElementById('nav-dashboard').addEventListener('click', () => cambiarVista('dashboard'));
         document.getElementById('nav-socios').addEventListener('click', () => cambiarVista('socios'));
         document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
 
-        // --- MANEJO DE MODALES DINÁMICOS ---
         const modal = document.getElementById('modal-universal');
         const modalContent = document.getElementById('modal-content');
         const modalTitle = document.getElementById('modal-title');
@@ -290,7 +296,6 @@
         function abrirModalSocio(socio = null) {
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
             modalTitle.innerText = socio ? "Modificar Member Profile" : "New Member Registration";
-            
             let servOpts = '<option value="">Seleccione el Servicio...</option>';
             if(gymModulos.musculacion) servOpts += '<option value="Musculación">Musculación</option>';
             if(gymModulos.funcional) servOpts += '<option value="Funcional">Funcional</option>';
@@ -307,7 +312,7 @@
                         <option value="Pase Libre (5 Días)" ${socio&&socio.membresia==="Pase Libre (5 Días)"?'selected':''}>Pase Libre (5 Días)</option>
                     </select>
                     <input type="date" id="s-vence" class="w-full input-dark rounded-lg p-2.5 text-sm" value="${socio?socio.vence:''}" required>
-                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm">Guardar Perfil</button>
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm text-[#09090b]">Guardar Perfil</button>
                 </form>`;
             if(socio) document.getElementById('s-serv').value = socio.servicio;
             
@@ -315,8 +320,7 @@
                 e.preventDefault(); const btn = e.target.querySelector('button'); btn.innerText = 'Procesando...'; btn.disabled = true;
                 const d = { nombre: document.getElementById('s-nom').value, telefono: document.getElementById('s-tel').value, servicio: document.getElementById('s-serv').value, membresia: document.getElementById('s-mem').value, vence: document.getElementById('s-vence').value };
                 try {
-                    if(modoEdicion) await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), d);
-                    else await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), d);
+                    if(modoEdicion) await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), d); else await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), d);
                     modal.classList.add('hidden'); showToast("Perfil actualizado correctamente"); cargarDatos();
                 } catch(err) { showToast("Error al conectar con DB", "error"); btn.disabled = false; }
             };
@@ -330,7 +334,7 @@
                     <select id="p-soc" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${getSocioOptions(nombreSocio)}</select>
                     <input type="number" id="p-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" required>
                     <input type="date" id="p-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm">Procesar Invoice</button>
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm text-[#09090b]">Procesar Invoice</button>
                 </form>`;
             document.getElementById('p-fec').valueAsDate = new Date();
             
@@ -360,8 +364,7 @@
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
-                try {
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('v-art').value, monto: document.getElementById('v-mon').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('v-art').value, monto: document.getElementById('v-mon').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
                     modal.classList.add('hidden'); showToast("Venta POS procesada"); cargarDatos();
                 } catch(err) { showToast("Error en venta", "error"); }
             };
@@ -383,35 +386,27 @@
             document.getElementById('e-fec').valueAsDate = new Date();
             
             document.getElementById('form-dinamico').onsubmit = async (e) => {
-                e.preventDefault();
-                const peso = parseFloat(document.getElementById('e-peso').value);
-                const alturaCm = parseFloat(document.getElementById('e-altura').value);
+                e.preventDefault(); const peso = parseFloat(document.getElementById('e-peso').value); const alturaCm = parseFloat(document.getElementById('e-altura').value);
                 const imc = (peso / Math.pow(alturaCm/100, 2)).toFixed(1); 
-                
-                try {
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "evaluaciones"), { socio: document.getElementById('e-soc').value, peso: peso, altura: alturaCm, imc: imc, fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() });
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "evaluaciones"), { socio: document.getElementById('e-soc').value, peso: peso, altura: alturaCm, imc: imc, fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() });
                     modal.classList.add('hidden'); showToast(`Medición guardada. IMC: ${imc}`); cargarDatos();
                 } catch(err) { showToast("Error al guardar meta", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
-        // --- CEREBRO, GRÁFICOS Y RENDER ---
         function evaluarEstado(vence) {
             const h = new Date(); h.setHours(0,0,0,0); const v = new Date(vence); v.setHours(23,59,59,999);
             const d = Math.ceil((v - h) / (1000 * 60 * 60 * 24));
-            if (d < 0) return { t: 'Expired', c: 'text-red-400 bg-red-900/20 border-red-500/30' };
-            if (d <= 3) return { t: 'Warning', c: 'text-orange-400 bg-orange-900/20 border-orange-500/30' };
-            return { t: 'Active', c: 'text-emerald-400 bg-emerald-900/20 border-emerald-500/30' };
+            if (d < 0) return { t: 'Expired', c: 'text-red-400 bg-red-900/20 border border-red-500/30' };
+            if (d <= 3) return { t: 'Warning', c: 'text-orange-400 bg-orange-900/20 border border-orange-500/30' };
+            return { t: 'Active', c: 'text-emerald-400 bg-emerald-900/20 border border-emerald-500/30' };
         }
 
         function renderizarGrafico(finanzas) {
             if(chartInstance) chartInstance.destroy();
             const ingresosPorMes = {};
-            finanzas.forEach(f => {
-                const mes = f.fecha.substring(0, 7);
-                ingresosPorMes[mes] = (ingresosPorMes[mes] || 0) + Number(f.monto);
-            });
+            finanzas.forEach(f => { const mes = f.fecha.substring(0, 7); ingresosPorMes[mes] = (ingresosPorMes[mes] || 0) + Number(f.monto); });
             const mesesOrdenados = Object.keys(ingresosPorMes).sort();
             const etiquetas = mesesOrdenados.map(m => new Date(m + "-02").toLocaleString('es-ES', { month: 'short', year: 'numeric' }).toUpperCase());
             const dataPuntos = mesesOrdenados.map(m => ingresosPorMes[m]);
@@ -422,7 +417,7 @@
 
             chartInstance = new Chart(ctx, {
                 type: 'line',
-                data: { labels: etiquetas, datasets: [{ label: 'Revenue (ARS)', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#fff', pointBorderColor: colorAcento, pointRadius: 5, fill: true, tension: 0.4 }] },
+                data: { labels: etiquetas, datasets: [{ label: 'Revenue (ARS)', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#09090b', pointBorderColor: colorAcento, pointRadius: 5, fill: true, tension: 0.4 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#18181b', titleColor: '#fff', bodyColor: colorAcento, borderColor: '#27272a', borderWidth: 1 } }, scales: { x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } }, y: { beginAtZero: true, grid: { color: '#27272a' }, ticks: { color: '#a1a1aa', callback: function(value) { return '$' + value.toLocaleString(); } } } } }
             });
         }
@@ -440,7 +435,6 @@
             if(data.logoUrl) { logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-20 h-auto object-contain drop-shadow-lg">`; document.getElementById('ui-gym-name').innerText = ""; } 
             else { logoCont.innerHTML = `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase(); }
 
-            // Inyectar Módulos
             const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
             if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><span>🛒</span> Tienda POS</div>`;
             if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><span>🎯</span> Assessments</div>`;
@@ -458,8 +452,7 @@
             const mesActual = new Date().toISOString().substring(0,7);
             fSnap.forEach(d => { 
                 const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); 
-                ingrT += Number(p.monto);
-                if(p.fecha.startsWith(mesActual)) ingrMes += Number(p.monto);
+                ingrT += Number(p.monto); if(p.fecha.startsWith(mesActual)) ingrMes += Number(p.monto);
             });
             listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
@@ -470,13 +463,11 @@
             document.getElementById('ui-ingresos-totales').innerText = `$${ingrT.toLocaleString('es-AR')}`;
             document.getElementById('ingresos-mes').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
             
-            renderUI(listaSociosData);
-            renderizarGrafico(listaFinanzasData);
+            renderUI(listaSociosData); renderizarGrafico(listaFinanzasData);
         }
 
         function renderUI(sociosArray) {
-            const cAlertas = document.getElementById('contenedor-alertas'); cAlertas.innerHTML = '';
-            let alertas = 0;
+            const cAlertas = document.getElementById('contenedor-alertas'); cAlertas.innerHTML = ''; let alertas = 0;
             sociosArray.forEach(s => {
                 const est = evaluarEstado(s.vence);
                 if(est.t !== 'Active') {
@@ -496,7 +487,7 @@
                 const est = evaluarEstado(s.vence);
                 tbS.innerHTML += `
                     <tr class="border-b border-[#27272a] glass-row">
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${est.c}">${est.t}</span></td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${est.c}">${est.t}</span></td>
                         <td class="py-3 px-4"><p class="text-white font-bold">${s.nombre}</p><a href="https://wa.me/${s.telefono}" target="_blank" class="text-[10px] text-[#25D366] hover:underline">${s.telefono}</a></td>
                         <td class="py-3 px-4 text-gray-300">${s.servicio}</td>
                         <td class="py-3 px-4 text-gray-400">${s.membresia}</td>
@@ -511,13 +502,13 @@
 
             const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
             listaFinanzasData.forEach(f => {
-                const tColor = f.tipo === 'Inventario' ? 'text-emerald-400 bg-emerald-900/20 border-emerald-500/30' : 'text-blue-400 bg-blue-900/20 border-blue-500/30';
+                const tColor = f.tipo === 'Inventario' ? 'text-emerald-400 bg-emerald-900/20 border border-emerald-500/30' : 'text-blue-400 bg-blue-900/20 border border-blue-500/30';
                 tbF.innerHTML += `
                     <tr class="border-b border-[#27272a] glass-row">
                         <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha.split('-').reverse().join('/')}</td>
                         <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] border ${tColor}">${f.tipo}</span></td>
-                        <td class="py-3 px-4 font-bold text-white">$${Number(f.monto).toLocaleString('es-AR')}</td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] ${tColor}">${f.tipo}</span></td>
+                        <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
                         <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-500 hover:text-red-500" data-id="${f.id}">✕</button></td>
                     </tr>`;
             });
@@ -527,10 +518,10 @@
                 tbE.innerHTML = '';
                 listaEvalsData.forEach(e => {
                     const imc = parseFloat(e.imc);
-                    let badgeImc = 'text-gray-400 bg-gray-900/20 border-gray-500/30'; 
-                    if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border-blue-500/30'; 
-                    if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border-orange-500/30'; 
-                    if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border-red-500/30'; 
+                    let badgeImc = 'text-gray-400 bg-gray-900/20 border border-gray-500/30'; 
+                    if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border border-blue-500/30'; 
+                    if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border border-orange-500/30'; 
+                    if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border border-red-500/30'; 
 
                     tbE.innerHTML += `
                         <tr class="border-b border-[#27272a] glass-row">
@@ -538,7 +529,7 @@
                             <td class="py-3 px-4 text-white font-bold">${e.socio}</td>
                             <td class="py-3 px-4 text-gray-300">${e.peso} kg</td>
                             <td class="py-3 px-4 text-gray-300">${e.altura} cm</td>
-                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] border font-bold ${badgeImc}">${e.imc}</span></td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeImc}">${e.imc}</span></td>
                             <td class="py-3 px-4 text-center"><button class="btn-del-e text-gray-500 hover:text-red-500" data-id="${e.id}">✕</button></td>
                         </tr>`;
                 });
@@ -547,9 +538,9 @@
 
         document.body.addEventListener('click', async (e) => {
             if (e.target.closest('.btn-edit-s')) abrirModalSocio(listaSociosData.find(s => s.id === e.target.closest('.btn-edit-s').dataset.id));
-            if (e.target.closest('.btn-del-s') && confirm("¿Delete member? This action is permanent.")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Member Deleted"); cargarDatos(); }
-            if (e.target.closest('.btn-del-f') && confirm("¿Void transaction?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transaction Voided", "error"); cargarDatos(); }
-            if (e.target.closest('.btn-del-e') && confirm("¿Eliminar registro físico?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Assessment Deleted"); cargarDatos(); }
+            if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); cargarDatos(); }
+            if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); cargarDatos(); }
+            if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); cargarDatos(); }
         });
 
         document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
@@ -558,7 +549,7 @@
             if(!listaFinanzasData.length) return; let c = "Date,Description,Category,Amount\n";
             listaFinanzasData.forEach(p => c += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.monto}\n`);
             const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], {type:'text/csv'}));
-            l.download = `Revenue_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); showToast("Report Downloaded");
+            l.download = `Revenue_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); showToast("Reporte Descargado");
         });
 
         cargarDatos();
