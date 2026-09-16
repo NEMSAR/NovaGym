@@ -19,13 +19,13 @@
         .toast-enter { animation: slideIn 0.4s forwards; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
-        /* Aurora UI Fx - MÁS INTENSO Y RÁPIDO */
+        /* Aurora UI Fx - MÁXIMA INTENSIDAD */
         .aurora-bg {
-            position: absolute; top: -50px; left: -10%; width: 120%; height: 350px;
+            position: absolute; top: -50px; left: -10%; width: 120%; height: 450px;
             background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
             background-size: 400% 400%; 
-            filter: blur(60px); 
-            opacity: 0.4; 
+            filter: blur(45px); 
+            opacity: 0.75; 
             z-index: 0;
             animation: auroraSweep 6s ease infinite; 
             pointer-events: none; transition: opacity 0.5s ease;
@@ -48,7 +48,6 @@
                 <p class="text-gray-400 text-sm mt-1">Gestión Global de Franquicias y Licencias</p>
             </div>
             <div class="flex items-center gap-4">
-                <!-- Botón Toggle Fx -->
                 <button id="btn-toggle-fx" class="bg-[#18181b] border border-[#27272a] text-gray-400 hover:text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2" title="Activar/Desactivar efectos visuales">
                     <span id="fx-icon">✨</span> Fx
                 </button>
@@ -127,7 +126,6 @@
         </div>
     </div>
 
-    <!-- Script Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -136,7 +134,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Control del Efecto Visual (Aurora)
+        // Control Fx
         const btnFx = document.getElementById('btn-toggle-fx');
         if (localStorage.getItem('nems_fx_disabled') === 'true') {
             document.body.classList.add('aurora-disabled');
