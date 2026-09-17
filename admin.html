@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central Panel | NEMS Group</title>
+    <title>Consola Central | NEMS Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>if(sessionStorage.getItem('nems_admin_token') !== 'autorizado_2026') window.location.href = 'index.html';</script>
     <style>
@@ -16,9 +16,9 @@
         
         .aurora-bg {
             position: absolute; top: -50px; left: -10%; width: 120%; height: 450px;
-            background: linear-gradient(270deg, #06b6d4, #10b981, #f59e0b, #ec4899, #8b5cf6, #06b6d4);
-            background-size: 400% 400%; filter: blur(45px); opacity: 0.75; z-index: 0;
-            animation: auroraSweep 6s ease infinite; pointer-events: none; transition: opacity 0.5s ease;
+            background: linear-gradient(270deg, #3b82f6, #8b5cf6, #ec4899, #8b5cf6, #3b82f6);
+            background-size: 400% 400%; filter: blur(60px); opacity: 0.3; z-index: 0;
+            animation: auroraSweep 8s ease infinite; pointer-events: none; transition: opacity 0.5s ease;
         }
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -29,22 +29,26 @@
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-50"></div>
 
     <div class="max-w-[1400px] mx-auto relative z-10">
-        
+        <!-- CABECERA REDISEÑADA ESTILO CONSOLA CENTRAL -->
         <header class="flex justify-between items-end mb-10 pb-6 relative">
-            <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-[#27272a] via-[#27272a] to-transparent"></div>
+            <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-blue-500/50 via-[#27272a] to-transparent"></div>
+            
             <div>
-                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tighter mb-1">
-                    Consola <span class="text-blue-500">Central</span>
+                <h1 class="text-4xl font-black tracking-tighter mb-1 flex items-center gap-2">
+                    <span class="text-white">Consola</span> 
+                    <span class="text-blue-500 opacity-90">Central</span>
                 </h1>
-                <p class="text-[10px] font-bold text-blue-500/80 uppercase tracking-[0.2em] mt-2">Gestión Global de Franquicias y Licencias</p>
+                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">
+                    Gestión Global de Franquicias y Licencias
+                </p>
             </div>
             
             <div class="flex items-center gap-4">
-                <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-5 py-2 bg-[#121214] border border-[#27272a] rounded-full text-[11px] font-bold text-gray-400 hover:text-white hover:border-gray-500 transition-all shadow-lg" title="Activar/Desactivar Fx Visuales">
+                <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-5 py-2.5 bg-[#121214] border border-[#27272a] rounded-full text-[10px] font-bold text-gray-400 hover:text-white transition-all shadow-lg" title="Activar/Desactivar Fx Visuales">
                     <svg class="w-4 h-4 text-blue-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                    <span class="tracking-wider uppercase">Efectos Visuales</span>
+                    <span class="tracking-widest uppercase">Efectos Visuales</span>
                 </button>
-                <button id="btn-logout" class="bg-[#121214] border border-[#27272a] text-gray-400 hover:text-white transition px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider hover:bg-red-900/20 hover:border-red-500/30">
+                <button id="btn-logout" class="bg-[#121214] border border-[#27272a] text-gray-400 hover:text-white transition px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-red-900/20 hover:border-red-500/30">
                     Cerrar Sesión
                 </button>
             </div>
@@ -52,60 +56,65 @@
         
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
             <div class="glass-card p-6 rounded-2xl xl:col-span-4 h-fit shadow-2xl">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 id="form-title" class="text-xl font-bold">➕ Nuevo Despliegue</h2>
-                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-red-900/50 text-red-400 px-3 py-1 rounded hover:bg-red-900">Cancelar</button>
+                <div class="flex justify-between items-center mb-6 border-b border-[#27272a] pb-4">
+                    <h2 id="form-title" class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="text-purple-500 text-xl">➕</span> Nuevo Despliegue
+                    </h2>
+                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-red-900/50 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-900 transition font-bold">Cancelar</button>
                 </div>
                 
-                <form id="form-gym" class="space-y-4">
+                <form id="form-gym" class="space-y-5">
                     <input type="hidden" id="edit-gym-id">
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre Comercial</label><input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Ej. Titan Gym" required></div>
-                        <div><label class="block text-xs font-bold text-blue-400 uppercase mb-1">Usuario Login</label><input type="text" id="gym-username" class="w-full input-dark rounded-lg p-2.5 text-sm border-blue-500/30" placeholder="Ej. titangym" required></div>
+                        <div><label class="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 tracking-wider">Nombre Comercial</label><input type="text" id="gym-nombre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Ej. Titan Gym" required></div>
+                        <div><label class="block text-[10px] font-bold text-blue-400 uppercase mb-1.5 tracking-wider">Usuario Login</label><input type="text" id="gym-username" class="w-full input-dark rounded-lg p-2.5 text-sm border-blue-500/30 focus:border-blue-500" placeholder="Ej. titangym" required></div>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-xs font-bold text-emerald-400 uppercase mb-1">Clave DUEÑO</label><input type="text" id="gym-password" class="w-full input-dark rounded-lg p-2.5 text-sm border-emerald-500/30" placeholder="Clave Admin" required></div>
-                        <div><label class="block text-xs font-bold text-orange-400 uppercase mb-1">Clave RECEPCIÓN</label><input type="text" id="gym-password-staff" class="w-full input-dark rounded-lg p-2.5 text-sm border-orange-500/30" placeholder="Clave Empleados" required></div>
+                        <div><label class="block text-[10px] font-bold text-emerald-400 uppercase mb-1.5 tracking-wider">Clave Dueño</label><input type="text" id="gym-password" class="w-full input-dark rounded-lg p-2.5 text-sm border-emerald-500/30 focus:border-emerald-500" placeholder="Clave Admin" required></div>
+                        <div><label class="block text-[10px] font-bold text-orange-400 uppercase mb-1.5 tracking-wider">Clave Recepción</label><input type="text" id="gym-password-staff" class="w-full input-dark rounded-lg p-2.5 text-sm border-orange-500/30 focus:border-orange-500" placeholder="Clave Empleados" required></div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-3 items-end">
-                        <div class="col-span-2"><label class="block text-xs font-bold text-gray-400 uppercase mb-1">URL Logo (Opcional)</label><input type="url" id="gym-logo" class="w-full input-dark rounded-lg p-2.5 text-xs" placeholder="https://..."></div>
-                        <div class="col-span-1"><label class="block text-xs font-bold text-gray-400 uppercase mb-1 text-center">Color</label>
-                            <input type="color" id="gym-color" class="h-10 w-full rounded cursor-pointer bg-transparent border-0 p-0" value="#eab308">
+                        <div class="col-span-2"><label class="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 tracking-wider">URL Logo (Opcional)</label><input type="url" id="gym-logo" class="w-full input-dark rounded-lg p-2.5 text-xs" placeholder="https://..."></div>
+                        <div class="col-span-1"><label class="block text-[10px] font-bold text-gray-400 uppercase mb-1.5 tracking-wider text-center">Color</label>
+                            <input type="color" id="gym-color" class="h-[38px] w-full rounded cursor-pointer bg-transparent border-0 p-0" value="#eab308">
                         </div>
-                        <div class="col-span-1"><label class="block text-xs font-bold text-blue-400 uppercase mb-1">Vence SaaS</label><input type="date" id="gym-licencia" class="w-full input-dark rounded-lg p-2.5 text-xs border-blue-500/30" required></div>
+                        <div class="col-span-1"><label class="block text-[10px] font-bold text-blue-400 uppercase mb-1.5 tracking-wider">Vence SaaS</label><input type="date" id="gym-licencia" class="w-full input-dark rounded-lg p-2.5 text-[10px] border-blue-500/30" required></div>
                     </div>
                     
-                    <div class="pt-4 border-t border-[#27272a]">
+                    <div class="pt-2">
                         <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Servicios Base</label>
                         <div class="grid grid-cols-2 gap-2 mb-4">
-                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-musculacion" checked><span class="text-xs">Musculación</span></label>
-                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-funcional"><span class="text-xs">Funcional</span></label>
-                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-pilates"><span class="text-xs">Pilates</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-musculacion" checked><span class="text-xs font-bold text-gray-300">Musculación</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-funcional"><span class="text-xs font-bold text-gray-300">Funcional</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-pilates"><span class="text-xs font-bold text-gray-300">Pilates</span></label>
                         </div>
                         
                         <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Módulos Pro (Enterprise)</label>
                         <div class="grid grid-cols-2 gap-2">
-                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-tienda" checked><span class="text-xs">Tienda POS</span></label>
-                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-asistencia"><span class="text-xs">Control Asistencia</span></label>
-                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded border border-[#27272a]"><input type="checkbox" id="mod-evaluaciones"><span class="text-xs">Fichas Físicas</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-tienda" checked><span class="text-xs font-bold text-gray-300">Tienda POS</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-asistencia"><span class="text-xs font-bold text-gray-300">Control Asistencia</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-evaluaciones"><span class="text-xs font-bold text-gray-300">Fichas Físicas</span></label>
                         </div>
                     </div>
-                    <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-500 transition mt-4 shadow-[0_0_15px_rgba(37,99,235,0.4)]">Crear e Iniciar Entorno</button>
+                    <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-blue-500 transition mt-4 shadow-[0_0_20px_rgba(37,99,235,0.4)] tracking-wide">Crear e Iniciar Entorno</button>
                 </form>
             </div>
 
-            <div class="glass-card p-6 rounded-2xl xl:col-span-8 shadow-2xl">
-                <h2 class="text-xl font-bold mb-6">Directorio de Gimnasios</h2>
-                <div id="loading-gyms" class="text-center py-10 text-gray-500 font-mono text-sm animate-pulse">Sincronizando con base de datos NEMS...</div>
+            <div class="glass-card p-6 rounded-2xl xl:col-span-8 shadow-2xl flex flex-col">
+                <h2 class="text-lg font-bold mb-6 text-white border-b border-[#27272a] pb-4">Directorio de Gimnasios</h2>
                 
-                <div class="overflow-x-auto">
+                <div id="loading-gyms" class="flex-1 flex items-center justify-center py-20 text-blue-500 font-mono text-sm animate-pulse">
+                    Sincronizando con base de datos NEMS...
+                </div>
+                
+                <div class="overflow-x-auto w-full">
                     <table class="w-full text-left border-collapse min-w-[800px] hidden" id="table-gyms">
                         <thead>
-                            <tr class="border-b border-[#27272a] text-gray-500 text-xs uppercase tracking-wider">
-                                <th class="py-3 px-4">Estado</th>
+                            <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
+                                <th class="py-3 px-4 w-10">St</th>
                                 <th class="py-3 px-4">Gimnasio</th>
                                 <th class="py-3 px-4">Accesos (User/Pass)</th>
                                 <th class="py-3 px-4">Licencia SaaS</th>
@@ -119,6 +128,7 @@
         </div>
     </div>
 
+    <!-- SCRIPT BLINDADO CONTRA ERRORES DE DOM -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -126,68 +136,93 @@
         const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
         const app = initializeApp(firebaseConfig); const db = getFirestore(app);
 
-        // Pre-carga fecha de vencimiento a 1 mes exacto
-        const d = new Date(); d.setMonth(d.getMonth() + 1);
-        document.getElementById('gym-licencia').value = d.toISOString().split('T')[0];
-
-        const btnFx = document.getElementById('btn-toggle-fx');
-        if (localStorage.getItem('nems_fx_disabled') === 'true') { document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50', 'grayscale'); }
-        btnFx.addEventListener('click', () => { document.body.classList.toggle('aurora-disabled'); localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled')); btnFx.classList.toggle('opacity-50'); btnFx.classList.toggle('grayscale'); });
-
-        document.getElementById('btn-logout').addEventListener('click', () => { sessionStorage.removeItem('nems_admin_token'); window.location.href = 'index.html'; });
-
         let gymsData = [];
 
         window.showToast = (msg, tipo = 'success') => {
-            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
-            const bg = tipo === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-red-500/20 border-red-500/50 text-red-400';
-            toast.className = `toast-enter ${bg} border px-6 py-4 rounded-xl shadow-lg backdrop-blur-md font-bold text-sm flex items-center gap-3`;
-            toast.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${tipo==='success'?'M5 13l4 4L19 7':'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}"></path></svg> ${msg}`;
+            const container = document.getElementById('toast-container'); 
+            if(!container) return;
+            const toast = document.createElement('div');
+            const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500 text-emerald-400' : 'bg-[#18181b] border-l-4 border-red-500 text-red-400';
+            toast.className = `toast-enter ${bg} border-y border-r border-[#27272a] px-6 py-4 rounded-r-xl shadow-2xl font-bold text-sm flex items-center gap-3`;
+            toast.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${tipo==='success'?'M5 13l4 4L19 7':'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}"></path></svg> <span class="text-white">${msg}</span>`;
             container.appendChild(toast); setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        const form = document.getElementById('form-gym'); const colorInput = document.getElementById('gym-color'); const colorText = document.getElementById('gym-color-text');
-        colorInput.addEventListener('input', (e) => colorText.value = e.target.value); colorText.addEventListener('input', (e) => colorInput.value = e.target.value);
+        // INICIALIZACIÓN PROTEGIDA (Previene pantalla infinita si faltan IDs)
+        try {
+            const elLicencia = document.getElementById('gym-licencia');
+            if(elLicencia) {
+                const d = new Date(); d.setMonth(d.getMonth() + 1);
+                elLicencia.value = d.toISOString().split('T')[0];
+            }
+
+            const btnFx = document.getElementById('btn-toggle-fx');
+            if(btnFx) {
+                if (localStorage.getItem('nems_fx_disabled') === 'true') { document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50', 'grayscale'); }
+                btnFx.addEventListener('click', () => {
+                    document.body.classList.toggle('aurora-disabled');
+                    localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled'));
+                    btnFx.classList.toggle('opacity-50'); btnFx.classList.toggle('grayscale');
+                });
+            }
+
+            const btnLogout = document.getElementById('btn-logout');
+            if(btnLogout) btnLogout.addEventListener('click', () => { sessionStorage.removeItem('nems_admin_token'); window.location.href = 'index.html'; });
+            
+            const colorInput = document.getElementById('gym-color'); 
+            const colorText = document.getElementById('gym-color-text');
+            if(colorInput && colorText) {
+                colorInput.addEventListener('input', (e) => colorText.value = e.target.value); 
+                colorText.addEventListener('input', (e) => colorInput.value = e.target.value);
+            }
+        } catch(e) { console.warn("Aviso UI:", e); }
 
         async function cargarGimnasios() {
             try {
-                const tbody = document.getElementById('lista-gyms'); tbody.innerHTML = '';
+                const loader = document.getElementById('loading-gyms');
+                const table = document.getElementById('table-gyms');
+                const tbody = document.getElementById('lista-gyms'); 
+                
+                if(!tbody) return; // Si la tabla no existe en el HTML modificado, aborta para no romper
+                tbody.innerHTML = '';
+                
                 const querySnapshot = await getDocs(collection(db, "gimnasios"));
-                document.getElementById('loading-gyms').classList.add('hidden'); 
-                document.getElementById('table-gyms').classList.remove('hidden');
+                
+                if(loader) loader.classList.add('hidden'); 
+                if(table) table.classList.remove('hidden');
 
                 gymsData = []; 
                 querySnapshot.forEach((docSnap) => gymsData.push({id: docSnap.id, ...docSnap.data()}));
 
                 if(gymsData.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500 italic">No hay inquilinos registrados.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500 italic text-xs">No hay franquicias registradas en la base de datos.</td></tr>`;
                     return;
                 }
 
                 gymsData.forEach((data) => {
                     const isSuspendido = data.estado === 'suspendido';
-                    // Blindaje contra datos nulos en clientes antiguos
+                    // Evitar errores si un gimnasio viejo no tiene licencia cargada
                     const fechaVenceFormateada = data.vencimientoLicencia ? data.vencimientoLicencia.split('-').reverse().join('/') : 'Sin Asignar';
                     
-                    const tr = document.createElement('tr'); tr.className = `border-b border-[#27272a] transition ${isSuspendido ? 'bg-red-900/5' : 'hover:bg-[#18181b]'}`;
+                    const tr = document.createElement('tr'); tr.className = `border-b border-[#27272a] transition ${isSuspendido ? 'bg-red-900/10' : 'hover:bg-[#18181b]'}`;
                     tr.innerHTML = `
-                        <td class="py-4 px-4"><div class="w-3 h-3 rounded-full ${isSuspendido ? 'bg-red-500 shadow-[0_0_8px_#ef4444]' : 'bg-emerald-500 shadow-[0_0_8px_#10b981]'}"></div></td>
-                        <td class="py-4 px-4"><div class="flex items-center gap-3">${data.logoUrl ? `<img src="${data.logoUrl}" class="w-8 h-8 rounded object-cover border border-gray-700 bg-white">` : `<div class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-xs font-bold" style="color:${data.colorPrimario||'#fff'}">Gym</div>`}<span class="font-bold text-white ${isSuspendido ? 'line-through text-gray-500' : ''}">${data.nombre || 'Sin Nombre'}</span></div></td>
+                        <td class="py-4 px-4"><div class="w-2 h-2 rounded-full ${isSuspendido ? 'bg-red-500 shadow-[0_0_8px_#ef4444]' : 'bg-emerald-500 shadow-[0_0_8px_#10b981]'}"></div></td>
+                        <td class="py-4 px-4"><div class="flex items-center gap-3">${data.logoUrl ? `<img src="${data.logoUrl}" class="w-8 h-8 rounded-lg object-cover border border-[#27272a] bg-[#18181b]">` : `<div class="w-8 h-8 rounded-lg bg-[#18181b] border border-[#27272a] flex items-center justify-center text-[9px] font-bold" style="color:${data.colorPrimario||'#fff'}">GYM</div>`}<span class="font-bold text-white ${isSuspendido ? 'line-through text-gray-500' : ''}">${data.nombre || 'Sin Nombre'}</span></div></td>
                         <td class="py-4 px-4">
                             <div class="flex flex-col gap-1">
                                 <span class="font-mono text-[11px] text-blue-400 bg-blue-900/20 px-2 py-0.5 rounded border border-blue-500/30 w-fit">User: ${data.username || '-'}</span>
-                                <span class="font-mono text-[10px] text-emerald-400">Dueño: ${data.password || '-'}</span>
+                                <span class="font-mono text-[10px] text-emerald-400 mt-1">Dueño: ${data.password || '-'}</span>
                                 <span class="font-mono text-[10px] text-orange-400">Staff: ${data.passwordStaff || 'No asignada'}</span>
                             </div>
                         </td>
                         <td class="py-4 px-4"><span class="font-mono text-[11px] px-2 py-1 rounded border ${isSuspendido ? 'text-red-400 bg-red-900/20 border-red-500/30' : 'text-gray-300 bg-[#18181b] border-[#27272a]'}">Vence: ${fechaVenceFormateada}</span></td>
-                        <td class="py-4 px-4 flex justify-end gap-2"><button class="btn-editar text-xs bg-blue-900/30 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded transition" data-id="${data.id}">Editar</button><button class="btn-toggle text-xs px-3 py-1.5 rounded transition ${isSuspendido ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600 hover:text-white' : 'bg-red-900/30 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white'}" data-id="${data.id}" data-estado="${data.estado}">${isSuspendido ? 'Activar' : 'Suspender'}</button></td>`;
+                        <td class="py-4 px-4 flex justify-end gap-2"><button class="btn-editar text-xs bg-blue-900/30 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded-lg transition" data-id="${data.id}">Editar</button><button class="btn-toggle text-xs px-3 py-1.5 rounded-lg transition ${isSuspendido ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600 hover:text-white' : 'bg-red-900/30 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white'}" data-id="${data.id}" data-estado="${data.estado}">${isSuspendido ? 'Activar' : 'Suspender'}</button></td>`;
                     tbody.appendChild(tr);
                 });
             } catch (error) {
-                console.error("Error crítico de carga:", error);
-                document.getElementById('loading-gyms').innerText = "Error de conexión con la Base de Datos.";
-                document.getElementById('loading-gyms').classList.replace('text-gray-500', 'text-red-500');
+                console.error("Error crítico en carga de gimnasios:", error);
+                const loader = document.getElementById('loading-gyms');
+                if(loader) { loader.innerText = "Error de conexión con la Base de Datos."; loader.classList.replace('text-blue-500', 'text-red-500'); }
             }
         }
 
@@ -198,48 +233,77 @@
             }
             if (e.target.classList.contains('btn-editar')) {
                 const gym = gymsData.find(g => g.id === e.target.dataset.id);
-                document.getElementById('form-title').innerText = "✏️ Modificar Franquicia";
-                document.getElementById('edit-gym-id').value = gym.id; document.getElementById('gym-nombre').value = gym.nombre;
+                document.getElementById('form-title').innerHTML = `<span class="text-blue-500 text-xl">✏️</span> Modificar Despliegue`;
+                document.getElementById('edit-gym-id').value = gym.id; 
+                document.getElementById('gym-nombre').value = gym.nombre || '';
                 document.getElementById('gym-username').value = gym.username || ''; 
                 document.getElementById('gym-password').value = gym.password || '';
                 document.getElementById('gym-password-staff').value = gym.passwordStaff || '';
-                document.getElementById('gym-color').value = gym.colorPrimario || '#eab308'; document.getElementById('gym-color-text').value = gym.colorPrimario || '#eab308';
-                document.getElementById('gym-logo').value = gym.logoUrl || '';
                 
-                // Carga de fecha blindada
-                if(gym.vencimientoLicencia) document.getElementById('gym-licencia').value = gym.vencimientoLicencia;
-                else { const d = new Date(); d.setMonth(d.getMonth() + 1); document.getElementById('gym-licencia').value = d.toISOString().split('T')[0]; }
+                const cInput = document.getElementById('gym-color'); if(cInput) cInput.value = gym.colorPrimario || '#eab308'; 
+                const lInput = document.getElementById('gym-logo'); if(lInput) lInput.value = gym.logoUrl || '';
+                const vInput = document.getElementById('gym-licencia'); 
+                if(vInput) {
+                    if(gym.vencimientoLicencia) vInput.value = gym.vencimientoLicencia;
+                    else { const d = new Date(); d.setMonth(d.getMonth() + 1); vInput.value = d.toISOString().split('T')[0]; }
+                }
 
                 const m = gym.modulos || {};
-                document.getElementById('mod-musculacion').checked = !!m.musculacion; document.getElementById('mod-funcional').checked = !!m.funcional;
-                document.getElementById('mod-pilates').checked = !!m.pilates; document.getElementById('mod-tienda').checked = !!m.tienda;
-                document.getElementById('mod-asistencia').checked = !!m.asistencia; document.getElementById('mod-evaluaciones').checked = !!m.evaluaciones;
-                document.getElementById('btn-submit').innerText = "Guardar Cambios"; document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
+                const c1 = document.getElementById('mod-musculacion'); if(c1) c1.checked = !!m.musculacion; 
+                const c2 = document.getElementById('mod-funcional'); if(c2) c2.checked = !!m.funcional;
+                const c3 = document.getElementById('mod-pilates'); if(c3) c3.checked = !!m.pilates; 
+                const c4 = document.getElementById('mod-tienda'); if(c4) c4.checked = !!m.tienda;
+                const c5 = document.getElementById('mod-asistencia'); if(c5) c5.checked = !!m.asistencia; 
+                const c6 = document.getElementById('mod-evaluaciones'); if(c6) c6.checked = !!m.evaluaciones;
+                
+                const btnSub = document.getElementById('btn-submit'); if(btnSub) btnSub.innerText = "Guardar Cambios"; 
+                const btnCancel = document.getElementById('btn-cancelar-edicion'); if(btnCancel) btnCancel.classList.remove('hidden');
             }
         });
 
-        document.getElementById('btn-cancelar-edicion').addEventListener('click', () => { form.reset(); document.getElementById('edit-gym-id').value = ""; document.getElementById('form-title').innerText = "➕ Nuevo Despliegue"; document.getElementById('btn-submit').innerText = "Crear e Iniciar Entorno"; document.getElementById('btn-cancelar-edicion').classList.add('hidden'); });
+        const formGym = document.getElementById('form-gym');
+        if(formGym) {
+            formGym.addEventListener('submit', async (e) => {
+                e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Procesando...'; btn.disabled = true;
+                const editId = document.getElementById('edit-gym-id').value;
+                
+                // Recolección segura
+                const getColor = () => { const el = document.getElementById('gym-color'); return el ? el.value : '#eab308'; };
+                const getLogo = () => { const el = document.getElementById('gym-logo'); return el ? el.value.trim() : ''; };
+                const getCheck = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Procesando...'; btn.disabled = true;
-            const editId = document.getElementById('edit-gym-id').value;
-            const gymData = { 
-                nombre: document.getElementById('gym-nombre').value, 
-                username: document.getElementById('gym-username').value.trim(), 
-                colorPrimario: document.getElementById('gym-color').value, 
-                password: document.getElementById('gym-password').value, 
-                passwordStaff: document.getElementById('gym-password-staff').value, 
-                logoUrl: document.getElementById('gym-logo').value.trim(), 
-                vencimientoLicencia: document.getElementById('gym-licencia').value,
-                modulos: { musculacion: document.getElementById('mod-musculacion').checked, funcional: document.getElementById('mod-funcional').checked, pilates: document.getElementById('mod-pilates').checked, tienda: document.getElementById('mod-tienda').checked, asistencia: document.getElementById('mod-asistencia').checked, evaluaciones: document.getElementById('mod-evaluaciones').checked } 
-            };
-            try {
-                if (editId) { await updateDoc(doc(db, "gimnasios", editId), gymData); showToast('Configuración actualizada'); } 
-                else { gymData.estado = 'activo'; gymData.fechaCreacion = new Date().toISOString(); await addDoc(collection(db, "gimnasios"), gymData); showToast('Nuevo entorno desplegado exitosamente'); }
-                document.getElementById('btn-cancelar-edicion').click(); cargarGimnasios();
-            } catch (error) { showToast("Error en base de datos", 'error'); console.error(error); } finally { btn.disabled = false; }
-        });
+                const gymData = { 
+                    nombre: document.getElementById('gym-nombre').value, 
+                    username: document.getElementById('gym-username').value.trim(), 
+                    colorPrimario: getColor(), 
+                    password: document.getElementById('gym-password').value, 
+                    passwordStaff: document.getElementById('gym-password-staff').value, 
+                    logoUrl: getLogo(), 
+                    vencimientoLicencia: document.getElementById('gym-licencia').value,
+                    modulos: { musculacion: getCheck('mod-musculacion'), funcional: getCheck('mod-funcional'), pilates: getCheck('mod-pilates'), tienda: getCheck('mod-tienda'), asistencia: getCheck('mod-asistencia'), evaluaciones: getCheck('mod-evaluaciones') } 
+                };
+                
+                try {
+                    if (editId) { await updateDoc(doc(db, "gimnasios", editId), gymData); showToast('Configuración actualizada'); } 
+                    else { gymData.estado = 'activo'; gymData.fechaCreacion = new Date().toISOString(); await addDoc(collection(db, "gimnasios"), gymData); showToast('Nuevo entorno desplegado exitosamente'); }
+                    const btnCancel = document.getElementById('btn-cancelar-edicion'); if(btnCancel) btnCancel.click(); 
+                    cargarGimnasios();
+                } catch (error) { showToast("Error al guardar en base de datos", 'error'); console.error(error); } finally { btn.disabled = false; }
+            });
+        }
         
+        const btnCancel = document.getElementById('btn-cancelar-edicion');
+        if(btnCancel) {
+            btnCancel.addEventListener('click', () => { 
+                if(formGym) formGym.reset(); 
+                document.getElementById('edit-gym-id').value = ""; 
+                document.getElementById('form-title').innerHTML = `<span class="text-purple-500 text-xl">➕</span> Nuevo Despliegue`; 
+                document.getElementById('btn-submit').innerText = "Crear e Iniciar Entorno"; 
+                btnCancel.classList.add('hidden'); 
+            });
+        }
+
+        // INICIAMOS LA CARGA PRINCIPAL
         cargarGimnasios();
     </script>
 </body>
