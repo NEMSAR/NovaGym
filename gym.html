@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Sport Management | NovaGym</title>
+    <title>Enterprise Management | NovaGym</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -47,6 +47,7 @@
 
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
+    <!-- Controles Flotantes Inferiores -->
     <div class="fixed bottom-5 right-5 z-50 flex items-center gap-3 fade-in">
         <button onclick="abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -175,7 +176,7 @@
             </div>
 
             <div id="vista-finanzas" class="hidden fade-in admin-only space-y-6">
-                <!-- Arqueos -->
+                <!-- Arqueos (Solo Admin) -->
                 <section class="glass-panel p-6 shadow-2xl border-l-4 border-orange-500">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Control de Turnos (Cajas Cerradas)</h2>
@@ -189,7 +190,7 @@
                                     <th class="py-3 px-4">Caja Membresías</th>
                                     <th class="py-3 px-4">Recaudación Turno</th>
                                     <th class="py-3 px-4">Usuario</th>
-                                    <th class="py-3 px-4 text-center">Del</th>
+                                    <th class="py-3 px-4 text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-turnos-admin-body"></tbody>
@@ -236,7 +237,7 @@
                     <div class="xl:col-span-1 space-y-4">
                         <section class="glass-panel p-6 shadow-2xl h-full">
                             <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual</h2>
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual (Mostrador)</h2>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-xs">
@@ -292,11 +293,9 @@
     <div id="modal-ayuda" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
         <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
-            <h2 class="text-2xl font-bold text-blue-400 mb-2">NOVA Guide</h2>
+            <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
             <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
-            
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
-                <!-- Secciones de ayuda ... -->
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
                     <p class="text-gray-400">Clic en "+ Registrar Socio". Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio, calculará la fecha de vencimiento y registrará el cobro en Finanzas automáticamente.</p>
@@ -311,9 +310,18 @@
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> 4. Cierre de Turno Seguro</h3>
-                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". Por seguridad, el sistema le pedirá que ingrese su contraseña de sesión para confirmar el cierre. Podrá dejar anotadas observaciones para que el dueño las vea en el historial.</p>
+                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". El sistema le pedirá que ingrese su contraseña y podrá dejar observaciones. El balance quedará guardado para el administrador.</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalle Cierre Turno (Solo Admin) -->
+    <div id="modal-detalle-turno" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/90 backdrop-blur-md">
+        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
+            <button onclick="document.getElementById('modal-detalle-turno').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-white">✕</button>
+            <h2 class="text-xl font-bold text-white mb-4">Detalle del Turno</h2>
+            <div id="contenido-detalle-turno" class="text-sm"></div>
         </div>
     </div>
 
@@ -637,6 +645,38 @@
             modal.classList.remove('hidden');
         }
 
+        // --- HISTORIAL CAJAS Y DETALLE PARA EL DUEÑO ---
+        window.abrirModalDetalleTurno = (cierreId) => {
+            const cierre = listaCierresData.find(c => c.id === cierreId);
+            if(!cierre) return;
+            
+            const finanzasTurno = listaFinanzasData.filter(f => f.timestamp > cierre.apertura && f.timestamp <= cierre.timestamp);
+            let listadoHtml = '';
+            finanzasTurno.forEach(f => {
+                const icon = f.tipo === 'Inventario' ? '🛒' : '👤';
+                const color = f.tipo === 'Inventario' ? 'text-emerald-400' : 'text-blue-400';
+                listadoHtml += `<li class="flex justify-between border-b border-[#27272a] py-1 text-xs text-gray-300"><span>${icon} ${f.concepto}</span><span class="${color} font-mono">$${f.monto}</span></li>`;
+            });
+
+            if(finanzasTurno.length === 0) listadoHtml = `<li class="text-gray-500 italic text-center py-2 text-xs">Sin transacciones.</li>`;
+
+            document.getElementById('contenido-detalle-turno').innerHTML = `
+                <div class="text-xs text-gray-400 mb-4 bg-[#18181b] p-3 rounded-lg border border-[#27272a]">
+                    <p><strong>Apertura:</strong> ${new Date(cierre.apertura).toLocaleString('es-AR')}</p>
+                    <p><strong>Cierre:</strong> ${new Date(cierre.cierre).toLocaleString('es-AR')}</p>
+                </div>
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] mb-4">
+                    <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest mb-1">📝 Observaciones del Empleado:</p>
+                    <p class="text-sm text-white italic">"${cierre.observaciones || 'Sin observaciones'}"</p>
+                </div>
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] max-h-48 overflow-y-auto custom-scrollbar">
+                    <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-2 sticky top-0 bg-[#18181b]">Detalle de Operaciones</p>
+                    <ul class="space-y-1">${listadoHtml}</ul>
+                </div>
+            `;
+            document.getElementById('modal-detalle-turno').classList.remove('hidden');
+        };
+
         function abrirModalEvaluacion() {
             modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
             modalTitle.innerText = "Evaluación Corporal (Metas)";
@@ -705,12 +745,10 @@
                     
                     const banner = document.getElementById('banner-licencia');
                     if (diffDias <= 0 && diffDias >= -3) {
-                        banner.classList.remove('hidden');
-                        banner.classList.add('bg-red-600');
+                        banner.classList.remove('hidden'); banner.classList.add('bg-red-600');
                         banner.innerHTML = `🚨 AVISO URGENTE: Su mensualidad de sistema venció el ${data.vencimientoLicencia.split('-').reverse().join('/')}. Tiene ${3 + diffDias} días de tolerancia antes de la suspensión automática.`;
                     } else if (diffDias > 0 && diffDias <= 5) {
-                        banner.classList.remove('hidden');
-                        banner.classList.add('bg-orange-600');
+                        banner.classList.remove('hidden'); banner.classList.add('bg-orange-600');
                         banner.innerHTML = `⚠️ RECORDATORIO: Su mensualidad de sistema vence el ${data.vencimientoLicencia.split('-').reverse().join('/')}. Recuerde abonar a tiempo.`;
                     }
                 }
@@ -841,7 +879,10 @@
                                     <td class="py-3 px-4 text-blue-400 font-mono">$${c.total_mem}</td>
                                     <td class="py-3 px-4 font-bold text-white font-mono">$${total}</td>
                                     <td class="py-3 px-4 text-[10px] text-gray-500 uppercase">${c.usuario === 'admin' ? 'Dueño' : 'Staff'}</td>
-                                    <td class="py-3 px-4 text-center"><button class="btn-del-cierre text-gray-600 hover:text-red-500 transition" data-id="${c.id}">✕</button></td>
+                                    <td class="py-3 px-4 text-center flex justify-center gap-2">
+                                        <button onclick="abrirModalDetalleTurno('${c.id}')" class="text-xs bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-gray-300 px-2 py-1 rounded transition" title="Ver Detalle">👁️ Ver</button>
+                                        <button class="btn-del-cierre text-gray-600 hover:text-red-500 transition py-1" data-id="${c.id}" title="Eliminar">✕</button>
+                                    </td>
                                 </tr>`;
                         });
                     }
@@ -904,7 +945,7 @@
             if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); cargarDatos(); }
             if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); cargarDatos(); }
             if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); cargarDatos(); }
-            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar este arqueo de caja?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); cargarDatos(); }
+            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar este arqueo de caja de forma permanente?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); cargarDatos(); }
         });
 
         document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
