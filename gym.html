@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Management Pro | NEMS OS</title>
+    <title>Enterprise Sport Management | NovaGym</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -47,7 +47,6 @@
 
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
-    <!-- Controles Flotantes Inferiores -->
     <div class="fixed bottom-5 right-5 z-50 flex items-center gap-3 fade-in">
         <button onclick="abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -87,16 +86,21 @@
             </div>
 
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
-                <img src="https://via.placeholder.com/120x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+                <img src="https://i.imgur.com/mGPdyWD.png" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
                 <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">Powered by<br>NovaBit Media Agency</p>
             </div>
         </nav>
     </aside>
 
-    <main class="flex-1 overflow-y-auto bg-[#09090b] relative custom-scrollbar">
+    <main class="flex-1 overflow-y-auto bg-[#09090b] relative custom-scrollbar flex flex-col">
+        
+        <!-- BANNER DE LICENCIA NEMS SAAS (Solo para Admin) -->
+        <div id="banner-licencia" class="hidden admin-only w-full text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b">
+        </div>
+
         <div class="aurora-bg"></div>
 
-        <div class="p-8 max-w-[1600px] mx-auto relative z-10">
+        <div class="p-8 max-w-[1600px] mx-auto w-full relative z-10 flex-1">
             <header class="flex justify-between items-end mb-10 pb-6 relative">
                 <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-[#27272a] via-[#27272a] to-transparent"></div>
                 <div>
@@ -288,10 +292,11 @@
     <div id="modal-ayuda" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
         <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
-            <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
+            <h2 class="text-2xl font-bold text-blue-400 mb-2">NOVA Guide</h2>
             <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
             
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
+                <!-- Secciones de ayuda ... -->
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
                     <p class="text-gray-400">Clic en "+ Registrar Socio". Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio, calculará la fecha de vencimiento y registrará el cobro en Finanzas automáticamente.</p>
@@ -306,7 +311,7 @@
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> 4. Cierre de Turno Seguro</h3>
-                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". El sistema le pedirá que ingrese su contraseña y podrá dejar observaciones. El balance quedará guardado para el administrador.</p>
+                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". Por seguridad, el sistema le pedirá que ingrese su contraseña de sesión para confirmar el cierre. Podrá dejar anotadas observaciones para que el dueño las vea en el historial.</p>
                 </div>
             </div>
         </div>
@@ -685,55 +690,80 @@
         }
 
         async function cargarDatos() {
-            const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
-            if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
-            
-            document.getElementById('app-container').classList.remove('hidden');
-            const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
-            
-            if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
-            
-            const logoCont = document.getElementById('ui-gym-logo-container');
-            if(data.logoUrl) { logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-20 h-auto object-contain drop-shadow-lg">`; document.getElementById('ui-gym-name').innerText = ""; } 
-            else { logoCont.innerHTML = `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase(); }
+            try {
+                const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
+                if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
+                
+                const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
+                
+                // === ALERTA LICENCIA SAAS ===
+                if (data.vencimientoLicencia && userRole === 'admin') {
+                    const hoy = new Date(); hoy.setHours(0,0,0,0);
+                    const [y,m,d] = data.vencimientoLicencia.split('-');
+                    const vence = new Date(y, m-1, d);
+                    const diffDias = Math.ceil((vence - hoy) / (1000 * 60 * 60 * 24));
+                    
+                    const banner = document.getElementById('banner-licencia');
+                    if (diffDias <= 0 && diffDias >= -3) {
+                        banner.classList.remove('hidden');
+                        banner.classList.add('bg-red-600');
+                        banner.innerHTML = `🚨 AVISO URGENTE: Su mensualidad de sistema venció el ${data.vencimientoLicencia.split('-').reverse().join('/')}. Tiene ${3 + diffDias} días de tolerancia antes de la suspensión automática.`;
+                    } else if (diffDias > 0 && diffDias <= 5) {
+                        banner.classList.remove('hidden');
+                        banner.classList.add('bg-orange-600');
+                        banner.innerHTML = `⚠️ RECORDATORIO: Su mensualidad de sistema vence el ${data.vencimientoLicencia.split('-').reverse().join('/')}. Recuerde abonar a tiempo.`;
+                    }
+                }
 
-            const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
-            if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
-            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Metas y Evals</div>`;
-            if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg> Asistencia</div>`;
-            
-            if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
-            if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
-            if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
+                document.getElementById('app-container').classList.remove('hidden');
+                
+                if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
+                
+                const logoCont = document.getElementById('ui-gym-logo-container');
+                if(data.logoUrl) { logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-20 h-auto object-contain drop-shadow-lg">`; document.getElementById('ui-gym-name').innerText = ""; } 
+                else { logoCont.innerHTML = `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase(); }
 
-            const [sSnap, fSnap, eSnap, pSnap, cSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), getDocs(collection(db, "gimnasios", GYM_ID, "productos")), getDocs(collection(db, "gimnasios", GYM_ID, "cierres")) ]);
-            
-            listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
-            listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
-            listaProductosData.sort((a, b) => a.nombre.localeCompare(b.nombre)); 
-            
-            listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() }));
-            listaCierresData.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+                const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
+                if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
+                if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Metas y Evals</div>`;
+                if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg> Asistencia</div>`;
+                
+                if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
+                if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
+                if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
 
-            listaFinanzasData = []; let ingrT = 0; let ingrMes = 0;
-            const mesActual = new Date().toISOString().substring(0,7);
-            fSnap.forEach(d => { 
-                const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); 
-                ingrT += Number(p.monto); if(p.fecha.startsWith(mesActual)) ingrMes += Number(p.monto);
-            });
-            listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                const [sSnap, fSnap, eSnap, pSnap, cSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), getDocs(collection(db, "gimnasios", GYM_ID, "productos")), getDocs(collection(db, "gimnasios", GYM_ID, "cierres")) ]);
+                
+                listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
+                listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
+                listaProductosData.sort((a, b) => a.nombre.localeCompare(b.nombre)); 
+                
+                listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() }));
+                listaCierresData.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-            listaEvalsData = []; eSnap.forEach(d => listaEvalsData.push({ id: d.id, ...d.data() }));
-            listaEvalsData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                listaFinanzasData = []; let ingrT = 0; let ingrMes = 0;
+                const mesActual = new Date().toISOString().substring(0,7);
+                fSnap.forEach(d => { 
+                    const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); 
+                    ingrT += Number(p.monto); if(p.fecha.startsWith(mesActual)) ingrMes += Number(p.monto);
+                });
+                listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
-            document.getElementById('total-socios').innerText = listaSociosData.length;
-            if(userRole === 'admin') {
-                document.getElementById('ui-ingresos-totales').innerText = `$${ingrT.toLocaleString('es-AR')}`;
-                document.getElementById('ingresos-mes').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
-                renderizarGrafico(listaFinanzasData);
+                listaEvalsData = []; eSnap.forEach(d => listaEvalsData.push({ id: d.id, ...d.data() }));
+                listaEvalsData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                document.getElementById('total-socios').innerText = listaSociosData.length;
+                if(userRole === 'admin') {
+                    document.getElementById('ui-ingresos-totales').innerText = `$${ingrT.toLocaleString('es-AR')}`;
+                    document.getElementById('ingresos-mes').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
+                    renderizarGrafico(listaFinanzasData);
+                }
+                
+                renderUI(); 
+            } catch(e) {
+                console.error("Error de carga:", e);
+                showToast("Error de conexión al cargar datos", "error");
             }
-            
-            renderUI(); 
         }
 
         function renderUI() {
