@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Management | NovaGym</title>
+    <title>Management Pro | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -49,7 +49,6 @@
 
     <!-- Controles Flotantes Inferiores -->
     <div class="fixed bottom-5 right-5 z-50 flex items-center gap-3 fade-in">
-        <!-- Cerrar Turno: Visible SÓLO para Staff (Ocultado por JS para el admin) -->
         <button onclick="abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
             Cerrar Turno
@@ -88,7 +87,7 @@
             </div>
 
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
-                <img src="https://i.imgur.com/mGPdyWD.png" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+                <img src="https://via.placeholder.com/120x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
                 <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">Powered by<br>NovaBit Media Agency</p>
             </div>
         </nav>
@@ -98,7 +97,6 @@
         <div class="aurora-bg"></div>
 
         <div class="p-8 max-w-[1600px] mx-auto relative z-10">
-            <!-- Cabecera Premium -->
             <header class="flex justify-between items-end mb-10 pb-6 relative">
                 <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-[#27272a] via-[#27272a] to-transparent"></div>
                 <div>
@@ -172,9 +170,8 @@
                 </section>
             </div>
 
-            <!-- VISTA FINANZAS: Modificada para el Administrador (Turnos y General) -->
             <div id="vista-finanzas" class="hidden fade-in admin-only space-y-6">
-                <!-- Seccion 1: Turnos y Arqueos -->
+                <!-- Arqueos -->
                 <section class="glass-panel p-6 shadow-2xl border-l-4 border-orange-500">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Control de Turnos (Cajas Cerradas)</h2>
@@ -196,7 +193,6 @@
                     </div>
                 </section>
 
-                <!-- Seccion 2: Transacciones Globales -->
                 <section class="glass-panel p-6 shadow-2xl border-l-4 dynamic-border">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Flujo Global de Transacciones</h2>
@@ -220,7 +216,6 @@
                 </section>
             </div>
 
-            <!-- VISTA TIENDA POS -->
             <div id="vista-tienda" class="hidden fade-in">
                 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     <div class="xl:col-span-2 space-y-4">
@@ -237,7 +232,7 @@
                     <div class="xl:col-span-1 space-y-4">
                         <section class="glass-panel p-6 shadow-2xl h-full">
                             <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual (Mostrador)</h2>
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual</h2>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-xs">
@@ -295,8 +290,8 @@
             <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
             <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
             <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
+            
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
-                <!-- Secciones de ayuda ... -->
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
                     <p class="text-gray-400">Clic en "+ Registrar Socio". Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio, calculará la fecha de vencimiento y registrará el cobro en Finanzas automáticamente.</p>
@@ -311,7 +306,7 @@
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                     <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> 4. Cierre de Turno Seguro</h3>
-                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". Por seguridad, el sistema le pedirá que ingrese su contraseña de sesión para confirmar el cierre. El balance quedará guardado en el módulo de Finanzas para que lo vea el administrador.</p>
+                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". El sistema le pedirá que ingrese su contraseña y podrá dejar observaciones. El balance quedará guardado para el administrador.</p>
                 </div>
             </div>
         </div>
@@ -329,7 +324,6 @@
         if(!userRole) window.location.href = "index.html";
         document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
         
-        // Ejecución de RBAC UI
         if(userRole === 'admin') { document.querySelectorAll('.staff-only').forEach(el => el.remove()); }
         if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
 
@@ -399,7 +393,6 @@
             listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===preseleccionado?'selected':''}>${s.nombre}</option>`); return opts;
         }
 
-        // --- MODALES ABM ---
         function abrirModalSocio(socio = null) {
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
             modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio";
@@ -596,14 +589,17 @@
                     <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Caja Mostrador</p><p class="text-emerald-400 font-black text-xl mt-1">$${totalPOS}</p></div>
                     <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Caja Membresías</p><p class="text-blue-400 font-black text-xl mt-1">$${totalMem}</p></div>
                 </div>
-                <div class="flex gap-4 mb-4 text-xs font-bold text-gray-300 bg-[#18181b] p-3 rounded-lg border border-[#27272a]">
-                    <span>⭐ Nuevos Socios: <span class="text-white">${cantAltas}</span></span><span>🔄 Renovaciones: <span class="text-white">${cantRenov}</span></span>
-                </div>
-                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] mb-2 max-h-32 overflow-y-auto custom-scrollbar">
+                
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] mb-4 max-h-32 overflow-y-auto custom-scrollbar">
                     <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-2 sticky top-0 bg-[#18181b]">Detalle de Operaciones</p>
                     <ul class="text-[11px] text-gray-300 space-y-1">${listadoHtml}</ul>
                 </div>
                 
+                <div class="mb-4">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-2">Observaciones del Turno (Opcional)</p>
+                    <textarea id="input-obs-cierre" class="w-full input-dark rounded-lg p-2.5 text-sm focus:border-orange-500 resize-none" rows="2" placeholder="Dejar una nota para el administrador..."></textarea>
+                </div>
+
                 <div class="bg-red-900/10 border border-red-500/30 p-4 rounded-xl mb-4 mt-4">
                     <p class="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-2 text-center">Autorización Requerida</p>
                     <input type="password" id="input-pass-cierre" class="w-full input-dark rounded-lg p-2.5 text-sm text-center focus:border-red-500" placeholder="Ingrese su Clave de Sesión" required>
@@ -615,6 +611,7 @@
             document.getElementById('btn-confirm-cierre').addEventListener('click', async () => {
                 const passInput = document.getElementById('input-pass-cierre').value.trim();
                 if(!passInput) { showToast("Debe ingresar su clave", "error"); return; }
+                const obs = document.getElementById('input-obs-cierre').value.trim();
                 
                 document.getElementById('btn-confirm-cierre').innerText = 'Verificando...'; document.getElementById('btn-confirm-cierre').disabled = true;
                 
@@ -628,7 +625,7 @@
                         return;
                     }
 
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: lastCierre, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: totalPOS, total_mem: totalMem, altas: cantAltas, renov: cantRenov, usuario: userRole });
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: lastCierre, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: totalPOS, total_mem: totalMem, altas: cantAltas, renov: cantRenov, usuario: userRole, observaciones: obs });
                     modal.classList.add('hidden'); showToast("Turno cerrado correctamente", "success"); cargarDatos();
                 } catch(err) { showToast("Error al cerrar turno", "error"); document.getElementById('btn-confirm-cierre').disabled = false; }
             });
@@ -806,7 +803,10 @@
                             const total = Number(c.total_pos) + Number(c.total_mem);
                             tbCierres.innerHTML += `
                                 <tr class="border-b border-[#27272a] glass-row">
-                                    <td class="py-3 px-4 font-mono text-xs text-gray-400">${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</td>
+                                    <td class="py-3 px-4 font-mono text-xs text-gray-400">
+                                        ${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}
+                                        ${c.observaciones ? `<br><span class="text-[10px] text-orange-300/80 italic inline-block mt-1">📝 Obs: ${c.observaciones}</span>` : ''}
+                                    </td>
                                     <td class="py-3 px-4 text-emerald-400 font-mono">$${c.total_pos}</td>
                                     <td class="py-3 px-4 text-blue-400 font-mono">$${c.total_mem}</td>
                                     <td class="py-3 px-4 font-bold text-white font-mono">$${total}</td>
