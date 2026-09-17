@@ -56,7 +56,7 @@
             <div class="glass-card p-6 rounded-2xl xl:col-span-4 h-fit shadow-2xl">
                 <div class="flex justify-between items-center mb-6">
                     <h2 id="form-title" class="text-xl font-bold">➕ Nuevo Despliegue</h2>
-                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-red-900/50 text-red-400 px-3 py-1 rounded hover:bg-red-900">Cancelar</button>
+                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-red-900/50 text-red-400 px-3 py-1 rounded hover:bg-red-900 transition">Cancelar</button>
                 </div>
                 
                 <form id="form-gym" class="space-y-4">
@@ -68,8 +68,8 @@
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-xs font-bold text-emerald-400 uppercase mb-1">Clave DUEÑO (Ver Todo)</label><input type="text" id="gym-password" class="w-full input-dark rounded-lg p-2.5 text-sm border-emerald-500/30" placeholder="Clave Admin" required></div>
-                        <div><label class="block text-xs font-bold text-orange-400 uppercase mb-1">Clave RECEPCIÓN (Staff)</label><input type="text" id="gym-password-staff" class="w-full input-dark rounded-lg p-2.5 text-sm border-orange-500/30" placeholder="Clave Empleados" required></div>
+                        <div><label class="block text-xs font-bold text-emerald-400 uppercase mb-1">Clave DUEÑO</label><input type="text" id="gym-password" class="w-full input-dark rounded-lg p-2.5 text-sm border-emerald-500/30" placeholder="Clave Admin" required></div>
+                        <div><label class="block text-xs font-bold text-orange-400 uppercase mb-1">Clave STAFF</label><input type="text" id="gym-password-staff" class="w-full input-dark rounded-lg p-2.5 text-sm border-orange-500/30" placeholder="Clave Empleados" required></div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-4 items-end">
@@ -147,19 +147,20 @@
             container.appendChild(toast); setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        const form = document.getElementById('form-gym'); const colorInput = document.getElementById('gym-color'); const colorText = document.getElementById('gym-color-text');
-        colorInput.addEventListener('input', (e) => colorText.value = e.target.value); colorText.addEventListener('input', (e) => colorInput.value = e.target.value);
+        const form = document.getElementById('form-gym'); 
 
         async function cargarGimnasios() {
             try {
                 const tbody = document.getElementById('lista-gyms'); tbody.innerHTML = '';
                 const querySnapshot = await getDocs(collection(db, "gimnasios"));
-                document.getElementById('loading-gyms').classList.add('hidden'); document.getElementById('table-gyms').classList.remove('hidden');
+                document.getElementById('loading-gyms').classList.add('hidden'); 
+                document.getElementById('table-gyms').classList.remove('hidden');
 
-                gymsData = []; querySnapshot.forEach((docSnap) => gymsData.push({id: docSnap.id, ...docSnap.data()}));
+                gymsData = []; 
+                querySnapshot.forEach((docSnap) => gymsData.push({id: docSnap.id, ...docSnap.data()}));
 
                 if(gymsData.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500 italic">No hay inquilinos registrados en la base de datos.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500 italic">No hay franquicias registradas.</td></tr>`;
                     return;
                 }
 
@@ -173,16 +174,17 @@
                         <td class="py-4 px-4">
                             <div class="flex flex-col gap-1">
                                 <span class="font-mono text-[10px] text-emerald-400">Dueño: ${data.password || '-'}</span>
-                                <span class="font-mono text-[10px] text-orange-400">Staff: ${data.passwordStaff || 'No asignada'}</span>
+                                <span class="font-mono text-[10px] text-orange-400">Staff: ${data.passwordStaff || '-'}</span>
                             </div>
                         </td>
                         <td class="py-4 px-4 flex justify-end gap-2"><button class="btn-editar text-xs bg-blue-900/30 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded transition" data-id="${data.id}">Editar</button><button class="btn-toggle text-xs px-3 py-1.5 rounded transition ${isSuspendido ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600 hover:text-white' : 'bg-red-900/30 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white'}" data-id="${data.id}" data-estado="${data.estado}">${isSuspendido ? 'Activar' : 'Suspender'}</button></td>`;
                     tbody.appendChild(tr);
                 });
             } catch (error) {
-                console.error("Error al sincronizar base de datos:", error);
-                document.getElementById('loading-gyms').innerText = "Error crítico de conexión con Firebase.";
-                document.getElementById('loading-gyms').classList.replace('text-gray-500', 'text-red-500');
+                console.error("Error al sincronizar:", error);
+                const el = document.getElementById('loading-gyms');
+                el.innerText = "Error crítico de conexión con Firebase.";
+                el.className = "text-center py-10 text-red-500 font-bold";
             }
         }
 
@@ -198,7 +200,7 @@
                 document.getElementById('gym-username').value = gym.username || ''; 
                 document.getElementById('gym-password').value = gym.password || '';
                 document.getElementById('gym-password-staff').value = gym.passwordStaff || '';
-                document.getElementById('gym-color').value = gym.colorPrimario || '#eab308'; document.getElementById('gym-color-text').value = gym.colorPrimario || '#eab308';
+                document.getElementById('gym-color').value = gym.colorPrimario || '#eab308';
                 document.getElementById('gym-logo').value = gym.logoUrl || '';
                 const m = gym.modulos || {};
                 document.getElementById('mod-musculacion').checked = !!m.musculacion; document.getElementById('mod-funcional').checked = !!m.funcional;
@@ -228,6 +230,7 @@
                 document.getElementById('btn-cancelar-edicion').click(); cargarGimnasios();
             } catch (error) { showToast("Error en base de datos", 'error'); console.error(error); } finally { btn.disabled = false; }
         });
+        
         cargarGimnasios();
     </script>
 </body>
