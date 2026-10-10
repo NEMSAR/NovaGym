@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Management Pro | NEMS OS</title>
+    <title>Enterprise Management | NovaGym</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { background-color: #09090b; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; overflow-x: hidden;}
         .dynamic-text { color: var(--accent-color, #eab308); } 
         .dynamic-border { border-color: var(--accent-color, #eab308); }
-        .dynamic-bg { background-color: var(--accent-color, #eab308); color: #000; }
-        .dynamic-bg:hover { filter: brightness(0.85); box-shadow: 0 0 20px var(--accent-color, #eab308); opacity: 0.9; }
+        .dynamic-btn { background-color: var(--accent-color, #eab308); color: #000; }
+        .dynamic-btn:hover { filter: brightness(0.85); box-shadow: 0 0 20px var(--accent-color, #eab308); opacity: 0.9; }
         .nav-item.active { background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent-color, #eab308); color: white; }
         .nav-item.active svg { color: var(--accent-color, #eab308); }
         
@@ -35,6 +35,7 @@
         }
         .aurora-disabled .aurora-bg { opacity: 0 !important; animation: none !important; }
         @keyframes auroraSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        input[type="checkbox"].custom-check { accent-color: var(--accent-color, #eab308); width: 16px; height: 16px; cursor: pointer;}
         
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #09090b; }
@@ -48,15 +49,15 @@
 
     <!-- Controles Flotantes Inferiores -->
     <div class="fixed bottom-5 right-5 z-50 flex items-center gap-3 fade-in">
-        <button onclick="window.abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Cerrar Turno
+        <button onclick="abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            Cerrar Turno
         </button>
         <button id="btn-help" class="w-12 h-12 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)] flex items-center justify-center text-gray-300 bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] hover:text-white transition" title="Guía de Usuario">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         </button>
     </div>
 
-    <!-- Menú Lateral -->
     <aside class="w-72 flex flex-col bg-[#09090b] border-r border-[#27272a] z-30 relative shadow-2xl">
         <div class="p-6 flex flex-col items-center justify-center border-b border-[#27272a] min-h-[120px]">
             <div id="ui-gym-logo-container" class="mb-2"></div>
@@ -67,16 +68,13 @@
             <div class="space-y-1">
                 <p class="text-[10px] text-gray-600 mb-2 mt-4 ml-4">Operaciones Core</p>
                 <div id="nav-dashboard" class="nav-item active flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg> Dashboard Analítico
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg> Dashboard Ejecutivo
                 </div>
                 <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Padrón Inteligente
-                </div>
-                <div id="nav-planes" class="nav-item admin-only flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg> Planes y Membresías
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Padrón de Socios
                 </div>
                 <div id="nav-finanzas" class="nav-item admin-only flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Flujo de Caja
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Finanzas y Cajas
                 </div>
                 <div id="modulos-container"></div>
                 
@@ -87,9 +85,9 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Cerrar Sesión
                 </button>
             </div>
-            
+
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
-                <img src="https://via.placeholder.com/120x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
+                <img src="https://i.imgur.com/mGPdyWD.png" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
                 <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">Powered by<br>NovaBit Media Agency</p>
             </div>
         </nav>
@@ -97,106 +95,78 @@
 
     <main class="flex-1 overflow-y-auto bg-[#09090b] relative custom-scrollbar flex flex-col">
         
-        <!-- BANNER LICENCIA -->
-        <div id="banner-licencia" class="hidden admin-only w-full text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b"></div>
+        <!-- BANNER DE LICENCIA NEMS SAAS (Solo para Admin) -->
+        <div id="banner-licencia" class="hidden admin-only w-full text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b">
+        </div>
 
         <div class="aurora-bg"></div>
 
         <div class="p-8 max-w-[1600px] mx-auto w-full relative z-10 flex-1">
-            <header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 relative gap-4">
+            <header class="flex justify-between items-end mb-10 pb-6 relative">
                 <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-[#27272a] via-[#27272a] to-transparent"></div>
                 <div>
-                    <h1 id="header-title" class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tighter mb-1">Dashboard Analítico</h1>
+                    <h1 id="header-title" class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tighter mb-1">Dashboard Ejecutivo</h1>
                     <p id="header-subtitle" class="text-[10px] font-bold text-blue-500/80 uppercase tracking-[0.2em] mt-2">Visión general y métricas en tiempo real</p>
                 </div>
-                
-                <div class="flex flex-wrap items-center gap-3">
-                    <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-4 py-2 bg-[#121214] border border-[#27272a] rounded-full text-[10px] font-bold text-gray-400 hover:text-white transition-all shadow-lg">
-                        <svg class="w-3.5 h-3.5 text-blue-500 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> <span class="hidden sm:block">FX</span>
+                <div class="flex items-center gap-4">
+                    <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-5 py-2.5 bg-[#121214] border border-[#27272a] rounded-full text-[11px] font-bold text-gray-400 hover:text-white hover:border-gray-500 transition-all shadow-lg" title="Activar/Desactivar Fx Visuales">
+                        <svg class="w-4 h-4 text-blue-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        <span class="tracking-wider uppercase hidden sm:block">Efectos Visuales</span>
                     </button>
-                    <button onclick="window.abrirModalSocio()" class="bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] text-white px-4 py-2 rounded-full text-[11px] font-bold transition flex items-center gap-1">👤 +Socio</button>
-                    <button onclick="window.abrirModalPago()" class="dynamic-bg text-[#09090b] px-4 py-2 rounded-full text-[11px] font-bold transition flex items-center gap-1 shadow-[0_0_10px_rgba(234,179,8,0.2)]">💳 Cobrar</button>
-                    <button onclick="window.abrirModalGasto()" class="admin-only bg-red-900/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white px-4 py-2 rounded-full text-[11px] font-bold transition flex items-center gap-1">💸 Gasto</button>
+                    <button id="btn-accion-principal" class="dynamic-btn font-bold py-2.5 px-6 rounded-full shadow-lg transition text-sm text-[#09090b] flex items-center gap-2">
+                        <span>+</span> <span id="text-accion-principal">Registrar Socio</span>
+                    </button>
+                    <div class="glass-panel px-5 py-2.5 text-right hidden lg:block admin-only rounded-full">
+                        <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest leading-none">Ingreso Anual</p>
+                        <p id="ui-ingresos-totales" class="text-base font-bold dynamic-text leading-tight mt-1">$0</p>
+                    </div>
                 </div>
             </header>
 
-            <!-- VISTA DASHBOARD -->
-            <div id="vista-dashboard" class="fade-in space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 admin-only">
-                    <div class="glass-panel p-5 border-l-4 border-emerald-500 shadow-xl">
-                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Ingresos Cobrados (Mes)</h3>
-                        <p id="dash-ingresos" class="text-3xl font-black text-emerald-400 mt-1">$0</p>
-                    </div>
-                    <div class="glass-panel p-5 border-l-4 border-red-500 shadow-xl">
-                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Gastos Operativos (Mes)</h3>
-                        <p id="dash-gastos" class="text-3xl font-black text-red-400 mt-1">$0</p>
-                    </div>
-                    <div class="glass-panel p-5 border-l-4 dynamic-border shadow-xl">
-                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Resultado Neto Estimado</h3>
-                        <p id="dash-neto" class="text-3xl font-black text-white mt-1">$0</p>
-                    </div>
+            <div id="vista-dashboard" class="grid grid-cols-1 xl:grid-cols-3 gap-6 fade-in">
+                <div class="glass-panel p-5 border-t-4 dynamic-border shadow-2xl">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase">Miembros Activos</h3>
+                    <p id="total-socios" class="text-3xl font-black text-white mt-1">0</p>
                 </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="glass-panel p-4 shadow-lg text-center">
-                        <p class="text-3xl font-black text-white" id="dash-activos">0</p>
-                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Activos</p>
-                    </div>
-                    <div class="glass-panel p-4 shadow-lg text-center">
-                        <p class="text-3xl font-black text-blue-400" id="dash-nuevos">0</p>
-                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Nuevos (Mes)</p>
-                    </div>
-                    <div class="glass-panel p-4 shadow-lg text-center bg-orange-900/10 border-orange-500/30">
-                        <p class="text-3xl font-black text-orange-400" id="dash-por-vencer">0</p>
-                        <p class="text-[10px] font-bold text-orange-500/80 uppercase tracking-widest mt-1">Por Vencer</p>
-                    </div>
-                    <div class="glass-panel p-4 shadow-lg text-center bg-red-900/10 border-red-500/30">
-                        <p class="text-3xl font-black text-red-400" id="dash-vencidos">0</p>
-                        <p class="text-[10px] font-bold text-red-500/80 uppercase tracking-widest mt-1">Vencidos/Baja</p>
-                    </div>
+                <div class="glass-panel p-5 border-t-4 border-emerald-500/50 shadow-2xl admin-only">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase">Ingresos del Mes</h3>
+                    <p id="ingresos-mes" class="text-3xl font-black text-emerald-400 mt-1">$0</p>
                 </div>
-
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                    <section class="glass-panel p-6 shadow-2xl xl:col-span-2 admin-only h-[350px]">
-                        <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Balance Mensual (Ingresos vs Gastos)</h2>
-                        <div class="w-full h-[250px]"><canvas id="revenueChart"></canvas></div>
+                <div class="glass-panel p-5 border-t-4 border-red-500/50 shadow-2xl">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase">Alertas / Vencidos</h3>
+                    <p id="total-alertas" class="text-3xl font-black text-red-400 mt-1">0</p>
+                </div>
+                
+                <div class="xl:col-span-2 space-y-6 mt-2 admin-only">
+                    <section class="glass-panel p-6 h-full shadow-2xl">
+                        <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Crecimiento Financiero</h2>
+                        <div class="w-full h-[300px]"><canvas id="revenueChart"></canvas></div>
                     </section>
-                    <section class="glass-panel p-6 shadow-2xl xl:col-span-1 flex flex-col">
-                        <h2 class="text-sm font-bold dynamic-text mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> NEMS AI Summary
-                        </h2>
-                        <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a] flex-1">
-                            <p id="ai-summary-text" class="text-xs text-gray-300 leading-relaxed italic">Analizando métricas del gimnasio...</p>
-                        </div>
+                </div>
+                <div class="xl:col-span-1 space-y-6 mt-2">
+                    <section class="glass-panel p-6 shadow-2xl h-full">
+                        <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Atención Requerida</h2>
+                        <div id="contenedor-alertas" class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"></div>
                     </section>
                 </div>
             </div>
 
-            <!-- VISTA PADRÓN DE SOCIOS -->
             <div id="vista-socios" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Directorio Inteligente</h2>
-                        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                            <input type="text" id="input-busqueda-socio" class="w-full md:w-48 input-dark rounded-lg py-2 px-3 text-xs" placeholder="Buscar nombre, DNI, tel...">
-                            <select id="filtro-estado-socio" class="input-dark rounded-lg py-2 px-3 text-xs cursor-pointer">
-                                <option value="todos">Todos los Estados</option>
-                                <option value="Activo">Solo Activos</option>
-                                <option value="Por Vencer">Por Vencer (3 días)</option>
-                                <option value="Vencido">Vencidos / Inactivos</option>
-                            </select>
-                            <button id="btn-exportar-socios" class="bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-2 rounded-lg text-xs font-bold transition" title="Exportar CSV">📥 CSV</button>
-                        </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Directorio de Miembros</h2>
+                        <input type="text" id="input-busqueda-socio" class="w-64 input-dark rounded-lg py-2 px-4 text-xs" placeholder="Buscar socio por nombre...">
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
                             <thead>
                                 <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
-                                    <th class="py-3 px-3">Estado</th>
-                                    <th class="py-3 px-3">Socio / Contacto</th>
-                                    <th class="py-3 px-3">Plan Base</th>
-                                    <th class="py-3 px-3">Alta / Vencimiento</th>
-                                    <th class="py-3 px-3 text-right">Acciones Rápidas</th>
+                                    <th class="py-3 px-4">Estado</th>
+                                    <th class="py-3 px-4">Miembro / Contacto</th>
+                                    <th class="py-3 px-4">Servicios Asignados</th>
+                                    <th class="py-3 px-4">Plan (Membresía)</th>
+                                    <th class="py-3 px-4">Fecha Exp.</th>
+                                    <th class="py-3 px-4 text-right">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-socios-body"></tbody>
@@ -205,33 +175,22 @@
                 </section>
             </div>
 
-            <!-- VISTA PLANES Y MEMBRESÍAS -->
-            <div id="vista-planes" class="hidden fade-in admin-only">
-                <section class="glass-panel p-6 shadow-2xl">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Gestor de Planes y Membresías</h2>
-                        <button onclick="window.abrirModalPlan()" class="text-xs bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-4 py-2 rounded-lg font-bold transition flex items-center gap-2">
-                            <span>+</span> Crear Plan
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenedor-planes"></div>
-                </section>
-            </div>
-
-            <!-- VISTA FINANZAS -->
             <div id="vista-finanzas" class="hidden fade-in admin-only space-y-6">
+                <!-- Arqueos (Solo Admin) -->
                 <section class="glass-panel p-6 shadow-2xl border-l-4 border-orange-500">
-                    <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-6">Control de Turnos (Cajas Cerradas)</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Control de Turnos (Cajas Cerradas)</h2>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
                             <thead>
                                 <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
-                                    <th class="py-2 px-3">Fecha/Hora Fin</th>
-                                    <th class="py-2 px-3">Caja POS</th>
-                                    <th class="py-2 px-3">Membresías</th>
-                                    <th class="py-2 px-3">Recaudación Turno</th>
-                                    <th class="py-2 px-3">Usuario</th>
-                                    <th class="py-2 px-3 text-center">Acciones</th>
+                                    <th class="py-3 px-4">Cierre (Fecha/Hora)</th>
+                                    <th class="py-3 px-4">Caja POS</th>
+                                    <th class="py-3 px-4">Caja Membresías</th>
+                                    <th class="py-3 px-4">Recaudación Turno</th>
+                                    <th class="py-3 px-4">Usuario</th>
+                                    <th class="py-3 px-4 text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-turnos-admin-body"></tbody>
@@ -241,19 +200,19 @@
 
                 <section class="glass-panel p-6 shadow-2xl border-l-4 dynamic-border">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Libro Mayor (Ingresos y Egresos)</h2>
-                        <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">Descargar Excel</button>
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Flujo Global de Transacciones</h2>
+                        <button id="btn-exportar-csv" class="bg-[#27272a] text-gray-300 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">Descargar CSV</button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
                             <thead>
                                 <tr class="border-b border-[#27272a] text-gray-500 text-[10px] uppercase tracking-widest">
-                                    <th class="py-2 px-3">Fecha</th>
-                                    <th class="py-2 px-3">Movimiento</th>
-                                    <th class="py-2 px-3">Concepto</th>
-                                    <th class="py-2 px-3">Categoría / Medio</th>
-                                    <th class="py-2 px-3">Importe</th>
-                                    <th class="py-2 px-3 text-center">Del</th>
+                                    <th class="py-3 px-4">Fecha</th>
+                                    <th class="py-3 px-4">Descripción</th>
+                                    <th class="py-3 px-4">Categoría</th>
+                                    <th class="py-3 px-4">Medio Pago</th>
+                                    <th class="py-3 px-4">Importe</th>
+                                    <th class="py-3 px-4 text-center">Del</th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-finanzas-body"></tbody>
@@ -262,15 +221,14 @@
                 </section>
             </div>
 
-            <!-- VISTA TIENDA POS -->
             <div id="vista-tienda" class="hidden fade-in">
                 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     <div class="xl:col-span-2 space-y-4">
                         <section class="glass-panel p-6 shadow-2xl min-h-[400px]">
                             <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Catálogo POS</h2>
-                                <button onclick="window.abrirModalNuevoProducto()" class="text-xs bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-1.5 rounded font-bold transition flex items-center gap-2">
-                                    <span>+</span> Producto
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Catálogo Rápido (POS)</h2>
+                                <button onclick="abrirModalNuevoProducto()" class="text-xs bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-1.5 rounded font-bold transition flex items-center gap-2">
+                                    <span>+</span> Nuevo Producto
                                 </button>
                             </div>
                             <div id="catalogo-productos" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
@@ -278,7 +236,9 @@
                     </div>
                     <div class="xl:col-span-1 space-y-4">
                         <section class="glass-panel p-6 shadow-2xl h-full">
-                            <h2 class="text-sm font-bold text-white mb-6 uppercase tracking-wider">Turno Actual</h2>
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual (Mostrador)</h2>
+                            </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-xs">
                                     <tbody id="tabla-tienda-body"></tbody>
@@ -289,7 +249,6 @@
                 </div>
             </div>
 
-            <!-- VISTA EVALUACIONES -->
             <div id="vista-evaluaciones" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
@@ -322,16 +281,43 @@
     </main>
 
     <!-- Modal Universal -->
-    <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-2xl relative border border-[#27272a] shadow-2xl fade-in max-h-[90vh] overflow-y-auto custom-scrollbar" id="modal-container">
-            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white bg-[#18181b] rounded-full p-2" data-modal="modal-universal">✕</button>
-            <h2 id="modal-title" class="text-xl font-black text-white mb-6 uppercase tracking-wider">Formulario</h2>
+    <div id="modal-universal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar" id="modal-container">
+            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-universal">✕</button>
+            <h2 id="modal-title" class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Formulario</h2>
             <div id="modal-content"></div>
         </div>
     </div>
 
-    <!-- Modal Detalle Turno -->
-    <div id="modal-detalle-turno" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+    <!-- Modal NEMS Guide -->
+    <div id="modal-ayuda" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
+            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
+            <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
+            <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
+                    <p class="text-gray-400">Clic en "+ Registrar Socio". Llene sus datos, seleccione los servicios que realizará, elija el medio de pago e ingrese el monto. El sistema guardará al socio, calculará la fecha de vencimiento y registrará el cobro en Finanzas automáticamente.</p>
+                </div>
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> 2. Renovar una cuota</h3>
+                    <p class="text-gray-400">En el Padrón de Socios, busque a la persona y presione "💳 Cobrar". Seleccione los meses que abona y el medio de pago. El sistema sumará esos meses a su fecha actual de vencimiento.</p>
+                </div>
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> 3. Tienda POS (Actualizar Precios)</h3>
+                    <p class="text-gray-400">Agregue productos al Catálogo usando el botón "+ Nuevo Producto". Para vender, haga clic en el producto. Si es usted el Dueño/Admin, verá un ícono de "lápiz" al pasar el mouse por encima del producto para actualizar su precio rápidamente a causa de la inflación.</p>
+                </div>
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> 4. Cierre de Turno Seguro</h3>
+                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". El sistema le pedirá que ingrese su contraseña y podrá dejar observaciones. El balance quedará guardado para el administrador.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalle Cierre Turno (Solo Admin) -->
+    <div id="modal-detalle-turno" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/90 backdrop-blur-md">
         <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
             <button onclick="document.getElementById('modal-detalle-turno').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-white">✕</button>
             <h2 class="text-xl font-bold text-white mb-4">Detalle del Turno</h2>
@@ -339,26 +325,6 @@
         </div>
     </div>
 
-    <!-- Modal NEMS Guide -->
-    <div id="modal-ayuda" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-[#121214] p-8 rounded-2xl w-full max-w-2xl relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in">
-            <button class="btn-cerrar-modal absolute top-4 right-4 text-gray-500 hover:text-white" data-modal="modal-ayuda">✕</button>
-            <h2 class="text-2xl font-bold text-blue-400 mb-2">NEMS Guide</h2>
-            <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
-            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
-                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1">1. Registrar un socio nuevo</h3>
-                    <p class="text-gray-400">Clic en "+Socio". Seleccione el plan y el sistema calculará automáticamente el vencimiento y registrará el cobro en caja.</p>
-                </div>
-                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1">2. Renovar una cuota</h3>
-                    <p class="text-gray-400">En el Padrón Inteligente, busque al socio y presione "💳" (Cobrar). El sistema sumará los meses a la fecha actual.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- NÚCLEO JAVASCRIPT BLINDADO -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -370,6 +336,7 @@
         const userRole = sessionStorage.getItem('nems_gym_role');
         if(!userRole) window.location.href = "index.html";
         document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
+        
         if(userRole === 'admin') { document.querySelectorAll('.staff-only').forEach(el => el.remove()); }
         if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
 
@@ -377,295 +344,622 @@
         const app = initializeApp(firebaseConfig); const db = getFirestore(app);
         
         let nombreGymActual = ""; let gymModulos = {};
-        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = []; let listaProductosData = []; let listaCierresData = []; let listaPlanesData = [];
+        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = []; let listaProductosData = []; let listaCierresData = [];
         let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
         let chartInstance = null;
 
-        // Función Segura de Descarga de Datos
-        const fetchSeguro = async (colName) => {
-            try {
-                const snap = await getDocs(collection(db, "gimnasios", GYM_ID, colName));
-                const res = [];
-                snap.forEach(d => res.push({ id: d.id, ...d.data() }));
-                return res;
-            } catch(e) { console.warn("Aviso: Base no encontrada o vacía:", colName); return []; }
+        const btnFx = document.getElementById('btn-toggle-fx');
+        if (localStorage.getItem('nems_fx_disabled') === 'true') { document.body.classList.add('aurora-disabled'); btnFx.classList.add('opacity-50', 'grayscale'); }
+        btnFx.addEventListener('click', () => { document.body.classList.toggle('aurora-disabled'); localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled')); btnFx.classList.toggle('opacity-50'); btnFx.classList.toggle('grayscale'); });
+
+        document.getElementById('btn-help').addEventListener('click', () => document.getElementById('modal-ayuda').classList.remove('hidden'));
+        document.getElementById('btn-logout-gym').addEventListener('click', () => { sessionStorage.removeItem('nems_gym_role'); window.location.href = 'index.html'; });
+
+        const btnAccionPrincipal = document.getElementById('btn-accion-principal');
+        const txtAccionPrincipal = document.getElementById('text-accion-principal');
+
+        window.showToast = (msg, tipo = 'success') => {
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+            const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500' : 'bg-[#18181b] border-l-4 border-red-500';
+            toast.className = `toast-enter ${bg} border-y border-l border-[#27272a] text-white px-6 py-4 shadow-2xl font-bold text-sm flex items-center gap-3`;
+            toast.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${tipo==='success'?'M5 13l4 4L19 7':'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}"></path></svg> ${msg}`;
+            container.appendChild(toast); setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        window.cargarDatos = async () => {
+        function cambiarVista(vista) {
+            vistaActual = vista;
+            ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-tienda', 'vista-asistencia', 'vista-evaluaciones'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('hidden'); });
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            const title = document.getElementById('header-title'); const subtitle = document.getElementById('header-subtitle');
+            if(document.getElementById(`nav-${vista}`)) document.getElementById(`nav-${vista}`).classList.add('active');
+            if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
+
+            if (vista === 'dashboard') { title.innerText = "Dashboard Ejecutivo"; subtitle.innerText = "Métricas en tiempo real"; txtAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'flex'; } 
+            else if (vista === 'socios') { title.innerText = "Padrón de Socios"; subtitle.innerText = "Directorio completo"; txtAccionPrincipal.innerText = 'Registrar Socio'; btnAccionPrincipal.style.display = 'flex'; } 
+            else if (vista === 'finanzas' && userRole === 'admin') { title.innerText = "Finanzas y Cajas"; subtitle.innerText = "Registro contable y turnos"; txtAccionPrincipal.innerText = 'Cobrar Cuota'; btnAccionPrincipal.style.display = 'flex'; } 
+            else if (vista === 'tienda') { title.innerText = "Punto de Venta (POS)"; subtitle.innerText = "Venta rápida de mostrador"; btnAccionPrincipal.style.display = 'none'; } 
+            else if (vista === 'evaluaciones') { title.innerText = "Metas y Evaluaciones"; subtitle.innerText = "Control corporal"; txtAccionPrincipal.innerText = 'Nueva Medición'; btnAccionPrincipal.style.display = 'flex'; } 
+            else { title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise"; btnAccionPrincipal.style.display = 'none'; }
+        }
+
+        document.getElementById('nav-dashboard').addEventListener('click', () => cambiarVista('dashboard'));
+        document.getElementById('nav-socios').addEventListener('click', () => cambiarVista('socios'));
+        if(document.getElementById('nav-finanzas')) document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
+
+        const modal = document.getElementById('modal-universal'); const modalContent = document.getElementById('modal-content'); const modalTitle = document.getElementById('modal-title');
+        const modalContainer = document.getElementById('modal-container');
+
+        if(btnAccionPrincipal) {
+            btnAccionPrincipal.addEventListener('click', () => {
+                modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+                if (vistaActual === 'dashboard' || vistaActual === 'socios') abrirModalSocio();
+                else if (vistaActual === 'finanzas') abrirModalPago();
+                else if (vistaActual === 'evaluaciones') abrirModalEvaluacion();
+            });
+        }
+
+        document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => document.getElementById(e.target.dataset.modal).classList.add('hidden')));
+
+        function getSocioOptions(preseleccionado = "") {
+            let opts = '<option value="">Seleccione el Socio...</option>';
+            listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===preseleccionado?'selected':''}>${s.nombre}</option>`); return opts;
+        }
+
+        function abrirModalSocio(socio = null) {
+            modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
+            modalTitle.innerText = socio ? "Modificar Perfil del Socio" : "Alta Integral de Socio";
+            
+            let chkServ = ''; const currServ = socio ? (socio.servicio || "") : "";
+            if(gymModulos.musculacion) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Musculación" class="custom-check" ${currServ.includes('Musculación')?'checked':''}> <span class="text-sm">Musc.</span></label>`;
+            if(gymModulos.funcional) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Funcional" class="custom-check" ${currServ.includes('Funcional')?'checked':''}> <span class="text-sm">Func.</span></label>`;
+            if(gymModulos.pilates) chkServ += `<label class="flex items-center gap-2"><input type="checkbox" name="s-serv" value="Pilates" class="custom-check" ${currServ.includes('Pilates')?'checked':''}> <span class="text-sm">Pilates</span></label>`;
+
+            const boxPago = !socio ? `
+                <div class="border-t border-[#27272a] pt-4 mt-4">
+                    <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3">1er Pago y Vencimiento Automático</h3>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div><label class="text-[10px] text-gray-500 uppercase">Fecha Pago</label><input type="date" id="s-fec-pago" class="w-full input-dark rounded-lg p-2 text-sm" required></div>
+                        <div><label class="text-[10px] text-gray-500 uppercase">Meses Abona</label><input type="number" id="s-meses" class="w-full input-dark rounded-lg p-2 text-sm" value="1" min="1" required></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <select id="s-medio" class="w-full input-dark rounded-lg p-2 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
+                        <input type="number" id="s-monto" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="Importe ARS" required>
+                    </div>
+                </div>` : '';
+
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-3">
+                    <div class="flex gap-3">
+                        <div class="w-1/4"><img id="s-preview" src="${socio && socio.foto ? socio.foto : 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'}" class="w-full aspect-square rounded-xl object-cover border border-[#27272a]"></div>
+                        <div class="w-3/4 space-y-3">
+                            <input type="text" id="s-nom" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="Nombre completo" value="${socio?socio.nombre:''}" required>
+                            <input type="tel" id="s-tel" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="WhatsApp (Ej: 54911...)" value="${socio?socio.telefono:''}" required>
+                        </div>
+                    </div>
+                    <input type="url" id="s-foto" class="w-full input-dark rounded-lg p-2 text-sm" placeholder="URL Foto de Perfil (Opcional)" value="${socio?socio.foto||'':''}">
+                    <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-[10px] text-gray-500 uppercase mb-2">Servicios Asignados</p><div class="flex flex-wrap gap-4">${chkServ}</div></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <select id="s-mem" class="w-full input-dark rounded-lg p-2 text-sm" required><option value="">Plan...</option><option value="3 Días a la Semana" ${socio&&socio.membresia==="3 Días a la Semana"?'selected':''}>3 Días a la Semana</option><option value="Pase Libre (5 Días)" ${socio&&socio.membresia==="Pase Libre (5 Días)"?'selected':''}>Pase Libre (5 Días)</option></select>
+                        <input type="date" id="s-vence" class="w-full input-dark rounded-lg p-2 text-sm" value="${socio?socio.vence:''}" required ${!socio ? 'readonly title="Se calcula automáticamente"' : ''}>
+                    </div>
+                    ${boxPago}
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-xl mt-4 text-sm text-[#09090b]">Guardar Registro</button>
+                </form>`;
+
+            if(!socio) {
+                const fPago = document.getElementById('s-fec-pago'); const fMeses = document.getElementById('s-meses'); const fVence = document.getElementById('s-vence');
+                fPago.valueAsDate = new Date();
+                const calcFecha = () => { if(fPago.value && fMeses.value) { const [y,m,d] = fPago.value.split('-'); const date = new Date(y, m-1, d); date.setMonth(date.getMonth() + parseInt(fMeses.value)); fVence.value = date.toISOString().split('T')[0]; } };
+                fPago.addEventListener('change', calcFecha); fMeses.addEventListener('input', calcFecha); calcFecha();
+            }
+
+            document.getElementById('s-foto').addEventListener('input', (e) => { const url = e.target.value; if(url) document.getElementById('s-preview').src = url; else document.getElementById('s-preview').src = 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'; });
+            
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); const btn = e.target.querySelector('button'); btn.innerText = 'Procesando...'; btn.disabled = true;
+                const servs = Array.from(document.querySelectorAll('input[name="s-serv"]:checked')).map(cb => cb.value).join(' + ');
+                if(!servs) { showToast("Selecciona al menos un servicio", "error"); btn.disabled = false; btn.innerText = 'Guardar Registro'; return; }
+                const dSocio = { nombre: document.getElementById('s-nom').value, telefono: document.getElementById('s-tel').value, foto: document.getElementById('s-foto').value, servicio: servs, membresia: document.getElementById('s-mem').value, vence: document.getElementById('s-vence').value };
+                try {
+                    if(modoEdicion) { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dSocio); showToast("Perfil actualizado"); } 
+                    else { 
+                        await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
+                        await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta: "+dSocio.nombre, monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
+                        showToast("Socio y Pago registrados");
+                    }
+                    modal.classList.add('hidden'); cargarDatos();
+                } catch(err) { showToast("Error de conexión", "error"); btn.disabled = false; }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalPago = (nombreSocio = "") => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Renovación de Cuota";
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <select id="p-soc" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${getSocioOptions(nombreSocio)}</select>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="number" id="p-meses" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Meses a pagar" value="1" min="1" required>
+                        <select id="p-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="date" id="p-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
+                        <input type="number" id="p-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe Total (ARS)" required>
+                    </div>
+                    <button type="submit" class="w-full dynamic-btn font-bold py-3 rounded-lg mt-2 text-sm text-[#09090b]">Procesar Renovación</button>
+                </form>`;
+            document.getElementById('p-fec').valueAsDate = new Date();
+            
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); const nom = document.getElementById('p-soc').value; const meses = parseInt(document.getElementById('p-meses').value);
+                try {
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Renovación ("+meses+"m): "+nom, monto: document.getElementById('p-mon').value, medio: document.getElementById('p-medio').value, tipo: "Cuota", fecha: document.getElementById('p-fec').value, timestamp: new Date().toISOString() });
+                    const s = listaSociosData.find(x => x.nombre === nom);
+                    if(s) {
+                        const [y,m,d] = s.vence.split('-'); const nDate = new Date(y, m-1, d); nDate.setMonth(nDate.getMonth() + meses);
+                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), { vence: nDate.toISOString().split('T')[0] });
+                        showToast(`Pago registrado y vencimiento extendido al ${nDate.toISOString().split('T')[0]}`);
+                    } else { showToast("Pago registrado"); }
+                    modal.classList.add('hidden'); cargarDatos();
+                } catch(err) { showToast("Error al facturar", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalNuevoProducto = () => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Agregar al Catálogo POS";
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <input type="text" id="cat-nom" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Nombre del Artículo (Ej: Agua 500ml)" required>
+                    <input type="number" id="cat-pre" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Precio Base ARS" required>
+                    <button type="submit" class="w-full bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-white font-bold py-3 rounded-lg mt-2 text-sm transition">Guardar en Catálogo</button>
+                </form>`;
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); 
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "productos"), { nombre: document.getElementById('cat-nom').value, precio: document.getElementById('cat-pre').value });
+                    modal.classList.add('hidden'); showToast("Producto agregado"); cargarDatos();
+                } catch(err) { showToast("Error al guardar", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalEditarProducto = (id, nombre, precioActual) => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Actualizar Artículo";
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre</label>
+                    <input type="text" id="cat-nom-edit" class="w-full input-dark rounded-lg p-2.5 text-sm mb-3" value="${nombre}" required>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nuevo Precio ARS</label>
+                    <input type="number" id="cat-pre-edit" class="w-full input-dark rounded-lg p-2.5 text-sm" value="${precioActual}" required>
+                    <div class="flex gap-2 mt-4">
+                        <button type="submit" class="flex-1 dynamic-btn font-bold py-3 rounded-lg text-sm text-[#09090b]">Guardar Nuevo Precio</button>
+                        <button type="button" id="btn-eliminar-prod" class="bg-red-900/40 border border-red-500/30 hover:bg-red-600 text-red-400 hover:text-white px-4 py-3 rounded-lg text-sm transition" title="Eliminar Producto">🗑️</button>
+                    </div>
+                </form>`;
+            
+            document.getElementById('btn-eliminar-prod').addEventListener('click', async () => {
+                if(confirm("¿Seguro de eliminar este producto del catálogo?")) {
+                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "productos", id)); modal.classList.add('hidden'); showToast("Producto eliminado"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
+                }
+            });
+
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); 
+                try { await updateDoc(doc(db, "gimnasios", GYM_ID, "productos", id), { nombre: document.getElementById('cat-nom-edit').value, precio: document.getElementById('cat-pre-edit').value });
+                    modal.classList.add('hidden'); showToast("Precio actualizado"); cargarDatos();
+                } catch(err) { showToast("Error", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalVentaArticulo = (nombre, precioBase) => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = `Venta Rápida: ${nombre}`;
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <select id="v-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select>
+                        <input type="number" id="v-mon" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Importe ARS" value="${precioBase}" required>
+                    </div>
+                    <input type="date" id="v-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg mt-2 text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)]">Confirmar Pago</button>
+                </form>`;
+            document.getElementById('v-fec').valueAsDate = new Date();
+            
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault();
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() });
+                    modal.classList.add('hidden'); showToast("Venta POS procesada"); cargarDatos();
+                } catch(err) { showToast("Error en venta", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalCierre = () => {
+            const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
+            const finanzasTurno = listaFinanzasData.filter(f => f.timestamp > lastCierre);
+
+            let totalPOS = 0; let totalMem = 0; let cantAltas = 0; let cantRenov = 0; let listadoHtml = '';
+
+            finanzasTurno.forEach(f => {
+                if(f.tipo === 'Inventario') { totalPOS += Number(f.monto); listadoHtml += `<li class="flex justify-between border-b border-[#27272a] py-1"><span>🛒 ${f.concepto}</span><span class="text-emerald-400 font-mono">$${f.monto}</span></li>`; } 
+                else if(f.tipo === 'Cuota') { totalMem += Number(f.monto); if(f.concepto.includes('Alta')) cantAltas++; if(f.concepto.includes('Renovación')) cantRenov++; listadoHtml += `<li class="flex justify-between border-b border-[#27272a] py-1"><span>👤 ${f.concepto}</span><span class="text-blue-400 font-mono">$${f.monto}</span></li>`; }
+            });
+
+            if(finanzasTurno.length === 0) listadoHtml = `<li class="text-gray-500 italic text-center py-2">No hubo movimientos en este turno.</li>`;
+
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-orange-500/30 shadow-[0_0_30px_rgba(249,115,22,0.15)] fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Arqueo y Cierre de Turno";
+            modalContent.innerHTML = `
+                <div class="text-xs text-gray-400 mb-4 flex justify-between">
+                    <span>Inicio: ${new Date(lastCierre).toLocaleString('es-AR')}</span><span>Fin: Ahora</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                    <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Caja Mostrador</p><p class="text-emerald-400 font-black text-xl mt-1">$${totalPOS}</p></div>
+                    <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Caja Membresías</p><p class="text-blue-400 font-black text-xl mt-1">$${totalMem}</p></div>
+                </div>
+                
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] mb-4 max-h-32 overflow-y-auto custom-scrollbar">
+                    <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-2 sticky top-0 bg-[#18181b]">Detalle de Operaciones</p>
+                    <ul class="text-[11px] text-gray-300 space-y-1">${listadoHtml}</ul>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-2">Observaciones del Turno (Opcional)</p>
+                    <textarea id="input-obs-cierre" class="w-full input-dark rounded-lg p-2.5 text-sm focus:border-orange-500 resize-none" rows="2" placeholder="Dejar una nota para el administrador..."></textarea>
+                </div>
+
+                <div class="bg-red-900/10 border border-red-500/30 p-4 rounded-xl mb-4 mt-4">
+                    <p class="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-2 text-center">Autorización Requerida</p>
+                    <input type="password" id="input-pass-cierre" class="w-full input-dark rounded-lg p-2.5 text-sm text-center focus:border-red-500" placeholder="Ingrese su Clave de Sesión" required>
+                </div>
+                
+                <button id="btn-confirm-cierre" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-lg text-sm transition shadow-[0_0_15px_rgba(234,88,12,0.3)]">Confirmar y Cerrar Caja</button>
+            `;
+
+            document.getElementById('btn-confirm-cierre').addEventListener('click', async () => {
+                const passInput = document.getElementById('input-pass-cierre').value.trim();
+                if(!passInput) { showToast("Debe ingresar su clave", "error"); return; }
+                const obs = document.getElementById('input-obs-cierre').value.trim();
+                
+                document.getElementById('btn-confirm-cierre').innerText = 'Verificando...'; document.getElementById('btn-confirm-cierre').disabled = true;
+                
+                try {
+                    const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
+                    const dbPassAdmin = gymSnap.data().password; const dbPassStaff = gymSnap.data().passwordStaff;
+
+                    if(passInput !== dbPassAdmin && passInput !== dbPassStaff) {
+                        showToast("Clave de autorización incorrecta", "error");
+                        document.getElementById('btn-confirm-cierre').innerText = 'Confirmar y Cerrar Caja'; document.getElementById('btn-confirm-cierre').disabled = false;
+                        return;
+                    }
+
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: lastCierre, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: totalPOS, total_mem: totalMem, altas: cantAltas, renov: cantRenov, usuario: userRole, observaciones: obs });
+                    modal.classList.add('hidden'); showToast("Turno cerrado correctamente", "success"); cargarDatos();
+                } catch(err) { showToast("Error al cerrar turno", "error"); document.getElementById('btn-confirm-cierre').disabled = false; }
+            });
+            modal.classList.remove('hidden');
+        }
+
+        // --- HISTORIAL CAJAS Y DETALLE PARA EL DUEÑO ---
+        window.abrirModalDetalleTurno = (cierreId) => {
+            const cierre = listaCierresData.find(c => c.id === cierreId);
+            if(!cierre) return;
+            
+            const finanzasTurno = listaFinanzasData.filter(f => f.timestamp > cierre.apertura && f.timestamp <= cierre.timestamp);
+            let listadoHtml = '';
+            finanzasTurno.forEach(f => {
+                const icon = f.tipo === 'Inventario' ? '🛒' : '👤';
+                const color = f.tipo === 'Inventario' ? 'text-emerald-400' : 'text-blue-400';
+                listadoHtml += `<li class="flex justify-between border-b border-[#27272a] py-1 text-xs text-gray-300"><span>${icon} ${f.concepto}</span><span class="${color} font-mono">$${f.monto}</span></li>`;
+            });
+
+            if(finanzasTurno.length === 0) listadoHtml = `<li class="text-gray-500 italic text-center py-2 text-xs">Sin transacciones.</li>`;
+
+            document.getElementById('contenido-detalle-turno').innerHTML = `
+                <div class="text-xs text-gray-400 mb-4 bg-[#18181b] p-3 rounded-lg border border-[#27272a]">
+                    <p><strong>Apertura:</strong> ${new Date(cierre.apertura).toLocaleString('es-AR')}</p>
+                    <p><strong>Cierre:</strong> ${new Date(cierre.cierre).toLocaleString('es-AR')}</p>
+                </div>
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] mb-4">
+                    <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest mb-1">📝 Observaciones del Empleado:</p>
+                    <p class="text-sm text-white italic">"${cierre.observaciones || 'Sin observaciones'}"</p>
+                </div>
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] max-h-48 overflow-y-auto custom-scrollbar">
+                    <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-2 sticky top-0 bg-[#18181b]">Detalle de Operaciones</p>
+                    <ul class="space-y-1">${listadoHtml}</ul>
+                </div>
+            `;
+            document.getElementById('modal-detalle-turno').classList.remove('hidden');
+        };
+
+        function abrirModalEvaluacion() {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[95vh] overflow-y-auto custom-scrollbar";
+            modalTitle.innerText = "Evaluación Corporal (Metas)";
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <select id="e-soc" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${getSocioOptions()}</select>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" step="0.1" id="e-peso" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Peso (Kg)" required>
+                        <input type="number" id="e-altura" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Altura (Cm)" required>
+                    </div>
+                    <input type="date" id="e-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-lg mt-2 text-sm shadow-[0_0_15px_rgba(168,85,247,0.3)]">Guardar Medición</button>
+                </form>`;
+            document.getElementById('e-fec').valueAsDate = new Date();
+            
+            document.getElementById('form-dinamico').onsubmit = async (e) => {
+                e.preventDefault(); const peso = parseFloat(document.getElementById('e-peso').value); const alturaCm = parseFloat(document.getElementById('e-altura').value);
+                const imc = (peso / Math.pow(alturaCm/100, 2)).toFixed(1); 
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "evaluaciones"), { socio: document.getElementById('e-soc').value, peso: peso, altura: alturaCm, imc: imc, fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() });
+                    modal.classList.add('hidden'); showToast(`Medición guardada. IMC: ${imc}`); cargarDatos();
+                } catch(err) { showToast("Error al guardar", "error"); }
+            };
+            modal.classList.remove('hidden');
+        }
+
+        // --- CEREBRO & RENDER ---
+        function evaluarEstado(vence) {
+            const h = new Date(); h.setHours(0,0,0,0); const v = new Date(vence); v.setHours(23,59,59,999);
+            const d = Math.ceil((v - h) / (1000 * 60 * 60 * 24));
+            if (d < 0) return { t: 'Expired', c: 'text-red-400 bg-red-900/20 border border-red-500/30' };
+            if (d <= 3) return { t: 'Warning', c: 'text-orange-400 bg-orange-900/20 border border-orange-500/30' };
+            return { t: 'Active', c: 'text-emerald-400 bg-emerald-900/20 border border-emerald-500/30' };
+        }
+
+        function renderizarGrafico(finanzas) {
+            if(chartInstance) chartInstance.destroy();
+            const ingresosPorMes = {};
+            finanzas.forEach(f => { const mes = f.fecha.substring(0, 7); ingresosPorMes[mes] = (ingresosPorMes[mes] || 0) + Number(f.monto); });
+            const mesesOrdenados = Object.keys(ingresosPorMes).sort();
+            const etiquetas = mesesOrdenados.map(m => new Date(m + "-02").toLocaleString('es-ES', { month: 'short', year: 'numeric' }).toUpperCase());
+            const dataPuntos = mesesOrdenados.map(m => ingresosPorMes[m]);
+
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const style = getComputedStyle(document.body);
+            const colorAcento = style.getPropertyValue('--accent-color').trim() || '#eab308';
+
+            chartInstance = new Chart(ctx, {
+                type: 'line', data: { labels: etiquetas, datasets: [{ label: 'Ingresos (ARS)', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#09090b', pointBorderColor: colorAcento, pointRadius: 5, fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#18181b', titleColor: '#fff', bodyColor: colorAcento, borderColor: '#27272a', borderWidth: 1 } }, scales: { x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } }, y: { beginAtZero: true, grid: { color: '#27272a' }, ticks: { color: '#a1a1aa', callback: function(value) { return '$' + value.toLocaleString(); } } } } }
+            });
+        }
+
+        async function cargarDatos() {
             try {
                 const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
                 if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
-                const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre || 'GYM';
                 
+                const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
+                
+                // === ALERTA LICENCIA SAAS ===
+                if (data.vencimientoLicencia && userRole === 'admin') {
+                    const hoy = new Date(); hoy.setHours(0,0,0,0);
+                    const [y,m,d] = data.vencimientoLicencia.split('-');
+                    const vence = new Date(y, m-1, d);
+                    const diffDias = Math.ceil((vence - hoy) / (1000 * 60 * 60 * 24));
+                    
+                    const banner = document.getElementById('banner-licencia');
+                    if (diffDias <= 0 && diffDias >= -3) {
+                        banner.classList.remove('hidden'); banner.classList.add('bg-red-600');
+                        banner.innerHTML = `🚨 AVISO URGENTE: Su mensualidad de sistema venció el ${data.vencimientoLicencia.split('-').reverse().join('/')}. Tiene ${3 + diffDias} días de tolerancia antes de la suspensión automática.`;
+                    } else if (diffDias > 0 && diffDias <= 5) {
+                        banner.classList.remove('hidden'); banner.classList.add('bg-orange-600');
+                        banner.innerHTML = `⚠️ RECORDATORIO: Su mensualidad de sistema vence el ${data.vencimientoLicencia.split('-').reverse().join('/')}. Recuerde abonar a tiempo.`;
+                    }
+                }
+
                 document.getElementById('app-container').classList.remove('hidden');
+                
                 if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
                 
                 const logoCont = document.getElementById('ui-gym-logo-container');
-                logoCont.innerHTML = data.logoUrl ? `<img src="${data.logoUrl}" class="w-20 h-auto object-contain drop-shadow-lg">` : `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; 
-                document.getElementById('ui-gym-name').innerText = data.logoUrl ? "" : nombreGymActual.toUpperCase();
-
-                if (data.vencimientoLicencia && userRole === 'admin') {
-                    const hoy = new Date(); hoy.setHours(0,0,0,0); const [y,m,d] = data.vencimientoLicencia.split('-'); const vence = new Date(y, m-1, d);
-                    const diffDias = Math.ceil((vence - hoy) / (1000 * 60 * 60 * 24));
-                    const banner = document.getElementById('banner-licencia');
-                    if(banner) {
-                        if (diffDias <= 0 && diffDias >= -3) { banner.classList.remove('hidden'); banner.classList.add('bg-red-600'); banner.innerHTML = `🚨 URGENTE: Mensualidad vencida (${data.vencimientoLicencia.split('-').reverse().join('/')}). ${3 + diffDias} días de tolerancia restantes.`; } 
-                        else if (diffDias > 0 && diffDias <= 5) { banner.classList.remove('hidden'); banner.classList.add('bg-orange-600'); banner.innerHTML = `⚠️ RECORDATORIO: Su mensualidad vence el ${data.vencimientoLicencia.split('-').reverse().join('/')}.`; }
-                    }
-                }
+                if(data.logoUrl) { logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-20 h-auto object-contain drop-shadow-lg">`; document.getElementById('ui-gym-name').innerText = ""; } 
+                else { logoCont.innerHTML = `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; document.getElementById('ui-gym-name').innerText = data.nombre.toUpperCase(); }
 
                 const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
-                if(gymModulos.tienda !== false) {
-                    mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="window.cambiarVista('tienda')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
-                }
-                if(gymModulos.evaluaciones !== false) {
-                    mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="window.cambiarVista('evaluaciones')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Físicas</div>`;
-                }
-                if(gymModulos.asistencia !== false) {
-                    mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="window.cambiarVista('asistencia')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg> Asistencia</div>`;
-                }
-
-                // Carga de bases aisladas (¡Nunca colapsa!)
-                listaSociosData = await fetchSeguro("socios");
-                listaFinanzasData = await fetchSeguro("finanzas");
-                listaProductosData = await fetchSeguro("productos");
-                listaCierresData = await fetchSeguro("cierres");
-                listaPlanesData = await fetchSeguro("planes");
-                listaEvalsData = await fetchSeguro("evaluaciones");
+                if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('tienda')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
+                if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('evaluaciones')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Metas y Evals</div>`;
+                if(gymModulos.asistencia) mCont.innerHTML += `<div id="nav-asistencia" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg" onclick="cambiarVista('asistencia')"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg> Asistencia</div>`;
                 
-                listaProductosData.sort((a,b) => String(a.nombre||'').localeCompare(String(b.nombre||''))); 
-                listaCierresData.sort((a,b) => new Date(b.timestamp||0)-new Date(a.timestamp||0));
-                listaPlanesData.sort((a,b) => Number(a.precio||0)-Number(b.precio||0));
-                listaEvalsData.sort((a, b) => new Date(b.fecha||0) - new Date(a.fecha||0));
-                listaFinanzasData.sort((a, b) => new Date(b.fecha||0) - new Date(a.fecha||0));
+                if(gymModulos.tienda) document.getElementById('nav-tienda').addEventListener('click', () => cambiarVista('tienda'));
+                if(gymModulos.evaluaciones) document.getElementById('nav-evaluaciones').addEventListener('click', () => cambiarVista('evaluaciones'));
+                if(gymModulos.asistencia) document.getElementById('nav-asistencia').addEventListener('click', () => cambiarVista('asistencia'));
 
-                let ingrMes = 0; let gasMes = 0; const mesActual = new Date().toISOString().substring(0,7);
-                listaFinanzasData.forEach(p => {
-                    p.movimiento = p.movimiento || 'ingreso';
-                    if(String(p.fecha||'').startsWith(mesActual)) { 
-                        if(p.movimiento === 'ingreso') ingrMes += Number(p.monto||0); else gasMes += Number(p.monto||0); 
-                    }
+                const [sSnap, fSnap, eSnap, pSnap, cSnap] = await Promise.all([ getDocs(collection(db, "gimnasios", GYM_ID, "socios")), getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), getDocs(collection(db, "gimnasios", GYM_ID, "productos")), getDocs(collection(db, "gimnasios", GYM_ID, "cierres")) ]);
+                
+                listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
+                listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
+                listaProductosData.sort((a, b) => a.nombre.localeCompare(b.nombre)); 
+                
+                listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() }));
+                listaCierresData.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                listaFinanzasData = []; let ingrT = 0; let ingrMes = 0;
+                const mesActual = new Date().toISOString().substring(0,7);
+                fSnap.forEach(d => { 
+                    const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); 
+                    ingrT += Number(p.monto); if(p.fecha.startsWith(mesActual)) ingrMes += Number(p.monto);
+                });
+                listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                listaEvalsData = []; eSnap.forEach(d => listaEvalsData.push({ id: d.id, ...d.data() }));
+                listaEvalsData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                document.getElementById('total-socios').innerText = listaSociosData.length;
+                if(userRole === 'admin') {
+                    document.getElementById('ui-ingresos-totales').innerText = `$${ingrT.toLocaleString('es-AR')}`;
+                    document.getElementById('ingresos-mes').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
+                    renderizarGrafico(listaFinanzasData);
+                }
+                
+                renderUI(); 
+            } catch(e) {
+                console.error("Error de carga:", e);
+                showToast("Error de conexión al cargar datos", "error");
+            }
+        }
+
+        function renderUI() {
+            const cAlertas = document.getElementById('contenedor-alertas'); cAlertas.innerHTML = ''; let alertas = 0;
+            listaSociosData.forEach(s => {
+                const est = evaluarEstado(s.vence);
+                if(est.t !== 'Active') {
+                    alertas++;
+                    cAlertas.innerHTML += `
+                        <div class="p-3 bg-[#18181b] border border-[#27272a] rounded-xl flex justify-between items-center transition hover:bg-[#27272a]">
+                            <div class="flex items-center gap-3">
+                                <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'}" class="w-10 h-10 rounded-lg object-cover border border-[#27272a]">
+                                <div><p class="text-sm font-bold text-white">${s.nombre}</p><p class="text-[10px] text-gray-500">${s.vence} • <span class="${est.c.split(' ')[0]}">${est.t}</span></p></div>
+                            </div>
+                            <button class="bg-[#27272a] text-white hover:bg-white hover:text-black px-3 py-1 text-xs rounded-lg font-bold transition" onclick="abrirModalPago('${s.nombre}')">Renovar</button>
+                        </div>`;
+                }
+            });
+            document.getElementById('total-alertas').innerText = alertas;
+            if(alertas === 0) cAlertas.innerHTML = `<p class="text-xs text-gray-500 italic">No hay alertas. Todos los socios están al día.</p>`;
+
+            const tbS = document.getElementById('tabla-socios-body'); tbS.innerHTML = '';
+            listaSociosData.forEach(s => {
+                const est = evaluarEstado(s.vence);
+                const btnEliminar = userRole === 'admin' ? `<button class="btn-del-s text-gray-500 hover:text-red-400 bg-[#18181b] p-1.5 rounded transition" data-id="${s.id}" title="Eliminar">🗑️</button>` : '';
+                tbS.innerHTML += `
+                    <tr class="border-b border-[#27272a] glass-row">
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${est.c}">${est.t}</span></td>
+                        <td class="py-3 px-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-8 h-8 rounded-full object-cover border border-[#27272a]">
+                                <div><p class="text-white font-bold">${s.nombre}</p><a href="https://wa.me/${s.telefono}" target="_blank" class="text-[10px] text-[#25D366] hover:underline">${s.telefono}</a></div>
+                            </div>
+                        </td>
+                        <td class="py-3 px-4"><span class="text-xs text-gray-300 font-bold bg-[#18181b] px-2 py-1 border border-[#27272a] rounded">${s.servicio}</span></td>
+                        <td class="py-3 px-4 text-gray-400">${s.membresia}</td>
+                        <td class="py-3 px-4 text-white font-mono text-xs">${s.vence}</td>
+                        <td class="py-3 px-4 flex justify-end gap-1">
+                            <button class="text-gray-400 hover:text-white bg-[#18181b] p-1.5 rounded transition" onclick="abrirModalPago('${s.nombre}')" title="Cobrar">💳</button>
+                            <button class="btn-edit-s text-gray-400 hover:text-blue-400 bg-[#18181b] p-1.5 rounded transition" data-id="${s.id}" title="Editar">✏️</button>
+                            ${btnEliminar}
+                        </td>
+                    </tr>`;
+            });
+
+            if(userRole === 'admin') {
+                const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
+                listaFinanzasData.forEach(f => {
+                    const tColor = f.tipo === 'Inventario' ? 'text-emerald-400 bg-emerald-900/20 border border-emerald-500/30' : 'text-blue-400 bg-blue-900/20 border border-blue-500/30';
+                    tbF.innerHTML += `
+                        <tr class="border-b border-[#27272a] glass-row">
+                            <td class="py-3 px-4 text-gray-400 font-mono text-xs">${f.fecha.split('-').reverse().join('/')}</td>
+                            <td class="py-3 px-4 text-white font-bold">${f.concepto}</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] ${tColor}">${f.tipo}</span></td>
+                            <td class="py-3 px-4 text-gray-400 text-xs uppercase">${f.medio || 'Efectivo'}</td>
+                            <td class="py-3 px-4 font-bold text-emerald-400">$${Number(f.monto).toLocaleString('es-AR')}</td>
+                            <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-600 hover:text-red-500 transition" data-id="${f.id}">✕</button></td>
+                        </tr>`;
                 });
 
-                let tActivos = 0, tNuevos = 0, tPorVencer = 0, tVencidos = 0;
-                listaSociosData.forEach(s => {
-                    const est = evaluarEstado(s.vence).t;
-                    if(est === 'Activo') tActivos++; else if(est === 'Por Vencer') tPorVencer++; else tVencidos++;
-                    if(String(s.fechaAlta||'').startsWith(mesActual)) tNuevos++;
-                });
-
-                document.getElementById('dash-activos').innerText = tActivos; document.getElementById('dash-nuevos').innerText = tNuevos;
-                document.getElementById('dash-por-vencer').innerText = tPorVencer; document.getElementById('dash-vencidos').innerText = tVencidos;
-
-                if(userRole === 'admin') {
-                    document.getElementById('ui-ingresos-totales').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
-                    document.getElementById('dash-ingresos').innerText = `$${ingrMes.toLocaleString('es-AR')}`;
-                    document.getElementById('dash-gastos').innerText = `$${gasMes.toLocaleString('es-AR')}`;
-                    const neto = ingrMes - gasMes;
-                    document.getElementById('dash-neto').innerText = `$${neto.toLocaleString('es-AR')}`;
-                    document.getElementById('dash-neto').className = `text-3xl font-black mt-1 ${neto>=0?'text-emerald-400':'text-red-400'}`;
-                    document.getElementById('ai-summary-text').innerText = generarResumenAI(ingrMes, gasMes, tVencidos, tPorVencer);
-                    
-                    if(chartInstance) chartInstance.destroy();
-                    const lineLabels = []; const lineIngresos = []; const lineGastos = [];
-                    const agrupar = {};
-                    listaFinanzasData.forEach(f => {
-                        if(!f.fecha) return;
-                        const m = f.fecha.substring(0,7);
-                        if(!agrupar[m]) agrupar[m] = {i:0, g:0};
-                        if(f.movimiento==='ingreso') agrupar[m].i += Number(f.monto||0); else agrupar[m].g += Number(f.monto||0);
-                    });
-                    Object.keys(agrupar).sort().forEach(m => { lineLabels.push(m); lineIngresos.push(agrupar[m].i); lineGastos.push(agrupar[m].g); });
-                    
-                    const canvasEl = document.getElementById('revenueChart');
-                    if(canvasEl) {
-                        chartInstance = new Chart(canvasEl.getContext('2d'), {
-                            type: 'bar', data: { labels: lineLabels, datasets: [{ label: 'Ingresos', data: lineIngresos, backgroundColor: '#34d399'}, { label: 'Gastos', data: lineGastos, backgroundColor: '#f87171'}] },
-                            options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: '#27272a' }, ticks:{color:'#a1a1aa'}}, y: { grid: { color: '#27272a' }, ticks:{color:'#a1a1aa'}} } }
-                        });
-                    }
-                }
-                window.renderUI(); 
-            } catch(e) { console.error("Error UI Carga:", e); window.showToast("Error de conexión al cargar datos", "error"); }
-        };
-
-        window.renderUI = (dataFiltrada = null) => {
-            try {
-                const dataRender = dataFiltrada || listaSociosData;
-                const tbS = document.getElementById('tabla-socios-body');
-                if(tbS) {
-                    tbS.innerHTML = '';
-                    dataRender.forEach(s => {
-                        const est = evaluarEstado(s.vence);
-                        const btnEliminar = userRole === 'admin' ? `<button class="btn-del-s text-gray-500 hover:text-red-400 bg-[#18181b] p-1.5 rounded transition" data-id="${s.id}">🗑️</button>` : '';
-                        const safeName = (s.nombre||'').replace(/'/g, "\\'"); // Anti inyección en botón
-                        tbS.innerHTML += `
-                            <tr class="border-b border-[#27272a] glass-row">
-                                <td class="py-3 px-3"><span class="px-2 py-1 rounded text-[9px] font-bold border ${est.c}">${est.t}</span></td>
-                                <td class="py-3 px-3">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-8 h-8 rounded-full object-cover border border-[#27272a]">
-                                        <div class="leading-tight"><p class="text-white font-bold text-sm">${s.nombre||'-'}</p><p class="text-[10px] text-gray-500">DNI: ${s.dni||'-'}</p></div>
-                                    </div>
-                                </td>
-                                <td class="py-3 px-3"><p class="text-xs text-blue-400 font-bold">${s.membresia||'-'}</p><p class="text-[9px] text-gray-500">${s.servicio||'-'}</p></td>
-                                <td class="py-3 px-3"><p class="text-[10px] text-gray-500">Alta: ${s.fechaAlta||'-'}</p><p class="text-white font-mono text-xs">Vence: ${s.vence||'-'}</p></td>
-                                <td class="py-3 px-3 flex justify-end gap-1">
-                                    <a href="https://wa.me/${s.telefono||''}" target="_blank" class="text-[#25D366] hover:bg-[#25D366]/20 bg-[#18181b] p-1.5 rounded transition">💬</a>
-                                    <button class="text-emerald-400 hover:bg-emerald-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="window.abrirModalPago('${safeName}')" title="Cobrar">💳</button>
-                                    <button class="text-blue-400 hover:bg-blue-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="window.abrirModalSocio('${s.id}')" title="Ficha">👁️</button>
-                                    ${btnEliminar}
-                                </td>
-                            </tr>`;
-                    });
-                }
-
-                if(userRole === 'admin') {
-                    const cPlanes = document.getElementById('contenedor-planes');
-                    if(cPlanes) {
-                        cPlanes.innerHTML = '';
-                        listaPlanesData.forEach(p => {
-                            const safePlan = (p.nombre||'').replace(/'/g, "\\'");
-                            cPlanes.innerHTML += `
-                                <div class="bg-[#18181b] border border-[#27272a] rounded-xl p-5 shadow-lg relative group">
-                                    <button onclick="window.abrirModalPlan('${p.id}','${safePlan}','${p.precio||''}','${p.meses||''}','${p.modalidad||''}')" class="absolute top-3 right-3 text-blue-400 hover:text-white bg-blue-900/20 p-1.5 rounded opacity-0 group-hover:opacity-100 transition">✏️</button>
-                                    <span class="text-[9px] bg-[#27272a] text-gray-300 px-2 py-1 rounded-full uppercase tracking-widest">${p.modalidad||'-'}</span>
-                                    <h3 class="text-lg font-bold text-white mt-2">${p.nombre||'-'}</h3>
-                                    <div class="flex items-baseline gap-1 mt-2"><span class="text-2xl font-black text-emerald-400">$${p.precio||'0'}</span><span class="text-xs text-gray-500">/ ${p.meses||'1'} Meses</span></div>
-                                    <button class="btn-del-plan text-[10px] text-red-500 mt-4 underline" data-id="${p.id}">Eliminar Plan</button>
-                                </div>`;
-                        });
-                    }
-
-                    const tbF = document.getElementById('tabla-finanzas-body');
-                    if(tbF) {
-                        tbF.innerHTML = '';
-                        listaFinanzasData.forEach(f => {
-                            const icon = f.movimiento === 'ingreso' ? 'text-emerald-400' : 'text-red-400';
-                            const sgno = f.movimiento === 'ingreso' ? '+' : '-';
-                            tbF.innerHTML += `
-                                <tr class="border-b border-[#27272a] glass-row">
-                                    <td class="py-2 px-3 text-gray-400 font-mono text-[10px]">${f.fecha ? f.fecha.split('-').reverse().join('/') : '-'}</td>
-                                    <td class="py-2 px-3 text-white text-xs font-bold">${f.concepto||'-'}</td>
-                                    <td class="py-2 px-3 text-[10px] text-gray-400">${f.tipo||'-'}</td>
-                                    <td class="py-2 px-3 text-gray-500 text-[9px] uppercase">${f.medio || 'Efectivo'}</td>
-                                    <td class="py-2 px-3 font-bold ${icon} font-mono text-xs">${sgno}$${Number(f.monto||0).toLocaleString('es-AR')}</td>
-                                    <td class="py-2 px-3 text-center"><button class="btn-del-f text-gray-600 hover:text-red-500 transition" data-id="${f.id}">✕</button></td>
-                                </tr>`;
-                        });
-                    }
-
-                    const tbCierres = document.getElementById('tabla-turnos-admin-body');
-                    if(tbCierres) {
-                        tbCierres.innerHTML = '';
+                const tbCierres = document.getElementById('tabla-turnos-admin-body');
+                if(tbCierres) {
+                    tbCierres.innerHTML = '';
+                    if(listaCierresData.length === 0) { tbCierres.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-500 text-xs italic">Aún no hay turnos cerrados.</td></tr>`; } 
+                    else {
                         listaCierresData.forEach(c => {
-                            const total = Number(c.total_pos||0) + Number(c.total_mem||0);
+                            const total = Number(c.total_pos) + Number(c.total_mem);
                             tbCierres.innerHTML += `
                                 <tr class="border-b border-[#27272a] glass-row">
-                                    <td class="py-3 px-3 font-mono text-[10px] text-gray-400">
-                                        ${c.cierre ? new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '-'}
+                                    <td class="py-3 px-4 font-mono text-xs text-gray-400">
+                                        ${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}
+                                        ${c.observaciones ? `<br><span class="text-[10px] text-orange-300/80 italic inline-block mt-1">📝 Obs: ${c.observaciones}</span>` : ''}
                                     </td>
-                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_pos||'0'}</td>
-                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_mem||'0'}</td>
-                                    <td class="py-3 px-3 font-bold text-emerald-400 font-mono text-sm">$${total}</td>
-                                    <td class="py-3 px-3 text-[10px] text-gray-500 uppercase">${c.usuario||'-'}</td>
-                                    <td class="py-3 px-3 text-center flex justify-center gap-2">
-                                        <button onclick="window.abrirModalDetalleTurno('${c.id}')" class="text-xs bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-gray-300 px-2 py-1 rounded transition" title="Ver Detalle">👁️ Ver</button>
+                                    <td class="py-3 px-4 text-emerald-400 font-mono">$${c.total_pos}</td>
+                                    <td class="py-3 px-4 text-blue-400 font-mono">$${c.total_mem}</td>
+                                    <td class="py-3 px-4 font-bold text-white font-mono">$${total}</td>
+                                    <td class="py-3 px-4 text-[10px] text-gray-500 uppercase">${c.usuario === 'admin' ? 'Dueño' : 'Staff'}</td>
+                                    <td class="py-3 px-4 text-center flex justify-center gap-2">
+                                        <button onclick="abrirModalDetalleTurno('${c.id}')" class="text-xs bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-gray-300 px-2 py-1 rounded transition" title="Ver Detalle">👁️ Ver</button>
                                         <button class="btn-del-cierre text-gray-600 hover:text-red-500 transition py-1" data-id="${c.id}" title="Eliminar">✕</button>
                                     </td>
                                 </tr>`;
                         });
                     }
                 }
+            }
 
-                if(gymModulos.tienda !== false) {
-                    const cCat = document.getElementById('catalogo-productos');
-                    if(cCat) {
-                        cCat.innerHTML = '';
-                        listaProductosData.forEach(p => {
-                            const safeProd = (p.nombre||'').replace(/'/g, "\\'");
-                            const btnEditAdmin = userRole === 'admin' ? `
-                                <button onclick="window.abrirModalEditarProducto('${p.id}', '${safeProd}', '${p.precio||''}')" class="absolute top-2 right-2 bg-[#27272a] hover:bg-blue-600 text-gray-400 hover:text-white p-1.5 rounded-lg z-10 transition opacity-0 group-hover:opacity-100">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                </button>` : '';
+            if(gymModulos.tienda) {
+                const cCat = document.getElementById('catalogo-productos'); cCat.innerHTML = '';
+                listaProductosData.forEach(p => {
+                    const btnEditAdmin = userRole === 'admin' ? `
+                        <button onclick="abrirModalEditarProducto('${p.id}', '${p.nombre}', '${p.precio}')" class="absolute top-2 right-2 bg-[#27272a] hover:bg-blue-600 text-gray-400 hover:text-white p-1.5 rounded-lg z-10 transition opacity-0 group-hover:opacity-100" title="Editar Precio / Eliminar">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>` : '';
 
-                            cCat.innerHTML += `
-                                <div class="relative bg-[#18181b] border border-[#27272a] hover:border-emerald-500/50 rounded-xl transition flex flex-col justify-between h-20 overflow-hidden group">
-                                    <button onclick="window.abrirModalVentaArticulo('${safeProd}', ${p.precio||0})" class="absolute inset-0 w-full h-full text-left p-3 hover:bg-emerald-900/10 transition z-0 flex flex-col justify-between">
-                                        <span class="text-xs font-bold text-white line-clamp-1 w-[80%]">${p.nombre||'-'}</span>
-                                        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-900/20 px-2 py-0.5 rounded w-fit">$${p.precio||'0'}</span>
-                                    </button>
-                                    ${btnEditAdmin}
-                                </div>`;
-                        });
-                    }
-                    
-                    const tbT = document.getElementById('tabla-tienda-body');
-                    if(tbT) {
-                        tbT.innerHTML = '';
-                        const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
-                        const ventasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && f.tipo === 'Inventario' && (f.timestamp||"") > lastCierre);
-                        ventasTurno.forEach(f => { tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-gray-300 text-xs">${f.concepto||'-'}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono text-xs">$${f.monto||'0'}</td></tr>`; });
-                        if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Turno limpio.</td></tr>`;
-                    }
-                }
+                    cCat.innerHTML += `
+                        <div class="relative bg-[#18181b] border border-[#27272a] hover:border-emerald-500/50 rounded-xl transition flex flex-col justify-between h-24 overflow-hidden group">
+                            <button onclick="abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="absolute inset-0 w-full h-full text-left p-4 hover:bg-emerald-900/10 transition z-0 flex flex-col justify-between">
+                                <span class="text-sm font-bold text-white leading-tight w-[80%]">${p.nombre}</span>
+                                <span class="text-xs font-mono text-emerald-400 bg-emerald-900/20 px-2 py-1 rounded w-fit mt-1">$${p.precio}</span>
+                            </button>
+                            ${btnEditAdmin}
+                        </div>`;
+                });
+                
+                const tbT = document.getElementById('tabla-tienda-body'); tbT.innerHTML = '';
+                const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
+                const ventasTurno = listaFinanzasData.filter(f => f.tipo === 'Inventario' && f.timestamp > lastCierre);
+                
+                ventasTurno.forEach(f => {
+                    tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-white font-bold">${f.concepto}</td><td class="py-2 px-2 text-gray-500 text-[10px] uppercase">${f.medio||'Efectivo'}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono">$${f.monto}</td></tr>`;
+                });
+                if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Aún no hay ventas de mostrador en este turno.</td></tr>`;
+            }
 
-                const tbE = document.getElementById('tabla-evaluaciones-body'); 
-                if(tbE) {
-                    tbE.innerHTML = '';
-                    listaEvalsData.forEach(e => {
-                        const imc = parseFloat(e.imc||0);
-                        let badgeImc = 'text-gray-400 bg-gray-900/20 border border-gray-500/30'; 
-                        if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border border-blue-500/30'; else if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border border-red-500/30'; else if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border border-orange-500/30';
-                        const btnEliminar = userRole === 'admin' ? `<button class="btn-del-e text-gray-600 hover:text-red-500 transition" data-id="${e.id}">✕</button>` : '';
-                        tbE.innerHTML += `
-                            <tr class="border-b border-[#27272a] glass-row">
-                                <td class="py-3 px-4 text-gray-400 font-mono text-xs">${e.fecha ? e.fecha.split('-').reverse().join('/') : '-'}</td>
-                                <td class="py-3 px-4 text-white font-bold">${e.socio||'-'}</td>
-                                <td class="py-3 px-4 text-gray-300">${e.peso||'0'} kg</td>
-                                <td class="py-3 px-4 text-gray-300">${e.altura||'0'} cm</td>
-                                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeImc}">${e.imc||'0'}</span></td>
-                                <td class="py-3 px-4 text-center">${btnEliminar}</td>
-                            </tr>`;
-                    });
-                }
-            } catch(e) { console.warn("Error Render UI:", e); }
-        };
-
-        const searchInp = document.getElementById('input-busqueda-socio');
-        const filterSel = document.getElementById('filtro-estado-socio');
-        const applyFiltros = () => {
-            if(!searchInp || !filterSel) return;
-            const tx = searchInp.value.toLowerCase(); const est = filterSel.value;
-            const res = listaSociosData.filter(s => {
-                const matchTxt = (s.nombre||'').toLowerCase().includes(tx) || ((s.dni||'')&&s.dni.includes(tx)) || ((s.telefono||'')&&s.telefono.includes(tx));
-                const eSocio = evaluarEstado(s.vence).t;
-                const matchEst = est === 'todos' || eSocio === est || (est === 'Vencido' && eSocio === 'Prospecto');
-                return matchTxt && matchEst;
-            });
-            window.renderUI(res);
-        };
-        if(searchInp) searchInp.addEventListener('input', applyFiltros);
-        if(filterSel) filterSel.addEventListener('change', applyFiltros);
+            const tbE = document.getElementById('tabla-evaluaciones-body'); 
+            if(tbE) {
+                tbE.innerHTML = '';
+                listaEvalsData.forEach(e => {
+                    const imc = parseFloat(e.imc);
+                    let badgeImc = 'text-gray-400 bg-gray-900/20 border border-gray-500/30'; 
+                    if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border border-blue-500/30'; 
+                    if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border border-orange-500/30'; 
+                    if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border border-red-500/30'; 
+                    const btnEliminar = userRole === 'admin' ? `<button class="btn-del-e text-gray-600 hover:text-red-500 transition" data-id="${e.id}">✕</button>` : '';
+                    tbE.innerHTML += `
+                        <tr class="border-b border-[#27272a] glass-row">
+                            <td class="py-3 px-4 text-gray-400 font-mono text-xs">${e.fecha.split('-').reverse().join('/')}</td>
+                            <td class="py-3 px-4 text-white font-bold">${e.socio}</td>
+                            <td class="py-3 px-4 text-gray-300">${e.peso} kg</td>
+                            <td class="py-3 px-4 text-gray-300">${e.altura} cm</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeImc}">${e.imc}</span></td>
+                            <td class="py-3 px-4 text-center">${btnEliminar}</td>
+                        </tr>`;
+                });
+            }
+        }
 
         document.body.addEventListener('click', async (e) => {
-            if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); window.cargarDatos(); }
-            if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); window.cargarDatos(); }
-            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar arqueo?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); window.cargarDatos(); }
-            if (e.target.closest('.btn-del-plan') && confirm("¿Eliminar membresía?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "planes", e.target.closest('.btn-del-plan').dataset.id)); window.cargarDatos(); }
+            if (e.target.closest('.btn-edit-s')) abrirModalSocio(listaSociosData.find(s => s.id === e.target.closest('.btn-edit-s').dataset.id));
+            if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); cargarDatos(); }
+            if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); cargarDatos(); }
+            if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); cargarDatos(); }
+            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar este arqueo de caja de forma permanente?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); cargarDatos(); }
         });
 
-        const btnExport = document.getElementById('btn-exportar-socios');
-        if(btnExport) {
-            btnExport.addEventListener('click', () => {
-                if(!listaSociosData.length) return; let c = "DNI,Nombre,Telefono,Plan,Vencimiento\n";
-                listaSociosData.forEach(s => c += `"${s.dni||''}","${s.nombre||''}","${s.telefono||''}","${s.membresia||''}","${s.vence||''}"\n`);
+        document.getElementById('input-busqueda-socio').addEventListener('input', e => renderUI(listaSociosData.filter(s => s.nombre.toLowerCase().includes(e.target.value.toLowerCase()))));
+        
+        if(document.getElementById('btn-exportar-csv')) {
+            document.getElementById('btn-exportar-csv').addEventListener('click', () => {
+                if(!listaFinanzasData.length) return; let c = "Fecha,Descripcion,Categoria,Medio_Pago,Importe\n";
+                listaFinanzasData.forEach(p => c += `${p.fecha.split('-').reverse().join('/')},"${p.concepto}",${p.tipo},${p.medio||'Efectivo'},${p.monto}\n`);
                 const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], {type:'text/csv'}));
-                l.download = `Padron_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); window.showToast("Padrón Descargado");
+                l.download = `Ingresos_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); showToast("Reporte Descargado");
             });
         }
 
-        window.cargarDatos();
+        cargarDatos();
     </script>
 </body>
 </html>
