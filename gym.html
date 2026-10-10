@@ -46,7 +46,7 @@
 
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
-    <!-- Controles Flotantes Inferiores -->
+    <!-- Controles Flotantes -->
     <div class="fixed bottom-5 right-5 z-50 flex items-center gap-3 fade-in">
         <button onclick="abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Cerrar Turno
@@ -72,12 +72,11 @@
                 <div id="nav-socios" class="nav-item flex items-center gap-3 py-3 px-4 rounded-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Padrón Inteligente
                 </div>
-                <!-- NUEVO: Membresías -->
                 <div id="nav-planes" class="nav-item admin-only flex items-center gap-3 py-3 px-4 rounded-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg> Planes y Membresías
                 </div>
                 <div id="nav-finanzas" class="nav-item admin-only flex items-center gap-3 py-3 px-4 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Flujo de Caja (Finanzas)
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> Flujo de Caja
                 </div>
                 <div id="modulos-container"></div>
                 
@@ -88,7 +87,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Cerrar Sesión
                 </button>
             </div>
-
+            
             <div class="mt-auto pt-8 pb-4 flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition duration-300">
                 <img src="https://via.placeholder.com/120x40.png?text=NOVABIT" alt="NovaBit Logo" class="w-20 h-auto mb-2 object-contain grayscale hover:grayscale-0 transition">
                 <p class="text-[9px] text-gray-500 uppercase tracking-widest text-center leading-relaxed">Powered by<br>NovaBit Media Agency</p>
@@ -98,7 +97,7 @@
 
     <main class="flex-1 overflow-y-auto bg-[#09090b] relative custom-scrollbar flex flex-col">
         
-        <!-- BANNER LICENCIA -->
+        <!-- BANNER DE LICENCIA -->
         <div id="banner-licencia" class="hidden admin-only w-full text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b"></div>
 
         <div class="aurora-bg"></div>
@@ -111,12 +110,10 @@
                     <p id="header-subtitle" class="text-[10px] font-bold text-blue-500/80 uppercase tracking-[0.2em] mt-2">Visión general y métricas en tiempo real</p>
                 </div>
                 
-                <!-- Accesos Rápidos Generales -->
                 <div class="flex flex-wrap items-center gap-3">
-                    <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-4 py-2 bg-[#121214] border border-[#27272a] rounded-full text-[10px] font-bold text-gray-400 hover:text-white hover:border-gray-500 transition-all shadow-lg">
+                    <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-4 py-2 bg-[#121214] border border-[#27272a] rounded-full text-[10px] font-bold text-gray-400 hover:text-white transition-all shadow-lg">
                         <svg class="w-3.5 h-3.5 text-blue-500 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> <span class="hidden sm:block">FX</span>
                     </button>
-                    
                     <button onclick="abrirModalSocio()" class="bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] text-white px-4 py-2 rounded-full text-[11px] font-bold transition flex items-center gap-1">👤 +Socio</button>
                     <button onclick="abrirModalPago()" class="dynamic-bg text-[#09090b] px-4 py-2 rounded-full text-[11px] font-bold transition flex items-center gap-1 shadow-[0_0_10px_rgba(234,179,8,0.2)]">💳 Cobrar</button>
                     <button onclick="abrirModalGasto()" class="admin-only bg-red-900/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white px-4 py-2 rounded-full text-[11px] font-bold transition flex items-center gap-1">💸 Gasto</button>
@@ -125,7 +122,6 @@
 
             <!-- VISTA DASHBOARD -->
             <div id="vista-dashboard" class="fade-in space-y-6">
-                <!-- Tarjetas de Resumen Financiero (Solo Admin) -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 admin-only">
                     <div class="glass-panel p-5 border-l-4 border-emerald-500 shadow-xl">
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Ingresos Cobrados (Mes)</h3>
@@ -141,7 +137,6 @@
                     </div>
                 </div>
 
-                <!-- Tarjetas de Socios y Operaciones -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="glass-panel p-4 shadow-lg text-center">
                         <p class="text-3xl font-black text-white" id="dash-activos">0</p>
@@ -162,13 +157,11 @@
                 </div>
 
                 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                    <!-- Gráfico (Admin) -->
                     <section class="glass-panel p-6 shadow-2xl xl:col-span-2 admin-only h-[350px]">
                         <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Balance Mensual (Ingresos vs Gastos)</h2>
                         <div class="w-full h-[250px]"><canvas id="revenueChart"></canvas></div>
                     </section>
                     
-                    <!-- Resumen Inteligente -->
                     <section class="glass-panel p-6 shadow-2xl xl:col-span-1 flex flex-col">
                         <h2 class="text-sm font-bold dynamic-text mb-4 uppercase tracking-wider flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> NEMS AI Summary
@@ -180,13 +173,11 @@
                 </div>
             </div>
 
-            <!-- VISTA PADRÓN DE SOCIOS (Inteligente) -->
+            <!-- VISTA PADRÓN DE SOCIOS -->
             <div id="vista-socios" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Directorio Inteligente</h2>
-                        
-                        <!-- Buscador y Filtros -->
                         <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
                             <input type="text" id="input-busqueda-socio" class="w-full md:w-48 input-dark rounded-lg py-2 px-3 text-xs" placeholder="Buscar nombre, DNI, tel...">
                             <select id="filtro-estado-socio" class="input-dark rounded-lg py-2 px-3 text-xs cursor-pointer">
@@ -195,7 +186,7 @@
                                 <option value="Por Vencer">Por Vencer (3 días)</option>
                                 <option value="Vencido">Vencidos / Inactivos</option>
                             </select>
-                            <button id="btn-exportar-socios" class="bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-2 rounded-lg text-xs font-bold transition" title="Exportar Excel/CSV">📥 CSV</button>
+                            <button id="btn-exportar-socios" class="bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-2 rounded-lg text-xs font-bold transition" title="Exportar CSV">📥 CSV</button>
                         </div>
                     </div>
                     
@@ -216,7 +207,7 @@
                 </section>
             </div>
 
-            <!-- VISTA PLANES Y MEMBRESÍAS (Admin Only) -->
+            <!-- VISTA PLANES Y MEMBRESÍAS -->
             <div id="vista-planes" class="hidden fade-in admin-only">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
@@ -226,15 +217,13 @@
                         </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenedor-planes">
-                        <!-- Planes inyectados -->
+                        <!-- Planes inyectados via JS -->
                     </div>
                 </section>
             </div>
 
-            <!-- VISTA FINANZAS (Admin Only) -->
+            <!-- VISTA FINANZAS -->
             <div id="vista-finanzas" class="hidden fade-in admin-only space-y-6">
-                
-                <!-- Resumen Cajas (Turnos) -->
                 <section class="glass-panel p-6 shadow-2xl border-l-4 border-orange-500">
                     <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-6">Control de Turnos (Cajas Cerradas)</h2>
                     <div class="overflow-x-auto">
@@ -254,7 +243,6 @@
                     </div>
                 </section>
 
-                <!-- Historial Global Ingresos vs Gastos -->
                 <section class="glass-panel p-6 shadow-2xl border-l-4 dynamic-border">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-sm font-bold text-white uppercase tracking-wider">Libro Mayor (Ingresos y Egresos)</h2>
@@ -309,7 +297,7 @@
             <div id="vista-evaluaciones" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Historial de Mediciones</h2>
+                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Historial de Mediciones e IMC</h2>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
@@ -329,6 +317,11 @@
                 </section>
             </div>
             
+            <div id="vista-asistencia" class="hidden fade-in glass-panel p-10 flex flex-col items-center justify-center text-center shadow-2xl">
+                <svg class="w-16 h-16 text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                <h2 class="text-xl font-bold text-white mb-2">Módulo de Control de Asistencia</h2>
+                <p class="text-gray-400 text-sm">Próximamente: Integración con escaneo QR y registro biométrico.</p>
+            </div>
         </div>
     </main>
 
@@ -387,33 +380,10 @@
             container.appendChild(toast); setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
 
-        function cambiarVista(vista) {
-            vistaActual = vista;
-            ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-tienda', 'vista-asistencia', 'vista-evaluaciones', 'vista-planes'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('hidden'); });
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-            const title = document.getElementById('header-title'); const subtitle = document.getElementById('header-subtitle');
-            if(document.getElementById(`nav-${vista}`)) document.getElementById(`nav-${vista}`).classList.add('active');
-            if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
-
-            if (vista === 'dashboard') { title.innerText = "Dashboard Analítico"; subtitle.innerText = "Métricas en tiempo real"; } 
-            else if (vista === 'socios') { title.innerText = "Padrón Inteligente"; subtitle.innerText = "Directorio completo de miembros"; } 
-            else if (vista === 'finanzas' && userRole === 'admin') { title.innerText = "Flujo de Caja y Turnos"; subtitle.innerText = "Ingresos, Egresos y Arqueos"; } 
-            else if (vista === 'tienda') { title.innerText = "Punto de Venta (POS)"; subtitle.innerText = "Venta rápida de mostrador"; } 
-            else if (vista === 'planes') { title.innerText = "Planes y Membresías"; subtitle.innerText = "Gestor de precios y reglas"; }
-            else if (vista === 'evaluaciones') { title.innerText = "Fichas Físicas"; subtitle.innerText = "Control de mediciones"; }
-        }
-
-        document.getElementById('nav-dashboard').addEventListener('click', () => cambiarVista('dashboard'));
-        document.getElementById('nav-socios').addEventListener('click', () => cambiarVista('socios'));
-        if(document.getElementById('nav-finanzas')) document.getElementById('nav-finanzas').addEventListener('click', () => cambiarVista('finanzas'));
-        if(document.getElementById('nav-planes')) document.getElementById('nav-planes').addEventListener('click', () => cambiarVista('planes'));
-
         const modal = document.getElementById('modal-universal'); const modalContent = document.getElementById('modal-content'); const modalTitle = document.getElementById('modal-title');
         const modalContainer = document.getElementById('modal-container');
         document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => document.getElementById(e.target.dataset.modal).classList.add('hidden')));
 
-        // --- SISTEMA DE ESTADOS ---
         function evaluarEstado(vence) {
             if(!vence) return { t: 'Prospecto', c: 'text-gray-400 bg-gray-900/20 border-gray-500/30' };
             const h = new Date(); h.setHours(0,0,0,0); const v = new Date(vence); v.setHours(23,59,59,999);
@@ -423,27 +393,19 @@
             return { t: 'Activo', c: 'text-emerald-400 bg-emerald-900/20 border-emerald-500/30' };
         }
 
-        // --- MODALES MEJORADOS ---
-
         window.abrirModalSocio = (socioId = null) => {
             const socio = socioId ? listaSociosData.find(s => s.id === socioId) : null;
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
-            
             modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-3xl relative border border-[#27272a] shadow-2xl fade-in max-h-[90vh] overflow-y-auto custom-scrollbar";
             modalTitle.innerText = socio ? "Ficha del Socio: Modificar" : "Alta de Nuevo Socio";
             
             let planesOptions = '<option value="">Seleccione el Plan Base...</option>';
-            listaPlanesData.forEach(p => {
-                const sel = socio && socio.membresia === p.nombre ? 'selected' : '';
-                planesOptions += `<option value="${p.nombre}|${p.precio}|${p.meses}" ${sel}>${p.nombre} ($${p.precio} / ${p.meses} Meses)</option>`;
-            });
+            listaPlanesData.forEach(p => { const sel = socio && socio.membresia === p.nombre ? 'selected' : ''; planesOptions += `<option value="${p.nombre}|${p.precio}|${p.meses}" ${sel}>${p.nombre} ($${p.precio} / ${p.meses} Meses)</option>`; });
             if(listaPlanesData.length === 0) planesOptions = '<option value="">⚠️ Crea un Plan primero en "Membresías"</option>';
-
             const hoyStr = new Date().toISOString().split('T')[0];
 
             modalContent.innerHTML = `
                 <form id="form-socio" class="space-y-6">
-                    <!-- Datos Personales -->
                     <div>
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-[#27272a] pb-2 mb-4">Datos Personales</h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -462,30 +424,18 @@
                             <div><label class="block text-[10px] text-gray-400 mb-1">Nacimiento</label><input type="date" id="s-nacimiento" class="w-full input-dark rounded-lg p-2 text-xs" value="${socio?socio.nacimiento||'':''}"></div>
                             <div><label class="block text-[10px] text-gray-400 mb-1">Tel. Emergencia</label><input type="tel" id="s-emergencia" class="w-full input-dark rounded-lg p-2 text-xs" value="${socio?socio.emergencia||'':''}"></div>
                             <div><label class="block text-[10px] text-gray-400 mb-1">Origen Contacto</label>
-                                <select id="s-origen" class="w-full input-dark rounded-lg p-2 text-xs">
-                                    <option value="Mostrador" ${socio&&socio.origen==='Mostrador'?'selected':''}>Mostrador / Puerta</option>
-                                    <option value="Instagram" ${socio&&socio.origen==='Instagram'?'selected':''}>Instagram</option>
-                                    <option value="Referido" ${socio&&socio.origen==='Referido'?'selected':''}>Referido</option>
-                                </select>
+                                <select id="s-origen" class="w-full input-dark rounded-lg p-2 text-xs"><option value="Mostrador" ${socio&&socio.origen==='Mostrador'?'selected':''}>Mostrador / Puerta</option><option value="Instagram" ${socio&&socio.origen==='Instagram'?'selected':''}>Instagram</option><option value="Referido" ${socio&&socio.origen==='Referido'?'selected':''}>Referido</option></select>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Membresía y Pago (Si es Nuevo) -->
                     ${!socio ? `
                     <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                         <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-2">🛒 Asignación y 1er Pago</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div><label class="block text-[10px] text-gray-400 mb-1">Seleccionar Plan (De la base de datos)</label>
-                                <select id="s-plan-select" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${planesOptions}</select>
-                            </div>
+                            <div><label class="block text-[10px] text-gray-400 mb-1">Seleccionar Plan</label><select id="s-plan-select" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${planesOptions}</select></div>
                             <div class="grid grid-cols-2 gap-2">
-                                <div><label class="block text-[10px] text-gray-400 mb-1">Medio Pago</label>
-                                    <select id="s-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">Tarjeta</option></select>
-                                </div>
-                                <div><label class="block text-[10px] text-gray-400 mb-1">Abona Hoy</label>
-                                    <input type="number" id="s-monto" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" required>
-                                </div>
+                                <div><label class="block text-[10px] text-gray-400 mb-1">Medio Pago</label><select id="s-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">Tarjeta</option></select></div>
+                                <div><label class="block text-[10px] text-gray-400 mb-1">Abona Hoy</label><input type="number" id="s-monto" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" required></div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -500,66 +450,35 @@
                             <div><label class="block text-[10px] text-gray-400 mb-1">Vence</label><input type="date" id="s-vence-edit" class="w-full input-dark rounded-lg p-2 text-sm border-blue-500/50" value="${socio.vence}" required></div>
                         </div>
                     </div>`}
-
-                    <!-- Notas -->
-                    <div>
-                        <label class="block text-[10px] text-gray-400 mb-1">Notas Internas (Historial Médico, Lesiones, Promesas de pago)</label>
-                        <textarea id="s-notas" class="w-full input-dark rounded-lg p-2 text-sm resize-none" rows="2">${socio?socio.notas||'':''}</textarea>
-                    </div>
-
+                    <div><label class="block text-[10px] text-gray-400 mb-1">Notas Internas</label><textarea id="s-notas" class="w-full input-dark rounded-lg p-2 text-sm resize-none" rows="2">${socio?socio.notas||'':''}</textarea></div>
                     <button type="submit" id="btn-save-socio" class="w-full dynamic-bg font-bold py-3.5 rounded-xl text-sm transition tracking-wide shadow-lg">Guardar Ficha del Socio</button>
-                </form>
-            `;
+                </form>`;
 
             document.getElementById('s-foto').addEventListener('input', (e) => { document.getElementById('s-preview').src = e.target.value || 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'; });
 
             if(!socio) {
                 const planSel = document.getElementById('s-plan-select');
-                const montoInp = document.getElementById('s-monto');
-                const venceInp = document.getElementById('s-vence');
-                
                 planSel.addEventListener('change', (e) => {
-                    if(!e.target.value) return;
-                    const [nombre, precio, meses] = e.target.value.split('|');
-                    montoInp.value = precio;
-                    const d = new Date(); d.setMonth(d.getMonth() + parseInt(meses));
-                    venceInp.value = d.toISOString().split('T')[0];
+                    if(!e.target.value) return; const [nombre, precio, meses] = e.target.value.split('|');
+                    document.getElementById('s-monto').value = precio;
+                    const d = new Date(); d.setMonth(d.getMonth() + parseInt(meses)); document.getElementById('s-vence').value = d.toISOString().split('T')[0];
                 });
             }
 
             document.getElementById('form-socio').onsubmit = async (e) => {
-                e.preventDefault(); 
-                document.getElementById('btn-save-socio').disabled = true; document.getElementById('btn-save-socio').innerText = "Procesando...";
-                
+                e.preventDefault(); document.getElementById('btn-save-socio').disabled = true; document.getElementById('btn-save-socio').innerText = "Procesando...";
                 const planValue = !socio ? document.getElementById('s-plan-select').value : null;
                 const membresiaNombre = !socio && planValue ? planValue.split('|')[0] : (socio ? socio.membresia : 'Sin Plan');
-
                 const dataObj = {
-                    nombre: document.getElementById('s-nom').value, dni: document.getElementById('s-dni').value,
-                    telefono: document.getElementById('s-tel').value, email: document.getElementById('s-email').value,
-                    nacimiento: document.getElementById('s-nacimiento').value, emergencia: document.getElementById('s-emergencia').value,
-                    origen: document.getElementById('s-origen').value, foto: document.getElementById('s-foto').value,
-                    notas: document.getElementById('s-notas').value,
-                    membresia: membresiaNombre,
-                    vence: socio ? document.getElementById('s-vence-edit').value : document.getElementById('s-vence').value,
-                    fechaAlta: socio ? socio.fechaAlta : hoyStr
+                    nombre: document.getElementById('s-nom').value, dni: document.getElementById('s-dni').value, telefono: document.getElementById('s-tel').value, email: document.getElementById('s-email').value,
+                    nacimiento: document.getElementById('s-nacimiento').value, emergencia: document.getElementById('s-emergencia').value, origen: document.getElementById('s-origen').value, foto: document.getElementById('s-foto').value,
+                    notas: document.getElementById('s-notas').value, membresia: membresiaNombre, vence: socio ? document.getElementById('s-vence-edit').value : document.getElementById('s-vence').value, fechaAlta: socio ? socio.fechaAlta : hoyStr
                 };
-
                 try {
-                    if(modoEdicion) {
-                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dataObj);
-                        showToast("Ficha actualizada");
-                    } else {
-                        await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dataObj);
-                        await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), {
-                            movimiento: 'ingreso', tipo: 'Cuota', concepto: "Alta: " + dataObj.nombre,
-                            monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value,
-                            fecha: hoyStr, timestamp: new Date().toISOString()
-                        });
-                        showToast("Socio creado y pago registrado");
-                    }
+                    if(modoEdicion) { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dataObj); showToast("Ficha actualizada"); } 
+                    else { await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dataObj); await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { movimiento: 'ingreso', tipo: 'Cuota', concepto: "Alta: " + dataObj.nombre, monto: document.getElementById('s-monto').value, medio: document.getElementById('s-medio').value, fecha: hoyStr, timestamp: new Date().toISOString() }); showToast("Socio creado y pago registrado"); }
                     modal.classList.add('hidden'); cargarDatos();
-                } catch(er) { showToast("Error al guardar", "error"); console.error(er); document.getElementById('btn-save-socio').disabled = false; }
+                } catch(er) { showToast("Error al guardar", "error"); document.getElementById('btn-save-socio').disabled = false; }
             };
             modal.classList.remove('hidden');
         }
@@ -570,51 +489,26 @@
             modalContent.innerHTML = `
                 <form id="form-pago" class="space-y-4">
                     <select id="p-soc" class="w-full input-dark rounded-lg p-3 text-sm font-bold" required>${getSocioOptions(nombreSocio)}</select>
-                    
                     <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a] space-y-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Plan a Renovar</label>
-                            <select id="p-plan" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                                <option value="">Seleccione Plan...</option>
-                                ${listaPlanesData.map(p => `<option value="${p.meses}\vert{}${p.precio}">${p.nombre} ($${p.precio})</option>`).join('')}
-                            </select>
+                        <div><label class="block text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Plan a Renovar</label>
+                            <select id="p-plan" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="">Seleccione Plan...</option>${listaPlanesData.map(p => `<option value="${p.meses}\vert{}${p.precio}">${p.nombre} ($${p.precio})</option>`).join('')}</select>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div><label class="block text-[10px] text-gray-400 uppercase mb-1">Medio Pago</label><select id="p-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta/QR">Tarjeta/QR</option></select></div>
                             <div><label class="block text-[10px] text-gray-400 uppercase mb-1">Importe Final</label><input type="number" id="p-mon" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" required></div>
                         </div>
                     </div>
-                    
                     <button type="submit" class="w-full dynamic-bg font-bold py-3.5 rounded-xl text-sm shadow-lg tracking-wide">Procesar Renovación</button>
                 </form>`;
 
-            document.getElementById('p-plan').addEventListener('change', (e) => {
-                if(!e.target.value) return; const [meses, precio] = e.target.value.split('|');
-                document.getElementById('p-mon').value = precio;
-            });
+            document.getElementById('p-plan').addEventListener('change', (e) => { if(!e.target.value) return; const [meses, precio] = e.target.value.split('|'); document.getElementById('p-mon').value = precio; });
 
             document.getElementById('form-pago').onsubmit = async (e) => {
-                e.preventDefault(); const nom = document.getElementById('p-soc').value;
-                const planValue = document.getElementById('p-plan').value;
-                const meses = parseInt(planValue.split('|')[0]);
-                
+                e.preventDefault(); const nom = document.getElementById('p-soc').value; const meses = parseInt(document.getElementById('p-plan').value.split('|')[0]);
                 try {
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { 
-                        movimiento: 'ingreso', tipo: 'Cuota', concepto: "Renovación: " + nom, 
-                        monto: document.getElementById('p-mon').value, medio: document.getElementById('p-medio').value, 
-                        fecha: new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() 
-                    });
-                    
+                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { movimiento: 'ingreso', tipo: 'Cuota', concepto: "Renovación: " + nom, monto: document.getElementById('p-mon').value, medio: document.getElementById('p-medio').value, fecha: new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() });
                     const s = listaSociosData.find(x => x.nombre === nom);
-                    if(s) {
-                        const hoy = new Date(); const vActual = new Date(s.vence);
-                        // Si está vencido, renueva desde hoy. Si no, suma a la fecha actual.
-                        const baseDate = vActual < hoy ? hoy : vActual;
-                        baseDate.setMonth(baseDate.getMonth() + meses);
-                        
-                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), { vence: baseDate.toISOString().split('T')[0] });
-                        showToast(`Cuota cobrada y vencimiento estirado`);
-                    } else { showToast("Cobro registrado"); }
+                    if(s) { const hoy = new Date(); const vActual = new Date(s.vence); const baseDate = vActual < hoy ? hoy : vActual; baseDate.setMonth(baseDate.getMonth() + meses); await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), { vence: baseDate.toISOString().split('T')[0] }); showToast(`Renovación exitosa`); } 
                     modal.classList.add('hidden'); cargarDatos();
                 } catch(err) { showToast("Error", "error"); }
             };
@@ -626,27 +520,16 @@
             modalTitle.innerHTML = `<span class="text-red-500">💸</span> Registrar Egreso`;
             modalContent.innerHTML = `
                 <form id="form-gasto" class="space-y-4">
-                    <select id="g-cat" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                        <option value="">Categoría...</option><option value="Alquiler">Alquiler</option><option value="Servicios (Luz/Agua/Net)">Servicios</option>
-                        <option value="Sueldos">Salarios/Staff</option><option value="Mantenimiento">Mantenimiento/Equipos</option><option value="Insumos">Limpieza/Insumos</option><option value="Otro">Otro Gasto</option>
-                    </select>
+                    <select id="g-cat" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="">Categoría...</option><option value="Alquiler">Alquiler</option><option value="Servicios (Luz/Agua/Net)">Servicios</option><option value="Sueldos">Salarios/Staff</option><option value="Mantenimiento">Mantenimiento/Equipos</option><option value="Insumos">Limpieza/Insumos</option><option value="Otro">Otro Gasto</option></select>
                     <input type="text" id="g-desc" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Descripción breve" required>
                     <input type="number" id="g-mon" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-red-400" placeholder="Monto ARS" required>
                     <input type="date" id="g-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
                     <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg tracking-wide">Asentar Gasto</button>
                 </form>`;
             document.getElementById('g-fec').valueAsDate = new Date();
-            
             document.getElementById('form-gasto').onsubmit = async (e) => {
                 e.preventDefault();
-                try {
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { 
-                        movimiento: 'egreso', tipo: document.getElementById('g-cat').value, concepto: document.getElementById('g-desc').value, 
-                        monto: document.getElementById('g-mon').value, medio: 'Efectivo/Banco', 
-                        fecha: document.getElementById('g-fec').value, timestamp: new Date().toISOString() 
-                    });
-                    modal.classList.add('hidden'); showToast("Gasto asentado en el balance", "warning"); cargarDatos();
-                } catch(err) { showToast("Error", "error"); }
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { movimiento: 'egreso', tipo: document.getElementById('g-cat').value, concepto: document.getElementById('g-desc').value, monto: document.getElementById('g-mon').value, medio: 'Efectivo/Banco', fecha: document.getElementById('g-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Gasto asentado", "warning"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         }
@@ -657,28 +540,20 @@
             modalContent.innerHTML = `
                 <form id="form-plan" class="space-y-4">
                     <input type="text" id="pl-nom" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Nombre (Ej: Pase Libre Anual)" value="${nombre}" required>
-                    <select id="pl-mod" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                        <option value="Libre" ${mod==='Libre'?'selected':''}>Acceso Total (Libre)</option><option value="Musculacion" ${mod==='Musculacion'?'selected':''}>Solo Musculación</option><option value="Clases" ${mod==='Clases'?'selected':''}>Clases / Funcional</option>
-                    </select>
+                    <select id="pl-mod" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Libre" ${mod==='Libre'?'selected':''}>Acceso Total (Libre)</option><option value="Musculacion" ${mod==='Musculacion'?'selected':''}>Solo Musculación</option><option value="Clases" ${mod==='Clases'?'selected':''}>Clases / Funcional</option></select>
                     <div class="grid grid-cols-2 gap-3">
-                        <div><label class="block text-[10px] text-gray-400 mb-1">Duración (Meses)</label><input type="number" id="pl-meses" class="w-full input-dark rounded-lg p-2.5 text-sm text-center" value="${meses}" min="1" required></div>
-                        <div><label class="block text-[10px] text-gray-400 mb-1">Precio Fijo ARS</label><input type="number" id="pl-pre" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" value="${precio}" required></div>
+                        <div><label class="block text-[10px] text-gray-400 mb-1">Meses</label><input type="number" id="pl-meses" class="w-full input-dark rounded-lg p-2.5 text-sm text-center" value="${meses}" min="1" required></div>
+                        <div><label class="block text-[10px] text-gray-400 mb-1">Precio ARS</label><input type="number" id="pl-pre" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" value="${precio}" required></div>
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg tracking-wide">Guardar Regla de Plan</button>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg tracking-wide">Guardar Plan</button>
                 </form>`;
             document.getElementById('form-plan').onsubmit = async (e) => {
-                e.preventDefault(); 
-                const data = { nombre: document.getElementById('pl-nom').value, modalidad: document.getElementById('pl-mod').value, meses: parseInt(document.getElementById('pl-meses').value), precio: document.getElementById('pl-pre').value };
-                try {
-                    if(id) await updateDoc(doc(db, "gimnasios", GYM_ID, "planes"), id, data);
-                    else await addDoc(collection(db, "gimnasios", GYM_ID, "planes"), data);
-                    modal.classList.add('hidden'); showToast("Catálogo de planes actualizado"); cargarDatos();
-                } catch(er) { showToast("Error", "error"); }
+                e.preventDefault(); const data = { nombre: document.getElementById('pl-nom').value, modalidad: document.getElementById('pl-mod').value, meses: parseInt(document.getElementById('pl-meses').value), precio: document.getElementById('pl-pre').value };
+                try { if(id) await updateDoc(doc(db, "gimnasios", GYM_ID, "planes"), id, data); else await addDoc(collection(db, "gimnasios", GYM_ID, "planes"), data); modal.classList.add('hidden'); showToast("Plan guardado"); cargarDatos(); } catch(er) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
-        // --- SISTEMA POS (Productos) Y CIERRE ---
         window.abrirModalNuevoProducto = () => {
             modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-sm relative border border-[#27272a] shadow-2xl fade-in";
             modalTitle.innerText = "Catálogo POS: Nuevo";
@@ -689,11 +564,22 @@
                     <button type="submit" class="w-full bg-[#27272a] hover:bg-white hover:text-black text-white font-bold py-3 rounded-lg text-sm transition">Guardar Producto</button>
                 </form>`;
             document.getElementById('form-pos').onsubmit = async (e) => {
-                e.preventDefault(); 
-                try { await addDoc(collection(db, "gimnasios", GYM_ID, "productos"), { nombre: document.getElementById('cat-nom').value, precio: document.getElementById('cat-pre').value });
-                    modal.classList.add('hidden'); showToast("Agregado al mostrador"); cargarDatos();
-                } catch(err) { showToast("Error", "error"); }
+                e.preventDefault(); try { await addDoc(collection(db, "gimnasios", GYM_ID, "productos"), { nombre: document.getElementById('cat-nom').value, precio: document.getElementById('cat-pre').value }); modal.classList.add('hidden'); showToast("Agregado al mostrador"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
             };
+            modal.classList.remove('hidden');
+        }
+
+        window.abrirModalEditarProducto = (id, nombre, precioActual) => {
+            modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] fade-in";
+            modalTitle.innerText = "Actualizar Artículo";
+            modalContent.innerHTML = `
+                <form id="form-dinamico" class="space-y-4">
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre</label><input type="text" id="cat-nom-edit" class="w-full input-dark rounded-lg p-2.5 text-sm mb-3" value="${nombre}" required>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nuevo Precio ARS</label><input type="number" id="cat-pre-edit" class="w-full input-dark rounded-lg p-2.5 text-sm" value="${precioActual}" required>
+                    <div class="flex gap-2 mt-4"><button type="submit" class="flex-1 dynamic-btn font-bold py-3 rounded-lg text-sm text-[#09090b]">Guardar Precio</button><button type="button" id="btn-eliminar-prod" class="bg-red-900/40 border border-red-500/30 hover:bg-red-600 text-red-400 hover:text-white px-4 py-3 rounded-lg text-sm transition">🗑️</button></div>
+                </form>`;
+            document.getElementById('btn-eliminar-prod').addEventListener('click', async () => { if(confirm("¿Eliminar producto?")) { try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "productos", id)); modal.classList.add('hidden'); showToast("Producto eliminado"); cargarDatos(); } catch(err) { showToast("Error", "error"); } } });
+            document.getElementById('form-dinamico').onsubmit = async (e) => { e.preventDefault(); try { await updateDoc(doc(db, "gimnasios", GYM_ID, "productos", id), { nombre: document.getElementById('cat-nom-edit').value, precio: document.getElementById('cat-pre-edit').value }); modal.classList.add('hidden'); showToast("Precio actualizado"); cargarDatos(); } catch(err) { showToast("Error", "error"); } };
             modal.classList.remove('hidden');
         }
 
@@ -708,22 +594,16 @@
                 </form>`;
             document.getElementById('form-v-pos').onsubmit = async (e) => {
                 e.preventDefault();
-                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { movimiento: 'ingreso', tipo: 'Inventario', concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, fecha: new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() });
-                    modal.classList.add('hidden'); showToast("Caja sumada"); cargarDatos();
-                } catch(err) { showToast("Error", "error"); }
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { movimiento: 'ingreso', tipo: 'Inventario', concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, fecha: new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Caja sumada"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         }
 
         window.abrirModalCierre = () => {
             const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
-            const finanzasTurno = listaFinanzasData.filter(f => f.timestamp > lastCierre && f.movimiento === 'ingreso');
-
+            const finanzasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && f.timestamp > lastCierre);
             let totalPOS = 0; let totalMem = 0; let cantAltas = 0; let cantRenov = 0;
-            finanzasTurno.forEach(f => {
-                if(f.tipo === 'Inventario') totalPOS += Number(f.monto);
-                else if(f.tipo === 'Cuota') { totalMem += Number(f.monto); if(f.concepto.includes('Alta')) cantAltas++; else cantRenov++; }
-            });
+            finanzasTurno.forEach(f => { if(f.tipo === 'Inventario') totalPOS += Number(f.monto); else if(f.tipo === 'Cuota') { totalMem += Number(f.monto); if(f.concepto.includes('Alta')) cantAltas++; else cantRenov++; } });
 
             modalContainer.className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-md relative border border-orange-500/30 shadow-[0_0_30px_rgba(249,115,22,0.15)] fade-in";
             modalTitle.innerText = "Arqueo de Turno";
@@ -734,17 +614,14 @@
                 </div>
                 <div class="mb-4"><label class="block text-[10px] text-gray-500 uppercase font-bold mb-1">Notas (Sobrantes/Faltantes)</label><textarea id="input-obs-cierre" class="w-full input-dark rounded-lg p-2.5 text-sm" rows="2"></textarea></div>
                 <div class="bg-red-900/10 border border-red-500/30 p-4 rounded-xl mb-4"><p class="text-[10px] text-red-400 font-bold uppercase text-center mb-2">Clave de Seguridad</p><input type="password" id="input-pass-cierre" class="w-full input-dark rounded-lg p-2 text-center" required></div>
-                <button id="btn-confirm-cierre" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl text-sm shadow-lg">Firmar y Cerrar Caja</button>
-            `;
+                <button id="btn-confirm-cierre" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl text-sm shadow-lg">Firmar y Cerrar Caja</button>`;
 
             document.getElementById('btn-confirm-cierre').addEventListener('click', async () => {
                 const passInput = document.getElementById('input-pass-cierre').value.trim();
                 if(!passInput) return showToast("Clave requerida", "error");
-                
                 try {
                     const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
                     if(passInput !== gymSnap.data().password && passInput !== gymSnap.data().passwordStaff) return showToast("Clave inválida", "error");
-
                     await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: lastCierre, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: totalPOS, total_mem: totalMem, altas: cantAltas, renov: cantRenov, usuario: userRole, observaciones: document.getElementById('input-obs-cierre').value });
                     modal.classList.add('hidden'); showToast("Caja Cerrada", "success"); cargarDatos();
                 } catch(err) { showToast("Error al cerrar", "error"); }
@@ -752,13 +629,22 @@
             modal.classList.remove('hidden');
         }
 
-        // --- MOTOR CENTRAL (DATOS Y RENDER) ---
-        function generarResumenAI(ingresos, gastos, vencidos, porVencer) {
-            let texto = "Análisis en tiempo real: ";
-            const neto = ingresos - gastos;
-            if(neto > 0) texto += `El balance es positivo con $${neto.toLocaleString()} netos. `;
-            else if(neto < 0) texto += `Atención: Los gastos superan los ingresos en -$${Math.abs(neto).toLocaleString()}. `;
+        window.abrirModalDetalleTurno = (cierreId) => {
+            const c = listaCierresData.find(x => x.id === cierreId); if(!c) return;
+            const fT = listaFinanzasData.filter(f => f.timestamp > c.apertura && f.timestamp <= c.timestamp);
+            let h = ''; fT.forEach(f => { const color = f.tipo === 'Inventario' ? 'text-emerald-400' : 'text-blue-400'; h += `<li class="flex justify-between border-b border-[#27272a] py-1 text-xs text-gray-300"><span>${f.tipo==='Inventario'?'🛒':'👤'} ${f.concepto}</span><span class="${color} font-mono">$${f.monto}</span></li>`; });
+            if(!h) h = `<li class="text-gray-500 italic text-center py-2 text-xs">Sin transacciones.</li>`;
             
+            document.getElementById('contenido-detalle-turno').innerHTML = `
+                <div class="text-xs text-gray-400 mb-4 bg-[#18181b] p-3 rounded-lg border border-[#27272a]"><p><strong>Apertura:</strong> ${new Date(c.apertura).toLocaleString('es-AR')}</p><p><strong>Cierre:</strong> ${new Date(c.cierre).toLocaleString('es-AR')}</p></div>
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] mb-4"><p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest mb-1">📝 Observaciones:</p><p class="text-sm text-white italic">"${c.observaciones || 'Sin observaciones'}"</p></div>
+                <div class="bg-[#18181b] p-3 rounded-lg border border-[#27272a] max-h-48 overflow-y-auto custom-scrollbar"><ul class="space-y-1">${h}</ul></div>`;
+            document.getElementById('modal-detalle-turno').classList.remove('hidden');
+        };
+
+        function generarResumenAI(ingresos, gastos, vencidos, porVencer) {
+            let texto = "Análisis en tiempo real: "; const neto = ingresos - gastos;
+            if(neto > 0) texto += `El balance es positivo con $${neto.toLocaleString()} netos. `; else if(neto < 0) texto += `Atención: Los gastos superan los ingresos en -$${Math.abs(neto).toLocaleString()}. `;
             if(vencidos > 5) texto += `Hay ${vencidos} socios inactivos, ideal para lanzar una campaña de recuperación. `;
             if(porVencer > 0) texto += `El equipo de staff debe contactar a los ${porVencer} socios que están por vencer esta semana.`;
             return texto || "El ecosistema opera con normalidad.";
@@ -792,13 +678,12 @@
 
                 listaFinanzasData = []; let ingrMes = 0; let gasMes = 0; const mesActual = new Date().toISOString().substring(0,7);
                 fSnap.forEach(d => { 
-                    const p = d.data(); p.movimiento = p.movimiento || 'ingreso'; // Retrocompatibilidad
+                    const p = d.data(); p.movimiento = p.movimiento || 'ingreso';
                     listaFinanzasData.push({ id: d.id, ...p }); 
                     if(p.fecha.startsWith(mesActual)) { if(p.movimiento === 'ingreso') ingrMes += Number(p.monto); else gasMes += Number(p.monto); }
                 });
                 listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
-                // Metricas Socios
                 let tActivos = 0, tNuevos = 0, tPorVencer = 0, tVencidos = 0;
                 listaSociosData.forEach(s => {
                     const est = evaluarEstado(s.vence).t;
@@ -816,138 +701,146 @@
                     const neto = ingrMes - gasMes;
                     document.getElementById('dash-neto').innerText = `$${neto.toLocaleString('es-AR')}`;
                     document.getElementById('dash-neto').className = `text-3xl font-black mt-1 ${neto>=0?'text-emerald-400':'text-red-400'}`;
-                    
                     document.getElementById('ai-summary-text').innerText = generarResumenAI(ingrMes, gasMes, tVencidos, tPorVencer);
                     
-                    // Render Chart
                     if(chartInstance) chartInstance.destroy();
                     const lineLabels = []; const lineIngresos = []; const lineGastos = [];
-                    // Agrupar por mes
                     const agrupar = {};
                     listaFinanzasData.forEach(f => {
                         const m = f.fecha.substring(0,7);
                         if(!agrupar[m]) agrupar[m] = {i:0, g:0};
                         if(f.movimiento==='ingreso') agrupar[m].i += Number(f.monto); else agrupar[m].g += Number(f.monto);
                     });
-                    Object.keys(agrupar).sort().forEach(m => {
-                        lineLabels.push(m); lineIngresos.push(agrupar[m].i); lineGastos.push(agrupar[m].g);
-                    });
+                    Object.keys(agrupar).sort().forEach(m => { lineLabels.push(m); lineIngresos.push(agrupar[m].i); lineGastos.push(agrupar[m].g); });
                     const ctx = document.getElementById('revenueChart').getContext('2d');
                     chartInstance = new Chart(ctx, {
                         type: 'bar', data: { labels: lineLabels, datasets: [{ label: 'Ingresos', data: lineIngresos, backgroundColor: '#34d399'}, { label: 'Gastos', data: lineGastos, backgroundColor: '#f87171'}] },
                         options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: '#27272a' }, ticks:{color:'#a1a1aa'}}, y: { grid: { color: '#27272a' }, ticks:{color:'#a1a1aa'}} } }
                     });
                 }
-                
                 renderUI(); 
             } catch(e) { console.error("Error UI:", e); }
         }
 
-        function renderUI() {
-            // Socios
-            const tbS = document.getElementById('tabla-socios-body'); tbS.innerHTML = '';
-            listaSociosData.forEach(s => {
-                const est = evaluarEstado(s.vence);
-                const btnEliminar = userRole === 'admin' ? `<button class="btn-del-s text-gray-500 hover:text-red-400 bg-[#18181b] p-1.5 rounded transition" data-id="${s.id}">🗑️</button>` : '';
-                tbS.innerHTML += `
-                    <tr class="border-b border-[#27272a] glass-row">
-                        <td class="py-3 px-3"><span class="px-2 py-1 rounded text-[9px] font-bold border ${est.c}">${est.t}</span></td>
-                        <td class="py-3 px-3">
-                            <div class="flex items-center gap-3">
-                                <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-8 h-8 rounded-full object-cover border border-[#27272a]">
-                                <div class="leading-tight"><p class="text-white font-bold text-sm">${s.nombre}</p><p class="text-[10px] text-gray-500">DNI: ${s.dni||'-'}</p></div>
-                            </div>
-                        </td>
-                        <td class="py-3 px-3">
-                            <p class="text-xs text-blue-400 font-bold">${s.membresia}</p>
-                            <p class="text-[9px] text-gray-500">${s.servicio}</p>
-                        </td>
-                        <td class="py-3 px-3">
-                            <p class="text-[10px] text-gray-500">Alta: ${s.fechaAlta||'-'}</p>
-                            <p class="text-white font-mono text-xs">Vence: ${s.vence}</p>
-                        </td>
-                        <td class="py-3 px-3 flex justify-end gap-1">
-                            <a href="https://wa.me/${s.telefono}" target="_blank" class="text-[#25D366] hover:bg-[#25D366]/20 bg-[#18181b] p-1.5 rounded transition">💬</a>
-                            <button class="text-emerald-400 hover:bg-emerald-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="abrirModalPago('${s.nombre}')" title="Cobrar">💳</button>
-                            <button class="text-blue-400 hover:bg-blue-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="abrirModalSocio('${s.id}')" title="Ficha">👁️</button>
-                            ${btnEliminar}
-                        </td>
-                    </tr>`;
-            });
+        function renderUI(dataFiltrada = null) {
+            try {
+                // Renderizar Socios
+                const tbS = document.getElementById('tabla-socios-body');
+                if(tbS) {
+                    tbS.innerHTML = '';
+                    const dataRender = dataFiltrada || listaSociosData;
+                    dataRender.forEach(s => {
+                        const est = evaluarEstado(s.vence);
+                        const btnEliminar = userRole === 'admin' ? `<button class="btn-del-s text-gray-500 hover:text-red-400 bg-[#18181b] p-1.5 rounded transition" data-id="${s.id}">🗑️</button>` : '';
+                        tbS.innerHTML += `
+                            <tr class="border-b border-[#27272a] glass-row">
+                                <td class="py-3 px-3"><span class="px-2 py-1 rounded text-[9px] font-bold border ${est.c}">${est.t}</span></td>
+                                <td class="py-3 px-3">
+                                    <div class="flex items-center gap-3">
+                                        <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-8 h-8 rounded-full object-cover border border-[#27272a]">
+                                        <div class="leading-tight"><p class="text-white font-bold text-sm">${s.nombre}</p><p class="text-[10px] text-gray-500">DNI: ${s.dni||'-'}</p></div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-3"><p class="text-xs text-blue-400 font-bold">${s.membresia}</p><p class="text-[9px] text-gray-500">${s.servicio}</p></td>
+                                <td class="py-3 px-3"><p class="text-[10px] text-gray-500">Alta: ${s.fechaAlta||'-'}</p><p class="text-white font-mono text-xs">Vence: ${s.vence}</p></td>
+                                <td class="py-3 px-3 flex justify-end gap-1">
+                                    <a href="https://wa.me/${s.telefono}" target="_blank" class="text-[#25D366] hover:bg-[#25D366]/20 bg-[#18181b] p-1.5 rounded transition">💬</a>
+                                    <button class="text-emerald-400 hover:bg-emerald-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="abrirModalPago('${s.nombre}')" title="Cobrar">💳</button>
+                                    <button class="text-blue-400 hover:bg-blue-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="abrirModalSocio('${s.id}')" title="Ficha">👁️</button>
+                                    ${btnEliminar}
+                                </td>
+                            </tr>`;
+                    });
+                }
+            } catch(e) { console.warn("Error render socios:", e); }
 
-            // Planes (Admin)
-            if(userRole === 'admin') {
-                const cPlanes = document.getElementById('contenedor-planes'); cPlanes.innerHTML = '';
-                listaPlanesData.forEach(p => {
-                    cPlanes.innerHTML += `
-                        <div class="bg-[#18181b] border border-[#27272a] rounded-xl p-5 shadow-lg relative group">
-                            <button onclick="abrirModalPlan('${p.id}','${p.nombre}','${p.precio}','${p.meses}','${p.modalidad}')" class="absolute top-3 right-3 text-blue-400 hover:text-white bg-blue-900/20 p-1.5 rounded opacity-0 group-hover:opacity-100 transition">✏️</button>
-                            <span class="text-[9px] bg-[#27272a] text-gray-300 px-2 py-1 rounded-full uppercase tracking-widest">${p.modalidad}</span>
-                            <h3 class="text-lg font-bold text-white mt-2">${p.nombre}</h3>
-                            <div class="flex items-baseline gap-1 mt-2"><span class="text-2xl font-black text-emerald-400">$${p.precio}</span><span class="text-xs text-gray-500">/ ${p.meses} Meses</span></div>
-                            <button class="btn-del-plan text-[10px] text-red-500 mt-4 underline" data-id="${p.id}">Eliminar Plan</button>
-                        </div>`;
-                });
+            try {
+                // Renderizar Planes (Admin)
+                if(userRole === 'admin') {
+                    const cPlanes = document.getElementById('contenedor-planes');
+                    if(cPlanes) {
+                        cPlanes.innerHTML = '';
+                        listaPlanesData.forEach(p => {
+                            cPlanes.innerHTML += `
+                                <div class="bg-[#18181b] border border-[#27272a] rounded-xl p-5 shadow-lg relative group">
+                                    <button onclick="abrirModalPlan('${p.id}','${p.nombre}','${p.precio}','${p.meses}','${p.modalidad}')" class="absolute top-3 right-3 text-blue-400 hover:text-white bg-blue-900/20 p-1.5 rounded opacity-0 group-hover:opacity-100 transition">✏️</button>
+                                    <span class="text-[9px] bg-[#27272a] text-gray-300 px-2 py-1 rounded-full uppercase tracking-widest">${p.modalidad}</span>
+                                    <h3 class="text-lg font-bold text-white mt-2">${p.nombre}</h3>
+                                    <div class="flex items-baseline gap-1 mt-2"><span class="text-2xl font-black text-emerald-400">$${p.precio}</span><span class="text-xs text-gray-500">/ ${p.meses} Meses</span></div>
+                                    <button class="btn-del-plan text-[10px] text-red-500 mt-4 underline" data-id="${p.id}">Eliminar Plan</button>
+                                </div>`;
+                        });
+                    }
 
-                // Finanzas General
-                const tbF = document.getElementById('tabla-finanzas-body'); tbF.innerHTML = '';
-                listaFinanzasData.forEach(f => {
-                    const icon = f.movimiento === 'ingreso' ? 'text-emerald-400' : 'text-red-400';
-                    const sgno = f.movimiento === 'ingreso' ? '+' : '-';
-                    tbF.innerHTML += `
-                        <tr class="border-b border-[#27272a] glass-row">
-                            <td class="py-2 px-3 text-gray-400 font-mono text-[10px]">${f.fecha}</td>
-                            <td class="py-2 px-3 text-white text-xs font-bold">${f.concepto}</td>
-                            <td class="py-2 px-3 text-[10px] text-gray-400">${f.tipo}</td>
-                            <td class="py-2 px-3 text-gray-500 text-[9px] uppercase">${f.medio || 'Efectivo'}</td>
-                            <td class="py-2 px-3 font-bold ${icon} font-mono text-xs">${sgno}$${Number(f.monto).toLocaleString('es-AR')}</td>
-                            <td class="py-2 px-3 text-center"><button class="btn-del-f text-gray-600 hover:text-red-500 transition" data-id="${f.id}">✕</button></td>
-                        </tr>`;
-                });
+                    const tbF = document.getElementById('tabla-finanzas-body');
+                    if(tbF) {
+                        tbF.innerHTML = '';
+                        listaFinanzasData.forEach(f => {
+                            const icon = f.movimiento === 'ingreso' ? 'text-emerald-400' : 'text-red-400';
+                            const sgno = f.movimiento === 'ingreso' ? '+' : '-';
+                            tbF.innerHTML += `
+                                <tr class="border-b border-[#27272a] glass-row">
+                                    <td class="py-2 px-3 text-gray-400 font-mono text-[10px]">${f.fecha}</td>
+                                    <td class="py-2 px-3 text-white text-xs font-bold">${f.concepto}</td>
+                                    <td class="py-2 px-3 text-[10px] text-gray-400">${f.tipo}</td>
+                                    <td class="py-2 px-3 text-gray-500 text-[9px] uppercase">${f.medio || 'Efectivo'}</td>
+                                    <td class="py-2 px-3 font-bold ${icon} font-mono text-xs">${sgno}$${Number(f.monto).toLocaleString('es-AR')}</td>
+                                    <td class="py-2 px-3 text-center"><button class="btn-del-f text-gray-600 hover:text-red-500 transition" data-id="${f.id}">✕</button></td>
+                                </tr>`;
+                        });
+                    }
 
-                // Turnos Admin
-                const tbCierres = document.getElementById('tabla-turnos-admin-body');
-                tbCierres.innerHTML = '';
-                listaCierresData.forEach(c => {
-                    const total = Number(c.total_pos) + Number(c.total_mem);
-                    tbCierres.innerHTML += `
-                        <tr class="border-b border-[#27272a] glass-row">
-                            <td class="py-3 px-3 font-mono text-[10px] text-gray-400">
-                                ${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}
-                                ${c.observaciones ? `<br><span class="text-[10px] text-orange-400 italic">📝 ${c.observaciones}</span>` : ''}
-                            </td>
-                            <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_pos}</td>
-                            <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_mem}</td>
-                            <td class="py-3 px-3 font-bold text-emerald-400 font-mono text-sm">$${total}</td>
-                            <td class="py-3 px-3 text-[10px] text-gray-500 uppercase">${c.usuario}</td>
-                            <td class="py-3 px-3 text-center"><button class="btn-del-cierre text-gray-600 hover:text-red-500" data-id="${c.id}">✕</button></td>
-                        </tr>`;
-                });
-            }
+                    const tbCierres = document.getElementById('tabla-turnos-admin-body');
+                    if(tbCierres) {
+                        tbCierres.innerHTML = '';
+                        listaCierresData.forEach(c => {
+                            const total = Number(c.total_pos) + Number(c.total_mem);
+                            tbCierres.innerHTML += `
+                                <tr class="border-b border-[#27272a] glass-row">
+                                    <td class="py-3 px-3 font-mono text-[10px] text-gray-400">
+                                        ${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}
+                                    </td>
+                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_pos}</td>
+                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_mem}</td>
+                                    <td class="py-3 px-3 font-bold text-emerald-400 font-mono text-sm">$${total}</td>
+                                    <td class="py-3 px-3 text-[10px] text-gray-500 uppercase">${c.usuario}</td>
+                                    <td class="py-3 px-3 text-center flex justify-center gap-2">
+                                        <button onclick="abrirModalDetalleTurno('${c.id}')" class="text-xs bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-gray-300 px-2 py-1 rounded transition" title="Ver Detalle">👁️ Ver</button>
+                                        <button class="btn-del-cierre text-gray-600 hover:text-red-500 transition py-1" data-id="${c.id}" title="Eliminar">✕</button>
+                                    </td>
+                                </tr>`;
+                        });
+                    }
+                }
+            } catch(e) { console.warn("Error render admin/finanzas:", e); }
 
-            // POS
-            if(gymModulos.tienda) {
-                const cCat = document.getElementById('catalogo-productos'); cCat.innerHTML = '';
-                listaProductosData.forEach(p => {
-                    cCat.innerHTML += `
-                        <button onclick="abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="bg-[#18181b] border border-[#27272a] hover:border-emerald-500/50 p-4 rounded-xl text-left transition h-20 flex flex-col justify-between">
-                            <span class="text-xs font-bold text-white line-clamp-1">${p.nombre}</span>
-                            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-900/20 px-2 py-0.5 rounded w-fit">$${p.precio}</span>
-                        </button>`;
-                });
-                
-                const tbT = document.getElementById('tabla-tienda-body'); tbT.innerHTML = '';
-                const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
-                const ventasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && f.timestamp > lastCierre);
-                
-                ventasTurno.forEach(f => {
-                    tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-gray-300 text-xs">${f.concepto}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono text-xs">$${f.monto}</td></tr>`;
-                });
-                if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Turno limpio.</td></tr>`;
-            }
+            try {
+                if(gymModulos.tienda) {
+                    const cCat = document.getElementById('catalogo-productos');
+                    if(cCat) {
+                        cCat.innerHTML = '';
+                        listaProductosData.forEach(p => {
+                            cCat.innerHTML += `
+                                <button onclick="abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="bg-[#18181b] border border-[#27272a] hover:border-emerald-500/50 p-4 rounded-xl text-left transition h-20 flex flex-col justify-between">
+                                    <span class="text-xs font-bold text-white line-clamp-1">${p.nombre}</span>
+                                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-900/20 px-2 py-0.5 rounded w-fit">$${p.precio}</span>
+                                </button>`;
+                        });
+                    }
+                    
+                    const tbT = document.getElementById('tabla-tienda-body');
+                    if(tbT) {
+                        tbT.innerHTML = '';
+                        const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
+                        const ventasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && f.tipo === 'Inventario' && f.timestamp > lastCierre);
+                        ventasTurno.forEach(f => { tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-gray-300 text-xs">${f.concepto}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono text-xs">$${f.monto}</td></tr>`; });
+                        if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Turno limpio.</td></tr>`;
+                    }
+                }
+            } catch(e) { console.warn("Error render tienda:", e); }
         }
 
-        // Filtro Socios
+        // Filtro Socios Reactivo
         document.getElementById('input-busqueda-socio').addEventListener('input', filtroSocios);
         document.getElementById('filtro-estado-socio').addEventListener('change', filtroSocios);
         function filtroSocios() {
@@ -956,12 +849,10 @@
             const res = listaSociosData.filter(s => {
                 const matchTxt = s.nombre.toLowerCase().includes(tx) || (s.dni&&s.dni.includes(tx)) || (s.telefono&&s.telefono.includes(tx));
                 const eSocio = evaluarEstado(s.vence).t;
-                const matchEst = est === 'todos' || eSocio === est;
+                const matchEst = est === 'todos' || eSocio === est || (est === 'Vencido' && eSocio === 'Prospecto');
                 return matchTxt && matchEst;
             });
-            renderUI(res); // Pasar variable para re-renderizar solo la tabla (optimización visual para el futuro)
-            // Por simplicidad en un solo archivo, recargamos el DOM completo:
-            listaSociosDataTemp = res; // Hack para el filtro en vivo
+            renderUI(res);
         }
 
         document.body.addEventListener('click', async (e) => {
