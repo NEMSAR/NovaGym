@@ -46,7 +46,7 @@
 
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
-    <!-- Controles Flotantes Inferiores -->
+    <!-- Controles Flotantes -->
     <div class="fixed bottom-5 right-5 z-50 flex items-center gap-3 fade-in">
         <button onclick="window.abrirModalCierre()" class="staff-only bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600 hover:text-white px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.2)]" title="Arqueo y Cierre de Caja">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Cerrar Turno
@@ -110,7 +110,7 @@
                     <p id="header-subtitle" class="text-[10px] font-bold text-blue-500/80 uppercase tracking-[0.2em] mt-2">Visión general y métricas en tiempo real</p>
                 </div>
                 
-                <!-- Accesos Rápidos -->
+                <!-- Accesos Rápidos Generales -->
                 <div class="flex flex-wrap items-center gap-3">
                     <button id="btn-toggle-fx" class="group relative inline-flex items-center gap-2 px-4 py-2 bg-[#121214] border border-[#27272a] rounded-full text-[10px] font-bold text-gray-400 hover:text-white hover:border-gray-500 transition-all shadow-lg">
                         <svg class="w-3.5 h-3.5 text-blue-500 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> <span class="hidden sm:block">FX</span>
@@ -124,6 +124,7 @@
 
             <!-- VISTA DASHBOARD -->
             <div id="vista-dashboard" class="fade-in space-y-6">
+                <!-- Tarjetas Financieras -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 admin-only">
                     <div class="glass-panel p-5 border-l-4 border-emerald-500 shadow-xl">
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Ingresos Cobrados (Mes)</h3>
@@ -139,6 +140,7 @@
                     </div>
                 </div>
 
+                <!-- Tarjetas Socios -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="glass-panel p-4 shadow-lg text-center">
                         <p class="text-3xl font-black text-white" id="dash-activos">0</p>
@@ -187,10 +189,9 @@
                                 <option value="Por Vencer">Por Vencer (3 días)</option>
                                 <option value="Vencido">Vencidos / Inactivos</option>
                             </select>
-                            <button id="btn-exportar-socios" class="bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-2 rounded-lg text-xs font-bold transition" title="Exportar Excel/CSV">📥 CSV</button>
+                            <button id="btn-exportar-socios" class="bg-[#27272a] hover:bg-white hover:text-black text-gray-300 px-3 py-2 rounded-lg text-xs font-bold transition" title="Exportar CSV">📥 CSV</button>
                         </div>
                     </div>
-                    
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
                             <thead>
@@ -281,9 +282,7 @@
                     </div>
                     <div class="xl:col-span-1 space-y-4">
                         <section class="glass-panel p-6 shadow-2xl h-full">
-                            <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Turno Actual (Mostrador)</h2>
-                            </div>
+                            <h2 class="text-sm font-bold text-white mb-6 uppercase tracking-wider">Turno Actual</h2>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-xs">
                                     <tbody id="tabla-tienda-body"></tbody>
@@ -297,9 +296,7 @@
             <!-- VISTA EVALUACIONES -->
             <div id="vista-evaluaciones" class="hidden fade-in">
                 <section class="glass-panel p-6 shadow-2xl">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-wider">Historial de Mediciones e IMC</h2>
-                    </div>
+                    <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-6">Historial de Mediciones e IMC</h2>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
                             <thead>
@@ -347,12 +344,16 @@
             <p class="text-sm text-gray-400 mb-6">Asistente operativo para la gestión de su gimnasio.</p>
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar text-sm">
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 1. Registrar un socio nuevo</h3>
-                    <p class="text-gray-400">Clic en "+Socio". Seleccione el plan y el sistema le calculará automáticamente el vencimiento y registrará el cobro en caja.</p>
+                    <h3 class="font-bold text-white mb-1">1. Registrar un socio nuevo</h3>
+                    <p class="text-gray-400">Clic en "+Socio". Seleccione el plan y el sistema calculará automáticamente el vencimiento y registrará el cobro en caja.</p>
                 </div>
                 <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
-                    <h3 class="font-bold text-white mb-1 flex items-center gap-2"><svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg> 2. Renovar una cuota</h3>
+                    <h3 class="font-bold text-white mb-1">2. Renovar una cuota</h3>
                     <p class="text-gray-400">En el Padrón Inteligente, busque al socio y presione "💳" (Cobrar). El sistema sumará los meses a la fecha de vencimiento actual.</p>
+                </div>
+                <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
+                    <h3 class="font-bold text-white mb-1 text-orange-400">3. Cierre de Turno</h3>
+                    <p class="text-gray-400">Al finalizar su horario, presione el botón flotante "🔒 Cerrar Turno". Por seguridad, el sistema le pedirá que ingrese su contraseña para confirmar.</p>
                 </div>
             </div>
         </div>
@@ -370,7 +371,6 @@
         const userRole = sessionStorage.getItem('nems_gym_role');
         if(!userRole) window.location.href = "index.html";
         document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
-        
         if(userRole === 'admin') { document.querySelectorAll('.staff-only').forEach(el => el.remove()); }
         if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
 
@@ -382,7 +382,7 @@
         let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
         let chartInstance = null;
 
-        // -- UTILIDADES GLOBALES (Window) --
+        // -- UTILIDADES Y EVENTOS ESTATICOS --
         window.showToast = (msg, tipo = 'success') => {
             const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500' : (tipo === 'warning' ? 'bg-[#18181b] border-l-4 border-orange-500' : 'bg-[#18181b] border-l-4 border-red-500');
@@ -400,10 +400,8 @@
             const navEl = document.getElementById(`nav-${vista}`); if(navEl) navEl.classList.add('active');
             const vistaEl = document.getElementById(`vista-${vista}`); if(vistaEl) vistaEl.classList.remove('hidden');
 
-            const btnAcc = document.getElementById('btn-accion-principal');
-            const txtAcc = document.getElementById('text-accion-principal');
-            
-            if(!btnAcc || !txtAcc) return; // Blindaje
+            const btnAcc = document.getElementById('btn-accion-principal'); const txtAcc = document.getElementById('text-accion-principal');
+            if(!btnAcc || !txtAcc) return;
 
             if (vista === 'dashboard') { title.innerText = "Dashboard Analítico"; subtitle.innerText = "Métricas en tiempo real"; txtAcc.innerText = 'Registrar Socio'; btnAcc.style.display = 'flex'; } 
             else if (vista === 'socios') { title.innerText = "Padrón Inteligente"; subtitle.innerText = "Directorio completo de miembros"; txtAcc.innerText = 'Registrar Socio'; btnAcc.style.display = 'flex'; } 
@@ -414,7 +412,6 @@
             else { title.innerText = vista.charAt(0).toUpperCase() + vista.slice(1); subtitle.innerText = "Módulo Enterprise"; btnAcc.style.display = 'none'; }
         };
 
-        // Eventos Estáticos (Protegidos)
         try {
             document.getElementById('nav-dashboard').addEventListener('click', () => window.cambiarVista('dashboard'));
             document.getElementById('nav-socios').addEventListener('click', () => window.cambiarVista('socios'));
@@ -430,10 +427,7 @@
                 btnFx.addEventListener('click', () => { document.body.classList.toggle('aurora-disabled'); localStorage.setItem('nems_fx_disabled', document.body.classList.contains('aurora-disabled')); btnFx.classList.toggle('opacity-50'); btnFx.classList.toggle('grayscale'); });
             }
             
-            document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => {
-                const modId = e.target.dataset.modal;
-                if(modId) document.getElementById(modId).classList.add('hidden');
-            }));
+            document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => { const modId = e.target.dataset.modal; if(modId) document.getElementById(modId).classList.add('hidden'); }));
 
             const btnAcc = document.getElementById('btn-accion-principal');
             if(btnAcc) {
@@ -445,12 +439,12 @@
             }
         } catch(e) { console.warn("Error en eventos estáticos:", e); }
 
-        // --- FUNCIONES MODALES GLOBALES ---
         function getSocioOptions(preseleccionado = "") {
             let opts = '<option value="">Seleccione el Socio...</option>';
             listaSociosData.forEach(s => opts += `<option value="${s.nombre}" ${s.nombre===preseleccionado?'selected':''}>${s.nombre}</option>`); return opts;
         }
 
+        // --- MODALES ABM ---
         window.abrirModalSocio = (socioId = null) => {
             const socio = socioId ? listaSociosData.find(s => s.id === socioId) : null;
             modoEdicion = !!socio; idEdicion = socio ? socio.id : null;
@@ -484,17 +478,25 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                             <div><label class="block text-[10px] text-gray-400 mb-1">Nacimiento</label><input type="date" id="s-nacimiento" class="w-full input-dark rounded-lg p-2 text-xs" value="${socio?socio.nacimiento||'':''}"></div>
                             <div><label class="block text-[10px] text-gray-400 mb-1">Tel. Emergencia</label><input type="tel" id="s-emergencia" class="w-full input-dark rounded-lg p-2 text-xs" value="${socio?socio.emergencia||'':''}"></div>
-                            <div><label class="block text-[10px] text-gray-400 mb-1">Origen Contacto</label><select id="s-origen" class="w-full input-dark rounded-lg p-2 text-xs"><option value="Mostrador" ${socio&&socio.origen==='Mostrador'?'selected':''}>Mostrador / Puerta</option><option value="Instagram" ${socio&&socio.origen==='Instagram'?'selected':''}>Instagram</option><option value="Referido" ${socio&&socio.origen==='Referido'?'selected':''}>Referido</option></select></div>
+                            <div><label class="block text-[10px] text-gray-400 mb-1">Origen Contacto</label>
+                                <select id="s-origen" class="w-full input-dark rounded-lg p-2 text-xs"><option value="Mostrador" ${socio&&socio.origen==='Mostrador'?'selected':''}>Mostrador / Puerta</option><option value="Instagram" ${socio&&socio.origen==='Instagram'?'selected':''}>Instagram</option><option value="Referido" ${socio&&socio.origen==='Referido'?'selected':''}>Referido</option></select>
+                            </div>
                         </div>
                     </div>
                     ${!socio ? `
                     <div class="bg-[#18181b] p-4 rounded-xl border border-[#27272a]">
                         <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-2">🛒 Asignación y 1er Pago</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div><label class="block text-[10px] text-gray-400 mb-1">Seleccionar Plan</label><select id="s-plan-select" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${planesOptions}</select></div>
+                            <div><label class="block text-[10px] text-gray-400 mb-1">Seleccionar Plan</label>
+                                <select id="s-plan-select" class="w-full input-dark rounded-lg p-2.5 text-sm" required>${planesOptions}</select>
+                            </div>
                             <div class="grid grid-cols-2 gap-2">
-                                <div><label class="block text-[10px] text-gray-400 mb-1">Medio Pago</label><select id="s-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">Tarjeta</option></select></div>
-                                <div><label class="block text-[10px] text-gray-400 mb-1">Abona Hoy</label><input type="number" id="s-monto" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" required></div>
+                                <div><label class="block text-[10px] text-gray-400 mb-1">Medio Pago</label>
+                                    <select id="s-medio" class="w-full input-dark rounded-lg p-2.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">Tarjeta</option></select>
+                                </div>
+                                <div><label class="block text-[10px] text-gray-400 mb-1">Abona Hoy</label>
+                                    <input type="number" id="s-monto" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" required>
+                                </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -532,7 +534,6 @@
                 const planValue = !socio ? document.getElementById('s-plan-select').value : null;
                 const membresiaNombre = !socio && planValue ? planValue.split('|')[0] : (socio ? socio.membresia : 'Sin Plan');
 
-                // Detectar servicio desde el plan seleccionado
                 let servDetectado = "Multiservicio";
                 if(!socio && planValue) {
                     const planMatch = listaPlanesData.find(p => p.nombre === membresiaNombre);
@@ -559,7 +560,7 @@
 
         window.abrirModalPago = (nombreSocio = "") => {
             const modal = document.getElementById('modal-universal');
-            document.getElementById('modal-container').className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in";
+            document.getElementById('modal-container').className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-lg relative border border-[#27272a] shadow-2xl fade-in max-h-[90vh]";
             document.getElementById('modal-title').innerText = "Renovación de Cuota";
             document.getElementById('modal-content').innerHTML = `
                 <form id="form-pago" class="space-y-4">
@@ -573,7 +574,7 @@
                             <div><label class="block text-[10px] text-gray-400 uppercase mb-1">Importe Final</label><input type="number" id="p-mon" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" required></div>
                         </div>
                     </div>
-                    <button type="submit" class="w-full dynamic-bg font-bold py-3.5 rounded-xl text-sm shadow-lg text-black">Procesar Renovación</button>
+                    <button type="submit" class="w-full dynamic-bg font-bold py-3.5 rounded-xl text-sm shadow-lg tracking-wide text-black">Procesar Renovación</button>
                 </form>`;
 
             document.getElementById('p-plan').addEventListener('change', (e) => { if(!e.target.value) return; const [meses, precio] = e.target.value.split('|'); document.getElementById('p-mon').value = precio; });
@@ -603,7 +604,7 @@
                     <input type="text" id="g-desc" class="w-full input-dark rounded-lg p-2.5 text-sm" placeholder="Descripción breve" required>
                     <input type="number" id="g-mon" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-red-400" placeholder="Monto ARS" required>
                     <input type="date" id="g-fec" class="w-full input-dark rounded-lg p-2.5 text-sm" required>
-                    <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg">Asentar Gasto</button>
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg tracking-wide">Asentar Gasto</button>
                 </form>`;
             document.getElementById('g-fec').valueAsDate = new Date();
             document.getElementById('form-gasto').onsubmit = async (e) => {
@@ -628,7 +629,7 @@
                         <div><label class="block text-[10px] text-gray-400 mb-1">Duración (Meses)</label><input type="number" id="pl-meses" class="w-full input-dark rounded-lg p-2.5 text-sm text-center" value="${meses}" min="1" required></div>
                         <div><label class="block text-[10px] text-gray-400 mb-1">Precio Fijo ARS</label><input type="number" id="pl-pre" class="w-full input-dark rounded-lg p-2.5 text-sm font-bold text-emerald-400" value="${precio}" required></div>
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg">Guardar Plan</button>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg tracking-wide">Guardar Plan</button>
                 </form>`;
             document.getElementById('form-plan').onsubmit = async (e) => {
                 e.preventDefault(); const data = { nombre: document.getElementById('pl-nom').value, modalidad: document.getElementById('pl-mod').value, meses: parseInt(document.getElementById('pl-meses').value), precio: document.getElementById('pl-pre').value };
@@ -689,9 +690,9 @@
         window.abrirModalCierre = () => {
             const modal = document.getElementById('modal-universal');
             const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
-            const finanzasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && f.timestamp > lastCierre);
+            const finanzasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && (f.timestamp||"") > lastCierre);
             let totalPOS = 0; let totalMem = 0; let cantAltas = 0; let cantRenov = 0;
-            finanzasTurno.forEach(f => { if(f.tipo === 'Inventario') totalPOS += Number(f.monto); else if(f.tipo === 'Cuota') { totalMem += Number(f.monto); if(f.concepto.includes('Alta')) cantAltas++; else cantRenov++; } });
+            finanzasTurno.forEach(f => { if(f.tipo === 'Inventario') totalPOS += Number(f.monto||0); else if(f.tipo === 'Cuota') { totalMem += Number(f.monto||0); if((f.concepto||"").includes('Alta')) cantAltas++; else cantRenov++; } });
 
             document.getElementById('modal-container').className = "bg-[#121214] p-6 md:p-8 rounded-2xl w-full max-w-md relative border border-orange-500/30 shadow-[0_0_30px_rgba(249,115,22,0.15)] fade-in";
             document.getElementById('modal-title').innerText = "Arqueo de Turno";
@@ -702,8 +703,7 @@
                 </div>
                 <div class="mb-4"><label class="block text-[10px] text-gray-500 uppercase font-bold mb-1">Notas (Sobrantes/Faltantes)</label><textarea id="input-obs-cierre" class="w-full input-dark rounded-lg p-2.5 text-sm" rows="2"></textarea></div>
                 <div class="bg-red-900/10 border border-red-500/30 p-4 rounded-xl mb-4"><p class="text-[10px] text-red-400 font-bold uppercase text-center mb-2">Clave de Seguridad</p><input type="password" id="input-pass-cierre" class="w-full input-dark rounded-lg p-2 text-center" required></div>
-                <button id="btn-confirm-cierre" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl text-sm shadow-lg">Firmar y Cerrar Caja</button>
-            `;
+                <button id="btn-confirm-cierre" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl text-sm shadow-lg">Firmar y Cerrar Caja</button>`;
 
             document.getElementById('btn-confirm-cierre').addEventListener('click', async () => {
                 const passInput = document.getElementById('input-pass-cierre').value.trim();
@@ -711,7 +711,6 @@
                 try {
                     const gymSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
                     if(passInput !== gymSnap.data().password && passInput !== gymSnap.data().passwordStaff) return window.showToast("Clave inválida", "error");
-
                     await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: lastCierre, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: totalPOS, total_mem: totalMem, altas: cantAltas, renov: cantRenov, usuario: userRole, observaciones: document.getElementById('input-obs-cierre').value });
                     modal.classList.add('hidden'); window.showToast("Caja Cerrada", "success"); window.cargarDatos();
                 } catch(err) { window.showToast("Error al cerrar", "error"); }
@@ -721,7 +720,7 @@
 
         window.abrirModalDetalleTurno = (cierreId) => {
             const c = listaCierresData.find(x => x.id === cierreId); if(!c) return;
-            const fT = listaFinanzasData.filter(f => f.timestamp > c.apertura && f.timestamp <= c.timestamp);
+            const fT = listaFinanzasData.filter(f => (f.timestamp||"") > c.apertura && (f.timestamp||"") <= c.timestamp);
             let h = ''; fT.forEach(f => { const color = f.tipo === 'Inventario' ? 'text-emerald-400' : (f.movimiento === 'egreso' ? 'text-red-400' : 'text-blue-400'); const icon = f.tipo === 'Inventario' ? '🛒' : (f.movimiento === 'egreso' ? '💸' : '👤'); const sg = f.movimiento === 'egreso' ? '-' : '+'; h += `<li class="flex justify-between border-b border-[#27272a] py-1 text-xs text-gray-300"><span>${icon} ${f.concepto}</span><span class="${color} font-mono">${sg}$${f.monto}</span></li>`; });
             if(!h) h = `<li class="text-gray-500 italic text-center py-2 text-xs">Sin transacciones.</li>`;
             
@@ -755,7 +754,7 @@
             modal.classList.remove('hidden');
         };
 
-        // --- MOTOR CENTRAL (DATOS Y RENDER) ---
+        // --- MOTOR CENTRAL (DATOS Y RENDER BLINDADOS) ---
         function generarResumenAI(ingresos, gastos, vencidos, porVencer) {
             let texto = "Análisis operativo: "; const neto = ingresos - gastos;
             if(neto > 0) texto += `El flujo de caja devengado es positivo con $${neto.toLocaleString()} ARS a favor. `; else if(neto < 0) texto += `Alerta Financiera: Los gastos operativos superan los ingresos cobrados en -$${Math.abs(neto).toLocaleString()} ARS. `;
@@ -768,16 +767,15 @@
             try {
                 const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
                 if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
-                const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
+                const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre || 'GYM';
                 
                 document.getElementById('app-container').classList.remove('hidden');
                 if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
                 
                 const logoCont = document.getElementById('ui-gym-logo-container');
                 logoCont.innerHTML = data.logoUrl ? `<img src="${data.logoUrl}" class="w-20 h-auto object-contain drop-shadow-lg">` : `<div class="w-12 h-12 rounded-xl bg-[#18181b] flex items-center justify-center font-bold" style="color:var(--accent-color)">GYM</div>`; 
-                document.getElementById('ui-gym-name').innerText = data.logoUrl ? "" : data.nombre.toUpperCase();
+                document.getElementById('ui-gym-name').innerText = data.logoUrl ? "" : nombreGymActual.toUpperCase();
 
-                // Lógica de Licencia Admin
                 if (data.vencimientoLicencia && userRole === 'admin') {
                     const hoy = new Date(); hoy.setHours(0,0,0,0); const [y,m,d] = data.vencimientoLicencia.split('-'); const vence = new Date(y, m-1, d);
                     const diffDias = Math.ceil((vence - hoy) / (1000 * 60 * 60 * 24));
@@ -786,7 +784,7 @@
                     else if (diffDias > 0 && diffDias <= 5) { banner.classList.remove('hidden'); banner.classList.add('bg-orange-600'); banner.innerHTML = `⚠️ RECORDATORIO: Su mensualidad vence el ${data.vencimientoLicencia.split('-').reverse().join('/')}.`; }
                 }
 
-                // Asegurar ejecución protegida de Firebase (La falta de evaluaciones rompía el código aquí)
+                // Solicitud en paralelo BLINDADA (Si una base no existe, retorna empty, no falla)
                 const [sSnap, fSnap, pSnap, cSnap, plSnap, eSnap] = await Promise.all([ 
                     getDocs(collection(db, "gimnasios", GYM_ID, "socios")), 
                     getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), 
@@ -797,18 +795,28 @@
                 ]);
                 
                 listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
-                listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() })); listaProductosData.sort((a,b)=>a.nombre.localeCompare(b.nombre));
-                listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() })); listaCierresData.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
-                listaPlanesData = []; plSnap.forEach(d => listaPlanesData.push({ id: d.id, ...d.data() })); listaPlanesData.sort((a,b)=>Number(a.precio)-Number(b.precio));
-                listaEvalsData = []; eSnap.forEach(d => listaEvalsData.push({ id: d.id, ...d.data() })); listaEvalsData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                
+                listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() })); 
+                listaProductosData.sort((a,b) => (a.nombre||'').localeCompare(b.nombre||'')); // <--- FIX ERROR
+                
+                listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() })); 
+                listaCierresData.sort((a,b) => new Date(b.timestamp||0)-new Date(a.timestamp||0));
+                
+                listaPlanesData = []; plSnap.forEach(d => listaPlanesData.push({ id: d.id, ...d.data() })); 
+                listaPlanesData.sort((a,b) => Number(a.precio||0)-Number(b.precio||0));
+                
+                listaEvalsData = []; eSnap.forEach(d => listaEvalsData.push({ id: d.id, ...d.data() })); 
+                listaEvalsData.sort((a, b) => new Date(b.fecha||0) - new Date(a.fecha||0));
 
                 listaFinanzasData = []; let ingrMes = 0; let gasMes = 0; const mesActual = new Date().toISOString().substring(0,7);
                 fSnap.forEach(d => { 
-                    const p = d.data(); p.movimiento = p.movimiento || 'ingreso'; // Parche de retrocompatibilidad
+                    const p = d.data(); p.movimiento = p.movimiento || 'ingreso';
                     listaFinanzasData.push({ id: d.id, ...p }); 
-                    if(p.fecha.startsWith(mesActual)) { if(p.movimiento === 'ingreso') ingrMes += Number(p.monto); else gasMes += Number(p.monto); }
+                    if(p.fecha && p.fecha.startsWith(mesActual)) { // <--- FIX ERROR
+                        if(p.movimiento === 'ingreso') ingrMes += Number(p.monto||0); else gasMes += Number(p.monto||0); 
+                    }
                 });
-                listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                listaFinanzasData.sort((a, b) => new Date(b.fecha||0) - new Date(a.fecha||0));
 
                 let tActivos = 0, tNuevos = 0, tPorVencer = 0, tVencidos = 0;
                 listaSociosData.forEach(s => {
@@ -833,9 +841,10 @@
                     const lineLabels = []; const lineIngresos = []; const lineGastos = [];
                     const agrupar = {};
                     listaFinanzasData.forEach(f => {
+                        if(!f.fecha) return; // <--- FIX ERROR
                         const m = f.fecha.substring(0,7);
                         if(!agrupar[m]) agrupar[m] = {i:0, g:0};
-                        if(f.movimiento==='ingreso') agrupar[m].i += Number(f.monto); else agrupar[m].g += Number(f.monto);
+                        if(f.movimiento==='ingreso') agrupar[m].i += Number(f.monto||0); else agrupar[m].g += Number(f.monto||0);
                     });
                     Object.keys(agrupar).sort().forEach(m => { lineLabels.push(m); lineIngresos.push(agrupar[m].i); lineGastos.push(agrupar[m].g); });
                     const ctx = document.getElementById('revenueChart').getContext('2d');
@@ -864,13 +873,13 @@
                                 <td class="py-3 px-3">
                                     <div class="flex items-center gap-3">
                                         <img src="${s.foto||'https://via.placeholder.com/150/18181b/ffffff?text=?'}" class="w-8 h-8 rounded-full object-cover border border-[#27272a]">
-                                        <div class="leading-tight"><p class="text-white font-bold text-sm">${s.nombre}</p><p class="text-[10px] text-gray-500">DNI: ${s.dni||'-'}</p></div>
+                                        <div class="leading-tight"><p class="text-white font-bold text-sm">${s.nombre||'-'}</p><p class="text-[10px] text-gray-500">DNI: ${s.dni||'-'}</p></div>
                                     </div>
                                 </td>
-                                <td class="py-3 px-3"><p class="text-xs text-blue-400 font-bold">${s.membresia}</p><p class="text-[9px] text-gray-500">${s.servicio}</p></td>
-                                <td class="py-3 px-3"><p class="text-[10px] text-gray-500">Alta: ${s.fechaAlta||'-'}</p><p class="text-white font-mono text-xs">Vence: ${s.vence}</p></td>
+                                <td class="py-3 px-3"><p class="text-xs text-blue-400 font-bold">${s.membresia||'-'}</p><p class="text-[9px] text-gray-500">${s.servicio||'-'}</p></td>
+                                <td class="py-3 px-3"><p class="text-[10px] text-gray-500">Alta: ${s.fechaAlta||'-'}</p><p class="text-white font-mono text-xs">Vence: ${s.vence||'-'}</p></td>
                                 <td class="py-3 px-3 flex justify-end gap-1">
-                                    <a href="https://wa.me/${s.telefono}" target="_blank" class="text-[#25D366] hover:bg-[#25D366]/20 bg-[#18181b] p-1.5 rounded transition">💬</a>
+                                    <a href="https://wa.me/${s.telefono||''}" target="_blank" class="text-[#25D366] hover:bg-[#25D366]/20 bg-[#18181b] p-1.5 rounded transition">💬</a>
                                     <button class="text-emerald-400 hover:bg-emerald-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="window.abrirModalPago('${s.nombre}')" title="Cobrar">💳</button>
                                     <button class="text-blue-400 hover:bg-blue-900/30 bg-[#18181b] p-1.5 rounded transition" onclick="window.abrirModalSocio('${s.id}')" title="Ficha">👁️</button>
                                     ${btnEliminar}
@@ -887,9 +896,9 @@
                             cPlanes.innerHTML += `
                                 <div class="bg-[#18181b] border border-[#27272a] rounded-xl p-5 shadow-lg relative group">
                                     <button onclick="window.abrirModalPlan('${p.id}','${p.nombre}','${p.precio}','${p.meses}','${p.modalidad}')" class="absolute top-3 right-3 text-blue-400 hover:text-white bg-blue-900/20 p-1.5 rounded opacity-0 group-hover:opacity-100 transition">✏️</button>
-                                    <span class="text-[9px] bg-[#27272a] text-gray-300 px-2 py-1 rounded-full uppercase tracking-widest">${p.modalidad}</span>
-                                    <h3 class="text-lg font-bold text-white mt-2">${p.nombre}</h3>
-                                    <div class="flex items-baseline gap-1 mt-2"><span class="text-2xl font-black text-emerald-400">$${p.precio}</span><span class="text-xs text-gray-500">/ ${p.meses} Meses</span></div>
+                                    <span class="text-[9px] bg-[#27272a] text-gray-300 px-2 py-1 rounded-full uppercase tracking-widest">${p.modalidad||'-'}</span>
+                                    <h3 class="text-lg font-bold text-white mt-2">${p.nombre||'-'}</h3>
+                                    <div class="flex items-baseline gap-1 mt-2"><span class="text-2xl font-black text-emerald-400">$${p.precio||'0'}</span><span class="text-xs text-gray-500">/ ${p.meses||'1'} Meses</span></div>
                                     <button class="btn-del-plan text-[10px] text-red-500 mt-4 underline" data-id="${p.id}">Eliminar Plan</button>
                                 </div>`;
                         });
@@ -903,11 +912,11 @@
                             const sgno = f.movimiento === 'ingreso' ? '+' : '-';
                             tbF.innerHTML += `
                                 <tr class="border-b border-[#27272a] glass-row">
-                                    <td class="py-2 px-3 text-gray-400 font-mono text-[10px]">${f.fecha}</td>
-                                    <td class="py-2 px-3 text-white text-xs font-bold">${f.concepto}</td>
-                                    <td class="py-2 px-3 text-[10px] text-gray-400">${f.tipo}</td>
+                                    <td class="py-2 px-3 text-gray-400 font-mono text-[10px]">${f.fecha ? f.fecha.split('-').reverse().join('/') : '-'}</td>
+                                    <td class="py-2 px-3 text-white text-xs font-bold">${f.concepto||'-'}</td>
+                                    <td class="py-2 px-3 text-[10px] text-gray-400">${f.tipo||'-'}</td>
                                     <td class="py-2 px-3 text-gray-500 text-[9px] uppercase">${f.medio || 'Efectivo'}</td>
-                                    <td class="py-2 px-3 font-bold ${icon} font-mono text-xs">${sgno}$${Number(f.monto).toLocaleString('es-AR')}</td>
+                                    <td class="py-2 px-3 font-bold ${icon} font-mono text-xs">${sgno}$${Number(f.monto||0).toLocaleString('es-AR')}</td>
                                     <td class="py-2 px-3 text-center"><button class="btn-del-f text-gray-600 hover:text-red-500 transition" data-id="${f.id}">✕</button></td>
                                 </tr>`;
                         });
@@ -917,16 +926,16 @@
                     if(tbCierres) {
                         tbCierres.innerHTML = '';
                         listaCierresData.forEach(c => {
-                            const total = Number(c.total_pos) + Number(c.total_mem);
+                            const total = Number(c.total_pos||0) + Number(c.total_mem||0);
                             tbCierres.innerHTML += `
                                 <tr class="border-b border-[#27272a] glass-row">
                                     <td class="py-3 px-3 font-mono text-[10px] text-gray-400">
-                                        ${new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}
+                                        ${c.cierre ? new Date(c.cierre).toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '-'}
                                     </td>
-                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_pos}</td>
-                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_mem}</td>
+                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_pos||'0'}</td>
+                                    <td class="py-3 px-3 text-gray-300 font-mono text-xs">$${c.total_mem||'0'}</td>
                                     <td class="py-3 px-3 font-bold text-emerald-400 font-mono text-sm">$${total}</td>
-                                    <td class="py-3 px-3 text-[10px] text-gray-500 uppercase">${c.usuario}</td>
+                                    <td class="py-3 px-3 text-[10px] text-gray-500 uppercase">${c.usuario||'-'}</td>
                                     <td class="py-3 px-3 text-center flex justify-center gap-2">
                                         <button onclick="window.abrirModalDetalleTurno('${c.id}')" class="text-xs bg-[#18181b] border border-[#27272a] hover:bg-white hover:text-black text-gray-300 px-2 py-1 rounded transition" title="Ver Detalle">👁️ Ver</button>
                                         <button class="btn-del-cierre text-gray-600 hover:text-red-500 transition py-1" data-id="${c.id}" title="Eliminar">✕</button>
@@ -945,8 +954,8 @@
                             cCat.innerHTML += `
                                 <div class="relative bg-[#18181b] border border-[#27272a] hover:border-emerald-500/50 rounded-xl transition flex flex-col justify-between h-20 overflow-hidden group">
                                     <button onclick="window.abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="absolute inset-0 w-full h-full text-left p-3 hover:bg-emerald-900/10 transition z-0 flex flex-col justify-between">
-                                        <span class="text-xs font-bold text-white line-clamp-1 w-[80%]">${p.nombre}</span>
-                                        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-900/20 px-2 py-0.5 rounded w-fit">$${p.precio}</span>
+                                        <span class="text-xs font-bold text-white line-clamp-1 w-[80%]">${p.nombre||'-'}</span>
+                                        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-900/20 px-2 py-0.5 rounded w-fit">$${p.precio||'0'}</span>
                                     </button>
                                     ${btnEditAdmin}
                                 </div>`;
@@ -957,8 +966,8 @@
                     if(tbT) {
                         tbT.innerHTML = '';
                         const lastCierre = listaCierresData.length > 0 ? listaCierresData[0].timestamp : new Date(new Date().setHours(0,0,0,0)).toISOString();
-                        const ventasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && f.tipo === 'Inventario' && f.timestamp > lastCierre);
-                        ventasTurno.forEach(f => { tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-gray-300 text-xs">${f.concepto}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono text-xs">$${f.monto}</td></tr>`; });
+                        const ventasTurno = listaFinanzasData.filter(f => f.movimiento === 'ingreso' && f.tipo === 'Inventario' && (f.timestamp||"") > lastCierre);
+                        ventasTurno.forEach(f => { tbT.innerHTML += `<tr class="border-b border-[#27272a]"><td class="py-2 px-2 text-gray-300 text-xs">${f.concepto||'-'}</td><td class="py-2 px-2 text-right text-emerald-400 font-mono text-xs">$${f.monto||'0'}</td></tr>`; });
                         if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-4 text-gray-500 text-center text-xs italic">Turno limpio.</td></tr>`;
                     }
                 }
@@ -967,17 +976,17 @@
                 if(tbE) {
                     tbE.innerHTML = '';
                     listaEvalsData.forEach(e => {
-                        const imc = parseFloat(e.imc);
+                        const imc = parseFloat(e.imc||0);
                         let badgeImc = 'text-gray-400 bg-gray-900/20 border border-gray-500/30'; 
                         if(imc < 18.5) badgeImc = 'text-blue-400 bg-blue-900/20 border border-blue-500/30'; else if(imc >= 30) badgeImc = 'text-red-400 bg-red-900/20 border border-red-500/30'; else if(imc >= 25) badgeImc = 'text-orange-400 bg-orange-900/20 border border-orange-500/30';
                         const btnEliminar = userRole === 'admin' ? `<button class="btn-del-e text-gray-600 hover:text-red-500 transition" data-id="${e.id}">✕</button>` : '';
                         tbE.innerHTML += `
                             <tr class="border-b border-[#27272a] glass-row">
-                                <td class="py-3 px-4 text-gray-400 font-mono text-xs">${e.fecha.split('-').reverse().join('/')}</td>
-                                <td class="py-3 px-4 text-white font-bold">${e.socio}</td>
-                                <td class="py-3 px-4 text-gray-300">${e.peso} kg</td>
-                                <td class="py-3 px-4 text-gray-300">${e.altura} cm</td>
-                                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeImc}">${e.imc}</span></td>
+                                <td class="py-3 px-4 text-gray-400 font-mono text-xs">${e.fecha ? e.fecha.split('-').reverse().join('/') : '-'}</td>
+                                <td class="py-3 px-4 text-white font-bold">${e.socio||'-'}</td>
+                                <td class="py-3 px-4 text-gray-300">${e.peso||'0'} kg</td>
+                                <td class="py-3 px-4 text-gray-300">${e.altura||'0'} cm</td>
+                                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeImc}">${e.imc||'0'}</span></td>
                                 <td class="py-3 px-4 text-center">${btnEliminar}</td>
                             </tr>`;
                     });
@@ -988,9 +997,10 @@
         const searchInp = document.getElementById('input-busqueda-socio');
         const filterSel = document.getElementById('filtro-estado-socio');
         const applyFiltros = () => {
+            if(!searchInp || !filterSel) return;
             const tx = searchInp.value.toLowerCase(); const est = filterSel.value;
             const res = listaSociosData.filter(s => {
-                const matchTxt = s.nombre.toLowerCase().includes(tx) || (s.dni&&s.dni.includes(tx)) || (s.telefono&&s.telefono.includes(tx));
+                const matchTxt = (s.nombre||'').toLowerCase().includes(tx) || (s.dni&&s.dni.includes(tx)) || (s.telefono&&s.telefono.includes(tx));
                 const eSocio = evaluarEstado(s.vence).t;
                 const matchEst = est === 'todos' || eSocio === est || (est === 'Vencido' && eSocio === 'Prospecto');
                 return matchTxt && matchEst;
@@ -1011,7 +1021,7 @@
         if(btnExport) {
             btnExport.addEventListener('click', () => {
                 if(!listaSociosData.length) return; let c = "DNI,Nombre,Telefono,Plan,Vencimiento\n";
-                listaSociosData.forEach(s => c += `"${s.dni||''}","${s.nombre}","${s.telefono}","${s.membresia}","${s.vence}"\n`);
+                listaSociosData.forEach(s => c += `"${s.dni||''}","${s.nombre||''}","${s.telefono||''}","${s.membresia||''}","${s.vence||''}"\n`);
                 const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], {type:'text/csv'}));
                 l.download = `Padron_${nombreGymActual.replace(/\s/g, '_')}.csv`; l.click(); window.showToast("Padrón Descargado");
             });
