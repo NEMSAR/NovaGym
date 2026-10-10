@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consola Central | NEMS Group</title>
+    <title>Consola Central | NEMS OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>if(sessionStorage.getItem('nems_admin_token') !== 'autorizado_2026') window.location.href = 'index.html';</script>
     <style>
@@ -29,7 +29,7 @@
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-50"></div>
 
     <div class="max-w-[1400px] mx-auto relative z-10">
-        <!-- CABECERA REDISEÑADA ESTILO CONSOLA CENTRAL -->
+        <!-- CABECERA CONSOLA CENTRAL -->
         <header class="flex justify-between items-end mb-10 pb-6 relative">
             <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-blue-500/50 via-[#27272a] to-transparent"></div>
             
@@ -38,9 +38,7 @@
                     <span class="text-white">Consola</span> 
                     <span class="text-blue-500 opacity-90">Central</span>
                 </h1>
-                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">
-                    Gestión Global de Franquicias y Licencias
-                </p>
+                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">Gestión Global de Franquicias y Licencias</p>
             </div>
             
             <div class="flex items-center gap-4">
@@ -95,7 +93,7 @@
                         <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Módulos Pro (Enterprise)</label>
                         <div class="grid grid-cols-2 gap-2">
                             <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-tienda" checked><span class="text-xs font-bold text-gray-300">Tienda POS</span></label>
-                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-asistencia"><span class="text-xs font-bold text-gray-300">Control Asistencia</span></label>
+                            <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-asistencia"><span class="text-xs font-bold text-gray-300">Asistencia</span></label>
                             <label class="flex items-center space-x-2 bg-[#18181b] p-2 rounded-lg border border-[#27272a]"><input type="checkbox" id="mod-evaluaciones"><span class="text-xs font-bold text-gray-300">Fichas Físicas</span></label>
                         </div>
                     </div>
@@ -128,7 +126,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT BLINDADO CONTRA ERRORES DE DOM -->
+    <!-- SCRIPT BLINDADO CONTRA ERRORES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -169,12 +167,6 @@
             const btnLogout = document.getElementById('btn-logout');
             if(btnLogout) btnLogout.addEventListener('click', () => { sessionStorage.removeItem('nems_admin_token'); window.location.href = 'index.html'; });
             
-            const colorInput = document.getElementById('gym-color'); 
-            const colorText = document.getElementById('gym-color-text');
-            if(colorInput && colorText) {
-                colorInput.addEventListener('input', (e) => colorText.value = e.target.value); 
-                colorText.addEventListener('input', (e) => colorInput.value = e.target.value);
-            }
         } catch(e) { console.warn("Aviso UI:", e); }
 
         async function cargarGimnasios() {
@@ -183,7 +175,7 @@
                 const table = document.getElementById('table-gyms');
                 const tbody = document.getElementById('lista-gyms'); 
                 
-                if(!tbody) return; // Si la tabla no existe en el HTML modificado, aborta para no romper
+                if(!tbody) return; 
                 tbody.innerHTML = '';
                 
                 const querySnapshot = await getDocs(collection(db, "gimnasios"));
@@ -201,8 +193,7 @@
 
                 gymsData.forEach((data) => {
                     const isSuspendido = data.estado === 'suspendido';
-                    // Evitar errores si un gimnasio viejo no tiene licencia cargada
-                    const fechaVenceFormateada = data.vencimientoLicencia ? data.vencimientoLicencia.split('-').reverse().join('/') : 'Sin Asignar';
+                    const fechaVenceFormateada = (data.vencimientoLicencia && typeof data.vencimientoLicencia === 'string') ? data.vencimientoLicencia.split('-').reverse().join('/') : 'Sin Asignar';
                     
                     const tr = document.createElement('tr'); tr.className = `border-b border-[#27272a] transition ${isSuspendido ? 'bg-red-900/10' : 'hover:bg-[#18181b]'}`;
                     tr.innerHTML = `
@@ -233,7 +224,7 @@
             }
             if (e.target.classList.contains('btn-editar')) {
                 const gym = gymsData.find(g => g.id === e.target.dataset.id);
-                document.getElementById('form-title').innerHTML = `<span class="text-blue-500 text-xl">✏️</span> Modificar Despliegue`;
+                document.getElementById('form-title').innerHTML = `<span class="text-purple-500 text-xl">✏️</span> Modificar Despliegue`;
                 document.getElementById('edit-gym-id').value = gym.id; 
                 document.getElementById('gym-nombre').value = gym.nombre || '';
                 document.getElementById('gym-username').value = gym.username || ''; 
@@ -267,19 +258,12 @@
                 e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.innerHTML = 'Procesando...'; btn.disabled = true;
                 const editId = document.getElementById('edit-gym-id').value;
                 
-                // Recolección segura
                 const getColor = () => { const el = document.getElementById('gym-color'); return el ? el.value : '#eab308'; };
                 const getLogo = () => { const el = document.getElementById('gym-logo'); return el ? el.value.trim() : ''; };
                 const getCheck = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
 
                 const gymData = { 
-                    nombre: document.getElementById('gym-nombre').value, 
-                    username: document.getElementById('gym-username').value.trim(), 
-                    colorPrimario: getColor(), 
-                    password: document.getElementById('gym-password').value, 
-                    passwordStaff: document.getElementById('gym-password-staff').value, 
-                    logoUrl: getLogo(), 
-                    vencimientoLicencia: document.getElementById('gym-licencia').value,
+                    nombre: document.getElementById('gym-nombre').value, username: document.getElementById('gym-username').value.trim(), colorPrimario: getColor(), password: document.getElementById('gym-password').value, passwordStaff: document.getElementById('gym-password-staff').value, logoUrl: getLogo(), vencimientoLicencia: document.getElementById('gym-licencia').value,
                     modulos: { musculacion: getCheck('mod-musculacion'), funcional: getCheck('mod-funcional'), pilates: getCheck('mod-pilates'), tienda: getCheck('mod-tienda'), asistencia: getCheck('mod-asistencia'), evaluaciones: getCheck('mod-evaluaciones') } 
                 };
                 
@@ -303,7 +287,6 @@
             });
         }
 
-        // INICIAMOS LA CARGA PRINCIPAL
         cargarGimnasios();
     </script>
 </body>
