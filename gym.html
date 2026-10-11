@@ -71,26 +71,25 @@
     <div class="blob-2"></div>
     <div class="blob-3"></div>
 
-    <!-- PANTALLA DE CARGA AISLADA -->
-    <div id="loading-screen" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#0d0d0f]/80 backdrop-blur-xl transition-opacity duration-500">
+    <!-- PANTALLA DE CARGA AISLADA Y BLINDADA -->
+    <div id="loading-screen" class="fixed inset-0 z-[500] flex flex-col items-center justify-center bg-[#0d0d0f]/90 backdrop-blur-2xl transition-opacity duration-500">
         <svg class="animate-spin h-16 w-16 text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
         <h2 class="text-white font-black text-2xl tracking-widest uppercase drop-shadow-md">Iniciando Panel</h2>
-        <p id="loading-text" class="text-blue-400 text-sm mt-3 font-bold tracking-wider uppercase">Verificando credenciales...</p>
+        <div id="loading-text" class="text-blue-400 text-sm mt-3 font-bold tracking-wider uppercase text-center max-w-sm">Verificando credenciales...</div>
     </div>
 
-    <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
+    <!-- NOTA: Z-Index muy alto para que los errores se vean SIEMPRE -->
+    <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[9999]"></div>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- CONTENIDO PRINCIPAL (App Container) -->
     <div id="app-container" class="hidden flex-col h-full w-full relative z-10">
         
-        <!-- BANNER DE LICENCIA Y BROADCAST (Global) -->
         <div id="banner-licencia" class="hidden admin-only w-full bg-red-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-red-400"></div>
         <div id="banner-broadcast" class="hidden w-full bg-blue-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-blue-400"></div>
 
-        <!-- Controles Flotantes Inferiores -->
         <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 fade-in">
             <button id="btn-estado-turno" class="glass-dark text-gray-300 hover:text-white px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2">
                 Cargando Caja...
@@ -100,7 +99,6 @@
             </button>
         </div>
 
-        <!-- HEADER / NAVEGACIÓN -->
         <header class="w-full flex justify-between items-center px-8 py-4 border-b border-white/10 bg-white/5 backdrop-blur-2xl z-30 shadow-lg">
             <div class="flex items-center gap-4 w-1/4">
                 <div id="ui-gym-logo-container" class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
@@ -144,7 +142,6 @@
                     </div>
                 </header>
 
-                <!-- VISTA DASHBOARD -->
                 <div id="vista-dashboard" class="flex flex-col gap-6 fade-in">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="glass-dark p-6 flex flex-col justify-between relative overflow-hidden">
@@ -199,7 +196,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA SOCIOS -->
                 <div id="vista-socios" class="hidden fade-in glass-light p-6 md:p-8 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-3xl font-black text-gray-900 tracking-tight">Directorio de Miembros</h2>
@@ -224,7 +220,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA FINANZAS (SOLO ADMIN) -->
                 <div id="vista-finanzas" class="hidden fade-in admin-only flex flex-col gap-6">
                     <div class="glass-dark p-6 h-[300px]">
                         <div class="flex justify-between items-center mb-4"><h2 class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Crecimiento Financiero (Ingresos)</h2></div>
@@ -276,7 +271,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA TIENDA POS -->
                 <div id="vista-tienda" class="hidden fade-in flex flex-col lg:flex-row gap-6">
                     <div class="w-full lg:w-2/3 glass-light p-6 md:p-8 min-h-[500px]">
                         <div class="flex justify-between items-center mb-6">
@@ -297,7 +291,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA EVALUACIONES -->
                 <div id="vista-evaluaciones" class="hidden fade-in glass-light p-6 md:p-8 min-h-[500px]">
                     <h2 class="text-3xl font-black text-gray-900 tracking-tight mb-6">Historial de Mediciones e IMC</h2>
                     <div class="overflow-x-auto mt-4">
@@ -319,10 +312,10 @@
                 
             </div>
         </main>
-    </div> <!-- FIN APP CONTAINER -->
+    </div>
 
     <!-- Modal Universal Glass -->
-    <div id="modal-universal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4">
+    <div id="modal-universal" class="fixed inset-0 z-[500] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4">
         <div class="glass-dark p-8 w-full max-w-lg relative border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-[95vh] overflow-y-auto custom-scrollbar" id="modal-container">
             <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10" data-modal="modal-universal">✕</button>
             <h2 id="modal-title" class="text-2xl font-black text-white mb-6 tracking-tight drop-shadow-md">Formulario</h2>
@@ -331,7 +324,7 @@
     </div>
 
     <!-- Guía de Usuario Glass -->
-    <div id="modal-ayuda" class="fixed inset-0 z-[70] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4">
+    <div id="modal-ayuda" class="fixed inset-0 z-[500] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4">
         <div class="glass-dark p-8 w-full max-w-2xl relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20">
             <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10" data-modal="modal-ayuda">✕</button>
             <h2 class="text-2xl font-black text-white mb-2 flex items-center gap-2 drop-shadow-md"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Guía de Operación Integral</h2>
@@ -358,7 +351,7 @@
     </div>
 
     <!-- Modal Detalle Turno -->
-    <div id="modal-detalle-turno" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4">
+    <div id="modal-detalle-turno" class="fixed inset-0 z-[500] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4">
         <div class="glass-dark p-8 w-full max-w-2xl relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20">
             <button onclick="document.getElementById('modal-detalle-turno').classList.add('hidden')" class="absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10">✕</button>
             <h2 class="text-2xl font-black text-white mb-6 drop-shadow-md">Detalle del Turno Auditado</h2>
@@ -714,8 +707,8 @@
         }
 
         async function cargarDatos() {
+            const textLoader = document.getElementById('loading-text');
             try {
-                const textLoader = document.getElementById('loading-text');
                 if(textLoader) textLoader.innerText = "Conectando al servidor principal...";
 
                 const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
@@ -723,17 +716,16 @@
                 
                 if(textLoader) textLoader.innerText = "Sincronizando operaciones...";
 
-                // Consulta aislada para evitar bloqueos por permisos
+                // Consulta aislada del Broadcast (Si falla no detiene la carga)
                 try {
                     const snapB = await getDoc(doc(db, "nems_system", "broadcast"));
                     if(snapB.exists() && snapB.data().mensaje) { 
                         const bb = document.getElementById('banner-broadcast'); 
                         if(bb) { bb.innerText = `📢 AVISO NEMS: ${snapB.data().mensaje}`; bb.classList.remove('hidden'); } 
                     }
-                } catch(w) { console.warn("Broadcast ignorado (permisos no otorgados):", w); }
+                } catch(w) { console.warn("Broadcast ignorado (permisos):", w); }
 
                 const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
-                
                 if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
                 
                 const logoCont = document.getElementById('ui-gym-logo-container');
@@ -748,13 +740,16 @@
                 if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="${basePill}" onclick="cambiarVista('tienda')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
                 if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="${basePill}" onclick="cambiarVista('evaluaciones')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>`;
                 
+                // Fetch de datos SEGURO con control de errores individual (.catch)
+                const safeFetch = (colName) => getDocs(collection(db, "gimnasios", GYM_ID, colName)).catch(e => { console.warn(`Error en ${colName}`, e); return { empty: true, forEach: ()=>{} }; });
+
                 const [sSnap, fSnap, eSnap, pSnap, cSnap, tSnap] = await Promise.all([ 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "socios")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "productos")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "cierres")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "turnos_estado")) 
+                    safeFetch("socios"), 
+                    safeFetch("finanzas"), 
+                    safeFetch("evaluaciones"), 
+                    safeFetch("productos"), 
+                    safeFetch("cierres"), 
+                    safeFetch("turnos_estado") 
                 ]);
                 
                 if(!tSnap.empty) { const ts = tSnap.docs[0]; estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; } 
@@ -794,7 +789,7 @@
                 
                 renderUI(); 
 
-                // Transición Éxito (Oculta el loader de forma suave)
+                // Transición Éxito
                 const loader = document.getElementById('loading-screen');
                 const appContainer = document.getElementById('app-container');
                 if(loader) {
@@ -808,11 +803,10 @@
 
             } catch(e) { 
                 console.error(e); 
-                const textLoader = document.getElementById('loading-text');
                 if(textLoader) {
-                    textLoader.innerHTML = `<span class="text-red-400 bg-red-500/10 px-4 py-2 rounded-lg mt-2 inline-block border border-red-500/30">Error Crítico: Falla de conexión.</span>`;
+                    textLoader.innerHTML = `<span class="text-red-400 bg-red-500/10 px-5 py-3 rounded-xl mt-2 inline-block border border-red-500/30">Error Crítico: Falla general de conexión.</span><br><button onclick="window.location.reload()" class="mt-4 bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-2.5 rounded-full text-white text-xs font-bold transition">REINTENTAR</button>`;
                 }
-                showToast("Fallo al conectar con la base de datos.", "error"); 
+                showToast("Fallo de conexión.", "error"); 
             }
         }
 
