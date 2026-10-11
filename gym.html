@@ -79,9 +79,13 @@
         </svg>
         <h2 id="loading-title" class="text-white font-black text-2xl tracking-widest uppercase drop-shadow-md">Iniciando Panel</h2>
         <div id="loading-text" class="text-blue-400 text-sm mt-3 font-bold tracking-wider uppercase text-center max-w-sm">Verificando credenciales de acceso...</div>
+        <div id="error-container" class="mt-6 hidden flex-col items-center">
+            <div id="error-message" class="bg-red-500/10 border border-red-500/30 p-4 rounded-xl shadow-lg text-left max-w-md w-full"></div>
+            <button onclick="window.location.reload()" class="mt-6 bg-blue-600 hover:bg-blue-500 px-8 py-3.5 rounded-full text-white text-xs font-bold transition shadow-[0_0_20px_rgba(37,99,235,0.4)] tracking-widest uppercase">Reintentar Conexión</button>
+        </div>
     </div>
 
-    <!-- Z-Index muy alto para que los errores o notificaciones se vean SIEMPRE -->
+    <!-- Z-Index muy alto para notificaciones -->
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[9999]"></div>
 
     <!-- CONTENIDO PRINCIPAL (App Container) -->
@@ -91,7 +95,7 @@
         <div id="banner-broadcast" class="hidden w-full bg-blue-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-blue-400"></div>
 
         <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 fade-in">
-            <button id="btn-estado-turno" class="glass-dark text-gray-300 hover:text-white px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2">
+            <button id="btn-estado-turno" class="glass-dark text-gray-300 hover:text-white px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-2xl">
                 Cargando Caja...
             </button>
             <button id="btn-help" class="w-14 h-14 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] flex items-center justify-center text-gray-300 glass-dark hover:text-white transition hover:scale-105" title="Guía de Usuario">
@@ -142,7 +146,6 @@
                     </div>
                 </header>
 
-                <!-- VISTA DASHBOARD -->
                 <div id="vista-dashboard" class="flex flex-col gap-6 fade-in">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="glass-dark p-6 flex flex-col justify-between relative overflow-hidden">
@@ -197,7 +200,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA SOCIOS -->
                 <div id="vista-socios" class="hidden fade-in glass-light p-6 md:p-8 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-3xl font-black text-gray-900 tracking-tight">Directorio de Miembros</h2>
@@ -222,7 +224,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA FINANZAS -->
                 <div id="vista-finanzas" class="hidden fade-in admin-only flex flex-col gap-6">
                     <div class="glass-dark p-6 h-[300px]">
                         <div class="flex justify-between items-center mb-4"><h2 class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Crecimiento Financiero (Ingresos)</h2></div>
@@ -274,7 +275,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA TIENDA POS -->
                 <div id="vista-tienda" class="hidden fade-in flex flex-col lg:flex-row gap-6">
                     <div class="w-full lg:w-2/3 glass-light p-6 md:p-8 min-h-[500px]">
                         <div class="flex justify-between items-center mb-6">
@@ -295,7 +295,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA EVALUACIONES -->
                 <div id="vista-evaluaciones" class="hidden fade-in glass-light p-6 md:p-8 min-h-[500px]">
                     <h2 class="text-3xl font-black text-gray-900 tracking-tight mb-6">Historial de Mediciones e IMC</h2>
                     <div class="overflow-x-auto mt-4">
@@ -345,7 +344,7 @@
                 <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
                     <h3 class="font-bold text-white mb-3 flex items-center gap-2"><span class="dynamic-text text-lg">2.</span> Control de Caja Estricto</h3>
                     <ul class="text-gray-300 space-y-2 ml-4 list-disc">
-                        <li><strong>Apertura Obligatoria:</strong> Debes hacer clic en "Abrir Turno" e ingresar el dinero base con el que empiezas (Fondo de Cambio).</li>
+                        <li><strong>Apertura Obligatoria:</strong> Debes hacer clic en "Abrir Turno" e ingresar el dinero base con el que empiezas.</li>
                     </ul>
                 </div>
             </div>
@@ -361,13 +360,32 @@
     </div>
 
     <!-- ----------------------------------------------------------- -->
-    <!-- SCRIPT PRINCIPAL (BLINDADO CONTRA ERRORES SILENCIOSOS)      -->
+    <!-- SCRIPT PRINCIPAL (IMPORTACIONES ESTÁTICAS SEGURAS)          -->
     <!-- ----------------------------------------------------------- -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Variables Globales Seguras
+        // 1. CONFIGURACIÓN COMPLETA DE FIREBASE
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", 
+            authDomain: "novagym-saas-enterprise.firebaseapp.com", 
+            projectId: "novagym-saas-enterprise", 
+            storageBucket: "novagym-saas-enterprise.firebasestorage.app",
+            messagingSenderId: "578362101056", 
+            appId: "1:578362101056:web:d7833a58d16987acdb3ea5"
+        };
+        const app = initializeApp(firebaseConfig); 
+        const db = getFirestore(app);
+
+        // 2. VARIABLES GLOBALES
+        let nombreGymActual = ""; let gymModulos = {}; let logoGymGlobal = "";
+        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = []; let listaProductosData = []; let listaCierresData = [];
+        let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
+        let chartInstance = null; let estadoCajaGlobal = { abierta: false, fondoInicial: 0, ts: null, id: null };
+        let GYM_ID, userRole;
+
+        // 3. FUNCIONES UTILITARIAS GLOBALES (Añadidas a Window)
         window.showToast = (msg, tipo = 'success') => {
             const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             const bg = tipo === 'success' ? 'bg-black/70 border-emerald-500' : 'bg-black/70 border-red-500';
@@ -392,13 +410,7 @@
             if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
         };
 
-        let nombreGymActual = ""; let gymModulos = {}; let logoGymGlobal = "";
-        let listaSociosData = []; let listaFinanzasData = []; let listaEvalsData = []; let listaProductosData = []; let listaCierresData = [];
-        let vistaActual = 'dashboard'; let modoEdicion = false; let idEdicion = null;
-        let chartInstance = null; let estadoCajaGlobal = { abierta: false, fondoInicial: 0, ts: null, id: null };
-        let db, GYM_ID, userRole;
-
-        // Función Principal de Arranque
+        // 4. MOTOR DE ARRANQUE BLINDADO
         async function bootApp() {
             const loaderText = document.getElementById('loading-text');
             const urlParams = new URLSearchParams(window.location.search);
@@ -406,8 +418,8 @@
             userRole = sessionStorage.getItem('nems_gym_role');
 
             if (!GYM_ID || !userRole) { 
-                if(loaderText) loaderText.innerHTML = "<span class='text-red-400 font-bold'>Redirigiendo al Login...</span>";
-                window.location.href = "index.html"; 
+                if(loaderText) loaderText.innerHTML = "<span class='text-red-400 font-bold uppercase tracking-widest'>Credenciales faltantes. Volviendo al Inicio...</span>";
+                setTimeout(() => { window.location.href = "index.html"; }, 1500);
                 return; 
             }
 
@@ -415,19 +427,24 @@
             if(userRole === 'admin') { document.querySelectorAll('.staff-only').forEach(el => el.remove()); }
             if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
 
-            const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app" };
-            const app = initializeApp(firebaseConfig); 
-            db = getFirestore(app);
+            if(loaderText) loaderText.innerText = "Conectando con el servidor...";
 
-            if(loaderText) loaderText.innerText = "Conectando al servidor...";
-
-            // 1. Obtener Datos del Gimnasio
+            // Consulta Vital
             const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
             if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
             
-            const data = snap.data(); 
-            gymModulos = data.modulos || {}; 
-            nombreGymActual = data.nombre;
+            if(loaderText) loaderText.innerText = "Sincronizando configuraciones...";
+
+            // Consulta Broadcast (Aislada por seguridad de Firestore Rules)
+            try {
+                const snapB = await getDoc(doc(db, "nems_system", "broadcast"));
+                if(snapB.exists() && snapB.data().mensaje) { 
+                    const bb = document.getElementById('banner-broadcast'); 
+                    if(bb) { bb.innerText = `📢 AVISO NEMS: ${snapB.data().mensaje}`; bb.classList.remove('hidden'); } 
+                }
+            } catch(w) { console.warn("Broadcast ignorado o denegado:", w); }
+
+            const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
             if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
             
             const logoCont = document.getElementById('ui-gym-logo-container');
@@ -437,36 +454,29 @@
                 document.getElementById('ui-gym-name').innerText = ""; 
             } 
 
-            // 2. Modulos Navbar
             const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
             const basePill = "nav-item cursor-pointer px-6 py-2.5 rounded-full text-sm font-semibold transition-all text-gray-300 hover:text-white flex items-center gap-2";
             if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="${basePill}" onclick="cambiarVista('tienda')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
             if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="${basePill}" onclick="cambiarVista('evaluaciones')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>`;
-            
-            // 3. Broadcast Aislado (Si falla, el sistema continua)
-            try {
-                const snapB = await getDoc(doc(db, "nems_system", "broadcast"));
-                if(snapB.exists() && snapB.data().mensaje) { 
-                    const bb = document.getElementById('banner-broadcast'); 
-                    if(bb) { bb.innerText = `📢 AVISO NEMS: ${snapB.data().mensaje}`; bb.classList.remove('hidden'); } 
-                }
-            } catch(e) { console.warn("Broadcast ignorado"); }
 
-            if(loaderText) loaderText.innerText = "Descargando base de datos...";
+            if(loaderText) loaderText.innerText = "Descargando base de datos operativa...";
 
-            // 4. Descarga Segura de Colecciones
+            // Función de recolección a prueba de fallos
             const safeGet = async (col) => {
                 try { return await getDocs(collection(db, "gimnasios", GYM_ID, col)); } 
-                catch(e) { console.warn(`Error en ${col}`); return { empty: true, forEach: () => {} }; }
+                catch(e) { console.warn(`Ignorando error en ${col}:`, e); return { empty: true, forEach: () => {} }; }
             };
 
             const [sSnap, fSnap, eSnap, pSnap, cSnap, tSnap] = await Promise.all([ 
                 safeGet("socios"), safeGet("finanzas"), safeGet("evaluaciones"), 
                 safeGet("productos"), safeGet("cierres"), safeGet("turnos_estado") 
             ]);
-            
-            if(!tSnap.empty) { const ts = tSnap.docs[0]; estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; } 
-            else { estadoCajaGlobal = { abierta: false, id: null, ts: null, fondoInicial: 0 }; }
+
+            if(!tSnap.empty && tSnap.docs && tSnap.docs.length > 0) { 
+                const ts = tSnap.docs[0]; estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; 
+            } else { 
+                estadoCajaGlobal = { abierta: false, id: null, ts: null, fondoInicial: 0 }; 
+            }
 
             const btnTurno = document.getElementById('btn-estado-turno');
             if(btnTurno) {
@@ -500,12 +510,12 @@
                 renderizarGrafico(listaFinanzasData);
             }
             
-            // 5. Renderizar Listas y Ocultar Loader
             renderUI(); 
 
+            // ÉXITO: Ocultar Loading Screen
             const loader = document.getElementById('loading-screen');
             const appContainer = document.getElementById('app-container');
-            if(loader) {
+            if(loader && appContainer) {
                 loader.style.opacity = '0';
                 setTimeout(() => {
                     loader.classList.add('hidden');
@@ -515,30 +525,29 @@
             }
         }
 
-        // Ejecutar Motor de Arranque con Manejador de Errores Visual
+        // Ejecutar Motor de Arranque con Manejador Visual de Errores
         bootApp().catch(error => {
-            console.error("Boot Error:", error);
+            console.error("Fallo Fatal en Arranque:", error);
             const loaderText = document.getElementById('loading-text');
             const spinner = document.getElementById('loading-spinner');
+            const errorContainer = document.getElementById('error-container');
+            const errorMessage = document.getElementById('error-message');
+            
             if(spinner) spinner.classList.add('hidden');
-            if(loaderText) {
-                loaderText.innerHTML = `
-                    <div class="bg-red-500/10 border border-red-500/30 p-5 rounded-2xl mt-4 shadow-lg text-left max-w-md mx-auto">
-                        <p class="text-red-400 font-bold text-xs uppercase tracking-widest mb-2 border-b border-red-500/20 pb-2">Error de Conexión</p>
-                        <p class="text-gray-300 text-sm">${error.message}</p>
-                    </div>
-                    <button onclick="window.location.reload()" class="mt-8 bg-blue-600 hover:bg-blue-500 px-8 py-3.5 rounded-full text-white text-xs font-bold transition shadow-[0_0_20px_rgba(37,99,235,0.4)] tracking-widest uppercase">Reintentar Carga</button>
+            if(loaderText) loaderText.classList.add('hidden');
+            if(errorContainer && errorMessage) {
+                errorContainer.classList.remove('hidden');
+                errorContainer.classList.add('flex');
+                errorMessage.innerHTML = `
+                    <p class="text-red-400 font-black text-xs uppercase tracking-widest mb-2 border-b border-red-500/30 pb-2">Error de Conexión</p>
+                    <p class="text-gray-300 text-sm">${error.message}</p>
+                    <p class="text-gray-500 text-[10px] mt-2 italic">Revise su conexión a internet y asegúrese de que el gimnasio exista.</p>
                 `;
             }
         });
 
-        // ---------------------------------------------
-        // DEFINICIÓN DE MÉTODOS Y MODALES GLOBALES
-        // ---------------------------------------------
-
-        const modal = document.getElementById('modal-universal'); 
-        const modalContent = document.getElementById('modal-content'); 
-        const modalTitle = document.getElementById('modal-title');
+        // 5. FUNCIONES DE INTERFAZ Y MODALES
+        const modal = document.getElementById('modal-universal'); const modalContent = document.getElementById('modal-content'); const modalTitle = document.getElementById('modal-title');
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
 
         document.getElementById('btn-help').addEventListener('click', () => document.getElementById('modal-ayuda').classList.remove('hidden'));
@@ -605,7 +614,7 @@
                     let updateData = { deuda: nuevaDeudaSocio > 0 ? nuevaDeudaSocio : 0 };
                     if(!esSaldarDeuda) { const [y,m,d] = s.vence.split('-'); const nDate = new Date(y, m-1, d); nDate.setMonth(nDate.getMonth() + parseInt(document.getElementById('p-meses').value)); updateData.vence = nDate.toISOString().split('T')[0]; }
                     await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), updateData);
-                    showToast(esSaldarDeuda ? "Deuda Saldada" : "Pago registrado"); modal.classList.add('hidden'); await bootApp();
+                    showToast(esSaldarDeuda ? "Deuda Saldada" : "Pago registrado"); modal.classList.add('hidden'); bootApp();
                 } catch(err) { showToast("Error al facturar", "error"); }
             };
             modal.classList.remove('hidden');
@@ -628,7 +637,7 @@
                 document.getElementById('e-fec').valueAsDate = new Date();
                 document.getElementById('form-dinamico').onsubmit = async (e) => {
                     e.preventDefault();
-                    try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('e-desc').value, monto: document.getElementById('e-mon').value, medio: "Efectivo", tipo: "Egreso", fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Gasto Registrado", "error"); await bootApp(); } catch(err) { showToast("Error", "error"); }
+                    try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('e-desc').value, monto: document.getElementById('e-mon').value, medio: "Efectivo", tipo: "Egreso", fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Gasto Registrado", "error"); bootApp(); } catch(err) { showToast("Error", "error"); }
                 };
                 modal.classList.remove('hidden');
             });
@@ -696,7 +705,7 @@
                         await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta: "+dSocio.nombre, monto: ent, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
                         showToast("Socio guardado");
                     }
-                    modal.classList.add('hidden'); await bootApp();
+                    modal.classList.add('hidden'); bootApp();
                 } catch(err) { showToast("Error", "error"); btn.disabled = false; }
             };
             modal.classList.remove('hidden');
@@ -713,7 +722,7 @@
                 </form>`;
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
-                try { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", id), { rutina: document.getElementById('r-text').value }); showToast("Rutina Asignada"); modal.classList.add('hidden'); await bootApp(); } catch(err) { showToast("Error", "error"); }
+                try { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", id), { rutina: document.getElementById('r-text').value }); showToast("Rutina Asignada"); modal.classList.add('hidden'); bootApp(); } catch(err) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         };
@@ -756,7 +765,7 @@
                         </form>`;
                     document.getElementById('form-dinamico').onsubmit = async (e) => {
                         e.preventDefault();
-                        try { await addDoc(collection(db, "gimnasios", GYM_ID, "turnos_estado"), { abierta: true, fondoInicial: Number(document.getElementById('t-fondo').value), ts: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Caja Abierta"); await bootApp(); } catch(err) { showToast("Error", "error"); }
+                        try { await addDoc(collection(db, "gimnasios", GYM_ID, "turnos_estado"), { abierta: true, fondoInicial: Number(document.getElementById('t-fondo').value), ts: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Caja Abierta"); bootApp(); } catch(err) { showToast("Error", "error"); }
                     };
                 } else {
                     const fTurno = listaFinanzasData.filter(f => f.timestamp > estadoCajaGlobal.ts);
@@ -786,7 +795,7 @@
                             if(pass !== gSnap.data().password && pass !== gSnap.data().passwordStaff) { showToast("Clave Incorrecta", "error"); return; }
                             await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: estadoCajaGlobal.ts, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: ingPOS, total_mem: ingMem, egresos: egresos, fondo_inicial: estadoCajaGlobal.fondoInicial, usuario: userRole, observaciones: document.getElementById('t-obs').value });
                             await deleteDoc(doc(db, "gimnasios", GYM_ID, "turnos_estado", estadoCajaGlobal.id));
-                            modal.classList.add('hidden'); showToast("Caja Cerrada", "success"); await bootApp();
+                            modal.classList.add('hidden'); showToast("Caja Cerrada", "success"); bootApp();
                         } catch(err) { showToast("Error", "error"); }
                     };
                 }
@@ -809,7 +818,7 @@
             document.getElementById('v-fec').valueAsDate = new Date();
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
-                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Venta procesada"); await bootApp(); } catch(err) { showToast("Error", "error"); }
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Venta procesada"); bootApp(); } catch(err) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         }
@@ -1007,10 +1016,10 @@
 
         document.body.addEventListener('click', async (e) => {
             if (e.target.closest('.btn-edit-s')) abrirModalSocio(listaSociosData.find(s => s.id === e.target.closest('.btn-edit-s').dataset.id));
-            if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio de forma irreversible?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); await bootApp(); }
-            if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción financiera?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); await bootApp(); }
-            if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición médica?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); await bootApp(); }
-            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar registro de Arqueo de Caja?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); await bootApp(); }
+            if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio de forma irreversible?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); bootApp(); }
+            if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción financiera?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); bootApp(); }
+            if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición médica?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); bootApp(); }
+            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar registro de Arqueo de Caja?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); bootApp(); }
         });
 
         const inputBusqueda = document.getElementById('input-busqueda-socio');
