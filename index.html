@@ -9,8 +9,25 @@
         body { background-color: #09090b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         .input-dark { background: #18181b; border: 1px solid #27272a; color: white; transition: all 0.3s; }
         .input-dark:focus { outline: none; border-color: #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.15); }
-        .btn-nems { background: linear-gradient(90deg, #ca8a04, #eab308); color: #000; }
-        .btn-nems:hover { background: linear-gradient(90deg, #a16207, #ca8a04); box-shadow: 0 0 20px rgba(234, 179, 8, 0.3); }
+        
+        /* Botón Glassmorphism Amarillo */
+        .btn-nems { 
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(202, 138, 4, 0.05));
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border: 1px solid rgba(234, 179, 8, 0.3); 
+            border-top: 1px solid rgba(234, 179, 8, 0.6);
+            border-left: 1px solid rgba(234, 179, 8, 0.6);
+            color: #facc15; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .btn-nems:hover { 
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.3), rgba(202, 138, 4, 0.15));
+            border-color: rgba(234, 179, 8, 0.8); 
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.4); 
+            color: #ffffff; 
+        }
+
         .glass-btn { background: #18181b; border: 1px solid #27272a; }
         .glass-btn:hover { background: #27272a; }
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
@@ -62,7 +79,7 @@
                     <input type="password" id="input-password" class="w-full input-dark rounded-xl p-4 text-sm" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" id="btn-login" class="w-full btn-nems font-bold py-4 rounded-xl transition duration-300 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+                <button type="submit" id="btn-login" class="w-full btn-nems font-bold py-4 rounded-xl transition duration-300">
                     Autorizar Sesión
                 </button>
             </form>
@@ -99,7 +116,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app", messagingSenderId: "578362101056", appId: "1:578362101056:web:d7833a58d16987acdb3ea5" };
+        const firebaseConfig = { apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", authDomain: "novagym-saas-enterprise.firebaseapp.com", projectId: "novagym-saas-enterprise", storageBucket: "novagym-saas-enterprise.firebasestorage.app" };
         const app = initializeApp(firebaseConfig); const db = getFirestore(app);
 
         document.getElementById('form-login-gym').addEventListener('submit', async (e) => {
@@ -124,10 +141,9 @@
                         const vence = new Date(y, m-1, d);
                         const diffDias = Math.ceil((vence - hoy) / (1000 * 60 * 60 * 24));
                         
-                        // Si pasaron más de 3 días desde el vencimiento, auto-suspender en la base de datos
                         if (diffDias < -3) {
                             await updateDoc(doc(db, "gimnasios", docSnap.id), { estado: 'suspendido' });
-                            data.estado = 'suspendido'; // Actualiza localmente para que salte el bloqueo
+                            data.estado = 'suspendido'; 
                         }
                     }
 
