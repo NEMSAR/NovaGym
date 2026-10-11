@@ -3,120 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consola Central | NEMS Group</title>
+    <title>Consola Central | NEMS Group SaaS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>if(sessionStorage.getItem('nems_admin_token') !== 'autorizado_2026') window.location.href = 'index.html';</script>
     <style>
-        body { background-color: #121214; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; }
-        .glass-card { background: #1f1f23; border: 1px solid #27272a; border-radius: 2rem; position: relative; z-index: 10; }
-        .input-dark { background: #121214; border: 1px solid #27272a; color: white; transition: all 0.3s; }
-        .input-dark:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        body { background-color: #0d0d0f; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; }
+        
+        /* Glassmorphism Classes */
+        .glass-dark { background: rgba(31, 31, 35, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); border-radius: 2rem; }
+        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 1.5rem; }
+        
+        .input-dark { background: rgba(18, 18, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; }
+        .input-dark:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); background: rgba(18, 18, 20, 0.9); }
+        
+        /* Background Animated Blobs */
+        .blob-1 { position: fixed; top: -10%; left: -10%; width: 50vw; height: 50vw; background: #3b82f6; filter: blur(150px); opacity: 0.15; z-index: -1; animation: float 15s infinite alternate; pointer-events: none;}
+        .blob-2 { position: fixed; bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: #8b5cf6; filter: blur(150px); opacity: 0.15; z-index: -1; animation: float 12s infinite alternate-reverse; pointer-events: none;}
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(10%, 10%) scale(1.1); } }
+
         .toast-enter { animation: slideIn 0.4s forwards; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body class="p-8 relative min-h-screen">
+    <!-- Ambient Background -->
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-50"></div>
 
     <div class="max-w-[1500px] mx-auto relative z-10">
         
-        <!-- HEADER SUPERADMIN -->
-        <header class="flex justify-between items-center mb-8 pb-6 border-b border-[#27272a]">
+        <header class="flex justify-between items-center mb-8 pb-6 border-b border-white/10">
             <div>
                 <h1 class="text-4xl font-black tracking-tight mb-1 flex items-center gap-2">
-                    <span class="text-white">Consola</span> 
-                    <span class="text-blue-500">Central</span>
+                    <span class="text-white">Consola</span> <span class="text-blue-500 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Central</span>
                 </h1>
-                <p class="text-xs font-semibold text-blue-600 uppercase tracking-widest mt-1">Gestión Global de Franquicias</p>
+                <p class="text-xs font-semibold text-blue-400/80 uppercase tracking-widest mt-1">Gestión Global de Franquicias</p>
             </div>
-            <button id="btn-logout" class="bg-[#1f1f23] border border-[#27272a] text-gray-400 hover:text-white transition px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-red-900/20 hover:border-red-500/30">
+            <button id="btn-logout" class="glass-panel text-gray-300 hover:text-white transition px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-red-500/20 hover:border-red-500/50">
                 Cerrar Sesión
             </button>
         </header>
 
-        <!-- KPI DASHBOARD SaaS -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-[#1f1f23] border border-[#27272a] p-6 rounded-[2rem] shadow-xl">
-                <p class="text-sm font-bold text-gray-400 mb-2">MRR (Ingreso Mensual)</p>
-                <p class="text-4xl font-black text-emerald-400 tracking-tight" id="kpi-mrr">$0</p>
+        <!-- KPI DASHBOARD -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+            <div class="glass-dark p-6">
+                <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest">MRR (Mensual)</p>
+                <p class="text-4xl font-black text-emerald-400 tracking-tight drop-shadow-[0_0_10px_rgba(16,185,129,0.3)]" id="kpi-mrr">$0</p>
             </div>
-            <div class="bg-[#1f1f23] border border-[#27272a] p-6 rounded-[2rem] shadow-xl">
-                <p class="text-sm font-bold text-gray-400 mb-2">Gimnasios Activos</p>
-                <p class="text-4xl font-black text-white tracking-tight" id="kpi-activos">0</p>
+            <div class="glass-dark p-6">
+                <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest">ARR (Anual Proyectado)</p>
+                <p class="text-4xl font-black text-blue-400 tracking-tight drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]" id="kpi-arr">$0</p>
             </div>
-            <div class="bg-[#1f1f23] border border-[#27272a] p-6 rounded-[2rem] shadow-xl">
-                <p class="text-sm font-bold text-gray-400 mb-2">Suscripciones Suspendidas</p>
-                <p class="text-4xl font-black text-red-400 tracking-tight" id="kpi-suspendidos">0</p>
+            <div class="glass-dark p-6 flex flex-col justify-center items-center text-center">
+                <p class="text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-widest">Instancias Activas</p>
+                <p class="text-5xl font-black text-white" id="kpi-activos">0</p>
             </div>
-            <!-- BROADCAST MODULE -->
-            <div class="bg-blue-900/10 border border-blue-500/30 p-6 rounded-[2rem] shadow-xl flex flex-col justify-center">
-                <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">Mensaje Global (Broadcast)</p>
-                <div class="flex gap-2">
-                    <input type="text" id="input-broadcast" class="w-full input-dark rounded-lg p-2 text-xs" placeholder="Anuncio para todos los clientes...">
-                    <button id="btn-broadcast" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Enviar</button>
+            <!-- BROADCAST MODULE (Ocupa 2 espacios) -->
+            <div class="glass-dark p-6 col-span-2 border-blue-500/30 bg-blue-900/10 flex flex-col justify-center">
+                <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3">Mensaje Global (Broadcast)</p>
+                <div class="flex gap-3">
+                    <input type="text" id="input-broadcast" class="w-full input-dark rounded-xl p-3 text-sm" placeholder="Anuncio para todos los clientes...">
+                    <button id="btn-broadcast" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-sm font-bold transition shadow-[0_0_15px_rgba(37,99,235,0.4)]">Enviar</button>
                 </div>
             </div>
         </div>
         
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
-            <!-- FORMULARIO NUEVA LICENCIA -->
-            <div class="glass-card p-8 xl:col-span-4 h-fit shadow-2xl">
-                <div class="flex justify-between items-center mb-8 border-b border-[#27272a] pb-4">
+            <!-- FORMULARIO -->
+            <div class="glass-dark p-8 xl:col-span-4 h-fit">
+                <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
                     <h2 id="form-title" class="text-xl font-bold text-white flex items-center gap-2">
-                        <span class="text-blue-500">➕</span> Nuevo Despliegue SaaS
+                        <span class="text-blue-400 text-2xl">⊕</span> Nuevo Despliegue
                     </h2>
-                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-gray-800 text-gray-300 px-3 py-1.5 rounded-full hover:bg-gray-700 transition font-bold">Cancelar</button>
+                    <button id="btn-cancelar-edicion" class="hidden text-xs bg-white/10 text-white px-4 py-2 rounded-full hover:bg-white/20 transition font-bold">Cancelar</button>
                 </div>
                 
                 <form id="form-gym" class="space-y-4">
                     <input type="hidden" id="edit-gym-id">
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-xs font-semibold text-gray-400 mb-1">Comercial</label><input type="text" id="gym-nombre" class="w-full input-dark rounded-xl p-3 text-sm" placeholder="Ej. Titan Gym" required></div>
-                        <div><label class="block text-xs font-semibold text-blue-400 mb-1">User Login</label><input type="text" id="gym-username" class="w-full input-dark rounded-xl p-3 text-sm border-blue-500/30" required></div>
+                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Comercial</label><input type="text" id="gym-nombre" class="w-full input-dark rounded-xl p-3 text-sm" placeholder="Ej. Titan Gym" required></div>
+                        <div><label class="block text-[10px] uppercase font-bold text-blue-400 mb-1.5 ml-1">User Login</label><input type="text" id="gym-username" class="w-full input-dark rounded-xl p-3 text-sm border-blue-500/30" required></div>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-xs font-semibold text-emerald-400 mb-1">Clave Dueño</label><input type="text" id="gym-password" class="w-full input-dark rounded-xl p-3 text-sm border-emerald-500/30" required></div>
-                        <div><label class="block text-xs font-semibold text-orange-400 mb-1">Clave Staff</label><input type="text" id="gym-password-staff" class="w-full input-dark rounded-xl p-3 text-sm border-orange-500/30" required></div>
+                        <div><label class="block text-[10px] uppercase font-bold text-emerald-400 mb-1.5 ml-1">Clave Dueño</label><input type="text" id="gym-password" class="w-full input-dark rounded-xl p-3 text-sm border-emerald-500/30" required></div>
+                        <div><label class="block text-[10px] uppercase font-bold text-orange-400 mb-1.5 ml-1">Clave Staff</label><input type="text" id="gym-password-staff" class="w-full input-dark rounded-xl p-3 text-sm border-orange-500/30" required></div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-4 items-end">
-                        <div class="col-span-2"><label class="block text-xs font-semibold text-gray-400 mb-1">URL Logo</label><input type="url" id="gym-logo" class="w-full input-dark rounded-xl p-3 text-xs" placeholder="https://..."></div>
-                        <div class="col-span-1"><label class="block text-[10px] font-semibold text-gray-400 mb-1 text-center">Color Base</label>
-                            <input type="color" id="gym-color" class="h-10 w-full rounded-xl cursor-pointer bg-transparent border border-[#27272a] p-1" value="#eab308">
+                        <div class="col-span-2"><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">URL Logo</label><input type="url" id="gym-logo" class="w-full input-dark rounded-xl p-3 text-xs" placeholder="https://..."></div>
+                        <div class="col-span-1"><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 text-center">Color Base</label>
+                            <input type="color" id="gym-color" class="h-10 w-full rounded-xl cursor-pointer bg-black/20 border border-white/10 p-1" value="#eab308">
                         </div>
-                        <div class="col-span-1"><label class="block text-[10px] font-bold text-blue-400 uppercase mb-1">Vence</label><input type="date" id="gym-licencia" class="w-full input-dark rounded-xl p-3 text-[10px]" required></div>
+                        <div class="col-span-1"><label class="block text-[10px] font-bold text-blue-400 uppercase mb-1.5 ml-1">Vence</label><input type="date" id="gym-licencia" class="w-full input-dark rounded-xl p-3 text-[10px]" required></div>
                     </div>
                     
                     <div>
-                        <label class="block text-xs font-semibold text-emerald-400 mb-1">Cuota Mensual SaaS (ARS)</label>
+                        <label class="block text-[10px] uppercase font-bold text-emerald-400 mb-1.5 ml-1">Cuota Mensual SaaS (ARS)</label>
                         <input type="number" id="gym-cuota-saas" class="w-full input-dark rounded-xl p-3 text-sm border-emerald-500/30" placeholder="Ej. 35000" required>
                     </div>
 
-                    <div class="pt-4 border-t border-[#27272a] mt-4">
-                        <label class="block text-xs font-semibold text-gray-500 mb-3">Módulos Contratados (Pro)</label>
+                    <div class="pt-4 border-t border-white/10 mt-4">
+                        <label class="block text-[10px] uppercase font-bold text-gray-500 mb-3 ml-1">Módulos Pro</label>
                         <div class="grid grid-cols-2 gap-3">
-                            <label class="flex items-center space-x-2 bg-[#121214] p-3 rounded-xl border border-[#27272a] cursor-pointer"><input type="checkbox" id="mod-tienda" checked class="accent-blue-500"><span class="text-sm font-medium text-gray-300">Tienda POS</span></label>
-                            <label class="flex items-center space-x-2 bg-[#121214] p-3 rounded-xl border border-[#27272a] cursor-pointer"><input type="checkbox" id="mod-evaluaciones" checked class="accent-blue-500"><span class="text-sm font-medium text-gray-300">Fichas Físicas</span></label>
+                            <label class="flex items-center space-x-2 bg-black/20 p-3 rounded-xl border border-white/5 cursor-pointer hover:bg-white/5 transition"><input type="checkbox" id="mod-tienda" checked class="accent-blue-500"><span class="text-sm font-medium text-gray-300">Tienda POS</span></label>
+                            <label class="flex items-center space-x-2 bg-black/20 p-3 rounded-xl border border-white/5 cursor-pointer hover:bg-white/5 transition"><input type="checkbox" id="mod-evaluaciones" checked class="accent-blue-500"><span class="text-sm font-medium text-gray-300">Fichas Físicas</span></label>
                         </div>
                     </div>
-                    <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-500 transition mt-4 shadow-[0_0_20px_rgba(37,99,235,0.3)]">Generar Instancia</button>
+                    <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold py-4 rounded-xl hover:opacity-90 transition mt-6 shadow-[0_0_20px_rgba(37,99,235,0.4)]">Generar Instancia</button>
                 </form>
             </div>
 
-            <!-- DIRECTORIO DE CLIENTES -->
-            <div class="glass-card p-8 xl:col-span-8 shadow-2xl flex flex-col min-h-[600px]">
-                <h2 class="text-xl font-bold mb-6 text-white border-b border-[#27272a] pb-4">Directorio Global de Licencias</h2>
+            <!-- DIRECTORIO -->
+            <div class="glass-dark p-8 xl:col-span-8 flex flex-col min-h-[600px]">
+                <h2 class="text-xl font-bold mb-6 text-white border-b border-white/10 pb-4">Directorio Global de Licencias</h2>
                 
                 <div class="overflow-x-auto w-full flex-1 custom-scrollbar">
                     <table class="w-full text-left border-collapse" id="table-gyms">
                         <thead>
-                            <tr class="border-b border-[#27272a] text-gray-500 text-xs font-semibold tracking-wider">
+                            <tr class="border-b border-white/10 text-gray-400 text-[10px] uppercase font-bold tracking-widest">
                                 <th class="py-4 px-4 w-10">St</th>
-                                <th class="py-4 px-4">Instancia Comercial</th>
-                                <th class="py-4 px-4">Accesos de Entorno</th>
-                                <th class="py-4 px-4">Datos SaaS</th>
+                                <th class="py-4 px-4">Comercial</th>
+                                <th class="py-4 px-4">Accesos SaaS</th>
+                                <th class="py-4 px-4">Suscripción</th>
                                 <th class="py-4 px-4 text-right">Administrar</th>
                             </tr>
                         </thead>
@@ -138,10 +154,9 @@
         let gymsData = [];
 
         window.showToast = (msg, tipo = 'success') => {
-            const container = document.getElementById('toast-container'); 
-            const toast = document.createElement('div');
-            const bg = tipo === 'success' ? 'bg-[#18181b] border-l-4 border-emerald-500 text-emerald-400' : 'bg-[#18181b] border-l-4 border-red-500 text-red-400';
-            toast.className = `toast-enter ${bg} border-y border-r border-[#27272a] px-6 py-4 rounded-r-xl shadow-2xl font-bold text-sm flex items-center gap-3`;
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+            const bg = tipo === 'success' ? 'bg-black/60 border-emerald-500 text-emerald-400' : 'bg-black/60 border-red-500 text-red-400';
+            toast.className = `toast-enter ${bg} border-l-4 backdrop-blur-xl px-6 py-4 rounded-r-xl shadow-2xl font-bold text-sm flex items-center gap-3`;
             toast.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${tipo==='success'?'M5 13l4 4L19 7':'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}"></path></svg> <span class="text-white">${msg}</span>`;
             container.appendChild(toast); setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
@@ -149,107 +164,95 @@
         document.getElementById('btn-logout').addEventListener('click', () => { sessionStorage.removeItem('nems_admin_token'); window.location.href = 'index.html'; });
 
         const colorInput = document.getElementById('gym-color'); 
-        if(colorInput) colorInput.addEventListener('input', (e) => colorInput.style.boxShadow = `0 0 15px ${e.target.value}40`);
+        if(colorInput) colorInput.addEventListener('input', (e) => colorInput.style.boxShadow = `0 0 20px ${e.target.value}60`);
 
         // LÓGICA DE BROADCAST
         document.getElementById('btn-broadcast').addEventListener('click', async () => {
             const msg = document.getElementById('input-broadcast').value.trim();
-            try {
-                await setDoc(doc(db, "nems_system", "broadcast"), { mensaje: msg, timestamp: new Date().toISOString() });
-                showToast(msg ? "Anuncio Global Publicado" : "Anuncio Eliminado", 'success');
-            } catch(e) { showToast("Error al enviar", 'error'); }
+            try { await setDoc(doc(db, "nems_system", "broadcast"), { mensaje: msg, timestamp: new Date().toISOString() }); showToast(msg ? "Anuncio Publicado" : "Anuncio Eliminado", 'success'); } 
+            catch(e) { showToast("Error al enviar", 'error'); }
         });
 
         async function cargarGimnasios() {
             const tbody = document.getElementById('lista-gyms'); tbody.innerHTML = '';
             const querySnapshot = await getDocs(collection(db, "gimnasios"));
-            gymsData = []; 
-            let mrr = 0; let activos = 0; let suspendidos = 0;
+            gymsData = []; let mrr = 0; let activos = 0;
 
             querySnapshot.forEach(d => {
-                const gym = {id: d.id, ...d.data()};
-                gymsData.push(gym);
-                if(gym.estado === 'activo') { activos++; mrr += Number(gym.cuotaSaaS || 0); } else { suspendidos++; }
+                const gym = {id: d.id, ...d.data()}; gymsData.push(gym);
+                if(gym.estado === 'activo') { activos++; mrr += Number(gym.cuotaSaaS || 0); }
             });
 
-            // Actualizar KPIs
             document.getElementById('kpi-mrr').innerText = `$${mrr.toLocaleString('es-AR')}`;
+            document.getElementById('kpi-arr').innerText = `$${(mrr * 12).toLocaleString('es-AR')}`; // ARR Calculado
             document.getElementById('kpi-activos').innerText = activos;
-            document.getElementById('kpi-suspendidos').innerText = suspendidos;
 
-            if(gymsData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500 italic text-xs">No hay franquicias registradas.</td></tr>`; return;
-            }
+            if(gymsData.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-white/40 italic text-sm">No hay franquicias registradas.</td></tr>`; return; }
 
             gymsData.forEach((data) => {
                 const isSuspendido = data.estado === 'suspendido';
-                const tr = document.createElement('tr'); tr.className = `border-b border-[#27272a] transition hover:bg-[#18181b] ${isSuspendido ? 'opacity-60' : ''}`;
+                const creds = `Usuario: ${data.username} | Dueño: ${data.password} | Staff: ${data.passwordStaff}`;
+                const tr = document.createElement('tr'); tr.className = `border-b border-white/5 transition hover:bg-white/5 ${isSuspendido ? 'opacity-50 grayscale' : ''}`;
                 tr.innerHTML = `
-                    <td class="py-4 px-4"><div class="w-3 h-3 rounded-full ${isSuspendido ? 'bg-red-500' : 'bg-emerald-500'}"></div></td>
+                    <td class="py-4 px-4"><div class="w-3 h-3 rounded-full ${isSuspendido ? 'bg-red-500' : 'bg-emerald-500 shadow-[0_0_10px_#10b981]'}"></div></td>
                     <td class="py-4 px-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-[#121214] border border-[#27272a] flex items-center justify-center p-1" style="box-shadow: 0 0 10px ${data.colorPrimario}40">
-                                ${data.logoUrl ? `<img src="${data.logoUrl}" class="w-full h-full object-contain">` : `<span style="color:${data.colorPrimario}" class="font-bold text-xs">GYM</span>`}
+                            <div class="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center p-1" style="box-shadow: inset 0 0 15px ${data.colorPrimario}40">
+                                ${data.logoUrl ? `<img src="${data.logoUrl}" class="w-full h-full object-contain filter drop-shadow-lg">` : `<span style="color:${data.colorPrimario}" class="font-bold text-xs">GYM</span>`}
                             </div>
-                            <span class="font-bold text-white text-base">${data.nombre}</span>
+                            <span class="font-bold text-white text-base tracking-wide">${data.nombre}</span>
                         </div>
                     </td>
                     <td class="py-4 px-4">
-                        <div class="flex flex-col gap-1 text-xs font-mono">
+                        <div class="flex flex-col gap-1 text-[11px] font-mono bg-black/20 p-2 rounded-lg border border-white/5 w-fit">
                             <span class="text-blue-400">@${data.username}</span>
-                            <span class="text-emerald-400">Admin: ${data.password}</span>
-                            <span class="text-orange-400">Staff: ${data.passwordStaff || '-'}</span>
+                            <span class="text-emerald-400">D: ${data.password}</span>
                         </div>
                     </td>
                     <td class="py-4 px-4">
                         <div class="flex flex-col gap-1">
-                            <span class="px-3 py-1 rounded-full text-[10px] w-fit font-semibold ${isSuspendido ? 'bg-red-900/30 text-red-400' : 'bg-gray-800 text-gray-300'}">Vence: ${data.vencimientoLicencia ? data.vencimientoLicencia.split('-').reverse().join('/') : '-'}</span>
-                            <span class="text-xs text-emerald-400 font-bold mt-1 pl-1">Cuota: $${Number(data.cuotaSaaS || 0).toLocaleString('es-AR')}</span>
+                            <span class="px-3 py-1 rounded-full text-[10px] w-fit font-bold uppercase tracking-wider ${isSuspendido ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-white/10 text-gray-300 border border-white/10'}">Exp: ${data.vencimientoLicencia ? data.vencimientoLicencia.split('-').reverse().join('/') : '-'}</span>
+                            <span class="text-xs text-emerald-400 font-bold mt-1 pl-1 drop-shadow-md">$${Number(data.cuotaSaaS || 0).toLocaleString('es-AR')} /m</span>
                         </div>
                     </td>
                     <td class="py-4 px-4 flex justify-end gap-2 items-center">
-                        <button class="btn-toggle text-xs px-3 py-1.5 rounded-full transition ${isSuspendido ? 'bg-emerald-900/30 text-emerald-400 hover:bg-emerald-600 hover:text-white' : 'bg-orange-900/30 text-orange-400 hover:bg-orange-600 hover:text-white'}" data-id="${data.id}" data-estado="${data.estado}">${isSuspendido ? 'Reactivar' : 'Pausar'}</button>
-                        <button class="btn-editar bg-gray-800 text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-gray-700 transition" data-id="${data.id}">Editar</button>
-                        <button class="btn-eliminar bg-red-900/30 text-red-500 border border-red-500/30 px-3 py-1.5 rounded-full text-xs font-bold hover:bg-red-600 hover:text-white transition shadow-[0_0_10px_rgba(239,68,68,0.2)]" data-id="${data.id}" title="Borrar Definitivamente">Borrar</button>
+                        <button class="btn-copy bg-blue-500/20 text-blue-400 border border-blue-500/30 p-2 rounded-full hover:bg-blue-500 hover:text-white transition" data-creds="${creds}" title="Copiar Accesos"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                        <button class="btn-toggle text-xs px-4 py-2 rounded-full font-bold transition ${isSuspendido ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600 hover:text-white' : 'bg-orange-500/20 text-orange-400 border border-orange-500/30 hover:bg-orange-600 hover:text-white'}" data-id="${data.id}" data-estado="${data.estado}">${isSuspendido ? 'Reactivar' : 'Pausar'}</button>
+                        <button class="btn-editar bg-white/10 text-white px-4 py-2 rounded-full text-xs font-bold hover:bg-white/20 transition" data-id="${data.id}">Editar</button>
+                        <button class="btn-eliminar bg-red-500/10 text-red-500 border border-red-500/30 px-3 py-2 rounded-full text-xs font-bold hover:bg-red-600 hover:text-white transition" data-id="${data.id}" title="Borrar">✕</button>
                     </td>`;
                 tbody.appendChild(tr);
             });
         }
 
         document.body.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-copy')) {
+                navigator.clipboard.writeText(e.target.dataset.creds); showToast("Credenciales copiadas al portapapeles");
+            }
             if (e.target.classList.contains('btn-toggle')) {
                 const id = e.target.dataset.id; const nuevoEstado = e.target.dataset.estado === 'activo' ? 'suspendido' : 'activo';
                 if(confirm(`¿Cambiar estado a ${nuevoEstado.toUpperCase()}?`)) { await updateDoc(doc(db, "gimnasios", id), { estado: nuevoEstado }); showToast(`Franquicia ${nuevoEstado}`, nuevoEstado === 'activo' ? 'success' : 'error'); cargarGimnasios(); }
             }
             if (e.target.classList.contains('btn-eliminar')) {
                 const id = e.target.dataset.id;
-                if(confirm(`⚠️ ATENCIÓN: ¿Eliminar DEFINITIVAMENTE este gimnasio y borrarlo de los registros? Esta acción es irreversible.`)) { 
-                    await deleteDoc(doc(db, "gimnasios", id)); 
-                    showToast(`Franquicia eliminada permanentemente`, 'error'); 
-                    cargarGimnasios(); 
-                }
+                if(confirm(`⚠️ ATENCIÓN: ¿Eliminar DEFINITIVAMENTE este gimnasio? Es irreversible.`)) { await deleteDoc(doc(db, "gimnasios", id)); showToast(`Eliminada permanentemente`, 'error'); cargarGimnasios(); }
             }
             if (e.target.classList.contains('btn-editar')) {
                 const gym = gymsData.find(g => g.id === e.target.dataset.id);
-                document.getElementById('form-title').innerHTML = `<span class="text-blue-500 text-xl">✏️</span> Modificar Despliegue`;
+                document.getElementById('form-title').innerHTML = `<span class="text-blue-400 text-2xl">✏️</span> Modificar Despliegue`;
                 document.getElementById('edit-gym-id').value = gym.id; 
-                document.getElementById('gym-nombre').value = gym.nombre || '';
-                document.getElementById('gym-username').value = gym.username || ''; 
-                document.getElementById('gym-password').value = gym.password || '';
-                document.getElementById('gym-password-staff').value = gym.passwordStaff || '';
+                document.getElementById('gym-nombre').value = gym.nombre || ''; document.getElementById('gym-username').value = gym.username || ''; 
+                document.getElementById('gym-password').value = gym.password || ''; document.getElementById('gym-password-staff').value = gym.passwordStaff || '';
                 document.getElementById('gym-cuota-saas').value = gym.cuotaSaaS || '';
                 
-                const cInput = document.getElementById('gym-color'); if(cInput) cInput.value = gym.colorPrimario || '#eab308'; 
+                const cInput = document.getElementById('gym-color'); if(cInput) { cInput.value = gym.colorPrimario || '#eab308'; cInput.style.boxShadow = `0 0 20px ${cInput.value}60`; }
                 const lInput = document.getElementById('gym-logo'); if(lInput) lInput.value = gym.logoUrl || '';
-                const vInput = document.getElementById('gym-licencia'); 
-                if(vInput) { if(gym.vencimientoLicencia) vInput.value = gym.vencimientoLicencia; else { const d = new Date(); d.setMonth(d.getMonth() + 1); vInput.value = d.toISOString().split('T')[0]; } }
+                const vInput = document.getElementById('gym-licencia'); if(vInput) { if(gym.vencimientoLicencia) vInput.value = gym.vencimientoLicencia; }
 
                 const m = gym.modulos || {};
-                const c4 = document.getElementById('mod-tienda'); if(c4) c4.checked = !!m.tienda;
-                const c6 = document.getElementById('mod-evaluaciones'); if(c6) c6.checked = !!m.evaluaciones;
+                document.getElementById('mod-tienda').checked = !!m.tienda; document.getElementById('mod-evaluaciones').checked = !!m.evaluaciones;
                 
-                document.getElementById('btn-submit').innerText = "Guardar Cambios"; 
-                document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
+                document.getElementById('btn-submit').innerText = "Guardar Cambios"; document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
             }
         });
 
@@ -258,30 +261,24 @@
             const editId = document.getElementById('edit-gym-id').value;
             
             const gymData = { 
-                nombre: document.getElementById('gym-nombre').value, 
-                username: document.getElementById('gym-username').value.trim(), 
-                colorPrimario: document.getElementById('gym-color').value, 
-                password: document.getElementById('gym-password').value, 
-                passwordStaff: document.getElementById('gym-password-staff').value, 
-                logoUrl: document.getElementById('gym-logo').value.trim(), 
-                vencimientoLicencia: document.getElementById('gym-licencia').value,
-                cuotaSaaS: Number(document.getElementById('gym-cuota-saas').value),
+                nombre: document.getElementById('gym-nombre').value, username: document.getElementById('gym-username').value.trim(), 
+                colorPrimario: document.getElementById('gym-color').value, password: document.getElementById('gym-password').value, 
+                passwordStaff: document.getElementById('gym-password-staff').value, logoUrl: document.getElementById('gym-logo').value.trim(), 
+                vencimientoLicencia: document.getElementById('gym-licencia').value, cuotaSaaS: Number(document.getElementById('gym-cuota-saas').value),
                 modulos: { tienda: document.getElementById('mod-tienda').checked, evaluaciones: document.getElementById('mod-evaluaciones').checked } 
             };
             
             try {
                 if (editId) { await updateDoc(doc(db, "gimnasios", editId), gymData); showToast('Configuración actualizada'); } 
-                else { gymData.estado = 'activo'; gymData.fechaCreacion = new Date().toISOString(); await addDoc(collection(db, "gimnasios"), gymData); showToast('Nuevo entorno desplegado exitosamente'); }
+                else { gymData.estado = 'activo'; gymData.fechaCreacion = new Date().toISOString(); await addDoc(collection(db, "gimnasios"), gymData); showToast('Nuevo entorno desplegado'); }
                 document.getElementById('btn-cancelar-edicion').click(); cargarGimnasios();
             } catch (error) { showToast("Error al guardar", 'error'); } finally { btn.disabled = false; }
         });
         
         document.getElementById('btn-cancelar-edicion').addEventListener('click', () => { 
-            document.getElementById('form-gym').reset(); 
-            document.getElementById('edit-gym-id').value = ""; 
-            document.getElementById('form-title').innerHTML = `<span class="text-blue-500 text-xl">➕</span> Nuevo Despliegue SaaS`; 
-            document.getElementById('btn-submit').innerText = "Generar Instancia"; 
-            document.getElementById('btn-cancelar-edicion').classList.add('hidden'); 
+            document.getElementById('form-gym').reset(); document.getElementById('edit-gym-id').value = ""; 
+            document.getElementById('form-title').innerHTML = `<span class="text-blue-400 text-2xl">⊕</span> Nuevo Despliegue`; 
+            document.getElementById('btn-submit').innerText = "Generar Instancia"; document.getElementById('btn-cancelar-edicion').classList.add('hidden'); 
         });
 
         cargarGimnasios();
