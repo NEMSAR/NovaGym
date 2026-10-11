@@ -14,11 +14,10 @@
         .dynamic-bg { background-color: var(--accent-color, #eab308); color: #000; }
         .dynamic-bg:hover { filter: brightness(1.2); box-shadow: 0 0 25px var(--accent-color, #eab308); transform: translateY(-1px); }
         
-        /* Glassmorphism Nivel Premium */
+        /* Glassmorphism Premium */
         .glass-dark { 
             background: rgba(20, 20, 25, 0.45); 
-            backdrop-filter: blur(40px); 
-            -webkit-backdrop-filter: blur(40px); 
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
             border-top: 1px solid rgba(255, 255, 255, 0.25); 
             border-left: 1px solid rgba(255, 255, 255, 0.15);
@@ -28,8 +27,7 @@
         
         .glass-light { 
             background: rgba(255, 255, 255, 0.65); 
-            backdrop-filter: blur(40px); 
-            -webkit-backdrop-filter: blur(40px); 
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); 
             border: 1px solid rgba(255, 255, 255, 0.3); 
             border-top: 1px solid rgba(255, 255, 255, 0.8); 
             border-left: 1px solid rgba(255, 255, 255, 0.6);
@@ -66,32 +64,25 @@
 </head>
 <body class="flex flex-col h-screen overflow-hidden bg-[#0d0d0f]">
 
-    <!-- Orbes Dinámicos (Fondo) -->
     <div class="blob-1"></div>
     <div class="blob-2"></div>
     <div class="blob-3"></div>
 
-    <!-- PANTALLA DE CARGA AISLADA Y BLINDADA -->
+    <!-- PANTALLA DE CARGA (Indestructible) -->
     <div id="loading-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0d0d0f]/90 backdrop-blur-2xl transition-opacity duration-500">
         <svg id="loading-spinner" class="animate-spin h-16 w-16 text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <h2 id="loading-title" class="text-white font-black text-2xl tracking-widest uppercase drop-shadow-md">Iniciando Panel</h2>
-        <div id="loading-text" class="text-blue-400 text-sm mt-3 font-bold tracking-wider uppercase text-center max-w-sm">Verificando credenciales de acceso...</div>
-        <div id="error-container" class="mt-6 hidden flex-col items-center">
-            <div id="error-message" class="bg-red-500/10 border border-red-500/30 p-4 rounded-xl shadow-lg text-left max-w-md w-full"></div>
-            <button onclick="window.location.reload()" class="mt-6 bg-blue-600 hover:bg-blue-500 px-8 py-3.5 rounded-full text-white text-xs font-bold transition shadow-[0_0_20px_rgba(37,99,235,0.4)] tracking-widest uppercase">Reintentar Conexión</button>
-        </div>
+        <h2 class="text-white font-black text-2xl tracking-widest uppercase drop-shadow-md">Iniciando Panel</h2>
+        <div id="loading-text" class="text-blue-400 text-sm mt-3 font-bold tracking-wider uppercase text-center max-w-sm">Verificando conexión segura...</div>
     </div>
 
-    <!-- Z-Index muy alto para notificaciones -->
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[9999]"></div>
 
-    <!-- CONTENIDO PRINCIPAL (App Container) -->
+    <!-- APP PRINCIPAL -->
     <div id="app-container" class="hidden flex-col h-full w-full relative z-10">
         
-        <div id="banner-licencia" class="hidden admin-only w-full bg-red-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-red-400"></div>
         <div id="banner-broadcast" class="hidden w-full bg-blue-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-blue-400"></div>
 
         <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 fade-in">
@@ -146,6 +137,7 @@
                     </div>
                 </header>
 
+                <!-- VISTA DASHBOARD -->
                 <div id="vista-dashboard" class="flex flex-col gap-6 fade-in">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="glass-dark p-6 flex flex-col justify-between relative overflow-hidden">
@@ -200,6 +192,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA SOCIOS -->
                 <div id="vista-socios" class="hidden fade-in glass-light p-6 md:p-8 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-3xl font-black text-gray-900 tracking-tight">Directorio de Miembros</h2>
@@ -224,6 +217,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA FINANZAS -->
                 <div id="vista-finanzas" class="hidden fade-in admin-only flex flex-col gap-6">
                     <div class="glass-dark p-6 h-[300px]">
                         <div class="flex justify-between items-center mb-4"><h2 class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Crecimiento Financiero (Ingresos)</h2></div>
@@ -235,7 +229,6 @@
                             <h2 class="text-3xl font-black text-gray-900 tracking-tight">Flujo de Transacciones</h2>
                             <div class="flex gap-3">
                                 <button id="btn-nuevo-egreso" class="bg-red-50 text-red-600 hover:bg-red-100 px-6 py-3 rounded-full text-xs font-bold transition border border-red-200 shadow-sm">+ Registrar Egreso</button>
-                                <button id="btn-exportar-csv" class="bg-white/80 text-gray-900 hover:bg-white border border-gray-300 px-6 py-3 rounded-full text-xs font-bold transition shadow-sm">Descargar Contabilidad</button>
                             </div>
                         </div>
                         <div class="overflow-x-auto mt-4">
@@ -275,6 +268,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA TIENDA POS -->
                 <div id="vista-tienda" class="hidden fade-in flex flex-col lg:flex-row gap-6">
                     <div class="w-full lg:w-2/3 glass-light p-6 md:p-8 min-h-[500px]">
                         <div class="flex justify-between items-center mb-6">
@@ -295,6 +289,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA EVALUACIONES -->
                 <div id="vista-evaluaciones" class="hidden fade-in glass-light p-6 md:p-8 min-h-[500px]">
                     <h2 class="text-3xl font-black text-gray-900 tracking-tight mb-6">Historial de Mediciones e IMC</h2>
                     <div class="overflow-x-auto mt-4">
@@ -344,7 +339,7 @@
                 <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
                     <h3 class="font-bold text-white mb-3 flex items-center gap-2"><span class="dynamic-text text-lg">2.</span> Control de Caja Estricto</h3>
                     <ul class="text-gray-300 space-y-2 ml-4 list-disc">
-                        <li><strong>Apertura Obligatoria:</strong> Debes hacer clic en "Abrir Turno" e ingresar el dinero base con el que empiezas.</li>
+                        <li><strong>Apertura Obligatoria:</strong> Debes hacer clic en "Abrir Turno" e ingresar el dinero base con el que empiezas (Fondo de Cambio).</li>
                     </ul>
                 </div>
             </div>
@@ -359,14 +354,12 @@
         </div>
     </div>
 
-    <!-- ----------------------------------------------------------- -->
-    <!-- SCRIPT PRINCIPAL (IMPORTACIONES ESTÁTICAS SEGURAS)          -->
-    <!-- ----------------------------------------------------------- -->
+    <!-- SCRIPT DE INICIO SEGURO -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // 1. CONFIGURACIÓN COMPLETA DE FIREBASE
+        // 1. CONFIGURACIÓN COMPLETA Y SEGURA
         const firebaseConfig = { 
             apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", 
             authDomain: "novagym-saas-enterprise.firebaseapp.com", 
@@ -385,7 +378,7 @@
         let chartInstance = null; let estadoCajaGlobal = { abierta: false, fondoInicial: 0, ts: null, id: null };
         let GYM_ID, userRole;
 
-        // 3. FUNCIONES UTILITARIAS GLOBALES (Añadidas a Window)
+        // 3. UTILIDADES DE INTERFAZ
         window.showToast = (msg, tipo = 'success') => {
             const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             const bg = tipo === 'success' ? 'bg-black/70 border-emerald-500' : 'bg-black/70 border-red-500';
@@ -410,143 +403,127 @@
             if(document.getElementById(`vista-${vista}`)) document.getElementById(`vista-${vista}`).classList.remove('hidden');
         };
 
-        // 4. MOTOR DE ARRANQUE BLINDADO
-        async function bootApp() {
+        // 4. MOTOR DE DESCARGA (Anti-cuelgues)
+        async function cargarDatos() {
             const loaderText = document.getElementById('loading-text');
-            const urlParams = new URLSearchParams(window.location.search);
-            GYM_ID = urlParams.get('id');
-            userRole = sessionStorage.getItem('nems_gym_role');
-
-            if (!GYM_ID || !userRole) { 
-                if(loaderText) loaderText.innerHTML = "<span class='text-red-400 font-bold uppercase tracking-widest'>Credenciales faltantes. Volviendo al Inicio...</span>";
-                setTimeout(() => { window.location.href = "index.html"; }, 1500);
-                return; 
-            }
-
-            document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
-            if(userRole === 'admin') { document.querySelectorAll('.staff-only').forEach(el => el.remove()); }
-            if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
-
-            if(loaderText) loaderText.innerText = "Conectando con el servidor...";
-
-            // Consulta Vital
-            const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
-            if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
-            
-            if(loaderText) loaderText.innerText = "Sincronizando configuraciones...";
-
-            // Consulta Broadcast (Aislada por seguridad de Firestore Rules)
             try {
-                const snapB = await getDoc(doc(db, "nems_system", "broadcast"));
-                if(snapB.exists() && snapB.data().mensaje) { 
-                    const bb = document.getElementById('banner-broadcast'); 
-                    if(bb) { bb.innerText = `📢 AVISO NEMS: ${snapB.data().mensaje}`; bb.classList.remove('hidden'); } 
+                const urlParams = new URLSearchParams(window.location.search);
+                GYM_ID = urlParams.get('id');
+                userRole = sessionStorage.getItem('nems_gym_role');
+
+                if (!GYM_ID || !userRole) { 
+                    if(loaderText) loaderText.innerHTML = "<span class='text-red-400 font-bold uppercase tracking-widest'>Sin acceso. Redirigiendo...</span>";
+                    setTimeout(() => { window.location.href = "index.html"; }, 1500); return; 
                 }
-            } catch(w) { console.warn("Broadcast ignorado o denegado:", w); }
 
-            const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
-            if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
-            
-            const logoCont = document.getElementById('ui-gym-logo-container');
-            if(data.logoUrl) { 
-                logoGymGlobal = data.logoUrl; 
-                logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-full h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">`; 
-                document.getElementById('ui-gym-name').innerText = ""; 
-            } 
+                document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
+                if(userRole === 'admin') { document.querySelectorAll('.staff-only').forEach(el => el.remove()); }
+                if(userRole === 'staff') { document.querySelectorAll('.admin-only').forEach(el => el.remove()); }
 
-            const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
-            const basePill = "nav-item cursor-pointer px-6 py-2.5 rounded-full text-sm font-semibold transition-all text-gray-300 hover:text-white flex items-center gap-2";
-            if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="${basePill}" onclick="cambiarVista('tienda')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
-            if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="${basePill}" onclick="cambiarVista('evaluaciones')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>`;
+                if(loaderText) loaderText.innerText = "Conectando con el servidor...";
 
-            if(loaderText) loaderText.innerText = "Descargando base de datos operativa...";
+                const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
+                if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
+                
+                // Intento aislado de obtener mensajes globales
+                try {
+                    const snapB = await getDoc(doc(db, "nems_system", "broadcast"));
+                    if(snapB.exists() && snapB.data().mensaje) { 
+                        const bb = document.getElementById('banner-broadcast'); 
+                        if(bb) { bb.innerText = `📢 AVISO NEMS: ${snapB.data().mensaje}`; bb.classList.remove('hidden'); } 
+                    }
+                } catch(e) { /* Ignorar si no hay permisos de lectura globales */ }
 
-            // Función de recolección a prueba de fallos
-            const safeGet = async (col) => {
-                try { return await getDocs(collection(db, "gimnasios", GYM_ID, col)); } 
-                catch(e) { console.warn(`Ignorando error en ${col}:`, e); return { empty: true, forEach: () => {} }; }
-            };
+                const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
+                if(data.colorPrimario) document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
+                
+                const logoCont = document.getElementById('ui-gym-logo-container');
+                if(data.logoUrl) { logoGymGlobal = data.logoUrl; logoCont.innerHTML = `<img src="${data.logoUrl}" class="w-full h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">`; document.getElementById('ui-gym-name').innerText = ""; } 
 
-            const [sSnap, fSnap, eSnap, pSnap, cSnap, tSnap] = await Promise.all([ 
-                safeGet("socios"), safeGet("finanzas"), safeGet("evaluaciones"), 
-                safeGet("productos"), safeGet("cierres"), safeGet("turnos_estado") 
-            ]);
+                const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
+                const basePill = "nav-item cursor-pointer px-6 py-2.5 rounded-full text-sm font-semibold transition-all text-gray-300 hover:text-white flex items-center gap-2";
+                if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="${basePill}" onclick="cambiarVista('tienda')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
+                if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="${basePill}" onclick="cambiarVista('evaluaciones')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>`;
 
-            if(!tSnap.empty && tSnap.docs && tSnap.docs.length > 0) { 
-                const ts = tSnap.docs[0]; estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; 
-            } else { 
-                estadoCajaGlobal = { abierta: false, id: null, ts: null, fondoInicial: 0 }; 
-            }
+                if(loaderText) loaderText.innerText = "Descargando base de datos...";
 
-            const btnTurno = document.getElementById('btn-estado-turno');
-            if(btnTurno) {
-                if(estadoCajaGlobal.abierta) { btnTurno.innerHTML = '🔒 CERRAR TURNO'; btnTurno.className = 'glass-dark text-orange-400 border-orange-500/50 hover:bg-orange-500/20 hover:text-orange-300 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_20px_rgba(234,88,12,0.2)] hover:scale-105'; }
-                else { btnTurno.innerHTML = '🟢 ABRIR TURNO'; btnTurno.className = 'bg-emerald-500/20 backdrop-blur-md text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/40 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:scale-105'; }
-            }
+                // Funciones de descarga con auto-recuperación de errores
+                const safeGet = async (col) => {
+                    try { return await getDocs(collection(db, "gimnasios", GYM_ID, col)); } 
+                    catch(e) { return { empty: true, forEach: () => {} }; }
+                };
 
-            listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
-            listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
-            listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() }));
-            listaCierresData.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+                const [sSnap, fSnap, eSnap, pSnap, cSnap, tSnap] = await Promise.all([ 
+                    safeGet("socios"), safeGet("finanzas"), safeGet("evaluaciones"), 
+                    safeGet("productos"), safeGet("cierres"), safeGet("turnos_estado") 
+                ]);
 
-            listaFinanzasData = []; let iMes = 0; let eMes = 0;
-            const mesActual = new Date().toISOString().substring(0,7);
-            fSnap.forEach(d => { 
-                const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); 
-                if(p.fecha.startsWith(mesActual)) { if(p.tipo === 'Egreso') eMes += Number(p.monto); else iMes += Number(p.monto); }
-            });
-            listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-            listaEvalsData = []; eSnap.forEach(d => listaEvalsData.push({ id: d.id, ...d.data() }));
+                if(!tSnap.empty && tSnap.docs && tSnap.docs.length > 0) { const ts = tSnap.docs[0]; estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; } 
+                else { estadoCajaGlobal = { abierta: false, id: null, ts: null, fondoInicial: 0 }; }
 
-            if(document.getElementById('total-socios')) document.getElementById('total-socios').innerText = listaSociosData.length.toLocaleString();
-
-            if(userRole === 'admin') {
-                if(document.getElementById('ingresos-mes')) document.getElementById('ingresos-mes').innerText = iMes.toLocaleString('es-AR');
-                if(document.getElementById('egresos-mes')) document.getElementById('egresos-mes').innerText = eMes.toLocaleString('es-AR');
-                if(document.getElementById('balance-mes')) {
-                    const bal = iMes - eMes; document.getElementById('balance-mes').innerText = bal.toLocaleString('es-AR');
-                    document.getElementById('balance-mes').className = bal < 0 ? 'text-red-400 drop-shadow-lg' : 'text-white drop-shadow-lg';
+                const btnTurno = document.getElementById('btn-estado-turno');
+                if(btnTurno) {
+                    if(estadoCajaGlobal.abierta) { btnTurno.innerHTML = '🔒 CERRAR TURNO'; btnTurno.className = 'glass-dark text-orange-400 border-orange-500/50 hover:bg-orange-500/20 hover:text-orange-300 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_20px_rgba(234,88,12,0.2)] hover:scale-105'; }
+                    else { btnTurno.innerHTML = '🟢 ABRIR TURNO'; btnTurno.className = 'bg-emerald-500/20 backdrop-blur-md text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/40 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:scale-105'; }
                 }
-                renderizarGrafico(listaFinanzasData);
-            }
-            
-            renderUI(); 
 
-            // ÉXITO: Ocultar Loading Screen
-            const loader = document.getElementById('loading-screen');
-            const appContainer = document.getElementById('app-container');
-            if(loader && appContainer) {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                    appContainer.classList.remove('hidden');
-                    appContainer.classList.add('flex');
-                }, 500);
+                listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
+                listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
+                listaCierresData = []; cSnap.forEach(d => listaCierresData.push({ id: d.id, ...d.data() }));
+                listaCierresData.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                listaFinanzasData = []; let iMes = 0; let eMes = 0;
+                const mesActual = new Date().toISOString().substring(0,7);
+                fSnap.forEach(d => { 
+                    const p = d.data(); listaFinanzasData.push({ id: d.id, ...p }); 
+                    if(p.fecha.startsWith(mesActual)) { if(p.tipo === 'Egreso') eMes += Number(p.monto); else iMes += Number(p.monto); }
+                });
+                listaFinanzasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                listaEvalsData = []; eSnap.forEach(d => listaEvalsData.push({ id: d.id, ...d.data() }));
+
+                if(document.getElementById('total-socios')) document.getElementById('total-socios').innerText = listaSociosData.length.toLocaleString();
+
+                if(userRole === 'admin') {
+                    if(document.getElementById('ingresos-mes')) document.getElementById('ingresos-mes').innerText = iMes.toLocaleString('es-AR');
+                    if(document.getElementById('egresos-mes')) document.getElementById('egresos-mes').innerText = eMes.toLocaleString('es-AR');
+                    if(document.getElementById('balance-mes')) {
+                        const bal = iMes - eMes; document.getElementById('balance-mes').innerText = bal.toLocaleString('es-AR');
+                        document.getElementById('balance-mes').className = bal < 0 ? 'text-red-400 drop-shadow-lg' : 'text-white drop-shadow-lg';
+                    }
+                    renderizarGrafico(listaFinanzasData);
+                }
+                
+                renderUI(); 
+
+                // Transición Final de Éxito
+                const loader = document.getElementById('loading-screen');
+                const appContainer = document.getElementById('app-container');
+                if(loader && appContainer) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        appContainer.classList.remove('hidden');
+                        appContainer.classList.add('flex');
+                    }, 500);
+                }
+
+            } catch(error) {
+                // MANEJADOR DE ERRORES VISUAL (Evita pantalla trabada)
+                console.error("Fallo Fatal en Carga:", error);
+                if(document.getElementById('loading-spinner')) document.getElementById('loading-spinner').classList.add('hidden');
+                if(loaderText) {
+                    loaderText.innerHTML = `
+                        <div class="bg-red-500/10 border border-red-500/30 p-5 rounded-2xl mt-4 shadow-lg text-left max-w-md mx-auto">
+                            <p class="text-red-400 font-bold text-xs uppercase tracking-widest mb-2 border-b border-red-500/20 pb-2">Error de Inicialización</p>
+                            <p class="text-gray-300 text-sm">${error.message}</p>
+                        </div>
+                        <button onclick="window.location.reload()" class="mt-8 bg-blue-600 hover:bg-blue-500 px-8 py-3.5 rounded-full text-white text-xs font-bold transition shadow-[0_0_20px_rgba(37,99,235,0.4)] tracking-widest uppercase">Reintentar Conexión</button>
+                    `;
+                }
             }
         }
 
-        // Ejecutar Motor de Arranque con Manejador Visual de Errores
-        bootApp().catch(error => {
-            console.error("Fallo Fatal en Arranque:", error);
-            const loaderText = document.getElementById('loading-text');
-            const spinner = document.getElementById('loading-spinner');
-            const errorContainer = document.getElementById('error-container');
-            const errorMessage = document.getElementById('error-message');
-            
-            if(spinner) spinner.classList.add('hidden');
-            if(loaderText) loaderText.classList.add('hidden');
-            if(errorContainer && errorMessage) {
-                errorContainer.classList.remove('hidden');
-                errorContainer.classList.add('flex');
-                errorMessage.innerHTML = `
-                    <p class="text-red-400 font-black text-xs uppercase tracking-widest mb-2 border-b border-red-500/30 pb-2">Error de Conexión</p>
-                    <p class="text-gray-300 text-sm">${error.message}</p>
-                    <p class="text-gray-500 text-[10px] mt-2 italic">Revise su conexión a internet y asegúrese de que el gimnasio exista.</p>
-                `;
-            }
-        });
-
-        // 5. FUNCIONES DE INTERFAZ Y MODALES
+        // 5. LISTENERS GLOBALES
         const modal = document.getElementById('modal-universal'); const modalContent = document.getElementById('modal-content'); const modalTitle = document.getElementById('modal-title');
         const btnAccionPrincipal = document.getElementById('btn-accion-principal');
 
@@ -554,16 +531,6 @@
         document.getElementById('btn-logout-gym').addEventListener('click', () => { sessionStorage.removeItem('nems_gym_role'); window.location.href = 'index.html'; });
         if(btnAccionPrincipal) btnAccionPrincipal.addEventListener('click', () => { if (vistaActual === 'dashboard' || vistaActual === 'socios') abrirModalSocio(); else if (vistaActual === 'finanzas') abrirModalPago(); else if (vistaActual === 'evaluaciones') abrirModalEvaluacion(); });
         document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => document.getElementById(e.target.dataset.modal).classList.add('hidden')));
-
-        const btnExportarSocios = document.getElementById('btn-exportar-socios');
-        if(btnExportarSocios) {
-            btnExportarSocios.addEventListener('click', () => {
-                let csv = "Nombre,Telefono,Servicio,Membresia,Fecha_Nacimiento,Vencimiento,Deuda\n";
-                listaSociosData.forEach(s => { csv += `${s.nombre},${s.telefono},${s.servicio},${s.membresia},${s.nacimiento||''},${s.vence},${s.deuda||0}\n`; });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
-                a.download = `Directorio_Socios_${nombreGymActual}.csv`; a.click(); showToast("Directorio Descargado");
-            });
-        }
 
         window.enviarWhatsApp = (tel, nombre) => { window.open(`https://wa.me/${tel.replace(/\D/g,'')}?text=${encodeURIComponent(`Hola ${nombre}, te contactamos de${nombreGymActual}.`)}`, '_blank'); };
         window.registrarIngreso = async (id, nombre) => {
@@ -614,7 +581,7 @@
                     let updateData = { deuda: nuevaDeudaSocio > 0 ? nuevaDeudaSocio : 0 };
                     if(!esSaldarDeuda) { const [y,m,d] = s.vence.split('-'); const nDate = new Date(y, m-1, d); nDate.setMonth(nDate.getMonth() + parseInt(document.getElementById('p-meses').value)); updateData.vence = nDate.toISOString().split('T')[0]; }
                     await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), updateData);
-                    showToast(esSaldarDeuda ? "Deuda Saldada" : "Pago registrado"); modal.classList.add('hidden'); bootApp();
+                    showToast(esSaldarDeuda ? "Deuda Saldada" : "Pago registrado"); modal.classList.add('hidden'); cargarDatos();
                 } catch(err) { showToast("Error al facturar", "error"); }
             };
             modal.classList.remove('hidden');
@@ -637,7 +604,7 @@
                 document.getElementById('e-fec').valueAsDate = new Date();
                 document.getElementById('form-dinamico').onsubmit = async (e) => {
                     e.preventDefault();
-                    try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('e-desc').value, monto: document.getElementById('e-mon').value, medio: "Efectivo", tipo: "Egreso", fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Gasto Registrado", "error"); bootApp(); } catch(err) { showToast("Error", "error"); }
+                    try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: document.getElementById('e-desc').value, monto: document.getElementById('e-mon').value, medio: "Efectivo", tipo: "Egreso", fecha: document.getElementById('e-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Gasto Registrado", "error"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
                 };
                 modal.classList.remove('hidden');
             });
@@ -705,7 +672,7 @@
                         await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta: "+dSocio.nombre, monto: ent, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
                         showToast("Socio guardado");
                     }
-                    modal.classList.add('hidden'); bootApp();
+                    modal.classList.add('hidden'); cargarDatos();
                 } catch(err) { showToast("Error", "error"); btn.disabled = false; }
             };
             modal.classList.remove('hidden');
@@ -722,7 +689,7 @@
                 </form>`;
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
-                try { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", id), { rutina: document.getElementById('r-text').value }); showToast("Rutina Asignada"); modal.classList.add('hidden'); bootApp(); } catch(err) { showToast("Error", "error"); }
+                try { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", id), { rutina: document.getElementById('r-text').value }); showToast("Rutina Asignada"); modal.classList.add('hidden'); cargarDatos(); } catch(err) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         };
@@ -765,7 +732,7 @@
                         </form>`;
                     document.getElementById('form-dinamico').onsubmit = async (e) => {
                         e.preventDefault();
-                        try { await addDoc(collection(db, "gimnasios", GYM_ID, "turnos_estado"), { abierta: true, fondoInicial: Number(document.getElementById('t-fondo').value), ts: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Caja Abierta"); bootApp(); } catch(err) { showToast("Error", "error"); }
+                        try { await addDoc(collection(db, "gimnasios", GYM_ID, "turnos_estado"), { abierta: true, fondoInicial: Number(document.getElementById('t-fondo').value), ts: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Caja Abierta"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
                     };
                 } else {
                     const fTurno = listaFinanzasData.filter(f => f.timestamp > estadoCajaGlobal.ts);
@@ -795,7 +762,7 @@
                             if(pass !== gSnap.data().password && pass !== gSnap.data().passwordStaff) { showToast("Clave Incorrecta", "error"); return; }
                             await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: estadoCajaGlobal.ts, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: ingPOS, total_mem: ingMem, egresos: egresos, fondo_inicial: estadoCajaGlobal.fondoInicial, usuario: userRole, observaciones: document.getElementById('t-obs').value });
                             await deleteDoc(doc(db, "gimnasios", GYM_ID, "turnos_estado", estadoCajaGlobal.id));
-                            modal.classList.add('hidden'); showToast("Caja Cerrada", "success"); bootApp();
+                            modal.classList.add('hidden'); showToast("Caja Cerrada", "success"); cargarDatos();
                         } catch(err) { showToast("Error", "error"); }
                     };
                 }
@@ -818,7 +785,7 @@
             document.getElementById('v-fec').valueAsDate = new Date();
             document.getElementById('form-dinamico').onsubmit = async (e) => {
                 e.preventDefault();
-                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Venta procesada"); bootApp(); } catch(err) { showToast("Error", "error"); }
+                try { await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: nombre, monto: document.getElementById('v-mon').value, medio: document.getElementById('v-medio').value, tipo: "Inventario", fecha: document.getElementById('v-fec').value, timestamp: new Date().toISOString() }); modal.classList.add('hidden'); showToast("Venta procesada"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
             };
             modal.classList.remove('hidden');
         }
@@ -1016,10 +983,10 @@
 
         document.body.addEventListener('click', async (e) => {
             if (e.target.closest('.btn-edit-s')) abrirModalSocio(listaSociosData.find(s => s.id === e.target.closest('.btn-edit-s').dataset.id));
-            if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio de forma irreversible?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); bootApp(); }
-            if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción financiera?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); bootApp(); }
-            if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición médica?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); bootApp(); }
-            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar registro de Arqueo de Caja?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); bootApp(); }
+            if (e.target.closest('.btn-del-s') && confirm("¿Eliminar registro de socio de forma irreversible?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').dataset.id)); showToast("Miembro Eliminado"); cargarDatos(); }
+            if (e.target.closest('.btn-del-f') && confirm("¿Anular transacción financiera?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').dataset.id)); showToast("Transacción Anulada", "error"); cargarDatos(); }
+            if (e.target.closest('.btn-del-e') && confirm("¿Eliminar medición médica?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').dataset.id)); showToast("Medición Eliminada"); cargarDatos(); }
+            if (e.target.closest('.btn-del-cierre') && confirm("¿Eliminar registro de Arqueo de Caja?")) { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').dataset.id)); showToast("Arqueo Eliminado"); cargarDatos(); }
         });
 
         const inputBusqueda = document.getElementById('input-busqueda-socio');
@@ -1029,6 +996,9 @@
                 trs.forEach(tr => { const nombre = tr.querySelector('td:nth-child(2) p').innerText.toLowerCase(); tr.style.display = nombre.includes(term) ? '' : 'none'; });
             });
         }
+
+        // INICIAMOS EL PANEL (Motor Clásico)
+        cargarDatos();
     </script>
 </body>
 </html>
