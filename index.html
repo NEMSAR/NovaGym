@@ -8,24 +8,56 @@
     <style>
         body { background-color: #09090b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         .input-dark { background: #18181b; border: 1px solid #27272a; color: white; transition: all 0.3s; }
-        .input-dark:focus { outline: none; border-color: #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.15); }
+        .input-dark:focus { outline: none; border-color: #ffffff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.15); }
         
-        /* Botón Glassmorphism Amarillo */
+        /* Botón Glassmorphism Puro con Destellos de Luz */
         .btn-nems { 
-            background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(202, 138, 4, 0.05));
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px); 
-            border: 1px solid rgba(234, 179, 8, 0.3); 
-            border-top: 1px solid rgba(234, 179, 8, 0.6);
-            border-left: 1px solid rgba(234, 179, 8, 0.6);
-            color: #facc15; 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-        .btn-nems:hover { 
-            background: linear-gradient(135deg, rgba(234, 179, 8, 0.3), rgba(202, 138, 4, 0.15));
-            border-color: rgba(234, 179, 8, 0.8); 
-            box-shadow: 0 0 20px rgba(234, 179, 8, 0.4); 
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.4);
             color: #ffffff; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Efecto de bisel/cristal superior (Brillo estático) */
+        .btn-nems::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 45%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
+            pointer-events: none;
+        }
+
+        /* Animación del reflejo de luz (Destello diagonal) */
+        .btn-nems::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-25deg);
+            animation: destello 4s infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes destello {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .btn-nems:hover { 
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6); 
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); 
+            transform: translateY(-1px);
         }
 
         .glass-btn { background: #18181b; border: 1px solid #27272a; }
@@ -39,7 +71,6 @@
     <div class="hidden md:flex w-1/2 border-r border-[#27272a] flex-col justify-center px-20 relative overflow-hidden">
         <div class="absolute inset-0 w-full h-full z-0 overflow-hidden">
             <video autoplay loop muted playsinline class="w-full h-full object-cover scale-110 blur-[8px] opacity-50">
-                <!-- Sube tu video mp4 y reemplaza aquí -->
                 <source src="mi-video.mp4" type="video/mp4">
             </video>
             <div class="absolute inset-0 bg-gradient-to-r from-[#09090b]/80 via-[#09090b]/50 to-[#09090b]"></div>
@@ -134,7 +165,6 @@
                 if (!snap.empty) {
                     const docSnap = snap.docs[0]; const data = docSnap.data();
 
-                    // === VERIFICACIÓN DE LICENCIA SAAS ===
                     if (data.vencimientoLicencia && data.estado === 'activo') {
                         const hoy = new Date(); hoy.setHours(0,0,0,0);
                         const [y,m,d] = data.vencimientoLicencia.split('-');
@@ -165,7 +195,6 @@
             } finally { btn.innerHTML = 'Autorizar Sesión'; btn.disabled = false; }
         });
 
-        // LOGIN CORPORATIVO
         const modalCorp = document.getElementById('modal-corp');
         document.getElementById('btn-abrir-corp').addEventListener('click', () => modalCorp.classList.remove('hidden'));
         document.getElementById('btn-cerrar-corp').addEventListener('click', () => modalCorp.classList.add('hidden'));
