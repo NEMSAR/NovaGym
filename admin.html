@@ -38,38 +38,82 @@
 
     <div class="max-w-[1500px] mx-auto relative z-10">
         
-        <header class="flex justify-between items-center mb-8 pb-6 border-b border-white/10">
-            <div>
-                <h1 class="text-4xl font-black tracking-tight mb-1 flex items-center gap-2">
-                    <span class="text-white">Consola</span> <span class="text-blue-500 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Central</span>
-                </h1>
-                <p class="text-xs font-semibold text-blue-400/80 uppercase tracking-widest mt-1">Gestión Global de Franquicias</p>
+        <!-- HEADER PREMIUM -->
+        <header class="flex justify-between items-center mb-10 pb-6 border-b border-white/10 relative">
+            <!-- Brillo inferior cabecera -->
+            <div class="absolute bottom-0 left-0 w-1/3 h-[1px] bg-gradient-to-r from-blue-500 to-transparent"></div>
+            
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.4)] border border-white/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-black tracking-tight mb-1 flex items-center gap-2">
+                        <span class="text-white">NEMS</span> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Matriz</span>
+                    </h1>
+                    <p class="text-[10px] font-bold text-blue-400/80 uppercase tracking-widest mt-0.5">Control Central de Franquicias</p>
+                </div>
             </div>
-            <button id="btn-logout" class="glass-panel text-gray-300 hover:text-white transition px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-red-500/20 hover:border-red-500/50">
+            
+            <button id="btn-logout" class="glass-dark text-gray-400 hover:text-white transition px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-red-500/10 hover:border-red-500/50 hover:shadow-[0_0_15px_rgba(239,68,68,0.2)] flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                 Cerrar Sesión
             </button>
         </header>
 
-        <!-- KPI DASHBOARD -->
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-            <div class="glass-dark p-6">
-                <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest">MRR (Mensual)</p>
-                <p class="text-4xl font-black text-emerald-400 tracking-tight drop-shadow-[0_0_10px_rgba(16,185,129,0.3)]" id="kpi-mrr">$0</p>
+        <!-- KPI DASHBOARD SaaS (Rediseñado) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-10">
+            <!-- Tarjeta MRR -->
+            <div class="glass-dark p-6 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition duration-500"></div>
+                <div class="flex justify-between items-start mb-4 relative z-10">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">MRR (Mensual)</p>
+                    <div class="bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                </div>
+                <p class="text-4xl font-black text-white tracking-tight relative z-10" id="kpi-mrr">$0</p>
+                <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mt-3 flex items-center gap-1 relative z-10"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg> Recurrente</p>
             </div>
-            <div class="glass-dark p-6">
-                <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest">ARR (Anual Proyectado)</p>
-                <p class="text-4xl font-black text-blue-400 tracking-tight drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]" id="kpi-arr">$0</p>
+            
+            <!-- Tarjeta ARR -->
+            <div class="glass-dark p-6 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition duration-500"></div>
+                <div class="flex justify-between items-start mb-4 relative z-10">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">ARR (Anual)</p>
+                    <div class="bg-blue-500/10 p-2 rounded-lg border border-blue-500/20">
+                        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                </div>
+                <p class="text-4xl font-black text-white tracking-tight relative z-10" id="kpi-arr">$0</p>
+                <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest mt-3 flex items-center gap-1 relative z-10">Proyectado</p>
             </div>
-            <div class="glass-dark p-6 flex flex-col justify-center items-center text-center">
-                <p class="text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-widest">Instancias Activas</p>
-                <p class="text-5xl font-black text-white" id="kpi-activos">0</p>
+
+            <!-- Tarjeta Instancias -->
+            <div class="glass-dark p-6 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition duration-500"></div>
+                <div class="flex justify-between items-start mb-4 relative z-10">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Gimnasios</p>
+                    <div class="bg-purple-500/10 p-2 rounded-lg border border-purple-500/20">
+                        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                </div>
+                <p class="text-4xl font-black text-white tracking-tight relative z-10" id="kpi-activos">0</p>
+                <p class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-3 flex items-center gap-1.5 relative z-10"><span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_5px_#10b981]"></span> Activos</p>
             </div>
-            <!-- BROADCAST MODULE (Ocupa 2 espacios) -->
-            <div class="glass-dark p-6 col-span-2 border-blue-500/30 bg-blue-900/10 flex flex-col justify-center">
-                <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3">Mensaje Global (Broadcast)</p>
-                <div class="flex gap-3">
-                    <input type="text" id="input-broadcast" class="w-full input-dark rounded-xl p-3 text-sm" placeholder="Anuncio para todos los clientes...">
-                    <button id="btn-broadcast" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-sm font-bold transition shadow-[0_0_15px_rgba(37,99,235,0.4)]">Enviar</button>
+
+            <!-- Tarjeta Broadcast -->
+            <div class="glass-dark p-6 col-span-1 md:col-span-2 relative overflow-hidden group border-blue-500/20" style="background: radial-gradient(circle at top right, rgba(59,130,246,0.1) 0%, rgba(31,31,35,0.4) 70%); border-top: 1px solid rgba(59,130,246,0.3);">
+                <div class="flex items-center gap-3 mb-4 relative z-10">
+                    <div class="bg-blue-500/20 p-2 rounded-lg border border-blue-500/30">
+                        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+                    </div>
+                    <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Broadcast Global</p>
+                </div>
+                
+                <div class="flex gap-3 relative z-10">
+                    <input type="text" id="input-broadcast" class="w-full bg-black/40 border border-white/10 text-white rounded-xl p-4 text-sm focus:outline-none focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.2)] transition shadow-inner placeholder-gray-500" placeholder="Anuncio para todos los paneles de clientes...">
+                    <button id="btn-broadcast" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white px-8 py-3 rounded-xl text-sm font-bold transition shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] hover:scale-[1.02]">Enviar</button>
                 </div>
             </div>
         </div>
@@ -117,7 +161,7 @@
                             <label class="flex items-center space-x-2 bg-black/20 p-3 rounded-xl border border-white/5 cursor-pointer hover:bg-white/5 transition"><input type="checkbox" id="mod-evaluaciones" checked class="accent-blue-500"><span class="text-sm font-medium text-gray-300">Fichas Físicas</span></label>
                         </div>
                     </div>
-                    <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold py-4 rounded-xl hover:opacity-90 transition mt-6 shadow-[0_0_20px_rgba(37,99,235,0.4)]">Generar Instancia</button>
+                    <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold py-4 rounded-xl hover:opacity-90 transition mt-6 shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:scale-[1.02]">Generar Instancia</button>
                 </form>
             </div>
 
@@ -184,7 +228,7 @@
             });
 
             document.getElementById('kpi-mrr').innerText = `$${mrr.toLocaleString('es-AR')}`;
-            document.getElementById('kpi-arr').innerText = `$${(mrr * 12).toLocaleString('es-AR')}`; // ARR Calculado
+            document.getElementById('kpi-arr').innerText = `$${(mrr * 12).toLocaleString('es-AR')}`;
             document.getElementById('kpi-activos').innerText = activos;
 
             if(gymsData.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-white/40 italic text-sm">No hay franquicias registradas.</td></tr>`; return; }
