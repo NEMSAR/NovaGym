@@ -14,7 +14,7 @@
         .dynamic-bg { background-color: var(--accent-color, #eab308); color: #000; }
         .dynamic-bg:hover { filter: brightness(1.2); box-shadow: 0 0 25px var(--accent-color, #eab308); transform: translateY(-1px); }
         
-        /* Glassmorphism Nivel Premium (Definido y Biselado) */
+        /* Glassmorphism Nivel Premium */
         .glass-dark { 
             background: rgba(20, 20, 25, 0.45); 
             backdrop-filter: blur(40px); 
@@ -38,25 +38,14 @@
             color: #18181b; 
         }
         
-        /* Orbes Dinámicos Mejorados (Movimiento fluido y complejo) */
+        /* Orbes Dinámicos */
         .blob-1 { position: fixed; top: -10%; left: -10%; width: 55vw; height: 55vw; background: var(--accent-color, #eab308); filter: blur(120px); opacity: 0.25; z-index: -1; animation: float1 18s ease-in-out infinite; pointer-events: none;}
         .blob-2 { position: fixed; bottom: -20%; right: -10%; width: 45vw; height: 45vw; background: #3b82f6; filter: blur(120px); opacity: 0.2; z-index: -1; animation: float2 22s ease-in-out infinite alternate; pointer-events: none;}
         .blob-3 { position: fixed; top: 20%; left: 30%; width: 40vw; height: 40vw; background: #8b5cf6; filter: blur(140px); opacity: 0.15; z-index: -1; animation: float3 25s ease-in-out infinite; pointer-events: none;}
         
-        @keyframes float1 { 
-            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); } 
-            33% { transform: translate(15vw, 5vh) scale(1.1) rotate(5deg); } 
-            66% { transform: translate(-5vw, 15vh) scale(0.9) rotate(-5deg); } 
-        }
-        @keyframes float2 { 
-            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); } 
-            33% { transform: translate(-10vw, -15vh) scale(1.2) rotate(-5deg); } 
-            66% { transform: translate(10vw, -5vh) scale(0.85) rotate(5deg); } 
-        }
-        @keyframes float3 { 
-            0%, 100% { transform: translate(0, 0) scale(1); } 
-            50% { transform: translate(20vw, -10vh) scale(1.3); } 
-        }
+        @keyframes float1 { 0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); } 33% { transform: translate(15vw, 5vh) scale(1.1) rotate(5deg); } 66% { transform: translate(-5vw, 15vh) scale(0.9) rotate(-5deg); } }
+        @keyframes float2 { 0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); } 33% { transform: translate(-10vw, -15vh) scale(1.2) rotate(-5deg); } 66% { transform: translate(10vw, -5vh) scale(0.85) rotate(5deg); } }
+        @keyframes float3 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(20vw, -10vh) scale(1.3); } }
 
         .input-dark { background: rgba(18, 18, 20, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; }
         .input-dark:focus { outline: none; border-color: var(--accent-color, #eab308); box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); background: rgba(0,0,0,0.4); }
@@ -82,7 +71,7 @@
     <div class="blob-2"></div>
     <div class="blob-3"></div>
 
-    <!-- PANTALLA DE CARGA (Evita el pantallazo blanco) -->
+    <!-- PANTALLA DE CARGA AISLADA -->
     <div id="loading-screen" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#0d0d0f]/80 backdrop-blur-xl transition-opacity duration-500">
         <svg class="animate-spin h-16 w-16 text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -94,7 +83,7 @@
 
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[100]"></div>
 
-    <!-- CONTENIDO PRINCIPAL (App Container) -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div id="app-container" class="hidden flex-col h-full w-full relative z-10">
         
         <!-- BANNER DE LICENCIA Y BROADCAST (Global) -->
@@ -186,12 +175,10 @@
                         </div>
                     </div>
 
-                    <!-- CONTENEDOR LIGHT FROSTED GLASS -->
                     <div class="glass-light p-6 md:p-8 mt-2 flex flex-col lg:flex-row gap-8 min-h-[500px]">
                         <div class="w-full lg:w-2/3 flex flex-col">
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-2xl font-black text-gray-900 tracking-tight">Atención Requerida</h2>
-                                <!-- Contenedor Cumpleaños -->
                                 <div id="cumple-container" class="hidden flex gap-2 items-center bg-purple-100 border border-purple-200 px-4 py-2 rounded-full text-xs font-bold text-purple-700 shadow-sm fade-in hover:scale-105 transition">
                                     🎂 Hoy: <span id="cumple-nombres"></span>
                                 </div>
@@ -237,7 +224,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA FINANZAS -->
+                <!-- VISTA FINANZAS (SOLO ADMIN) -->
                 <div id="vista-finanzas" class="hidden fade-in admin-only flex flex-col gap-6">
                     <div class="glass-dark p-6 h-[300px]">
                         <div class="flex justify-between items-center mb-4"><h2 class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Crecimiento Financiero (Ingresos)</h2></div>
@@ -275,7 +262,7 @@
                             <table class="w-full text-left border-collapse text-sm">
                                 <thead>
                                     <tr class="border-b border-black/10 text-gray-500 text-[10px] uppercase font-black tracking-widest">
-                                        <th class="py-4 px-4">Fecha / Obs.</th>
+                                        <th class="py-4 px-4">Fecha / Observaciones</th>
                                         <th class="py-4 px-4 text-emerald-600">Ingresos Totales</th>
                                         <th class="py-4 px-4 text-red-600">Egresos / Gastos</th>
                                         <th class="py-4 px-4">Caja Final</th>
@@ -332,7 +319,7 @@
                 
             </div>
         </main>
-    </div> <!-- /APP CONTAINER -->
+    </div> <!-- FIN APP CONTAINER -->
 
     <!-- Modal Universal Glass -->
     <div id="modal-universal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4">
@@ -357,7 +344,6 @@
                         <li><strong>Check-in Rápido:</strong> En el padrón, usa el botón "Presente" para marcar la asistencia del socio al instante.</li>
                         <li><strong>Deudas (Pagos Parciales):</strong> Al cobrar, si el monto es menor al total, el socio quedará con Deuda roja en el padrón.</li>
                         <li><strong>Cumpleaños:</strong> Si cargas la fecha de nacimiento de los socios, el sistema te avisará en el Dashboard quién cumple años hoy.</li>
-                        <li><strong>Mensajes por WhatsApp:</strong> Haz clic en el ícono verde para enviar un recordatorio automático pre-escrito al socio.</li>
                     </ul>
                 </div>
                 <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
@@ -729,17 +715,22 @@
 
         async function cargarDatos() {
             try {
-                document.getElementById('loading-text').innerText = "Cargando perfil comercial...";
+                const textLoader = document.getElementById('loading-text');
+                if(textLoader) textLoader.innerText = "Conectando al servidor principal...";
+
                 const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
                 if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
                 
+                if(textLoader) textLoader.innerText = "Sincronizando operaciones...";
+
+                // Consulta aislada para evitar bloqueos por permisos
                 try {
                     const snapB = await getDoc(doc(db, "nems_system", "broadcast"));
                     if(snapB.exists() && snapB.data().mensaje) { 
                         const bb = document.getElementById('banner-broadcast'); 
                         if(bb) { bb.innerText = `📢 AVISO NEMS: ${snapB.data().mensaje}`; bb.classList.remove('hidden'); } 
                     }
-                } catch(w) { console.warn("Aviso Broadcast:", w); }
+                } catch(w) { console.warn("Broadcast ignorado (permisos no otorgados):", w); }
 
                 const data = snap.data(); gymModulos = data.modulos || {}; nombreGymActual = data.nombre;
                 
@@ -757,8 +748,6 @@
                 if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="${basePill}" onclick="cambiarVista('tienda')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
                 if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="${basePill}" onclick="cambiarVista('evaluaciones')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>`;
                 
-                document.getElementById('loading-text').innerText = "Sincronizando operaciones...";
-
                 const [sSnap, fSnap, eSnap, pSnap, cSnap, tSnap] = await Promise.all([ 
                     getDocs(collection(db, "gimnasios", GYM_ID, "socios")), 
                     getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), 
@@ -805,20 +794,25 @@
                 
                 renderUI(); 
 
-                // Transición Éxito
+                // Transición Éxito (Oculta el loader de forma suave)
                 const loader = document.getElementById('loading-screen');
-                const app = document.getElementById('app-container');
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                    app.classList.remove('hidden');
-                    app.classList.add('flex');
-                }, 500);
+                const appContainer = document.getElementById('app-container');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        appContainer.classList.remove('hidden');
+                        appContainer.classList.add('flex');
+                    }, 500);
+                }
 
             } catch(e) { 
                 console.error(e); 
-                document.getElementById('loading-text').innerHTML = `<span class="text-red-400 bg-red-500/10 px-4 py-2 rounded-lg mt-2 inline-block border border-red-500/30">Error Crítico: Falla de conexión o permisos.</span>`;
-                showToast("Fallo de red o acceso denegado.", "error"); 
+                const textLoader = document.getElementById('loading-text');
+                if(textLoader) {
+                    textLoader.innerHTML = `<span class="text-red-400 bg-red-500/10 px-4 py-2 rounded-lg mt-2 inline-block border border-red-500/30">Error Crítico: Falla de conexión.</span>`;
+                }
+                showToast("Fallo al conectar con la base de datos.", "error"); 
             }
         }
 
