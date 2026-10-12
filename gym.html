@@ -7,12 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- ESCUDO DE ERRORES: Muestra la línea exacta si algo falla -->
+    <!-- ESCUDO DE ERRORES: Atrapa fallos para diagnóstico visual -->
     <script>
         window.addEventListener('error', function(event) {
             var banner = document.getElementById('error-banner');
             if(banner) {
-                banner.innerText = "ALERTA DE SISTEMA: " + event.message + " (Línea " + event.lineno + ")";
+                banner.innerText = "ALERTA DE SISTEMA: " + event.message;
                 banner.classList.remove('hidden');
             }
         });
@@ -73,32 +73,33 @@
 </head>
 <body class="flex flex-col h-screen overflow-hidden bg-[#0d0d0f]">
 
-    <!-- Orbes Dinámicos -->
+    <!-- Orbes de Luz de Fondo -->
     <div class="blob-1"></div>
     <div class="blob-2"></div>
     <div class="blob-3"></div>
 
-    <!-- Banner de Error Visible Superior -->
+    <!-- Banner de Errores Críticos (Top) -->
     <div id="error-banner" class="hidden w-full bg-red-600 text-white text-center py-2 text-[11px] font-bold tracking-widest uppercase z-[9999] relative"></div>
 
-    <!-- PANTALLA DE CARGA AISLADA -->
+    <!-- PANTALLA DE CARGA (Con auto-cierre de emergencia) -->
     <div id="loading-screen" class="fixed inset-0 z-[9998] flex flex-col items-center justify-center bg-[#0d0d0f]/90 backdrop-blur-2xl transition-opacity duration-500">
         <svg class="animate-spin h-16 w-16 text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
         <h2 class="text-white font-black text-2xl tracking-widest uppercase drop-shadow-md">Iniciando Panel</h2>
-        <div id="loading-text" class="text-blue-400 text-sm mt-3 font-bold tracking-wider uppercase text-center max-w-sm">Conectando a servidores...</div>
+        <div id="loading-text" class="text-blue-400 text-sm mt-3 font-bold tracking-wider uppercase text-center max-w-sm">Conectando con NovaGym Cloud...</div>
     </div>
 
+    <!-- Notificaciones Flotantes -->
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[9999]"></div>
 
-    <!-- APP CONTAINER PRINCIPAL -->
+    <!-- CONTENEDOR PRINCIPAL DE LA APLICACIÓN (Oculto hasta que cargue) -->
     <div id="app-container" class="hidden flex-col h-full w-full relative z-10 fade-in">
         
-        <div id="banner-licencia" class="hidden admin-only w-full bg-red-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-red-400"></div>
         <div id="banner-broadcast" class="hidden w-full bg-blue-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-blue-400"></div>
 
+        <!-- Botones Flotantes Inferiores -->
         <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 fade-in">
             <button id="btn-estado-turno" class="glass-dark text-gray-300 hover:text-white px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-2xl">
                 Cargando Caja...
@@ -108,10 +109,11 @@
             </button>
         </div>
 
+        <!-- Barra de Navegación Superior -->
         <header class="w-full flex justify-between items-center px-8 py-4 border-b border-white/10 bg-white/5 backdrop-blur-2xl z-30 shadow-lg">
             <div class="flex items-center gap-4 w-1/4">
                 <div id="ui-gym-logo-container" class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
-                <h2 id="ui-gym-name" class="font-black text-xl md:text-2xl tracking-wider text-white drop-shadow-md">N.OS PRO</h2>
+                <h2 id="ui-gym-name" class="font-black text-xl md:text-2xl tracking-wider text-white drop-shadow-md">Cargando...</h2>
             </div>
             
             <nav id="ui-nav-menu" class="flex items-center bg-black/30 rounded-full p-1 border border-white/10 shadow-inner backdrop-blur-md">
@@ -186,7 +188,7 @@
                         <div class="w-full lg:w-2/3 flex flex-col">
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-2xl font-black text-gray-900 tracking-tight">Atención Requerida</h2>
-                                <div id="cumple-container" class="hidden flex gap-2 items-center bg-purple-100 border border-purple-200 px-4 py-2 rounded-full text-xs font-bold text-purple-700 shadow-sm fade-in hover:scale-105 transition">
+                                <div id="cumple-container" class="hidden flex gap-2 items-center bg-purple-100 border border-purple-200 px-4 py-2 rounded-full text-xs font-bold text-purple-700 shadow-sm hover:scale-105 transition">
                                     🎂 Hoy: <span id="cumple-nombres"></span>
                                 </div>
                             </div>
@@ -245,7 +247,6 @@
                             <h2 class="text-3xl font-black text-gray-900 tracking-tight">Flujo de Transacciones</h2>
                             <div class="flex gap-3">
                                 <button id="btn-nuevo-egreso" class="bg-red-50 text-red-600 hover:bg-red-100 px-6 py-3 rounded-full text-xs font-bold transition border border-red-200 shadow-sm">+ Registrar Egreso</button>
-                                <button id="btn-exportar-csv" class="bg-white/80 text-gray-900 hover:bg-white border border-gray-300 px-6 py-3 rounded-full text-xs font-bold transition shadow-sm">Descargar Contabilidad</button>
                             </div>
                         </div>
                         <div class="overflow-x-auto mt-4">
@@ -333,16 +334,15 @@
     <!-- MODALES Glassmorphism -->
     <div id="modal-universal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4" style="display:none;">
         <div class="glass-dark p-8 w-full max-w-lg relative border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-[95vh] overflow-y-auto custom-scrollbar" id="modal-container">
-            <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10">✕</button>
+            <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10" data-modal="modal-universal">✕</button>
             <h2 id="modal-title" class="text-2xl font-black text-white mb-6 tracking-tight drop-shadow-md">Formulario</h2>
             <div id="modal-content"></div>
         </div>
     </div>
 
-    <!-- Guía de Usuario Autónoma -->
     <div id="modal-ayuda" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4" style="display:none;">
         <div class="glass-dark p-8 w-full max-w-3xl relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20 max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10">✕</button>
+            <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10" data-modal="modal-ayuda">✕</button>
             <h2 class="text-3xl font-black text-white mb-2 flex items-center gap-2 drop-shadow-md"><svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Manual Operativo NovaGym</h2>
             <p class="text-sm text-gray-300 mb-8 font-medium">Conviértete en un experto del sistema sin necesidad de soporte técnico.</p>
             
@@ -350,939 +350,559 @@
                 <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
                     <h3 class="font-black text-white mb-3 text-lg tracking-wide"><span class="dynamic-text">1.</span> Dashboard y Padrón de Socios</h3>
                     <ul class="text-gray-300 space-y-3 ml-4 list-disc">
-                        <li><strong>Check-in de Acceso Rápido:</strong> En la tabla del padrón, haz clic en el botón verde <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">✓ Presente</span>. Esto registrará la fecha y hora de la última visita del cliente sin salir de la pantalla.</li>
-                        <li><strong>Registrar un Nuevo Socio:</strong> Haz clic en el botón principal arriba a la derecha. Completa sus datos (puedes pegar un link a una foto). El sistema calculará automáticamente su vencimiento según los meses que decidas cobrarle.</li>
-                        <li><strong>Cobrar Deudas (Pagos Parciales):</strong> Al cobrar una cuota, puedes ingresar un "Monto Pagado Hoy" menor al total. El socio quedará registrado con una Deuda (etiqueta roja). Para cobrar esa deuda pendiente, simplemente haz clic en el botón "Saldar" que aparece en sus alertas.</li>
-                        <li><strong>Recordatorios por WhatsApp:</strong> Haz clic en el ícono verde de WhatsApp junto al nombre de cualquier socio. El sistema abrirá automáticamente WhatsApp Web con un mensaje precargado listo para enviarle.</li>
-                        <li><strong>Cumpleaños:</strong> Si registraste la fecha de nacimiento de tus socios, el panel te avisará en la pantalla principal (Dashboard) si alguien cumple años "Hoy" para que puedas saludarlo.</li>
+                        <li><strong>Check-in Rápido:</strong> En la tabla, haz clic en <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">✓ Presente</span> para registrar la asistencia.</li>
+                        <li><strong>Cobrar Deudas:</strong> Al cobrar una cuota, ingresa un monto menor al total. El socio quedará con Deuda. Para cobrarla, presiona "Saldar Deuda".</li>
+                        <li><strong>WhatsApp:</strong> Haz clic en el ícono de WhatsApp para abrir un chat automático con el socio.</li>
                     </ul>
                 </div>
-
                 <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
-                    <h3 class="font-black text-white mb-3 text-lg tracking-wide"><span class="dynamic-text">2.</span> Control Estricto de Cajas y Turnos</h3>
+                    <h3 class="font-bold text-white mb-3 text-lg tracking-wide"><span class="dynamic-text">2.</span> Control de Cajas</h3>
                     <ul class="text-gray-300 space-y-3 ml-4 list-disc">
-                        <li><strong>Apertura Obligatoria:</strong> Para poder registrar ventas de artículos, renovar cuotas o cargar egresos, el sistema te obligará a hacer clic en <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">🟢 Abrir Turno</span>. Debes ingresar con cuánto dinero en efectivo (Fondo de cambio) estás empezando tu día.</li>
-                        <li><strong>Cierre Seguro:</strong> Al finalizar tu horario, presiona <span class="bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded font-bold">🔒 Cerrar Turno</span>. El sistema auditará todas las ventas, membresías y gastos que hiciste durante tu jornada y te mostrará el dinero exacto que debe haber en la caja física. Deberás ingresar tu clave para firmar el cierre.</li>
-                        <li><strong>Modo Dueño (Bypass):</strong> Si ingresas con la clave de "Dueño/Admin", el sistema te permite operar y cobrar en cualquier momento sin necesidad de abrir un turno, brindándote flexibilidad total.</li>
-                    </ul>
-                </div>
-
-                <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
-                    <h3 class="font-black text-white mb-3 text-lg tracking-wide"><span class="dynamic-text">3.</span> Módulo de Finanzas (Solo Dueño)</h3>
-                    <ul class="text-gray-300 space-y-3 ml-4 list-disc">
-                        <li><strong>Registrar Egresos (Gastos):</strong> Ve a la pestaña Finanzas y haz clic en "+ Registrar Egreso". Todo el dinero que retires de la caja para pagar luz, internet o sueldos debe cargarse aquí para que tu "Balance Neto" sea real y la caja del empleado cuadre.</li>
-                        <li><strong>Auditoría de Turnos Cerrados:</strong> En la parte inferior verás la tabla de "Cajas Cerradas". Aquí quedan registrados todos los cierres de turno de tus empleados, con la hora exacta y cualquier observación que hayan dejado.</li>
-                        <li><strong>Descarga Contabilidad (Excel):</strong> Haz clic en "Descargar Contabilidad" para obtener un archivo CSV con absolutamente todos los movimientos de dinero, perfecto para enviárselo a tu contador.</li>
-                    </ul>
-                </div>
-
-                <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
-                    <h3 class="font-black text-white mb-3 text-lg tracking-wide"><span class="dynamic-text">4.</span> Tienda POS y Evaluaciones Físicas</h3>
-                    <ul class="text-gray-300 space-y-3 ml-4 list-disc">
-                        <li><strong>Catálogo POS:</strong> Para agregar bebidas o suplementos, el Dueño debe hacer clic en "+ Nuevo Producto". Para actualizar su precio o borrarlo, pasa el mouse por encima de la tarjeta del producto y haz clic en el ícono de lápiz que aparece arriba a la derecha.</li>
-                        <li><strong>Venta Rápida:</strong> Haz clic en cualquier producto del catálogo para venderlo de inmediato. Ese dinero ingresará directamente a la "Caja POS" del turno abierto.</li>
-                        <li><strong>Calculadora IMC:</strong> En la pestaña "Fichas Med.", puedes registrar el peso y altura de tus socios mensualmente. El sistema calculará el Índice de Masa Corporal de forma automática y lo clasificará por colores (Rojo = Riesgo, Naranja = Sobrepeso, Verde = Saludable).</li>
+                        <li><strong>Apertura:</strong> Haz clic en <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">🟢 Abrir Turno</span> e ingresa el fondo de cambio.</li>
+                        <li><strong>Cierre Seguro:</strong> Presiona <span class="bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded font-bold">🔒 Cerrar Turno</span>. El sistema calculará el dinero exacto que debe haber en la caja física.</li>
+                        <li><strong>Egresos:</strong> En la pestaña Finanzas, registra cualquier retiro de dinero de la caja para que tu balance cuadre a la perfección.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT FIREBASE Y LOGICA PRINCIPAL SEPARADA LINEA POR LINEA -->
+    <!-- SCRIPT DE INICIALIZACIÓN GLOBALES -->
+    <script>
+        // Declaración global de variables de entorno para evitar choques en el Module
+        window.appState = {
+            gymId: null,
+            userRole: null,
+            nombreGymActual: "",
+            gymModulos: {},
+            logoGymGlobal: "",
+            listaSociosData: [],
+            listaFinanzasData: [],
+            listaEvalsData: [],
+            listaProductosData: [],
+            listaCierresData: [],
+            vistaActual: 'dashboard',
+            modoEdicion: false,
+            idEdicion: null,
+            chartInstance: null,
+            estadoCajaGlobal: { abierta: false, fondoInicial: 0, ts: null, id: null }
+        };
+        
+        // Autodestrucción del loader en caso de falla grave de red
+        setTimeout(function() {
+            var s = document.getElementById('loading-screen');
+            var a = document.getElementById('app-container');
+            if(s && s.style.display !== 'none') {
+                s.style.display = 'none';
+                if(a) { a.classList.remove('hidden'); a.style.display = 'flex'; }
+            }
+        }, 3500);
+    </script>
+
+    <!-- SCRIPT FIREBASE Y LÓGICA AISLADA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Captura de URL y Rol
-        const urlParams = new URLSearchParams(window.location.search);
-        const GYM_ID = urlParams.get('id');
-        const userRole = sessionStorage.getItem('nems_gym_role');
+        async function initApp() {
+            try {
+                // 1. Validar Url y Rol
+                const urlParams = new URLSearchParams(window.location.search);
+                window.appState.gymId = urlParams.get('id');
+                window.appState.userRole = sessionStorage.getItem('nems_gym_role');
 
-        if (!GYM_ID || !userRole) { 
-            window.location.href = "index.html"; 
-        }
-
-        // Definicion de Interfaz según rol
-        document.getElementById('ui-role-badge').innerText = userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
-        
-        if (userRole === 'admin') { 
-            const elements = document.querySelectorAll('.staff-only');
-            for (let i = 0; i < elements.length; i++) {
-                elements[i].remove();
-            }
-        }
-        
-        if (userRole === 'staff') { 
-            const elements = document.querySelectorAll('.admin-only');
-            for (let i = 0; i < elements.length; i++) {
-                elements[i].remove();
-            }
-        }
-
-        // Inicialización Pura
-        const firebaseConfig = { 
-            apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", 
-            authDomain: "novagym-saas-enterprise.firebaseapp.com", 
-            projectId: "novagym-saas-enterprise", 
-            storageBucket: "novagym-saas-enterprise.firebasestorage.app", 
-            messagingSenderId: "578362101056", 
-            appId: "1:578362101056:web:d7833a58d16987acdb3ea5" 
-        };
-        
-        const app = initializeApp(firebaseConfig); 
-        const db = getFirestore(app);
-
-        // Variables de Sistema
-        let nombreGymActual = ""; 
-        let gymModulos = {}; 
-        let logoGymGlobal = "";
-        let listaSociosData = []; 
-        let listaFinanzasData = []; 
-        let listaEvalsData = []; 
-        let listaProductosData = []; 
-        let listaCierresData = [];
-        let vistaActual = 'dashboard'; 
-        let modoEdicion = false; 
-        let idEdicion = null;
-        let chartInstance = null; 
-        let estadoCajaGlobal = { abierta: false, fondoInicial: 0, ts: null, id: null };
-
-        // Alertas Dinamicas
-        window.showToast = function(msg, tipo) {
-            if (!tipo) { tipo = 'success'; }
-            const container = document.getElementById('toast-container'); 
-            const toast = document.createElement('div');
-            const bg = tipo === 'success' ? 'bg-black/70 border-emerald-500' : 'bg-black/70 border-red-500';
-            toast.className = 'toast-enter ' + bg + ' backdrop-blur-xl border-l-4 border-white/10 text-white px-6 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-bold text-sm flex items-center gap-3 rounded-r-2xl';
-            
-            let iconHtml = '';
-            if (tipo === 'success') {
-                iconHtml = '<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
-            } else {
-                iconHtml = '<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
-            }
-            
-            toast.innerHTML = iconHtml + ' ' + msg;
-            container.appendChild(toast); 
-            
-            setTimeout(function() { 
-                toast.style.opacity = '0'; 
-                setTimeout(function() { 
-                    toast.remove(); 
-                }, 300); 
-            }, 3000);
-        };
-
-        // Navegador de Menú
-        window.cambiarVista = function(vista) {
-            vistaActual = vista;
-            const vistas = ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-tienda', 'vista-asistencia', 'vista-evaluaciones'];
-            
-            for (let i = 0; i < vistas.length; i++) {
-                const el = document.getElementById(vistas[i]);
-                if (el) { 
-                    el.style.display = 'none'; 
-                    el.classList.add('hidden'); 
-                }
-            }
-            
-            const navItems = document.querySelectorAll('.nav-item');
-            for (let i = 0; i < navItems.length; i++) {
-                navItems[i].classList.remove('bg-white/90', 'text-black', 'shadow-[0_4px_15px_rgba(0,0,0,0.2)]'); 
-                navItems[i].classList.add('text-gray-300', 'hover:text-white');
-                const svg = navItems[i].querySelector('svg'); 
-                if (svg) {
-                    svg.classList.remove('dynamic-text');
-                }
-            }
-            
-            const activeItem = document.getElementById('nav-' + vista);
-            if (activeItem) {
-                activeItem.classList.remove('text-gray-300', 'hover:text-white'); 
-                activeItem.classList.add('bg-white/90', 'text-black', 'shadow-[0_4px_15px_rgba(0,0,0,0.2)]');
-                const svg = activeItem.querySelector('svg'); 
-                if (svg) {
-                    svg.classList.add('dynamic-text');
-                }
-            }
-            
-            const v = document.getElementById('vista-' + vista);
-            if (v) { 
-                v.classList.remove('hidden'); 
-                v.style.display = 'flex'; 
-            }
-        };
-
-        // Eventos Generales
-        const modal = document.getElementById('modal-universal'); 
-        const modalContent = document.getElementById('modal-content'); 
-        const modalTitle = document.getElementById('modal-title');
-        const btnAccionPrincipal = document.getElementById('btn-accion-principal');
-
-        document.getElementById('btn-help').addEventListener('click', function() { 
-            document.getElementById('modal-ayuda').style.display = 'flex'; 
-        });
-        
-        document.getElementById('btn-logout-gym').addEventListener('click', function() { 
-            sessionStorage.removeItem('nems_gym_role'); 
-            window.location.href = 'index.html'; 
-        });
-        
-        if (btnAccionPrincipal) {
-            btnAccionPrincipal.addEventListener('click', function() { 
-                if (vistaActual === 'dashboard' || vistaActual === 'socios') {
-                    abrirModalSocio(); 
-                } else if (vistaActual === 'finanzas') {
-                    abrirModalPago(); 
-                } else if (vistaActual === 'evaluaciones') {
-                    abrirModalEvaluacion(); 
-                }
-            });
-        }
-        
-        const botonesCerrar = document.querySelectorAll('.btn-cerrar-modal');
-        for (let i = 0; i < botonesCerrar.length; i++) {
-            botonesCerrar[i].addEventListener('click', function() {
-                document.getElementById('modal-universal').style.display = 'none';
-                document.getElementById('modal-ayuda').style.display = 'none';
-                document.getElementById('modal-detalle-turno').style.display = 'none';
-            });
-        }
-
-        const btnExportarSocios = document.getElementById('btn-exportar-socios');
-        if (btnExportarSocios) {
-            btnExportarSocios.addEventListener('click', function() {
-                let csv = "Nombre,Telefono,Servicio,Membresia,Fecha_Nacimiento,Vencimiento,Deuda\n";
-                for (let i = 0; i < listaSociosData.length; i++) {
-                    let s = listaSociosData[i];
-                    let nac = s.nacimiento ? s.nacimiento : '';
-                    let deu = s.deuda ? s.deuda : 0;
-                    csv += s.nombre + "," + s.telefono + "," + s.servicio + "," + s.membresia + "," + nac + "," + s.vence + "," + deu + "\n";
-                }
-                const a = document.createElement('a'); 
-                a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
-                a.download = "Directorio_Socios_" + nombreGymActual + ".csv"; 
-                a.click(); 
-                showToast("Directorio Descargado");
-            });
-        }
-
-        window.enviarWhatsApp = async function(tel, nombre) { 
-            const t = tel.replace(/\D/g,'');
-            const msg = encodeURIComponent("Hola " + nombre + ", te contactamos de " + nombreGymActual + ".");
-            window.open("https://wa.me/" + t + "?text=" + msg, "_blank"); 
-        };
-        
-        window.registrarIngreso = async function(id, nombre) {
-            try { 
-                await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", id), { ultimo_ingreso: new Date().toISOString() }); 
-                showToast("✅ Ingreso registrado: " + nombre); 
-            } catch(e) { 
-                showToast("Error al registrar", "error"); 
-            }
-        };
-
-        // MODAL EDICION POS
-        window.abrirModalEditarProducto = function(id, nombre, precioActual) {
-            modalTitle.innerText = "Actualizar Artículo";
-            modalContent.innerHTML = `
-                <form id="form-dinamico" class="space-y-4">
-                    <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Nombre</label><input type="text" id="cat-nom-edit" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+nombre+`" required></div>
-                    <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Nuevo Precio (ARS)</label><input type="number" id="cat-pre-edit" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+precioActual+`" required></div>
-                    <div class="flex gap-3 mt-6">
-                        <button type="submit" class="flex-1 dynamic-bg font-bold py-4 rounded-xl text-sm shadow-[0_0_20px_var(--accent-color)] opacity-90 hover:opacity-100 transition border border-white/20">Guardar</button>
-                        <button type="button" id="btn-eliminar-prod" class="bg-red-500/10 text-red-500 border border-red-500/30 hover:bg-red-500 hover:text-white px-6 py-4 rounded-xl text-sm font-bold transition">Eliminar</button>
-                    </div>
-                </form>`;
-            
-            document.getElementById('btn-eliminar-prod').addEventListener('click', async function() {
-                if(confirm("¿Seguro de eliminar este producto?")) {
-                    try { 
-                        await deleteDoc(doc(db, "gimnasios", GYM_ID, "productos", id)); 
-                        document.getElementById('modal-universal').style.display = 'none'; 
-                        showToast("Producto eliminado"); 
-                        cargarDatos(); 
-                    } catch(err) { showToast("Error", "error"); }
-                }
-            });
-
-            document.getElementById('form-dinamico').onsubmit = async function(e) {
-                e.preventDefault(); 
-                try { 
-                    await updateDoc(doc(db, "gimnasios", GYM_ID, "productos", id), { nombre: document.getElementById('cat-nom-edit').value, precio: document.getElementById('cat-pre-edit').value });
-                    document.getElementById('modal-universal').style.display = 'none'; 
-                    showToast("Precio actualizado"); 
-                    cargarDatos();
-                } catch(err) { showToast("Error", "error"); }
-            };
-            document.getElementById('modal-universal').style.display = 'flex';
-        };
-
-        window.abrirModalNuevoProducto = function() {
-            modalTitle.innerText = "Agregar al Catálogo POS";
-            modalContent.innerHTML = `
-                <form id="form-dinamico" class="space-y-4">
-                    <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Nombre del Artículo</label><input type="text" id="cat-nom" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="Ej: Agua 500ml" required></div>
-                    <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Precio Base (ARS)</label><input type="number" id="cat-pre" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="Ej: 1500" required></div>
-                    <button type="submit" class="w-full dynamic-bg font-bold py-4 rounded-xl mt-6 text-sm text-[#09090b] shadow-[0_0_20px_var(--accent-color)] opacity-90 hover:opacity-100 hover:scale-[1.02] transition border border-white/20">Guardar Producto</button>
-                </form>`;
-            document.getElementById('form-dinamico').onsubmit = async function(e) {
-                e.preventDefault();
-                try {
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "productos"), {
-                        nombre: document.getElementById('cat-nom').value,
-                        precio: document.getElementById('cat-pre').value
-                    });
-                    document.getElementById('modal-universal').style.display = 'none';
-                    showToast("Producto agregado");
-                    cargarDatos();
-                } catch(err) { showToast("Error al guardar", "error"); }
-            };
-            document.getElementById('modal-universal').style.display = 'flex';
-        };
-
-        // Formulario Pagos
-        window.abrirModalPago = function(idSocio, esSaldarDeuda) {
-            if (!idSocio) { idSocio = null; }
-            if (!esSaldarDeuda) { esSaldarDeuda = false; }
-
-            // BYPASS ADMIN: Solo bloquear si NO es admin y NO hay caja abierta
-            if (!estadoCajaGlobal.abierta && userRole !== 'admin') { 
-                showToast("Debes ABRIR TURNO antes de cobrar.", "error"); 
-                return; 
-            }
-            
-            let socio = null;
-            if (idSocio) {
-                for (let i = 0; i < listaSociosData.length; i++) {
-                    if (listaSociosData[i].id === idSocio) {
-                        socio = listaSociosData[i];
-                        break;
-                    }
-                }
-            }
-            
-            modalTitle.innerText = esSaldarDeuda ? "Saldar Deuda Pendiente" : "Renovación de Cuota";
-            
-            let selOptions = "";
-            if (socio) {
-                selOptions = '<option value="' + socio.id + '" selected>' + socio.nombre + '</option>';
-            } else {
-                selOptions = '<option value="">Seleccione el Socio...</option>';
-                for (let i = 0; i < listaSociosData.length; i++) {
-                    selOptions += '<option value="' + listaSociosData[i].id + '">' + listaSociosData[i].nombre + '</option>';
-                }
-            }
-
-            let deudaHtml = '';
-            if (esSaldarDeuda) {
-                deudaHtml = '<div class="bg-red-500/20 border border-red-500/30 p-4 rounded-xl shadow-inner"><p class="text-xs text-red-300 font-bold uppercase tracking-widest">Deuda Registrada: $' + socio.deuda + '</p></div>';
-            } else {
-                deudaHtml = '<div class="grid grid-cols-2 gap-4"><div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Meses</label><input type="number" id="p-meses" class="w-full input-dark rounded-xl p-3.5 text-sm" value="1" min="1" required></div><div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Fecha</label><input type="date" id="p-fec" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div></div>';
-            }
-
-            let disabledAttr = esSaldarDeuda ? 'disabled' : '';
-            let valTotal = esSaldarDeuda ? socio.deuda : '';
-            let btnText = esSaldarDeuda ? 'Cobrar Deuda' : 'Procesar Renovación';
-
-            modalContent.innerHTML = `
-                <form id="form-dinamico" class="space-y-4">
-                    <select id="p-soc" class="w-full input-dark rounded-xl p-3.5 text-sm" ` + disabledAttr + ` required>` + selOptions + `</select>
-                    ` + deudaHtml + `
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Total Cuota</label><input type="number" id="p-total" class="w-full input-dark rounded-xl p-3.5 text-sm" value="` + valTotal + `" ` + disabledAttr + ` required></div>
-                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Medio</label><select id="p-medio" class="w-full input-dark rounded-xl p-3.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">QR/Tarjeta</option></select></div>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-[11px] text-emerald-400 uppercase mb-2 ml-1 font-black tracking-widest">Monto Pagado Hoy (Entregado)</label>
-                        <input type="number" id="p-mon" class="w-full input-dark rounded-xl p-4 text-base font-bold focus:border-emerald-500 transition shadow-inner" value="` + valTotal + `" required>
-                    </div>
-                    <button type="submit" class="w-full dynamic-bg font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_var(--accent-color)] opacity-90 hover:opacity-100 transition hover:scale-[1.02] border border-white/20">` + btnText + `</button>
-                </form>`;
-
-            if (!esSaldarDeuda) {
-                document.getElementById('p-fec').valueAsDate = new Date();
-            }
-
-            document.getElementById('form-dinamico').onsubmit = async function(e) {
-                e.preventDefault(); 
-                const sid = document.getElementById('p-soc').value; 
-                let s = null;
-                for (let i = 0; i < listaSociosData.length; i++) {
-                    if (listaSociosData[i].id === sid) {
-                        s = listaSociosData[i];
-                        break;
-                    }
-                }
-
-                const total = parseFloat(document.getElementById('p-total').value); 
-                const entregado = parseFloat(document.getElementById('p-mon').value);
-                
-                let deudaGenerada = 0;
-                if (!esSaldarDeuda) { deudaGenerada = total - entregado; }
-                
-                let sDeudaVal = s.deuda ? s.deuda : 0;
-                let nuevaDeudaSocio = 0;
-                if (esSaldarDeuda) {
-                    nuevaDeudaSocio = sDeudaVal - entregado;
-                } else {
-                    nuevaDeudaSocio = sDeudaVal + deudaGenerada;
-                }
-                
-                try {
-                    let c_concepto = esSaldarDeuda ? "Pago Deuda: " + s.nombre : "Renovación: " + s.nombre;
-                    let c_fecha = esSaldarDeuda ? new Date().toISOString().split('T')[0] : document.getElementById('p-fec').value;
-
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { 
-                        concepto: c_concepto, 
-                        monto: entregado, 
-                        medio: document.getElementById('p-medio').value, 
-                        tipo: "Cuota", 
-                        fecha: c_fecha, 
-                        timestamp: new Date().toISOString() 
-                    });
-
-                    let updateData = { deuda: nuevaDeudaSocio > 0 ? nuevaDeudaSocio : 0 };
-                    
-                    if (!esSaldarDeuda) { 
-                        let arrVence = s.vence.split('-'); 
-                        let nDate = new Date(arrVence[0], arrVence[1]-1, arrVence[2]); 
-                        let mesesASumar = parseInt(document.getElementById('p-meses').value);
-                        nDate.setMonth(nDate.getMonth() + mesesASumar); 
-                        updateData.vence = nDate.toISOString().split('T')[0]; 
-                    }
-
-                    await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), updateData);
-                    
-                    if (esSaldarDeuda) {
-                        showToast("Deuda Saldada", "success");
-                    } else {
-                        showToast("Pago registrado", "success");
-                    }
-                    
-                    modal.style.display = 'none'; 
-                    cargarDatos();
-                } catch(err) { 
-                    showToast("Error al facturar", "error"); 
-                }
-            };
-            modal.style.display = 'flex';
-        };
-
-        const btnNuevoEgreso = document.getElementById('btn-nuevo-egreso');
-        if (btnNuevoEgreso) {
-            btnNuevoEgreso.addEventListener('click', function() {
-                if (!estadoCajaGlobal.abierta && userRole !== 'admin') { 
-                    showToast("Debes ABRIR TURNO para registrar egresos.", "error"); 
+                if (!window.appState.gymId || !window.appState.userRole) { 
+                    window.location.href = "index.html"; 
                     return; 
                 }
-                modalTitle.innerText = "Registrar Gasto";
-                modalContent.innerHTML = `
-                    <form id="form-dinamico" class="space-y-4">
-                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Motivo</label><input type="text" id="e-desc" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="Ej. Pago Luz, Insumos..." required></div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="block text-[10px] uppercase font-bold text-red-400 mb-1.5 ml-1">Monto Retirado</label><input type="number" id="e-mon" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
-                            <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Fecha</label><input type="date" id="e-fec" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
-                        </div>
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_rgba(220,38,38,0.4)] transition border border-white/20">Registrar Egreso</button>
-                    </form>`;
-                document.getElementById('e-fec').valueAsDate = new Date();
-                document.getElementById('form-dinamico').onsubmit = async function(e) {
-                    e.preventDefault();
+
+                // 2. Aplicar roles visuales
+                document.getElementById('ui-role-badge').innerText = window.appState.userRole === 'admin' ? 'Dueño / Admin' : 'Recepción (Staff)';
+                if (window.appState.userRole === 'admin') { 
+                    const e = document.querySelectorAll('.staff-only');
+                    for (let i = 0; i < e.length; i++) e[i].remove();
+                }
+                if (window.appState.userRole === 'staff') { 
+                    const e = document.querySelectorAll('.admin-only');
+                    for (let i = 0; i < e.length; i++) e[i].remove();
+                }
+
+                // 3. Inicializar Firebase
+                const firebaseConfig = { 
+                    apiKey: "AIzaSyCZ2UaN7J_r7AVA9RCn945JrF2wMol-hh8", 
+                    authDomain: "novagym-saas-enterprise.firebaseapp.com", 
+                    projectId: "novagym-saas-enterprise", 
+                    storageBucket: "novagym-saas-enterprise.firebasestorage.app", 
+                    messagingSenderId: "578362101056", 
+                    appId: "1:578362101056:web:d7833a58d16987acdb3ea5" 
+                };
+                
+                const app = initializeApp(firebaseConfig); 
+                window.appState.db = getFirestore(app);
+                const db = window.appState.db;
+                const GYM_ID = window.appState.gymId;
+
+                // 4. Utilidades Globales
+                window.showToast = function(msg, tipo) {
+                    if (!tipo) tipo = 'success';
+                    const container = document.getElementById('toast-container'); 
+                    const toast = document.createElement('div');
+                    const bg = tipo === 'success' ? 'bg-black/70 border-emerald-500' : 'bg-black/70 border-red-500';
+                    toast.className = 'toast-enter ' + bg + ' backdrop-blur-xl border-l-4 border-white/10 text-white px-6 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-bold text-sm flex items-center gap-3 rounded-r-2xl';
+                    
+                    let iconHtml = tipo === 'success' ? 
+                        '<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : 
+                        '<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+                    
+                    toast.innerHTML = iconHtml + ' ' + msg;
+                    container.appendChild(toast); 
+                    setTimeout(function() { toast.style.opacity = '0'; setTimeout(function() { toast.remove(); }, 300); }, 3000);
+                };
+
+                window.cambiarVista = function(vista) {
+                    window.appState.vistaActual = vista;
+                    const vistas = ['vista-dashboard', 'vista-socios', 'vista-finanzas', 'vista-tienda', 'vista-asistencia', 'vista-evaluaciones'];
+                    for(let i=0; i<vistas.length; i++) {
+                        const el = document.getElementById(vistas[i]);
+                        if(el) { el.style.display = 'none'; el.classList.add('hidden'); }
+                    }
+                    
+                    const navItems = document.querySelectorAll('.nav-item');
+                    for(let i=0; i<navItems.length; i++) {
+                        navItems[i].classList.remove('bg-white/90', 'text-black', 'shadow-[0_4px_15px_rgba(0,0,0,0.2)]'); 
+                        navItems[i].classList.add('text-gray-300', 'hover:text-white');
+                        const svg = navItems[i].querySelector('svg'); 
+                        if(svg) svg.classList.remove('dynamic-text');
+                    }
+
+                    const activeItem = document.getElementById('nav-' + vista);
+                    if(activeItem) {
+                        activeItem.classList.remove('text-gray-300', 'hover:text-white'); 
+                        activeItem.classList.add('bg-white/90', 'text-black', 'shadow-[0_4px_15px_rgba(0,0,0,0.2)]');
+                        const svg = activeItem.querySelector('svg'); 
+                        if(svg) svg.classList.add('dynamic-text');
+                    }
+
+                    const v = document.getElementById('vista-' + vista);
+                    if(v) { v.classList.remove('hidden'); v.style.display = 'flex'; }
+                };
+
+                // Asignar eventos de modales estáticos
+                document.getElementById('btn-help').addEventListener('click', function() { document.getElementById('modal-ayuda').style.display = 'flex'; });
+                document.getElementById('btn-logout-gym').addEventListener('click', function() { sessionStorage.removeItem('nems_gym_role'); window.location.href = 'index.html'; });
+                
+                const btnAccionPrincipal = document.getElementById('btn-accion-principal');
+                if(btnAccionPrincipal) {
+                    btnAccionPrincipal.addEventListener('click', function() { 
+                        if (window.appState.vistaActual === 'dashboard' || window.appState.vistaActual === 'socios') window.abrirModalSocio(); 
+                        else if (window.appState.vistaActual === 'finanzas') window.abrirModalPago(); 
+                        else if (window.appState.vistaActual === 'evaluaciones') window.abrirModalEvaluacion(); 
+                    });
+                }
+                
+                const botonesCerrar = document.querySelectorAll('.btn-cerrar-modal');
+                for(let i=0; i<botonesCerrar.length; i++) {
+                    botonesCerrar[i].addEventListener('click', function(e) {
+                        document.getElementById('modal-universal').style.display = 'none';
+                        document.getElementById('modal-ayuda').style.display = 'none';
+                        document.getElementById('modal-detalle-turno').style.display = 'none';
+                    });
+                }
+
+                // Definir funciones Globales Expuestas
+                window.enviarWhatsApp = function(tel, nombre) { 
+                    const t = tel.replace(/\D/g,'');
+                    const msg = encodeURIComponent("Hola " + nombre + ", te contactamos de " + window.appState.nombreGymActual + ".");
+                    window.open("https://wa.me/" + t + "?text=" + msg, "_blank"); 
+                };
+                
+                window.registrarIngreso = async function(id, nombre) {
                     try { 
-                        await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { 
-                            concepto: document.getElementById('e-desc').value, 
-                            monto: document.getElementById('e-mon').value, 
-                            medio: "Efectivo", 
-                            tipo: "Egreso", 
-                            fecha: document.getElementById('e-fec').value, 
-                            timestamp: new Date().toISOString() 
-                        }); 
-                        modal.style.display = 'none'; 
-                        showToast("Gasto Registrado", "success"); 
-                        cargarDatos(); 
-                    } catch(err) { 
-                        showToast("Error", "error"); 
+                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", id), { ultimo_ingreso: new Date().toISOString() }); 
+                        window.showToast("✅ Ingreso registrado: " + nombre); 
+                    } catch(e) { window.showToast("Error al registrar", "error"); }
+                };
+
+                window.abrirModalEvaluacion = function() { document.getElementById('modal-universal').style.display = 'flex'; };
+                window.abrirModalNuevoProducto = function() { document.getElementById('modal-universal').style.display = 'flex'; };
+
+                // Funciones de Negocio y Data
+                window.abrirModalPago = function(idSocio, esSaldarDeuda) {
+                    if(!idSocio) idSocio = null;
+                    if(!esSaldarDeuda) esSaldarDeuda = false;
+
+                    if(!window.appState.estadoCajaGlobal.abierta && window.appState.userRole !== 'admin') { 
+                        window.showToast("Debes ABRIR TURNO antes de cobrar.", "error"); 
+                        return; 
                     }
-                };
-                modal.style.display = 'flex';
-            });
-        }
-
-        window.abrirModalSocio = function(socio) {
-            if(!socio) socio = null;
-            modoEdicion = false;
-            idEdicion = null;
-            
-            if (socio) {
-                modoEdicion = true;
-                idEdicion = socio.id;
-            }
-
-            modalTitle.innerText = socio ? "Modificar Perfil" : "Alta Integral de Socio";
-            
-            let boxPago = "";
-            if (!socio) {
-                boxPago = `
-                <div class="border-t border-white/10 pt-5 mt-6">
-                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">1er Pago y Finanzas</h3>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Fecha Pago</label><input type="date" id="s-fec-pago" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Meses Abona</label><input type="number" id="s-meses" class="w-full input-dark rounded-xl p-3.5 text-sm" value="1" min="1" required></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Valor Total Cuota</label><input type="number" id="s-monto" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Medio</label><select id="s-medio" class="w-full input-dark rounded-xl p-3.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">QR</option></select></div>
-                    </div>
-                    <div><label class="text-[11px] text-emerald-400 font-black uppercase ml-1 tracking-widest">Monto Pagado Hoy</label><input type="number" id="s-entregado" class="w-full input-dark rounded-xl p-4 text-base font-bold focus:border-emerald-500 shadow-inner" required></div>
-                </div>`;
-            }
-
-            let nom = socio ? socio.nombre : '';
-            let tel = socio ? socio.telefono : '';
-            let img = socio && socio.foto ? socio.foto : '';
-            let placeholderImg = socio && socio.foto ? socio.foto : 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO';
-            let serv = socio ? socio.servicio || '' : '';
-            let mem = socio ? socio.membresia || '' : '';
-            let nac = socio ? socio.nacimiento || '' : '';
-            let ven = socio ? socio.vence : '';
-            let readOnlyHtml = !socio ? 'readonly' : '';
-
-            modalContent.innerHTML = `
-                <form id="form-dinamico" class="space-y-4">
-                    <div class="flex gap-4">
-                        <div class="w-1/4"><img id="s-preview" src="`+placeholderImg+`" class="w-full aspect-square rounded-2xl object-cover border border-white/10 shadow-lg"></div>
-                        <div class="w-3/4 space-y-4">
-                            <input type="text" id="s-nom" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="Nombre completo" value="`+nom+`" required>
-                            <input type="tel" id="s-tel" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="WhatsApp (Ej: 549...)" value="`+tel+`" required>
-                        </div>
-                    </div>
-                    <input type="url" id="s-foto" class="w-full input-dark rounded-xl p-3.5 text-sm mt-2" placeholder="URL Foto de Perfil (Opcional)" value="`+img+`">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Servicio</label><input type="text" id="s-serv" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+serv+`" required></div>
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Membresía</label><input type="text" id="s-mem" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+mem+`" required></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Nacimiento 🎂</label><input type="date" id="s-nacimiento" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+nac+`"></div>
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Vence Cuota</label><input type="date" id="s-vence" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+ven+`" required `+readOnlyHtml+`></div>
-                    </div>
-                    ` + boxPago + `
-                    <button type="submit" class="w-full dynamic-bg font-bold py-4 rounded-xl mt-6 text-sm text-[#09090b] shadow-[0_0_20px_var(--accent-color)] opacity-90 hover:opacity-100 hover:scale-[1.02] transition border border-white/20">Guardar Registro</button>
-                </form>`;
-
-            if (!socio) {
-                const fPago = document.getElementById('s-fec-pago'); 
-                const fMeses = document.getElementById('s-meses'); 
-                const fVence = document.getElementById('s-vence');
-                fPago.valueAsDate = new Date();
-                
-                const calcFecha = function() { 
-                    if(fPago.value && fMeses.value) { 
-                        const arr = fPago.value.split('-'); 
-                        const date = new Date(arr[0], arr[1]-1, arr[2]); 
-                        date.setMonth(date.getMonth() + parseInt(fMeses.value)); 
-                        fVence.value = date.toISOString().split('T')[0]; 
-                    } 
-                };
-                fPago.addEventListener('change', calcFecha); 
-                fMeses.addEventListener('input', calcFecha); 
-                calcFecha();
-            }
-
-            document.getElementById('s-foto').addEventListener('input', function(e) { 
-                let val = e.target.value;
-                if(!val) val = 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO';
-                document.getElementById('s-preview').src = val; 
-            });
-            
-            document.getElementById('form-dinamico').onsubmit = async function(e) {
-                e.preventDefault(); 
-                const btn = e.target.querySelector('button'); 
-                btn.innerText = 'Procesando...'; 
-                btn.disabled = true;
-                
-                const dSocio = { 
-                    nombre: document.getElementById('s-nom').value, 
-                    telefono: document.getElementById('s-tel').value, 
-                    foto: document.getElementById('s-foto').value, 
-                    servicio: document.getElementById('s-serv').value, 
-                    membresia: document.getElementById('s-mem').value, 
-                    vence: document.getElementById('s-vence').value, 
-                    nacimiento: document.getElementById('s-nacimiento').value 
-                };
-                
-                try {
-                    if (modoEdicion) { 
-                        await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dSocio); 
-                        showToast("Perfil actualizado"); 
-                    } else { 
-                        if (!estadoCajaGlobal.abierta && userRole !== 'admin') { 
-                            showToast("Abre turno para guardar", "error"); 
-                            btn.disabled = false; 
-                            btn.innerText = 'Guardar'; 
-                            return; 
+                    
+                    let socio = null;
+                    if (idSocio) {
+                        for(let i = 0; i < window.appState.listaSociosData.length; i++) {
+                            if(window.appState.listaSociosData[i].id === idSocio) { socio = window.appState.listaSociosData[i]; break; }
                         }
-                        const t = parseFloat(document.getElementById('s-monto').value); 
-                        const ent = parseFloat(document.getElementById('s-entregado').value);
-                        let deu = t - ent;
-                        if (deu < 0) deu = 0;
-                        dSocio.deuda = deu;
-                        
-                        await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
-                        await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { 
-                            concepto: "Alta: " + dSocio.nombre, 
-                            monto: ent, 
-                            medio: document.getElementById('s-medio').value, 
-                            tipo: "Cuota", 
-                            fecha: document.getElementById('s-fec-pago').value, 
-                            timestamp: new Date().toISOString() 
-                        });
-                        showToast("Socio guardado");
                     }
-                    modal.style.display = 'none'; 
-                    cargarDatos();
-                } catch(err) { 
-                    showToast("Error", "error"); 
-                    btn.disabled = false; 
-                }
-            };
-            modal.style.display = 'flex';
-        };
+                    
+                    const modalTitle = document.getElementById('modal-title');
+                    const modalContent = document.getElementById('modal-content');
+                    modalTitle.innerText = esSaldarDeuda ? "Saldar Deuda Pendiente" : "Renovación de Cuota";
+                    
+                    let selOptions = socio ? '<option value="' + socio.id + '" selected>' + socio.nombre + '</option>' : '<option value="">Seleccione el Socio...</option>';
+                    if(!socio && !esSaldarDeuda) {
+                        for(let i = 0; i < window.appState.listaSociosData.length; i++) {
+                            selOptions += '<option value="' + window.appState.listaSociosData[i].id + '">' + window.appState.listaSociosData[i].nombre + '</option>';
+                        }
+                    }
 
-        window.abrirModalRutina = function(id) {
-            let socio = null;
-            for(let i=0; i<listaSociosData.length; i++) {
-                if(listaSociosData[i].id === id) { socio = listaSociosData[i]; break; }
-            }
-            if(!socio) return;
+                    let extraHtml = esSaldarDeuda ? 
+                        '<div class="bg-red-500/20 border border-red-500/30 p-4 rounded-xl shadow-inner"><p class="text-xs text-red-300 font-bold uppercase tracking-widest">Deuda Registrada: $' + socio.deuda + '</p></div>' : 
+                        '<div class="grid grid-cols-2 gap-4"><div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Meses</label><input type="number" id="p-meses" class="w-full input-dark rounded-xl p-3.5 text-sm" value="1" min="1" required></div><div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Fecha</label><input type="date" id="p-fec" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div></div>';
 
-            modalTitle.innerText = "Plan de Entrenamiento";
-            modalContent.innerHTML = `
-                <form id="form-dinamico" class="space-y-4">
-                    <p class="text-xs text-gray-400 mb-2 font-medium">Asignando rutina a: <strong class="text-white">${socio.nombre}</strong></p>
-                    <textarea id="r-text" rows="8" class="w-full input-dark rounded-xl p-4 text-sm resize-none custom-scrollbar" placeholder="Escribe ejercicios o pega link PDF...">${socio.rutina || ''}</textarea>
-                    <button type="submit" class="w-full dynamic-bg font-bold py-4 rounded-xl mt-4 text-sm shadow-[0_0_20px_var(--accent-color)] opacity-90 transition border border-white/20">Guardar Plan</button>
-                </form>`;
-            document.getElementById('form-dinamico').onsubmit = async function(e) {
-                e.preventDefault();
-                try { 
-                    await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", id), { rutina: document.getElementById('r-text').value }); 
-                    showToast("Rutina Asignada"); 
-                    modal.style.display = 'none'; 
-                    cargarDatos(); 
-                } catch(err) { 
-                    showToast("Error", "error"); 
-                }
-            };
-            modal.style.display = 'flex';
-        };
+                    let disabledAttr = esSaldarDeuda ? 'disabled' : '';
+                    let valTotal = esSaldarDeuda ? socio.deuda : '';
+                    let btnText = esSaldarDeuda ? 'Cobrar Deuda' : 'Procesar Renovación';
 
-        window.mostrarDetalleSocio = function(id) {
-            let s = null;
-            for(let i = 0; i < listaSociosData.length; i++) {
-                if(listaSociosData[i].id === id) { s = listaSociosData[i]; break; }
-            }
-            if(!s) return;
-
-            let deudaHtml = '';
-            if (s.deuda > 0) {
-                deudaHtml = '<p class="text-xs text-red-400 font-bold mt-4 bg-red-500/20 p-3 rounded-lg border border-red-500/30 shadow-inner">⚠️ Deuda Vigente: $' + s.deuda + '</p>';
-            }
-
-            let btnSaldarHtml = '';
-            if (s.deuda > 0) {
-                btnSaldarHtml = '<button class="w-1/2 bg-red-600 text-white font-bold py-4 rounded-2xl transition shadow-[0_0_15px_rgba(220,38,38,0.4)] text-sm hover:bg-red-500 border border-white/20" onclick="abrirModalPago(\'' + s.id + '\', true)">Saldar</button>';
-            }
-
-            let classExtender = s.deuda > 0 ? 'w-1/2' : 'w-full';
-            let logoLocal = logoGymGlobal ? logoGymGlobal : 'https://via.placeholder.com/50/121214/fff?text=GYM';
-
-            document.getElementById('detalle-socio-preview').innerHTML = `
-                <div class="relative w-full rounded-[2rem] p-8 mb-6 overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-black/40">
-                    <div class="absolute inset-0 opacity-20 dynamic-bg blur-3xl rounded-full scale-150 transform -translate-y-1/2 pointer-events-none"></div>
-                    <div class="relative z-10 flex flex-col gap-4">
-                        <div class="flex items-center gap-4">
-                            <img src="${logoLocal}" class="w-14 h-14 object-contain drop-shadow-md">
-                            <h4 class="text-2xl font-black text-white tracking-wide drop-shadow-md">${nombreGymActual}</h4>
-                        </div>
-                        <div class="flex flex-col mt-4 bg-black/20 p-4 rounded-xl border border-white/5 shadow-inner">
-                            <p class="text-sm text-gray-300 font-bold">${s.membresia}</p>
-                            <p class="text-[11px] text-gray-500 mt-1 uppercase tracking-widest font-bold">Válida hasta: <span class="text-white">${s.vence}</span></p>
-                            ${deudaHtml}
-                        </div>
-                    </div>
-                </div>
-                <div class="flex gap-3 w-full mt-auto">
-                    ${btnSaldarHtml}
-                    <button class="${classExtender} dynamic-bg text-black font-bold py-4 rounded-2xl hover:opacity-90 transition shadow-[0_0_20px_var(--accent-color)] text-sm border border-white/20 hover:scale-[1.02]" onclick="abrirModalPago('${s.id}')">Extender Cuota</button>
-                </div>
-            `;
-        };
-
-        const btnEstadoTurno = document.getElementById('btn-estado-turno');
-        if (btnEstadoTurno) {
-            btnEstadoTurno.addEventListener('click', function() {
-                if(!estadoCajaGlobal.abierta) {
-                    modalTitle.innerText = "Apertura de Turno";
                     modalContent.innerHTML = `
                         <form id="form-dinamico" class="space-y-4">
-                            <div class="bg-blue-500/10 border border-blue-500/30 p-5 rounded-xl shadow-inner"><p class="text-xs text-blue-300 font-medium">Declara el fondo de cambio físico con el que inicias.</p></div>
-                            <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Fondo de Caja (Efectivo Inicial)</label>
-                            <input type="number" id="t-fondo" class="w-full input-dark rounded-xl p-4 text-sm font-bold" placeholder="Ej. 15000" required></div>
-                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_rgba(16,185,129,0.4)] transition border border-white/20 hover:scale-[1.02]">Comenzar Operaciones</button>
+                            <select id="p-soc" class="w-full input-dark rounded-xl p-3.5 text-sm" ` + disabledAttr + ` required>` + selOptions + `</select>
+                            ` + extraHtml + `
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Total Cuota</label><input type="number" id="p-total" class="w-full input-dark rounded-xl p-3.5 text-sm" value="` + valTotal + `" ` + disabledAttr + ` required></div>
+                                <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Medio</label><select id="p-medio" class="w-full input-dark rounded-xl p-3.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">QR/Tarjeta</option></select></div>
+                            </div>
+                            <div class="mt-2">
+                                <label class="block text-[11px] text-emerald-400 uppercase mb-2 ml-1 font-black tracking-widest">Monto Pagado Hoy (Entregado)</label>
+                                <input type="number" id="p-mon" class="w-full input-dark rounded-xl p-4 text-base font-bold focus:border-emerald-500 transition shadow-inner" value="` + valTotal + `" required>
+                            </div>
+                            <button type="submit" class="w-full dynamic-bg font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_var(--accent-color)] opacity-90 hover:opacity-100 transition hover:scale-[1.02] border border-white/20">` + btnText + `</button>
                         </form>`;
-                    document.getElementById('form-dinamico').onsubmit = async function(e) {
-                        e.preventDefault();
-                        try { 
-                            await addDoc(collection(db, "gimnasios", GYM_ID, "turnos_estado"), { 
-                                abierta: true, 
-                                fondoInicial: Number(document.getElementById('t-fondo').value), 
-                                ts: new Date().toISOString() 
-                            }); 
-                            modal.style.display = 'none'; 
-                            showToast("Caja Abierta"); 
-                            cargarDatos(); 
-                        } catch(err) { showToast("Error", "error"); }
-                    };
-                } else {
-                    let ingPOS = 0; let ingMem = 0; let egresos = 0;
-                    for (let i = 0; i < listaFinanzasData.length; i++) {
-                        let f = listaFinanzasData[i];
-                        if (f.timestamp > estadoCajaGlobal.ts) {
-                            if (f.tipo === 'Egreso') { egresos += Number(f.monto); }
-                            else if (f.tipo === 'Inventario') { ingPOS += Number(f.monto); }
-                            else if (f.tipo === 'Cuota') { ingMem += Number(f.monto); }
-                        }
-                    }
-                    const cajaFinal = estadoCajaGlobal.fondoInicial + ingPOS + ingMem - egresos;
 
-                    modalTitle.innerText = "Arqueo de Cierre";
-                    modalContent.innerHTML = `
-                        <div class="space-y-3 text-sm text-gray-300 bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
-                            <div class="flex justify-between border-b border-white/10 pb-3"><span>Fondo Inicial:</span><span class="text-white font-mono font-bold">$${estadoCajaGlobal.fondoInicial}</span></div>
-                            <div class="flex justify-between border-b border-white/10 pb-3 pt-1"><span>Ventas POS:</span><span class="text-emerald-400 font-mono font-bold">+$${ingPOS}</span></div>
-                            <div class="flex justify-between border-b border-white/10 pb-3 pt-1"><span>Membresías:</span><span class="text-blue-400 font-mono font-bold">+$${ingMem}</span></div>
-                            <div class="flex justify-between border-b border-white/10 pb-3 pt-1"><span>Gastos/Egresos:</span><span class="text-red-400 font-mono font-bold">-$${egresos}</span></div>
-                            <div class="flex justify-between pt-3 text-xl font-black tracking-tight"><span>En Caja Física:</span><span class="text-white drop-shadow-md bg-white/10 px-3 py-1 rounded-lg border border-white/10">$${cajaFinal}</span></div>
-                        </div>
-                        <form id="form-dinamico" class="mt-6 space-y-4">
-                            <textarea id="t-obs" class="w-full input-dark rounded-xl p-4 text-sm resize-none custom-scrollbar" rows="2" placeholder="Observaciones para el dueño..."></textarea>
-                            <input type="password" id="t-pass" class="w-full input-dark rounded-xl p-4 text-sm text-center tracking-widest" placeholder="Clave de Autorización" required>
-                            <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-xl mt-4 text-sm shadow-[0_0_20px_rgba(234,88,12,0.4)] transition border border-white/20 hover:scale-[1.02]">Confirmar y Cerrar</button>
-                        </form>
-                    `;
+                    if(!esSaldarDeuda) document.getElementById('p-fec').valueAsDate = new Date();
+
                     document.getElementById('form-dinamico').onsubmit = async function(e) {
                         e.preventDefault(); 
-                        const pass = document.getElementById('t-pass').value;
-                        try {
-                            const gSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
-                            const dbData = gSnap.data();
-                            if (pass !== dbData.password && pass !== dbData.passwordStaff) { 
-                                showToast("Clave Incorrecta", "error"); 
-                                return; 
-                            }
-                            await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { 
-                                apertura: estadoCajaGlobal.ts, 
-                                cierre: new Date().toISOString(), 
-                                timestamp: new Date().toISOString(), 
-                                total_pos: ingPOS, 
-                                total_mem: ingMem, 
-                                egresos: egresos, 
-                                fondo_inicial: estadoCajaGlobal.fondoInicial, 
-                                usuario: userRole, 
-                                observaciones: document.getElementById('t-obs').value 
-                            });
-                            await deleteDoc(doc(db, "gimnasios", GYM_ID, "turnos_estado", estadoCajaGlobal.id));
-                            modal.style.display = 'none'; 
-                            showToast("Caja Cerrada", "success"); 
-                            cargarDatos();
-                        } catch(err) { showToast("Error", "error"); }
-                    };
-                }
-                modal.style.display = 'flex';
-            });
-        }
-
-        window.abrirModalVentaArticulo = function(nombre, precioBase) {
-            if (!estadoCajaGlobal.abierta && userRole !== 'admin') { 
-                showToast("Abre turno para vender.", "error"); 
-                return; 
-            }
-            modalTitle.innerText = "Venta Rápida: " + nombre;
-            modalContent.innerHTML = `
-                <form id="form-dinamico" class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Medio de Pago</label><select id="v-medio" class="w-full input-dark rounded-xl p-3.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">QR</option></select></div>
-                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Importe Final</label><input type="number" id="v-mon" class="w-full input-dark rounded-xl p-3.5 text-sm font-bold" value="${precioBase}" required></div>
-                    </div>
-                    <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Fecha</label><input type="date" id="v-fec" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_rgba(16,185,129,0.4)] transition border border-white/20 hover:scale-[1.02]">Confirmar Venta</button>
-                </form>`;
-            document.getElementById('v-fec').valueAsDate = new Date();
-            document.getElementById('form-dinamico').onsubmit = async function(e) {
-                e.preventDefault();
-                try { 
-                    await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { 
-                        concepto: nombre, 
-                        monto: document.getElementById('v-mon').value, 
-                        medio: document.getElementById('v-medio').value, 
-                        tipo: "Inventario", 
-                        fecha: document.getElementById('v-fec').value, 
-                        timestamp: new Date().toISOString() 
-                    }); 
-                    modal.style.display = 'none'; 
-                    showToast("Venta procesada"); 
-                    cargarDatos(); 
-                } catch(err) { showToast("Error", "error"); }
-            };
-            modal.style.display = 'flex';
-        };
-
-        window.abrirModalEvaluacion = function() { document.getElementById('modal-universal').style.display = 'flex'; };
-        window.abrirModalNuevoProducto = function() { document.getElementById('modal-universal').style.display = 'flex'; };
-
-        function evaluarEstado(vence) {
-            if (!vence) { return { t: 'Active', c: 'bg-emerald-500/20 text-emerald-600 border-emerald-500/30 shadow-inner' }; }
-            const h = new Date(); h.setHours(0,0,0,0); 
-            const v = new Date(vence); 
-            if (isNaN(v)) { return { t: 'Active', c: 'bg-emerald-500/20 text-emerald-600 border-emerald-500/30 shadow-inner' }; }
-            v.setHours(23,59,59,999);
-            const d = Math.ceil((v - h) / (1000 * 60 * 60 * 24));
-            if (d < 0) { return { t: 'Expired', c: 'bg-red-500/20 text-red-500 border-red-500/30 shadow-inner' }; }
-            if (d <= 3) { return { t: 'Warning', c: 'bg-orange-500/20 text-orange-500 border-orange-500/30 shadow-inner' }; }
-            return { t: 'Active', c: 'bg-emerald-500/20 text-emerald-600 border-emerald-500/30 shadow-inner' };
-        }
-
-        function renderizarGrafico(finanzas) {
-            const ctx = document.getElementById('revenueChart'); 
-            if(!ctx) return;
-            
-            if(chartInstance) { chartInstance.destroy(); }
-            
-            const ingresosPorMes = {};
-            for(let i=0; i<finanzas.length; i++) {
-                let f = finanzas[i];
-                if(f.tipo !== 'Egreso') { 
-                    const mes = f.fecha.substring(0, 7); 
-                    if (!ingresosPorMes[mes]) ingresosPorMes[mes] = 0;
-                    ingresosPorMes[mes] += Number(f.monto); 
-                }
-            }
-            
-            const mesesOrdenados = Object.keys(ingresosPorMes).sort();
-            const etiquetas = [];
-            const dataPuntos = [];
-            
-            for(let i=0; i<mesesOrdenados.length; i++) {
-                let m = mesesOrdenados[i];
-                etiquetas.push(new Date(m + "-02").toLocaleString('es-ES', { month: 'short', year: 'numeric' }).toUpperCase());
-                dataPuntos.push(ingresosPorMes[m]);
-            }
-
-            const colorAcento = getComputedStyle(document.body).getPropertyValue('--accent-color').trim() || '#eab308';
-            
-            chartInstance = new Chart(ctx.getContext('2d'), {
-                type: 'line', 
-                data: { labels: etiquetas, datasets: [{ label: 'Ingresos', data: dataPuntos, borderColor: colorAcento, backgroundColor: colorAcento + '20', borderWidth: 3, pointBackgroundColor: '#fff', pointRadius: 4, fill: true, tension: 0.4 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a1a1aa' } }, y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a1a1aa' } } } }
-            });
-        }
-
-        function renderUI() {
-            try {
-                const hoy = new Date(); 
-                const mes = String(hoy.getMonth()+1).padStart(2,'0');
-                const dia = String(hoy.getDate()).padStart(2,'0');
-                const hoyMD = mes + "-" + dia;
-                let cumpleaneros = [];
-
-                const cAlertas = document.getElementById('contenedor-alertas'); 
-                const elTotalAlertas = document.getElementById('total-alertas');
-                
-                if(cAlertas && elTotalAlertas) {
-                    cAlertas.innerHTML = ''; 
-                    let alertas = 0;
-                    
-                    for(let i=0; i<listaSociosData.length; i++) {
-                        let s = listaSociosData[i];
-                        const est = evaluarEstado(s.vence);
-                        
-                        if(s.nacimiento && String(s.nacimiento).endsWith(hoyMD)) { cumpleaneros.push(s.nombre); }
-
-                        if(est.t !== 'Active' || s.deuda > 0) {
-                            alertas++;
-                            let deudaFlag = s.deuda > 0 ? '<div class="absolute left-0 top-0 w-2 h-full bg-red-500 shadow-[0_0_10px_#ef4444]"></div>' : '';
-                            let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=FOTO';
-                            let subtitulo = s.deuda > 0 ? '<span class="text-red-500">Deuda: $' + s.deuda + '</span>' : 'Miembro';
-                            
-                            let spanEstado = '';
-                            if (est.t === 'Expired') spanEstado = 'Expirado';
-                            else if (est.t === 'Warning') spanEstado = 'Por Vencer';
-                            else spanEstado = 'Activo';
-
-                            let btnSaldar = s.deuda > 0 ? '<button class="bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white px-5 py-2.5 text-xs rounded-full font-bold transition shadow-sm border border-red-500/20" onclick="event.stopPropagation(); abrirModalPago(\'' + s.id + '\', true)">Saldar</button>' : '';
-
-                            cAlertas.innerHTML += `
-                                <div class="p-5 glass-light flex flex-col sm:flex-row justify-between items-center transition hover:scale-[1.02] cursor-pointer gap-4 sm:gap-0 relative overflow-hidden shadow-sm border border-white/50" onclick="mostrarDetalleSocio('${s.id}')">
-                                    ${deudaFlag}
-                                    <div class="flex items-center gap-4 w-full sm:w-auto ml-2">
-                                        <img src="${fotUrl}" class="w-12 h-12 rounded-full object-cover shadow-md border border-white/50">
-                                        <div class="w-40"><p class="text-sm font-black text-gray-900 tracking-tight">${s.nombre}</p><p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">${subtitulo}</p></div>
-                                        <span class="px-3 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border shadow-sm ${est.c}">${spanEstado}</span>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        ${btnSaldar}
-                                        <button class="bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 px-6 py-2.5 text-xs rounded-full font-black tracking-wide transition shadow-sm" onclick="event.stopPropagation(); abrirModalPago('${s.id}')">Renovar</button>
-                                    </div>
-                                </div>`;
+                        const sid = document.getElementById('p-soc').value; 
+                        let s = null;
+                        for(let i=0; i<window.appState.listaSociosData.length; i++) {
+                            if(window.appState.listaSociosData[i].id === sid) { s = window.appState.listaSociosData[i]; break; }
                         }
-                    }
+
+                        const total = parseFloat(document.getElementById('p-total').value); 
+                        const entregado = parseFloat(document.getElementById('p-mon').value);
+                        let deudaGenerada = esSaldarDeuda ? 0 : (total - entregado);
+                        let sDeudaVal = s.deuda ? s.deuda : 0;
+                        let nuevaDeudaSocio = esSaldarDeuda ? (sDeudaVal - entregado) : (sDeudaVal + deudaGenerada);
+                        
+                        try {
+                            let c_concepto = esSaldarDeuda ? "Pago Deuda: " + s.nombre : "Renovación: " + s.nombre;
+                            let c_fecha = esSaldarDeuda ? new Date().toISOString().split('T')[0] : document.getElementById('p-fec').value;
+
+                            await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { 
+                                concepto: c_concepto, monto: entregado, medio: document.getElementById('p-medio').value, tipo: "Cuota", fecha: c_fecha, timestamp: new Date().toISOString() 
+                            });
+
+                            let updateData = { deuda: nuevaDeudaSocio > 0 ? nuevaDeudaSocio : 0 };
+                            if(!esSaldarDeuda) { 
+                                let arrVence = s.vence.split('-'); let nDate = new Date(arrVence[0], arrVence[1]-1, arrVence[2]); 
+                                nDate.setMonth(nDate.getMonth() + parseInt(document.getElementById('p-meses').value)); 
+                                updateData.vence = nDate.toISOString().split('T')[0]; 
+                            }
+
+                            await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", s.id), updateData);
+                            window.showToast(esSaldarDeuda ? "Deuda Saldada" : "Pago registrado"); 
+                            document.getElementById('modal-universal').style.display = 'none'; 
+                            window.cargarDatosMaestros();
+                        } catch(err) { window.showToast("Error al facturar", "error"); }
+                    };
+                    document.getElementById('modal-universal').style.display = 'flex';
+                };
+
+                window.abrirModalSocio = function(socio) {
+                    if(!socio) socio = null;
+                    window.appState.modoEdicion = !!socio;
+                    window.appState.idEdicion = socio ? socio.id : null;
                     
-                    elTotalAlertas.innerText = alertas;
-                    if(alertas === 0) { cAlertas.innerHTML = '<div class="p-8 text-center text-gray-400 font-bold tracking-widest uppercase text-xs">Todo en orden. Cero alertas.</div>'; }
-
-                    const cCont = document.getElementById('cumple-container');
-                    if(cumpleaneros.length > 0 && cCont) {
-                        cCont.classList.remove('hidden'); cCont.style.display = 'flex'; 
-                        document.getElementById('cumple-nombres').innerText = cumpleaneros.join(', '); 
+                    const modalTitle = document.getElementById('modal-title');
+                    const modalContent = document.getElementById('modal-content');
+                    modalTitle.innerText = socio ? "Modificar Perfil" : "Alta Integral de Socio";
+                    
+                    let boxPago = "";
+                    if(!socio) {
+                        boxPago = `
+                        <div class="border-t border-white/10 pt-5 mt-6">
+                            <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">1er Pago y Finanzas</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Fecha Pago</label><input type="date" id="s-fec-pago" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Meses Abona</label><input type="number" id="s-meses" class="w-full input-dark rounded-xl p-3.5 text-sm" value="1" min="1" required></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Valor Total Cuota</label><input type="number" id="s-monto" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Medio</label><select id="s-medio" class="w-full input-dark rounded-xl p-3.5 text-sm" required><option value="Efectivo">Efectivo</option><option value="Transferencia">Transf.</option><option value="Tarjeta/QR">QR</option></select></div>
+                            </div>
+                            <div><label class="text-[11px] text-emerald-400 font-black uppercase ml-1 tracking-widest">Monto Pagado Hoy</label><input type="number" id="s-entregado" class="w-full input-dark rounded-xl p-4 text-base font-bold focus:border-emerald-500 shadow-inner" required></div>
+                        </div>`;
                     }
-                }
 
-                const tbS = document.getElementById('tabla-socios-body');
-                if(tbS) {
-                    tbS.innerHTML = '';
-                    for(let i=0; i<listaSociosData.length; i++) {
-                        let s = listaSociosData[i];
-                        const est = evaluarEstado(s.vence);
+                    let nom = socio ? socio.nombre : ''; let tel = socio ? socio.telefono : '';
+                    let img = socio && socio.foto ? socio.foto : ''; let placeholderImg = socio && socio.foto ? socio.foto : 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO';
+                    let serv = socio ? socio.servicio || '' : ''; let mem = socio ? socio.membresia || '' : '';
+                    let nac = socio ? socio.nacimiento || '' : ''; let ven = socio ? socio.vence : '';
+                    let readOnlyHtml = !socio ? 'readonly' : '';
+
+                    modalContent.innerHTML = `
+                        <form id="form-dinamico" class="space-y-4">
+                            <div class="flex gap-4">
+                                <div class="w-1/4"><img id="s-preview" src="`+placeholderImg+`" class="w-full aspect-square rounded-2xl object-cover border border-white/10 shadow-lg"></div>
+                                <div class="w-3/4 space-y-4">
+                                    <input type="text" id="s-nom" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="Nombre completo" value="`+nom+`" required>
+                                    <input type="tel" id="s-tel" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="WhatsApp (Ej: 549...)" value="`+tel+`" required>
+                                </div>
+                            </div>
+                            <input type="url" id="s-foto" class="w-full input-dark rounded-xl p-3.5 text-sm mt-2" placeholder="URL Foto de Perfil (Opcional)" value="`+img+`">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Servicio</label><input type="text" id="s-serv" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+serv+`" required></div>
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Membresía</label><input type="text" id="s-mem" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+mem+`" required></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Nacimiento 🎂</label><input type="date" id="s-nacimiento" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+nac+`"></div>
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Vence Cuota</label><input type="date" id="s-vence" class="w-full input-dark rounded-xl p-3.5 text-sm" value="`+ven+`" required `+readOnlyHtml+`></div>
+                            </div>
+                            ` + boxPago + `
+                            <button type="submit" class="w-full dynamic-bg font-bold py-4 rounded-xl mt-6 text-sm text-[#09090b] shadow-[0_0_20px_var(--accent-color)] opacity-90 hover:opacity-100 hover:scale-[1.02] transition border border-white/20">Guardar Registro</button>
+                        </form>`;
+
+                    if(!socio) {
+                        const fPago = document.getElementById('s-fec-pago'); const fMeses = document.getElementById('s-meses'); const fVence = document.getElementById('s-vence');
+                        fPago.valueAsDate = new Date();
+                        const calcFecha = function() { 
+                            if(fPago.value && fMeses.value) { 
+                                const arr = fPago.value.split('-'); const date = new Date(arr[0], arr[1]-1, arr[2]); 
+                                date.setMonth(date.getMonth() + parseInt(fMeses.value)); fVence.value = date.toISOString().split('T')[0]; 
+                            } 
+                        };
+                        fPago.addEventListener('change', calcFecha); fMeses.addEventListener('input', calcFecha); calcFecha();
+                    }
+
+                    document.getElementById('s-foto').addEventListener('input', function(e) { document.getElementById('s-preview').src = e.target.value || 'https://via.placeholder.com/150/18181b/ffffff?text=FOTO'; });
+                    
+                    document.getElementById('form-dinamico').onsubmit = async function(e) {
+                        e.preventDefault(); 
+                        const btn = e.target.querySelector('button'); btn.innerText = 'Procesando...'; btn.disabled = true;
                         
-                        let btnEliminar = userRole === 'admin' ? '<button class="btn-del-s bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-red-500/20" data-id="' + s.id + '">Borrar</button>' : '';
-                        const esCumpleHoy = s.nacimiento && String(s.nacimiento).endsWith(hoyMD);
+                        const dSocio = { 
+                            nombre: document.getElementById('s-nom').value, telefono: document.getElementById('s-tel').value, foto: document.getElementById('s-foto').value, 
+                            servicio: document.getElementById('s-serv').value, membresia: document.getElementById('s-mem').value, vence: document.getElementById('s-vence').value, nacimiento: document.getElementById('s-nacimiento').value 
+                        };
                         
-                        let spanEstado = '';
-                        if (est.t === 'Expired') spanEstado = 'Expirado';
-                        else if (est.t === 'Warning') spanEstado = 'Próximo';
-                        else spanEstado = 'Activo';
+                        try {
+                            if(window.appState.modoEdicion) { 
+                                await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", window.appState.idEdicion), dSocio); window.showToast("Perfil actualizado"); 
+                            } else { 
+                                if(!window.appState.estadoCajaGlobal.abierta && window.appState.userRole !== 'admin') { 
+                                    window.showToast("Abre turno para guardar", "error"); btn.disabled = false; btn.innerText = 'Guardar'; return; 
+                                }
+                                const t = parseFloat(document.getElementById('s-monto').value); const ent = parseFloat(document.getElementById('s-entregado').value);
+                                let deu = t - ent; if (deu < 0) deu = 0; dSocio.deuda = deu;
+                                
+                                await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
+                                await addDoc(collection(db, "gimnasios", GYM_ID, "finanzas"), { concepto: "Alta: " + dSocio.nombre, monto: ent, medio: document.getElementById('s-medio').value, tipo: "Cuota", fecha: document.getElementById('s-fec-pago').value, timestamp: new Date().toISOString() });
+                                window.showToast("Socio guardado");
+                            }
+                            document.getElementById('modal-universal').style.display = 'none'; 
+                            window.cargarDatosMaestros();
+                        } catch(err) { window.showToast("Error", "error"); btn.disabled = false; }
+                    };
+                    document.getElementById('modal-universal').style.display = 'flex';
+                };
 
-                        let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=?';
-                        let cumpleHtml = esCumpleHoy ? '<span title="Cumpleaños Hoy" class="drop-shadow-md text-lg">🎂</span>' : '';
-                        let deudaHtml = s.deuda > 0 ? '<span class="block text-red-500 mt-1 bg-red-50 px-2 py-0.5 rounded border border-red-100 w-fit shadow-inner">Debe: $' + s.deuda + '</span>' : '';
+                // Funcionalidad de Carga Core
+                window.cargarDatosMaestros = async function() {
+                    try {
+                        const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
+                        if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
 
-                        tbS.innerHTML += `
-                            <tr class="border-b border-black/5 hover:bg-black/5 transition">
-                                <td class="py-4 px-4"><span class="px-2.5 py-1.5 rounded-lg text-[10px] font-bold tracking-widest uppercase border shadow-sm ${est.c}">${spanEstado}</span></td>
-                                <td class="py-4 px-4">
-                                    <div class="flex items-center gap-4">
-                                        <img src="${fotUrl}" class="w-10 h-10 rounded-full object-cover shadow-md border border-white/50">
-                                        <div><p class="text-gray-900 font-black text-sm flex items-center gap-1 tracking-tight">${s.nombre} ${cumpleHtml}</p></div>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 text-xs font-bold text-gray-700">${s.membresia} <span class="text-[10px] font-semibold text-gray-500 block uppercase tracking-wider mt-0.5">${s.servicio}</span></td>
-                                <td class="py-4 px-4 text-gray-900 font-mono text-xs font-bold">${s.vence} ${deudaHtml}</td>
-                                <td class="py-4 px-4 flex justify-end gap-2 items-center">
-                                    <button class="bg-emerald-500/10 text-emerald-600 px-3 py-2 rounded-full hover:bg-emerald-500 hover:text-white transition text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20" onclick="registrarIngreso('${s.id}', '${s.nombre}')">✓ Presente</button>
-                                    <button class="bg-[#25D366]/10 text-[#25D366] p-2 rounded-full hover:bg-[#25D366] hover:text-white transition border border-[#25D366]/20" onclick="enviarWhatsApp('${s.telefono}', '${s.nombre}')" title="WhatsApp"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></button>
-                                    <button class="bg-purple-500/10 text-purple-600 hover:bg-purple-500 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-purple-500/20" onclick="abrirModalRutina('${s.id}')">📝 Rutina</button>
-                                    <button class="bg-blue-500/10 hover:bg-blue-500 hover:text-white text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-blue-500/20" onclick="abrirModalPago('${s.id}')">Cobrar</button>
+                        const data = snap.data(); 
+                        window.appState.gymModulos = data.modulos ? data.modulos : {}; 
+                        window.appState.nombreGymActual = data.nombre;
+                        
+                        if(data.colorPrimario) { document.documentElement.style.setProperty('--accent-color', data.colorPrimario); }
+                        
+                        const logoCont = document.getElementById('ui-gym-logo-container');
+                        if(data.logoUrl) { 
+                            window.appState.logoGymGlobal = data.logoUrl; 
+                            logoCont.innerHTML = '<img src="' + data.logoUrl + '" class="w-full h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">'; 
+                            document.getElementById('ui-gym-name').innerText = ""; 
+                        } 
+
+                        // Modulos a demanda
+                        const mCont = document.getElementById('modulos-container'); mCont.innerHTML = '';
+                        const basePill = "nav-item cursor-pointer px-6 py-2.5 rounded-full text-sm font-semibold transition-all text-gray-300 hover:text-white flex items-center gap-2";
+                        if(window.appState.gymModulos.tienda) { mCont.innerHTML += '<div id="nav-tienda" class="' + basePill + '" onclick="cambiarVista(\'tienda\')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>'; }
+                        if(window.appState.gymModulos.evaluaciones) { mCont.innerHTML += '<div id="nav-evaluaciones" class="' + basePill + '" onclick="cambiarVista(\'evaluaciones\')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>'; }
+
+                        // Descarga de Colecciones (Una por una de forma segura)
+                        let sSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "socios"));
+                        let fSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "finanzas"));
+                        let eSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones"));
+                        let pSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "productos"));
+                        let cSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "cierres"));
+                        let tSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "turnos_estado"));
+
+                        if(!tSnap.empty && tSnap.docs && tSnap.docs.length > 0) { 
+                            const ts = tSnap.docs[0]; 
+                            window.appState.estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; 
+                        } else { 
+                            window.appState.estadoCajaGlobal = { abierta: false, id: null, ts: null, fondoInicial: 0 }; 
+                        }
+
+                        const btnTurno = document.getElementById('btn-estado-turno');
+                        if(btnTurno) {
+                            if(window.appState.estadoCajaGlobal.abierta) { 
+                                btnTurno.innerHTML = '🔒 CERRAR TURNO'; 
+                                btnTurno.className = 'glass-dark text-orange-400 border-orange-500/50 hover:bg-orange-500/20 hover:text-orange-300 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_20px_rgba(234,88,12,0.2)] hover:scale-105'; 
+                            } else { 
+                                btnTurno.innerHTML = '🟢 ABRIR TURNO'; 
+                                btnTurno.className = 'bg-emerald-500/20 backdrop-blur-md text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/40 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:scale-105'; 
+                            }
+                        }
+
+                        window.appState.listaSociosData = []; 
+                        sSnap.forEach(function(d) { window.appState.listaSociosData.push({ id: d.id, ...d.data() }); });
+                        
+                        window.appState.listaProductosData = []; 
+                        pSnap.forEach(function(d) { window.appState.listaProductosData.push({ id: d.id, ...d.data() }); });
+                        
+                        window.appState.listaCierresData = []; 
+                        cSnap.forEach(function(d) { window.appState.listaCierresData.push({ id: d.id, ...d.data() }); });
+                        window.appState.listaCierresData.sort(function(a,b) { return new Date(b.timestamp) - new Date(a.timestamp); });
+
+                        window.appState.listaFinanzasData = []; 
+                        let iMes = 0; let eMes = 0;
+                        const mesActual = new Date().toISOString().substring(0,7);
+                        fSnap.forEach(function(d) { 
+                            const p = d.data(); 
+                            window.appState.listaFinanzasData.push({ id: d.id, ...p }); 
+                            if(p.fecha && String(p.fecha).startsWith(mesActual)) { if(p.tipo === 'Egreso') { eMes += Number(p.monto); } else { iMes += Number(p.monto); } } 
+                        });
+                        window.appState.listaFinanzasData.sort(function(a, b) { return new Date(b.fecha) - new Date(a.fecha); });
+                        
+                        window.appState.listaEvalsData = []; 
+                        eSnap.forEach(function(d) { window.appState.listaEvalsData.push({ id: d.id, ...d.data() }); });
+
+                        if(document.getElementById('total-socios')) { document.getElementById('total-socios').innerText = window.appState.listaSociosData.length.toLocaleString(); }
+
+                        if(window.appState.userRole === 'admin') {
+                            if(document.getElementById('ingresos-mes')) document.getElementById('ingresos-mes').innerText = iMes.toLocaleString('es-AR');
+                            if(document.getElementById('egresos-mes')) document.getElementById('egresos-mes').innerText = eMes.toLocaleString('es-AR');
+                            if(document.getElementById('balance-mes')) {
+                                const bal = iMes - eMes; document.getElementById('balance-mes').innerText = bal.toLocaleString('es-AR');
+                                document.getElementById('balance-mes').className = bal < 0 ? 'text-red-400 drop-shadow-lg' : 'text-white drop-shadow-lg';
+                            }
+                        }
+
+                        // FIN RECOPILACION. AHORA RENDERIZAR
+                        renderUI(window.appState);
+                        
+                    } catch (err) {
+                        console.error("Error Global en Fetch de Datos:", err);
+                        window.showToast("Error de servidor", "error");
+                    }
+                };
+
+                // Renderizador de Interfaz Seguro
+                function renderUI(state) {
+                    try {
+                        const hoy = new Date(); const mes = String(hoy.getMonth()+1).padStart(2,'0'); const dia = String(hoy.getDate()).padStart(2,'0'); const hoyMD = mes + "-" + dia;
+                        let cumpleaneros = [];
+
+                        const cAlertas = document.getElementById('contenedor-alertas'); 
+                        const elTotalAlertas = document.getElementById('total-alertas');
+                        
+                        if(cAlertas && elTotalAlertas) {
+                            cAlertas.innerHTML = ''; let alertas = 0;
+                            
+                            for(let i=0; i<state.listaSociosData.length; i++) {
+                                let s = state.listaSociosData[i];
+                                
+                                let tEst = 'Activo'; let cEst = 'bg-emerald-500/20 text-emerald-600 border-emerald-500/30 shadow-inner';
+                                if (s.vence) {
+                                    const v = new Date(s.vence); 
+                                    if (!isNaN(v)) {
+                                        v.setHours(23,59,59,999); const d = Math.ceil((v - hoy) / (1000 * 60 * 60 * 24));
+                                        if (d < 0) { tEst = 'Expirado'; cEst = 'bg-red-500/20 text-red-500 border-red-500/30 shadow-inner'; }
+                                        else if (d <= 3) { tEst = 'Por Vencer'; cEst = 'bg-orange-500/20 text-orange-500 border-orange-500/30 shadow-inner'; }
+                                    }
+                                }
+                                
+                                if(s.nacimiento && String(s.nacimiento).endsWith(hoyMD)) { cumpleaneros.push(s.nombre); }
+
+                                if(tEst !== 'Activo' || s.deuda > 0) {
+                                    alertas++;
+                                    let deudaFlag = ''; if (s.deuda > 0) { deudaFlag = '<div class="absolute left-0 top-0 w-2 h-full bg-red-500 shadow-[0_0_10px_#ef4444]"></div>'; }
+                                    let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=FOTO';
+                                    let subtitulo = s.deuda > 0 ? '<span class="text-red-500">Deuda: $' + s.deuda + '</span>' : 'Miembro';
+                                    let btnSaldar = ''; if (s.deuda > 0) { btnSaldar = '<button class="bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white px-5 py-2.5 text-xs rounded-full font-bold transition shadow-sm border border-red-500/20" onclick="event.stopPropagation(); window.abrirModalPago(\'' + s.id + '\', true)">Saldar</button>'; }
+
+                                    cAlertas.innerHTML += `
+                                        <div class="p-5 glass-light flex flex-col sm:flex-row justify-between items-center transition hover:scale-[1.02] cursor-pointer gap-4 sm:gap-0 relative overflow-hidden shadow-sm border border-white/50" onclick="window.mostrarDetalleSocio('${s.id}')">
+                                            ${deudaFlag}
+                                            <div class="flex items-center gap-4 w-full sm:w-auto ml-2">
+                                                <img src="${fotUrl}" class="w-12 h-12 rounded-full object-cover shadow-md border border-white/50">
+                                                <div class="w-40"><p class="text-sm font-black text-gray-900 tracking-tight">${s.nombre}</p><p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">${subtitulo}</p></div>
+                                                <span class="px-3 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border shadow-sm ${cEst}">${tEst}</span>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                ${btnSaldar}
+                                                <button class="bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 px-6 py-2.5 text-xs rounded-full font-black tracking-wide transition shadow-sm" onclick="event.stopPropagation(); window.abrirModalPago('${s.id}')">Renovar</button>
+                                            </div>
+                                        </div>`;
+                                }
+                            }
+                            
+                            elTotalAlertas.innerText = alertas;
+                            if(alertas === 0) { cAlertas.innerHTML = '<div class="p-8 text-center text-gray-400 font-bold tracking-widest uppercase text-xs">Todo en orden. Cero alertas.</div>'; }
+
+                            const cCont = document.getElementById('cumple-container');
+                            if(cumpleaneros.length > 0 && cCont) { cCont.classList.remove('hidden'); cCont.style.display = 'flex'; document.getElementById('cumple-nombres').innerText = cumpleaneros.join(', '); }
+                        }
+
+                        const tbS = document.getElementById('tabla-socios-body');
+                        if(tbS) {
+                            tbS.innerHTML = '';
+                            for(let i=0; i<state.listaSociosData.length; i++) {
+                                let s = state.listaSociosData[i];
+                                let tEst = 'Activo'; let cEst = 'bg-emerald-500/20 text-emerald-600 border-emerald-500/30 shadow-inner';
+                                if (s.vence) {
+                                    const v = new Date(s.vence); 
+                                    if (!isNaN(v)) {
+                                        v.setHours(23,59,59,999); const d = Math.ceil((v - hoy) / (1000 * 60 * 60 * 24));
+                                        if (d < 0) { tEst = 'Expirado'; cEst = 'bg-red-500/20 text-red-500 border-red-500/30 shadow-inner'; }
+                                        else if (d <= 3) { tEst = 'Próximo'; cEst = 'bg-orange-500/20 text-orange-500 border-orange-500/30 shadow-inner'; }
+                                    }
+                                }
+                                
+                                let btnEliminar = ''; if (state.userRole === 'admin') { btnEliminar = '<button class="btn-del-s bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-red-500/20" data-id="' + s.id + '">Borrar</button>'; }
+                                const esCumpleHoy = s.nacimiento && String(s.nacimiento).endsWith(hoyMD);
+                                let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=?';
+                                let cumpleHtml = esCumpleHoy ? '<span title="Cumpleaños Hoy" class="drop-shadow-md text-lg">🎂</span>' : '';
+                                let deudaHtml = s.deuda > 0 ? '<span class="block text-red-500 mt-1 bg-red-50 px-2 py-0.5 rounded border border-red-100 w-fit shadow-inner">Debe: $' + s.deuda + '</span>' : '';
+
+                                tbS.innerHTML += `
+                                    <tr class="border-b border-black/5 hover:bg-black/5 transition">
+                                        <td class="py-4 px-4"><span class="px-2.5 py-1.5 rounded-lg text-[10px] font-bold tracking-widest uppercase border shadow-sm ${cEst}">${tEst}</span></td>
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center gap-4">
+                                                <img src="${fotUrl}" class="w-10 h-10 rounded-full object-cover shadow-md border border-white/50">
+                                                <div><p class="text-gray-900 font-black text-sm flex items-center gap-1 tracking-tight">${s.nombre} ${cumpleHtml}</p></div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 text-xs font-bold text-gray-700">${s.membresia} <span class="text-[10px] font-semibold text-gray-500 block uppercase tracking-wider mt-0.5">${s.servicio}</span></td>
+                                        <td class="py-4 px-4 text-gray-900 font-mono text-xs font-bold">${s.vence} ${deudaHtml}</td>
+                                        <td class="py-4 px-4 flex justify-end gap-2 items-center">
+                                            <button class="bg-emerald-500/10 text-emerald-600 px-3 py-2 rounded-full hover:bg-emerald-500 hover:text-white transition text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20" onclick="window.registrarIngreso('${s.id}', '${s.nombre}')">✓ Presente</button>
+                                            <button class="bg-[#25D366]/10 text-[#25D366] p-2 rounded-full hover:bg-[#25D366] hover:text-white transition border border-[#25D366]/20" onclick="window.enviarWhatsApp('${s.telefono}', '${s.nombre}')" title="WhatsApp"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></button>
+                                    <button class="bg-purple-500/10 text-purple-600 hover:bg-purple-500 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-purple-500/20" onclick="window.abrirModalRutina('${s.id}')">📝 Rutina</button>
+                                    <button class="bg-blue-500/10 hover:bg-blue-500 hover:text-white text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-blue-500/20" onclick="window.abrirModalPago('${s.id}')">Cobrar</button>
                                     <button class="btn-edit-s bg-black/5 hover:bg-black/10 text-gray-800 px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-black/10" data-id="${s.id}">Editar</button>
                                     ${btnEliminar}
                                 </td>
@@ -1290,15 +910,14 @@
                     }
                 }
 
-                if(userRole === 'admin') {
+                if(state.userRole === 'admin') {
                     const tbF = document.getElementById('tabla-finanzas-body'); 
                     if(tbF) {
                         tbF.innerHTML = '';
-                        for(let i=0; i<listaFinanzasData.length; i++) {
-                            let f = listaFinanzasData[i];
+                        for(let i=0; i<state.listaFinanzasData.length; i++) {
+                            let f = state.listaFinanzasData[i];
                             const isEgreso = f.tipo === 'Egreso';
                             const tColor = isEgreso ? 'text-red-600 bg-red-500/10 border-red-500/20' : (f.tipo === 'Inventario' ? 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20' : 'text-blue-600 bg-blue-500/10 border-blue-500/20');
-                            
                             let fechaFormat = f.fecha ? f.fecha.split('-').reverse().join('/') : '';
                             let signo = isEgreso ? '-' : '';
 
@@ -1317,13 +936,12 @@
                     const tbCierres = document.getElementById('tabla-turnos-admin-body');
                     if(tbCierres) {
                         tbCierres.innerHTML = '';
-                        if(listaCierresData.length === 0) { 
+                        if(state.listaCierresData.length === 0) { 
                             tbCierres.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400 font-bold text-[10px] uppercase tracking-widest">Aún no hay turnos cerrados.</td></tr>'; 
                         } else {
-                            for(let i=0; i<listaCierresData.length; i++) {
-                                let c = listaCierresData[i];
+                            for(let i=0; i<state.listaCierresData.length; i++) {
+                                let c = state.listaCierresData[i];
                                 const final = Number(c.fondo_inicial||0) + Number(c.total_pos) + Number(c.total_mem) - Number(c.egresos||0);
-                                
                                 let obsHtml = c.observaciones ? '<br><span class="text-[10px] text-orange-600 bg-orange-500/10 border border-orange-500/20 px-2 py-1 rounded mt-1.5 inline-block shadow-inner">📝 ' + c.observaciones + '</span>' : '';
 
                                 tbCierres.innerHTML += `
@@ -1345,16 +963,16 @@
                     }
                 }
 
-                if(gymModulos.tienda) {
+                if(state.gymModulos.tienda) {
                     const cCat = document.getElementById('catalogo-productos');
                     if(cCat) {
                         cCat.innerHTML = '';
-                        for(let i=0; i<listaProductosData.length; i++) {
-                            let p = listaProductosData[i];
-                            const btnEditAdmin = userRole === 'admin' ? `<button onclick="event.stopPropagation(); abrirModalEditarProducto('${p.id}', '${p.nombre}', '${p.precio}')" class="absolute top-3 right-3 bg-black/5 hover:bg-blue-500 hover:text-white text-gray-500 p-2 rounded-xl z-10 transition opacity-0 group-hover:opacity-100 backdrop-blur-md shadow-sm border border-black/10"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>` : '';
+                        for(let i=0; i<state.listaProductosData.length; i++) {
+                            let p = state.listaProductosData[i];
+                            const btnEditAdmin = state.userRole === 'admin' ? `<button onclick="event.stopPropagation(); window.abrirModalEditarProducto('${p.id}', '${p.nombre}', '${p.precio}')" class="absolute top-3 right-3 bg-black/5 hover:bg-blue-500 hover:text-white text-gray-500 p-2 rounded-xl z-10 transition opacity-0 group-hover:opacity-100 backdrop-blur-md shadow-sm border border-black/10"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>` : '';
                             cCat.innerHTML += `
                                 <div class="relative bg-white/40 border border-black/5 hover:bg-white hover:border-blue-300 rounded-[1.5rem] transition flex flex-col justify-between h-32 overflow-hidden group shadow-sm hover:shadow-md">
-                                    <button onclick="abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="absolute inset-0 w-full h-full text-left p-5 transition z-0 flex flex-col justify-between">
+                                    <button onclick="window.abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="absolute inset-0 w-full h-full text-left p-5 transition z-0 flex flex-col justify-between">
                                         <span class="text-sm font-black text-gray-900 tracking-tight leading-tight w-[80%] drop-shadow-sm">${p.nombre}</span>
                                         <span class="text-xs font-mono font-black text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg w-fit mt-1 shadow-inner">$${p.precio}</span>
                                     </button>${btnEditAdmin}
@@ -1365,28 +983,18 @@
                     const tbT = document.getElementById('tabla-tienda-body'); 
                     if(tbT) {
                         tbT.innerHTML = '';
-                        let ventasDeHoy = [];
-                        if (estadoCajaGlobal.abierta) {
-                            for(let i=0; i<listaFinanzasData.length; i++) {
-                                let f = listaFinanzasData[i];
-                                if(f.tipo === 'Inventario' && f.timestamp > estadoCajaGlobal.ts) { ventasDeHoy.push(f); }
-                            }
-                        } else if (userRole === 'admin') {
-                            const hoyCorta = new Date().toISOString().split('T')[0];
-                            for(let i=0; i<listaFinanzasData.length; i++) {
-                                let f = listaFinanzasData[i];
-                                if(f.tipo === 'Inventario' && f.fecha === hoyCorta) { ventasDeHoy.push(f); }
+                        let hayVentas = false;
+                        if (state.estadoCajaGlobal.abierta) {
+                            for(let i=0; i<state.listaFinanzasData.length; i++) {
+                                let f = state.listaFinanzasData[i];
+                                if(f.tipo === 'Inventario' && f.timestamp > state.estadoCajaGlobal.ts) {
+                                    hayVentas = true;
+                                    tbT.innerHTML += `<tr class="border-b border-black/5"><td class="py-3 px-2 text-gray-900 font-bold text-sm tracking-tight">${f.concepto}</td><td class="py-3 px-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">${f.medio||'Efectivo'}</td><td class="py-3 px-2 text-right text-gray-900 font-mono font-black text-base">$${f.monto}</td></tr>`;
+                                }
                             }
                         }
-
-                        for(let i=0; i<ventasDeHoy.length; i++) {
-                            let f = ventasDeHoy[i];
-                            tbT.innerHTML += `<tr class="border-b border-black/5"><td class="py-3 px-2 text-gray-900 font-bold text-sm tracking-tight">${f.concepto}</td><td class="py-3 px-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">${f.medio||'Efectivo'}</td><td class="py-3 px-2 text-right text-gray-900 font-mono font-black text-base">$${f.monto}</td></tr>`;
-                        }
-                        
-                        if(ventasDeHoy.length === 0) {
-                            let txtVentas = estadoCajaGlobal.abierta ? 'Sin ventas registradas' : (userRole==='admin' ? 'Sin ventas hoy' : 'TURNO CERRADO');
-                            tbT.innerHTML = `<tr><td class="py-10 text-gray-400 text-center text-[10px] uppercase font-bold tracking-widest">${txtVentas}</td></tr>`;
+                        if(!hayVentas) {
+                            tbT.innerHTML = `<tr><td class="py-10 text-gray-400 text-center text-[10px] uppercase font-bold tracking-widest">${state.estadoCajaGlobal.abierta ? 'Sin ventas registradas' : 'TURNO CERRADO'}</td></tr>`;
                         }
                     }
                 }
@@ -1394,14 +1002,13 @@
                 const tbE = document.getElementById('tabla-evaluaciones-body'); 
                 if(tbE) {
                     tbE.innerHTML = '';
-                    for(let i=0; i<listaEvalsData.length; i++) {
-                        let e = listaEvalsData[i];
+                    for(let i=0; i<state.listaEvalsData.length; i++) {
+                        let e = state.listaEvalsData[i];
                         const imc = parseFloat(e.imc);
                         let badgeImc = 'text-gray-700 bg-gray-500/10 border-gray-500/20'; 
                         if(imc >= 25) badgeImc = 'text-orange-700 bg-orange-500/10 border-orange-500/20'; 
                         if(imc >= 30) badgeImc = 'text-red-700 bg-red-500/10 border-red-500/20'; 
-                        const btnEliminar = userRole === 'admin' ? `<button class="btn-del-e text-gray-400 hover:text-red-500 transition px-2 font-bold" data-id="${e.id}">✕</button>` : '';
-                        
+                        const btnEliminar = state.userRole === 'admin' ? `<button class="btn-del-e text-gray-400 hover:text-red-500 transition px-2 font-bold" data-id="${e.id}">✕</button>` : '';
                         let eFecha = e.fecha ? e.fecha.split('-').reverse().join('/') : '';
 
                         tbE.innerHTML += `
@@ -1415,143 +1022,38 @@
                             </tr>`;
                     }
                 }
-            } catch (err) { console.error("Error visual:", err); }
+            } catch (err) { console.error("Error UI render:", err); }
         }
 
-        async function cargarDatos() {
-            try {
-                const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
-                if (!snap.exists() || snap.data().estado === 'suspendido') { window.location.href = "index.html"; return; }
-
-                const data = snap.data(); 
-                gymModulos = data.modulos ? data.modulos : {}; 
-                nombreGymActual = data.nombre;
-                
-                if(data.colorPrimario) {
-                    document.documentElement.style.setProperty('--accent-color', data.colorPrimario);
-                }
-                
-                const logoCont = document.getElementById('ui-gym-logo-container');
-                if(data.logoUrl) { 
-                    logoGymGlobal = data.logoUrl; 
-                    logoCont.innerHTML = '<img src="' + data.logoUrl + '" class="w-full h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">'; 
-                    document.getElementById('ui-gym-name').innerText = ""; 
-                } 
-
-                const mCont = document.getElementById('modulos-container'); 
-                mCont.innerHTML = '';
-                const basePill = "nav-item cursor-pointer px-6 py-2.5 rounded-full text-sm font-semibold transition-all text-gray-300 hover:text-white flex items-center gap-2";
-                if(gymModulos.tienda) {
-                    mCont.innerHTML += '<div id="nav-tienda" class="' + basePill + '" onclick="cambiarVista(\'tienda\')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>';
-                }
-                if(gymModulos.evaluaciones) {
-                    mCont.innerHTML += '<div id="nav-evaluaciones" class="' + basePill + '" onclick="cambiarVista(\'evaluaciones\')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>';
-                }
-                
-                const sSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "socios"));
-                const fSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "finanzas"));
-                const eSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones"));
-                const pSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "productos"));
-                const cSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "cierres"));
-                const tSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "turnos_estado"));
-
-                if(!tSnap.empty && tSnap.docs && tSnap.docs.length > 0) { 
-                    const ts = tSnap.docs[0]; 
-                    estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; 
-                } else { 
-                    estadoCajaGlobal = { abierta: false, id: null, ts: null, fondoInicial: 0 }; 
-                }
-
-                const btnTurno = document.getElementById('btn-estado-turno');
-                if(btnTurno) {
-                    if(estadoCajaGlobal.abierta) { 
-                        btnTurno.innerHTML = '🔒 CERRAR TURNO'; 
-                        btnTurno.className = 'glass-dark text-orange-400 border-orange-500/50 hover:bg-orange-500/20 hover:text-orange-300 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_20px_rgba(234,88,12,0.2)] hover:scale-105'; 
-                    } else { 
-                        btnTurno.innerHTML = '🟢 ABRIR TURNO'; 
-                        btnTurno.className = 'bg-emerald-500/20 backdrop-blur-md text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/40 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:scale-105'; 
-                    }
-                }
-
-                listaSociosData = []; 
-                sSnap.forEach(function(d) { listaSociosData.push({ id: d.id, ...d.data() }); });
-                
-                listaProductosData = []; 
-                pSnap.forEach(function(d) { listaProductosData.push({ id: d.id, ...d.data() }); });
-                
-                listaCierresData = []; 
-                cSnap.forEach(function(d) { listaCierresData.push({ id: d.id, ...d.data() }); });
-                
-                listaCierresData.sort(function(a,b) { return new Date(b.timestamp) - new Date(a.timestamp); });
-
-                listaFinanzasData = []; 
-                let iMes = 0; 
-                let eMes = 0;
-                const mesActual = new Date().toISOString().substring(0,7);
-                fSnap.forEach(function(d) { 
-                    const p = d.data(); 
-                    listaFinanzasData.push({ id: d.id, ...p }); 
-                    if(p.fecha && String(p.fecha).startsWith(mesActual)) { 
-                        if(p.tipo === 'Egreso') { eMes += Number(p.monto); } 
-                        else { iMes += Number(p.monto); }
-                    } 
-                });
-                listaFinanzasData.sort(function(a, b) { return new Date(b.fecha) - new Date(a.fecha); });
-                
-                listaEvalsData = []; 
-                eSnap.forEach(function(d) { listaEvalsData.push({ id: d.id, ...d.data() }); });
-
-                if(document.getElementById('total-socios')) { document.getElementById('total-socios').innerText = listaSociosData.length.toLocaleString(); }
-
-                if(userRole === 'admin') {
-                    if(document.getElementById('ingresos-mes')) document.getElementById('ingresos-mes').innerText = iMes.toLocaleString('es-AR');
-                    if(document.getElementById('egresos-mes')) document.getElementById('egresos-mes').innerText = eMes.toLocaleString('es-AR');
-                    if(document.getElementById('balance-mes')) {
-                        const bal = iMes - eMes; 
-                        document.getElementById('balance-mes').innerText = bal.toLocaleString('es-AR');
-                        document.getElementById('balance-mes').className = bal < 0 ? 'text-red-400 drop-shadow-lg' : 'text-white drop-shadow-lg';
-                    }
-                    renderizarGrafico(listaFinanzasData);
-                }
-                
-                renderUI(); 
-            } catch (err) {
-                console.error("Error en carga de Firebase:", err);
-            }
-        }
-
+        // Listener Global de Clicks
         document.body.addEventListener('click', async function(e) {
-            if (e.target.closest('.btn-edit-s')) {
-                let idBuscado = e.target.closest('.btn-edit-s').getAttribute('data-id');
-                let foundSocio = null;
-                for(let i=0; i<listaSociosData.length; i++) {
-                    if(listaSociosData[i].id === idBuscado) { foundSocio = listaSociosData[i]; break; }
-                }
-                abrirModalSocio(foundSocio);
-            }
             if (e.target.closest('.btn-del-s')) {
                 if (confirm("¿Eliminar registro de socio de forma irreversible?")) { 
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').getAttribute('data-id'))); 
-                    showToast("Miembro Eliminado"); cargarDatos(); 
+                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').getAttribute('data-id'))); window.showToast("Miembro Eliminado"); window.cargarDatosMaestros(); } catch(err){} 
                 }
             }
             if (e.target.closest('.btn-del-f')) {
                 if (confirm("¿Anular transacción financiera?")) { 
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').getAttribute('data-id'))); 
-                    showToast("Transacción Anulada", "error"); cargarDatos(); 
+                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').getAttribute('data-id'))); window.showToast("Transacción Anulada", "error"); window.cargarDatosMaestros(); } catch(err){}
                 }
             }
             if (e.target.closest('.btn-del-e')) {
                 if (confirm("¿Eliminar medición médica?")) { 
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').getAttribute('data-id'))); 
-                    showToast("Medición Eliminada"); cargarDatos(); 
+                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').getAttribute('data-id'))); window.showToast("Medición Eliminada"); window.cargarDatosMaestros(); } catch(err){}
                 }
             }
             if (e.target.closest('.btn-del-cierre')) {
                 if (confirm("¿Eliminar registro de Arqueo de Caja?")) { 
-                    await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').getAttribute('data-id'))); 
-                    showToast("Arqueo Eliminado"); cargarDatos(); 
+                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').getAttribute('data-id'))); window.showToast("Arqueo Eliminado"); window.cargarDatosMaestros(); } catch(err){}
                 }
+            }
+            if (e.target.closest('.btn-edit-s')) {
+                let idBuscado = e.target.closest('.btn-edit-s').getAttribute('data-id');
+                let foundSocio = null;
+                for(let i=0; i<window.appState.listaSociosData.length; i++) {
+                    if(window.appState.listaSociosData[i].id === idBuscado) { foundSocio = window.appState.listaSociosData[i]; break; }
+                }
+                window.abrirModalSocio(foundSocio);
             }
         });
 
@@ -1571,8 +1073,9 @@
             });
         }
 
-        // Llama a la carga de datos
-        cargarDatos();
+        // Ejecutar Carga Maestra
+        window.cargarDatosMaestros();
+
     </script>
 </body>
 </html>
