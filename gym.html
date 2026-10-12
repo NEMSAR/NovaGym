@@ -36,10 +36,10 @@
             color: #18181b; 
         }
         
-        /* Orbes Dinámicos */
-        .blob-1 { position: fixed; top: -10%; left: -10%; width: 55vw; height: 55vw; background: var(--accent-color, #eab308); filter: blur(120px); opacity: 0.25; z-index: -1; animation: float1 18s ease-in-out infinite; pointer-events: none;}
-        .blob-2 { position: fixed; bottom: -20%; right: -10%; width: 45vw; height: 45vw; background: #3b82f6; filter: blur(120px); opacity: 0.2; z-index: -1; animation: float2 22s ease-in-out infinite alternate; pointer-events: none;}
-        .blob-3 { position: fixed; top: 20%; left: 30%; width: 40vw; height: 40vw; background: #8b5cf6; filter: blur(140px); opacity: 0.15; z-index: -1; animation: float3 25s ease-in-out infinite; pointer-events: none;}
+        /* Orbes Dinámicos 100% Sincronizados con la Paleta del Cliente */
+        .blob-1 { position: fixed; top: -10%; left: -10%; width: 55vw; height: 55vw; background: var(--accent-color, #eab308); filter: blur(120px); opacity: 0.20; z-index: -1; animation: float1 18s ease-in-out infinite; pointer-events: none;}
+        .blob-2 { position: fixed; bottom: -20%; right: -10%; width: 45vw; height: 45vw; background: var(--accent-color, #eab308); filter: hue-rotate(35deg) blur(120px); opacity: 0.15; z-index: -1; animation: float2 22s ease-in-out infinite alternate; pointer-events: none;}
+        .blob-3 { position: fixed; top: 20%; left: 30%; width: 40vw; height: 40vw; background: var(--accent-color, #eab308); filter: hue-rotate(-35deg) blur(140px); opacity: 0.12; z-index: -1; animation: float3 25s ease-in-out infinite; pointer-events: none;}
         
         @keyframes float1 { 0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); } 33% { transform: translate(15vw, 5vh) scale(1.1) rotate(5deg); } 66% { transform: translate(-5vw, 15vh) scale(0.9) rotate(-5deg); } }
         @keyframes float2 { 0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); } 33% { transform: translate(-10vw, -15vh) scale(1.2) rotate(-5deg); } 66% { transform: translate(10vw, -5vh) scale(0.85) rotate(5deg); } }
@@ -50,7 +50,7 @@
         .input-light { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.1); color: #18181b; transition: all 0.3s; }
         .input-light:focus { outline: none; border-color: var(--accent-color, #eab308); background: white;}
         
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
@@ -64,19 +64,36 @@
 </head>
 <body class="flex flex-col h-screen overflow-hidden bg-[#0d0d0f]">
 
-    <!-- Orbes Dinámicos -->
+    <!-- Orbes Dinámicos Mejorados y Adaptables -->
     <div class="blob-1"></div>
     <div class="blob-2"></div>
     <div class="blob-3"></div>
 
+    <!-- Banner Global de Errores Javascript (Atrapa fallos para que no quede en blanco) -->
+    <div id="error-banner" class="hidden w-full bg-red-600 text-white text-center py-2 text-[11px] font-bold tracking-widest uppercase z-[9999] relative"></div>
+
+    <script>
+        // Si hay un error de conexión, mostrarlo aquí y no dejar la pantalla en blanco
+        window.addEventListener('error', function(event) {
+            var banner = document.getElementById('error-banner');
+            if(banner) {
+                banner.innerText = "ALERTA DE SISTEMA: " + event.message;
+                banner.classList.remove('hidden');
+            }
+        });
+    </script>
+
     <div id="toast-container" class="fixed top-5 right-5 flex flex-col gap-3 z-[9999]"></div>
 
-    <!-- APP CONTAINER (Arranca oculto y se activa via JS) -->
-    <div id="app-container" class="hidden flex-col h-full w-full relative z-10 fade-in">
+    <!-- APP CONTAINER (SIEMPRE VISIBLE, JAMÁS SE OCULTA) -->
+    <div id="app-container" class="flex flex-col h-full w-full relative z-10 fade-in">
+        
+        <div id="banner-licencia" class="hidden admin-only w-full bg-red-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-red-400"></div>
+        <div id="banner-broadcast" class="hidden w-full bg-blue-600/90 backdrop-blur-xl text-white text-center py-2.5 text-[11px] font-bold tracking-widest uppercase shadow-lg relative z-50 flex-shrink-0 border-b border-blue-400"></div>
 
         <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 fade-in">
-            <button onclick="abrirModalCierre()" class="glass-dark text-orange-400 hover:text-white px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_15px_rgba(234,88,12,0.3)] hover:scale-105 border border-orange-500/30">
-                🔒 Cerrar Turno
+            <button id="btn-estado-turno" class="glass-dark text-gray-300 hover:text-white px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-2xl">
+                Cargando Caja...
             </button>
             <button id="btn-help" class="w-14 h-14 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] flex items-center justify-center text-gray-300 glass-dark hover:text-white transition hover:scale-105" title="Guía de Usuario">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -85,8 +102,11 @@
 
         <header class="w-full flex justify-between items-center px-8 py-4 border-b border-white/10 bg-white/5 backdrop-blur-2xl z-30 shadow-lg">
             <div class="flex items-center gap-4 w-1/4">
-                <div id="ui-gym-logo-container" class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
-                <h2 id="ui-gym-name" class="font-black text-xl md:text-2xl tracking-wider text-white drop-shadow-md">N.OS PRO</h2>
+                <div id="ui-gym-logo-container" class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                    <!-- Placeholder visual mientras carga -->
+                    <div class="w-full h-full rounded-full border border-white/20 border-dashed animate-spin"></div>
+                </div>
+                <h2 id="ui-gym-name" class="font-black text-xl md:text-2xl tracking-wider text-white drop-shadow-md">Cargando...</h2>
             </div>
             
             <nav id="ui-nav-menu" class="flex items-center bg-black/30 rounded-full p-1 border border-white/10 shadow-inner backdrop-blur-md">
@@ -126,11 +146,12 @@
                     </div>
                 </header>
 
+                <!-- VISTA DASHBOARD -->
                 <div id="vista-dashboard" class="flex flex-col gap-6 fade-in">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="glass-dark p-6 flex flex-col justify-between relative overflow-hidden">
                             <div class="flex justify-between items-center mb-4"><span class="text-xs font-bold text-gray-300 uppercase tracking-widest drop-shadow-sm">Miembros Activos</span></div>
-                            <span id="total-socios" class="text-6xl font-black text-white tracking-tight mb-6 drop-shadow-lg">0</span>
+                            <span id="total-socios" class="text-6xl font-black text-white tracking-tight mb-6 drop-shadow-lg">-</span>
                             <div class="w-full flex gap-1 h-1.5 rounded-full overflow-hidden bg-white/5 border border-white/5">
                                 <div class="dynamic-bg w-[60%] h-full shadow-[0_0_10px_var(--accent-color)]"></div><div class="bg-gray-500 w-[20%] h-full"></div><div class="bg-red-500 w-[20%] h-full"></div>
                             </div>
@@ -152,7 +173,7 @@
                                 <span class="text-xs font-bold text-red-300 uppercase tracking-widest">Alertas / Vencidos</span>
                                 <div class="bg-red-500/20 text-red-300 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold border border-red-500/30 shadow-[0_0_10px_rgba(239,68,68,0.2)]">!</div>
                             </div>
-                            <span id="total-alertas" class="text-6xl font-black text-red-400 tracking-tight mt-2 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">0</span>
+                            <span id="total-alertas" class="text-6xl font-black text-red-400 tracking-tight mt-2 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">-</span>
                         </div>
                     </div>
 
@@ -160,11 +181,13 @@
                         <div class="w-full lg:w-2/3 flex flex-col">
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-2xl font-black text-gray-900 tracking-tight">Atención Requerida</h2>
-                                <div id="cumple-container" class="hidden flex gap-2 items-center bg-purple-100 border border-purple-200 px-4 py-2 rounded-full text-xs font-bold text-purple-700 shadow-sm fade-in hover:scale-105 transition">
+                                <div id="cumple-container" class="hidden flex gap-2 items-center bg-purple-100 border border-purple-200 px-4 py-2 rounded-full text-xs font-bold text-purple-700 shadow-sm hover:scale-105 transition">
                                     🎂 Hoy: <span id="cumple-nombres"></span>
                                 </div>
                             </div>
-                            <div id="contenedor-alertas" class="flex flex-col gap-3 flex-1 overflow-y-auto custom-scrollbar pr-2"></div>
+                            <div id="contenedor-alertas" class="flex flex-col gap-3 flex-1 overflow-y-auto custom-scrollbar pr-2">
+                                <p class="text-gray-500 text-sm font-bold animate-pulse p-4">Sincronizando registros con el servidor...</p>
+                            </div>
                         </div>
 
                         <div class="w-full lg:w-1/3 glass-dark rounded-[2rem] p-6 relative overflow-hidden flex flex-col shadow-2xl border-white/20">
@@ -173,13 +196,14 @@
                             </div>
                             <div id="detalle-socio-preview" class="flex-1 flex flex-col">
                                 <div class="flex-1 flex items-center justify-center text-gray-400 text-sm text-center h-full font-medium px-4">
-                                    Selecciona un socio de la lista para gestionar su perfil.
+                                    Selecciona un socio de la lista para gestionar su perfil en detalle.
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- VISTA SOCIOS -->
                 <div id="vista-socios" class="hidden fade-in glass-light p-6 md:p-8 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-3xl font-black text-gray-900 tracking-tight">Directorio de Miembros</h2>
@@ -204,6 +228,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA FINANZAS -->
                 <div id="vista-finanzas" class="hidden fade-in admin-only flex flex-col gap-6">
                     <div class="glass-dark p-6 h-[300px]">
                         <div class="flex justify-between items-center mb-4"><h2 class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Crecimiento Financiero (Ingresos)</h2></div>
@@ -254,6 +279,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA TIENDA POS -->
                 <div id="vista-tienda" class="hidden fade-in flex flex-col lg:flex-row gap-6">
                     <div class="w-full lg:w-2/3 glass-light p-6 md:p-8 min-h-[500px]">
                         <div class="flex justify-between items-center mb-6">
@@ -274,6 +300,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA EVALUACIONES -->
                 <div id="vista-evaluaciones" class="hidden fade-in glass-light p-6 md:p-8 min-h-[500px]">
                     <h2 class="text-3xl font-black text-gray-900 tracking-tight mb-6">Historial de Mediciones e IMC</h2>
                     <div class="overflow-x-auto mt-4">
@@ -292,12 +319,11 @@
                         </table>
                     </div>
                 </div>
-                
             </div>
         </main>
     </div>
 
-    <!-- Modales Glass -->
+    <!-- MODALES -->
     <div id="modal-universal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4" style="display:none;">
         <div class="glass-dark p-8 w-full max-w-lg relative border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-[95vh] overflow-y-auto custom-scrollbar" id="modal-container">
             <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10" data-modal="modal-universal">✕</button>
@@ -309,21 +335,31 @@
     <div id="modal-ayuda" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4" style="display:none;">
         <div class="glass-dark p-8 w-full max-w-2xl relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20">
             <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10" data-modal="modal-ayuda">✕</button>
-            <h2 class="text-2xl font-black text-white mb-2 flex items-center gap-2 drop-shadow-md"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Guía de Operación Integral</h2>
+            <h2 class="text-2xl font-black text-white mb-2 flex items-center gap-2 drop-shadow-md">Guía de Operación Integral</h2>
             <p class="text-sm text-gray-300 mb-6 font-medium">Aprende a dominar todas las funciones de tu panel de gestión.</p>
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-3 custom-scrollbar text-sm">
                 <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
                     <h3 class="font-bold text-white mb-3 flex items-center gap-2"><span class="dynamic-text text-lg">1.</span> Gestión y Check-in Rápido</h3>
                     <ul class="text-gray-300 space-y-2 ml-4 list-disc">
-                        <li><strong>Check-in Rápido:</strong> En el padrón, usa el botón "Presente" para marcar asistencia al instante.</li>
-                        <li><strong>Deudas (Pagos Parciales):</strong> Al cobrar, si el monto es menor al total, el socio quedará con Deuda.</li>
+                        <li><strong>Check-in Rápido:</strong> En el padrón, usa el botón "Presente" para marcar asistencia.</li>
+                        <li><strong>Deudas:</strong> Al cobrar, si el monto es menor al total, el socio quedará con Deuda.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT DE FIREBASE PURO Y DIRECTO -->
+    <div id="modal-detalle-turno" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4" style="display:none;">
+        <div class="glass-dark p-8 w-full max-w-2xl relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20">
+            <button class="btn-cerrar-modal absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition hover:bg-white/10" data-modal="modal-detalle-turno">✕</button>
+            <h2 class="text-2xl font-black text-white mb-6 drop-shadow-md">Detalle del Turno Auditado</h2>
+            <div id="contenido-detalle-turno" class="text-sm"></div>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- SCRIPT DE SINCRONIZACIÓN Y FIREBASE (ESTABLE)        -->
+    <!-- ---------------------------------------------------- -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -381,6 +417,7 @@
         document.querySelectorAll('.btn-cerrar-modal').forEach(b => b.addEventListener('click', e => {
             document.getElementById('modal-universal').style.display = 'none';
             document.getElementById('modal-ayuda').style.display = 'none';
+            document.getElementById('modal-detalle-turno').style.display = 'none';
         }));
 
         const btnExportarSocios = document.getElementById('btn-exportar-socios');
@@ -405,6 +442,7 @@
         }
 
         window.abrirModalPago = (idSocio = null, esSaldarDeuda = false) => {
+            if(!estadoCajaGlobal.abierta) { showToast("Debes ABRIR TURNO antes de cobrar.", "error"); return; }
             const socio = idSocio ? listaSociosData.find(x => x.id === idSocio) : null;
             
             modalTitle.innerText = esSaldarDeuda ? "Saldar Deuda Pendiente" : "Renovación de Cuota";
@@ -450,6 +488,7 @@
         const btnNuevoEgreso = document.getElementById('btn-nuevo-egreso');
         if(btnNuevoEgreso) {
             btnNuevoEgreso.addEventListener('click', () => {
+                if(!estadoCajaGlobal.abierta) { showToast("Debes ABRIR TURNO para registrar egresos.", "error"); return; }
                 modalTitle.innerText = "Registrar Gasto";
                 modalContent.innerHTML = `
                     <form id="form-dinamico" class="space-y-4">
@@ -524,6 +563,7 @@
                 try {
                     if(modoEdicion) { await updateDoc(doc(db, "gimnasios", GYM_ID, "socios", idEdicion), dSocio); showToast("Perfil actualizado"); } 
                     else { 
+                        if(!estadoCajaGlobal.abierta) { showToast("Abre turno para guardar", "error"); btn.disabled = false; btn.innerText = 'Guardar'; return; }
                         const t = parseFloat(document.getElementById('s-monto').value); const ent = parseFloat(document.getElementById('s-entregado').value);
                         dSocio.deuda = t - ent > 0 ? (t - ent) : 0;
                         await addDoc(collection(db, "gimnasios", GYM_ID, "socios"), dSocio);
@@ -576,7 +616,60 @@
             `;
         };
 
+        const btnEstadoTurno = document.getElementById('btn-estado-turno');
+        if(btnEstadoTurno) {
+            btnEstadoTurno.addEventListener('click', () => {
+                if(!estadoCajaGlobal.abierta) {
+                    modalTitle.innerText = "Apertura de Turno";
+                    modalContent.innerHTML = `
+                        <form id="form-dinamico" class="space-y-4">
+                            <div class="bg-blue-500/10 border border-blue-500/30 p-5 rounded-xl shadow-inner"><p class="text-xs text-blue-300 font-medium">Declara el fondo de cambio físico con el que inicias.</p></div>
+                            <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Fondo de Caja (Efectivo Inicial)</label>
+                            <input type="number" id="t-fondo" class="w-full input-dark rounded-xl p-4 text-sm font-bold" placeholder="Ej. 15000" required></div>
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_rgba(16,185,129,0.4)] transition border border-white/20 hover:scale-[1.02]">Comenzar Operaciones</button>
+                        </form>`;
+                    document.getElementById('form-dinamico').onsubmit = async (e) => {
+                        e.preventDefault();
+                        try { await addDoc(collection(db, "gimnasios", GYM_ID, "turnos_estado"), { abierta: true, fondoInicial: Number(document.getElementById('t-fondo').value), ts: new Date().toISOString() }); modal.style.display = 'none'; showToast("Caja Abierta"); cargarDatos(); } catch(err) { showToast("Error", "error"); }
+                    };
+                } else {
+                    const fTurno = listaFinanzasData.filter(f => f.timestamp > estadoCajaGlobal.ts);
+                    let ingPOS = 0; let ingMem = 0; let egresos = 0;
+                    fTurno.forEach(f => { if(f.tipo === 'Egreso') egresos += Number(f.monto); else if(f.tipo === 'Inventario') ingPOS += Number(f.monto); else if(f.tipo === 'Cuota') ingMem += Number(f.monto); });
+                    const cajaFinal = estadoCajaGlobal.fondoInicial + ingPOS + ingMem - egresos;
+
+                    modalTitle.innerText = "Arqueo de Cierre";
+                    modalContent.innerHTML = `
+                        <div class="space-y-3 text-sm text-gray-300 bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
+                            <div class="flex justify-between border-b border-white/10 pb-3"><span>Fondo Inicial:</span><span class="text-white font-mono font-bold">$${estadoCajaGlobal.fondoInicial}</span></div>
+                            <div class="flex justify-between border-b border-white/10 pb-3 pt-1"><span>Ventas POS:</span><span class="text-emerald-400 font-mono font-bold">+$${ingPOS}</span></div>
+                            <div class="flex justify-between border-b border-white/10 pb-3 pt-1"><span>Membresías:</span><span class="text-blue-400 font-mono font-bold">+$${ingMem}</span></div>
+                            <div class="flex justify-between border-b border-white/10 pb-3 pt-1"><span>Gastos/Egresos:</span><span class="text-red-400 font-mono font-bold">-$${egresos}</span></div>
+                            <div class="flex justify-between pt-3 text-xl font-black tracking-tight"><span>En Caja Física:</span><span class="text-white drop-shadow-md bg-white/10 px-3 py-1 rounded-lg border border-white/10">$${cajaFinal}</span></div>
+                        </div>
+                        <form id="form-dinamico" class="mt-6 space-y-4">
+                            <textarea id="t-obs" class="w-full input-dark rounded-xl p-4 text-sm resize-none custom-scrollbar" rows="2" placeholder="Observaciones para el dueño..."></textarea>
+                            <input type="password" id="t-pass" class="w-full input-dark rounded-xl p-4 text-sm text-center tracking-widest" placeholder="Clave de Autorización" required>
+                            <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-xl mt-4 text-sm shadow-[0_0_20px_rgba(234,88,12,0.4)] transition border border-white/20 hover:scale-[1.02]">Confirmar y Cerrar</button>
+                        </form>
+                    `;
+                    document.getElementById('form-dinamico').onsubmit = async (e) => {
+                        e.preventDefault(); const pass = document.getElementById('t-pass').value;
+                        try {
+                            const gSnap = await getDoc(doc(db, "gimnasios", GYM_ID));
+                            if(pass !== gSnap.data().password && pass !== gSnap.data().passwordStaff) { showToast("Clave Incorrecta", "error"); return; }
+                            await addDoc(collection(db, "gimnasios", GYM_ID, "cierres"), { apertura: estadoCajaGlobal.ts, cierre: new Date().toISOString(), timestamp: new Date().toISOString(), total_pos: ingPOS, total_mem: ingMem, egresos: egresos, fondo_inicial: estadoCajaGlobal.fondoInicial, usuario: userRole, observaciones: document.getElementById('t-obs').value });
+                            await deleteDoc(doc(db, "gimnasios", GYM_ID, "turnos_estado", estadoCajaGlobal.id));
+                            modal.style.display = 'none'; showToast("Caja Cerrada", "success"); cargarDatos();
+                        } catch(err) { showToast("Error", "error"); }
+                    };
+                }
+                modal.style.display = 'flex';
+            });
+        }
+
         window.abrirModalVentaArticulo = (nombre, precioBase) => {
+            if(!estadoCajaGlobal.abierta) { showToast("Abre turno para vender.", "error"); return; }
             modalTitle.innerText = `Venta Rápida: ${nombre}`;
             modalContent.innerHTML = `
                 <form id="form-dinamico" class="space-y-4">
@@ -758,11 +851,11 @@
                     const tbT = document.getElementById('tabla-tienda-body'); 
                     if(tbT) {
                         tbT.innerHTML = '';
-                        const ventasTurno = listaFinanzasData.filter(f => f.tipo === 'Inventario');
+                        const ventasTurno = estadoCajaGlobal.abierta ? listaFinanzasData.filter(f => f.tipo === 'Inventario' && f.timestamp > estadoCajaGlobal.ts) : [];
                         ventasTurno.forEach(f => {
                             tbT.innerHTML += `<tr class="border-b border-black/5"><td class="py-3 px-2 text-gray-900 font-bold text-sm tracking-tight">${f.concepto}</td><td class="py-3 px-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">${f.medio||'Efectivo'}</td><td class="py-3 px-2 text-right text-gray-900 font-mono font-black text-base">$${f.monto}</td></tr>`;
                         });
-                        if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-10 text-gray-400 text-center text-[10px] uppercase font-bold tracking-widest">Sin ventas registradas</td></tr>`;
+                        if(!ventasTurno.length) tbT.innerHTML = `<tr><td class="py-10 text-gray-400 text-center text-[10px] uppercase font-bold tracking-widest">${estadoCajaGlobal.abierta ? 'Sin ventas registradas' : 'TURNO CERRADO'}</td></tr>`;
                     }
                 }
 
@@ -805,13 +898,21 @@
                 if(gymModulos.tienda) mCont.innerHTML += `<div id="nav-tienda" class="${basePill}" onclick="cambiarVista('tienda')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>`;
                 if(gymModulos.evaluaciones) mCont.innerHTML += `<div id="nav-evaluaciones" class="${basePill}" onclick="cambiarVista('evaluaciones')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>`;
                 
-                const [sSnap, fSnap, eSnap, pSnap, cSnap] = await Promise.all([ 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "socios")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "finanzas")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "productos")), 
-                    getDocs(collection(db, "gimnasios", GYM_ID, "cierres"))
-                ]);
+                const sSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "socios"));
+                const fSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "finanzas"));
+                const eSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "evaluaciones"));
+                const pSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "productos"));
+                const cSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "cierres"));
+                const tSnap = await getDocs(collection(db, "gimnasios", GYM_ID, "turnos_estado"));
+
+                if(!tSnap.empty && tSnap.docs && tSnap.docs.length > 0) { const ts = tSnap.docs[0]; estadoCajaGlobal = { abierta: true, id: ts.id, ...ts.data() }; } 
+                else { estadoCajaGlobal = { abierta: false, id: null, ts: null, fondoInicial: 0 }; }
+
+                const btnTurno = document.getElementById('btn-estado-turno');
+                if(btnTurno) {
+                    if(estadoCajaGlobal.abierta) { btnTurno.innerHTML = '🔒 CERRAR TURNO'; btnTurno.className = 'glass-dark text-orange-400 border-orange-500/50 hover:bg-orange-500/20 hover:text-orange-300 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_20px_rgba(234,88,12,0.2)] hover:scale-105'; }
+                    else { btnTurno.innerHTML = '🟢 ABRIR TURNO'; btnTurno.className = 'bg-emerald-500/20 backdrop-blur-md text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/40 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:scale-105'; }
+                }
 
                 listaSociosData = []; sSnap.forEach(d => listaSociosData.push({ id: d.id, ...d.data() }));
                 listaProductosData = []; pSnap.forEach(d => listaProductosData.push({ id: d.id, ...d.data() }));
@@ -841,7 +942,7 @@
                 
                 renderUI(); 
             } catch (err) {
-                console.error("Error en carga de Firebase:", err);
+                console.error("Error crítico Firebase:", err);
             }
         }
 
