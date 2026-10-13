@@ -165,7 +165,7 @@
                         <div class="w-full lg:w-2/3 flex flex-col">
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-2xl font-black text-gray-900 tracking-tight">Atención Requerida</h2>
-                                <div id="cumple-container" class="hidden flex gap-2 items-center bg-purple-100 border border-purple-200 px-4 py-2 rounded-full text-xs font-bold text-purple-700 shadow-sm hover:scale-105 transition">
+                                <div id="cumple-container" class="hidden flex gap-2 items-center bg-purple-100 border border-purple-200 px-4 py-2 rounded-full text-xs font-bold text-purple-700 shadow-sm fade-in hover:scale-105 transition">
                                     🎂 Hoy: <span id="cumple-nombres"></span>
                                 </div>
                             </div>
@@ -187,6 +187,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA SOCIOS -->
                 <div id="vista-socios" class="hidden fade-in glass-light p-6 md:p-8 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-3xl font-black text-gray-900 tracking-tight">Directorio de Miembros</h2>
@@ -211,6 +212,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA FINANZAS -->
                 <div id="vista-finanzas" class="hidden fade-in admin-only flex flex-col gap-6">
                     <div class="glass-dark p-6 h-[300px]">
                         <div class="flex justify-between items-center mb-4"><h2 class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Crecimiento Financiero (Ingresos)</h2></div>
@@ -261,6 +263,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA TIENDA -->
                 <div id="vista-tienda" class="hidden fade-in flex flex-col lg:flex-row gap-6">
                     <div class="w-full lg:w-2/3 glass-light p-6 md:p-8 min-h-[500px]">
                         <div class="flex justify-between items-center mb-6">
@@ -281,6 +284,7 @@
                     </div>
                 </div>
 
+                <!-- VISTA EVALUACIONES -->
                 <div id="vista-evaluaciones" class="hidden fade-in glass-light p-6 md:p-8 min-h-[500px]">
                     <h2 class="text-3xl font-black text-gray-900 tracking-tight mb-6">Historial de Mediciones e IMC</h2>
                     <div class="overflow-x-auto mt-4">
@@ -303,7 +307,7 @@
         </main>
     </div>
 
-    <!-- MODALES Glassmorphism con botones de cierre grandes y seguros -->
+    <!-- MODALES Glassmorphism (Botones de Cierre Gigantes y Seguros) -->
     <div id="modal-universal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4" style="display:none;">
         <div class="glass-dark p-8 w-full max-w-lg relative border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-[95vh] overflow-y-auto custom-scrollbar" id="modal-container">
             <button onclick="document.getElementById('modal-universal').style.display='none'" class="absolute top-4 right-4 text-white/70 hover:text-white bg-red-500/30 hover:bg-red-500 w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer z-50 shadow-lg text-lg">✕</button>
@@ -315,11 +319,12 @@
     <div id="modal-ayuda" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-md fade-in p-4" style="display:none;">
         <div class="glass-dark p-8 w-full max-w-3xl relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="document.getElementById('modal-ayuda').style.display='none'" class="absolute top-4 right-4 text-white/70 hover:text-white bg-red-500/30 hover:bg-red-500 w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer z-50 shadow-lg text-lg">✕</button>
-            <h2 class="text-3xl font-black text-white mb-2 flex items-center gap-2 drop-shadow-md">Manual Operativo NovaGym</h2>
+            <h2 class="text-3xl font-black text-white mb-2 flex items-center gap-2 drop-shadow-md"><svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Manual Operativo NovaGym</h2>
             <p class="text-sm text-gray-300 mb-8 font-medium">Conviértete en un experto del sistema sin necesidad de soporte técnico.</p>
+            
             <div class="space-y-6 text-sm">
                 <div class="bg-black/30 p-6 rounded-2xl border border-white/10 shadow-inner">
-                    <h3 class="font-black text-white mb-3 text-lg tracking-wide"><span class="dynamic-text">1.</span> Dashboard y Padrón de Socios</h3>
+                    <h3 class="font-black text-white mb-3 text-lg tracking-wide"><span class="dynamic-text">1.</span> Gestión y Check-in Rápido</h3>
                     <ul class="text-gray-300 space-y-3 ml-4 list-disc">
                         <li><strong>Check-in Rápido:</strong> En la tabla, haz clic en <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">✓ Presente</span> para registrar la asistencia.</li>
                         <li><strong>Cobrar Deudas:</strong> Al cobrar una cuota, ingresa un monto menor al total. El socio quedará con Deuda. Para cobrarla, presiona "Saldar Deuda".</li>
@@ -346,7 +351,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE ESTADO GLOBAL (Independiente del Módulo) -->
+    <!-- SCRIPT DE INICIALIZACIÓN GLOBAL -->
     <script>
         window.appState = {
             gymId: null,
@@ -411,8 +416,10 @@
                 const container = document.getElementById('toast-container'); 
                 const toast = document.createElement('div');
                 const bg = tipo === 'success' ? 'bg-black/70 border-emerald-500' : 'bg-black/70 border-red-500';
-                toast.className = 'toast-enter ' + bg + ' backdrop-blur-xl border-l-4 border-white/10 text-white px-6 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-bold text-sm flex items-center gap-3 rounded-r-2xl';
-                let iconHtml = tipo === 'success' ? '<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : '<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+                toast.className = `toast-enter ${bg} backdrop-blur-xl border-l-4 border-white/10 text-white px-6 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-bold text-sm flex items-center gap-3 rounded-r-2xl`;
+                let iconHtml = tipo === 'success' ? 
+                    '<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : 
+                    '<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
                 toast.innerHTML = iconHtml + ' ' + msg;
                 container.appendChild(toast); 
                 setTimeout(function() { toast.style.opacity = '0'; setTimeout(function() { toast.remove(); }, 300); }, 3000);
@@ -478,7 +485,31 @@
             };
 
             window.abrirModalEvaluacion = function() { document.getElementById('modal-universal').style.display = 'flex'; };
-            window.abrirModalNuevoProducto = function() { document.getElementById('modal-universal').style.display = 'flex'; };
+
+            // === AQUI ESTA LA CORRECCIÓN EXACTA DE NUEVO PRODUCTO ===
+            window.abrirModalNuevoProducto = function() {
+                document.getElementById('modal-title').innerText = "Agregar al Catálogo POS";
+                document.getElementById('modal-content').innerHTML = `
+                    <form id="form-dinamico" class="space-y-4">
+                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Nombre del Artículo</label><input type="text" id="cat-nom" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="Ej: Agua 500ml" required></div>
+                        <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Precio Base (ARS)</label><input type="number" id="cat-pre" class="w-full input-dark rounded-xl p-3.5 text-sm" placeholder="Ej: 1500" required></div>
+                        <button type="submit" class="w-full dynamic-bg font-bold py-4 rounded-xl mt-6 text-sm text-[#09090b] shadow-[0_0_20px_var(--accent-color)] opacity-90 hover:opacity-100 transition border border-white/20">Guardar Producto</button>
+                    </form>`;
+                
+                document.getElementById('form-dinamico').onsubmit = async function(e) {
+                    e.preventDefault();
+                    try { 
+                        await addDoc(collection(db, "gimnasios", GYM_ID, "productos"), { 
+                            nombre: document.getElementById('cat-nom').value, 
+                            precio: document.getElementById('cat-pre').value 
+                        }); 
+                        document.getElementById('modal-universal').style.display = 'none'; 
+                        window.showToast("Producto agregado"); 
+                        window.cargarDatosMaestros(); 
+                    } catch(err) { window.showToast("Error al guardar", "error"); }
+                };
+                document.getElementById('modal-universal').style.display = 'flex';
+            };
 
             window.abrirModalPago = function(idSocio, esSaldarDeuda) {
                 if(!idSocio) idSocio = null;
@@ -798,7 +829,7 @@
                             <form id="form-dinamico" class="mt-6 space-y-4">
                                 <textarea id="t-obs" class="w-full input-dark rounded-xl p-4 text-sm resize-none custom-scrollbar" rows="2" placeholder="Observaciones para el dueño..."></textarea>
                                 <input type="password" id="t-pass" class="w-full input-dark rounded-xl p-4 text-sm text-center tracking-widest" placeholder="Clave de Autorización" required>
-                                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-xl mt-4 text-sm shadow-[0_0_20px_rgba(234,88,12,0.4)] transition border border-white/20">Confirmar y Cerrar</button>
+                                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-xl mt-4 text-sm shadow-[0_0_20px_rgba(234,88,12,0.4)] transition">Confirmar y Cerrar</button>
                             </form>
                         `;
                         document.getElementById('form-dinamico').onsubmit = async function(e) {
@@ -827,7 +858,7 @@
                             <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Importe Final</label><input type="number" id="v-mon" class="w-full input-dark rounded-xl p-3.5 text-sm font-bold" value="${precioBase}" required></div>
                         </div>
                         <div><label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 ml-1">Fecha</label><input type="date" id="v-fec" class="w-full input-dark rounded-xl p-3.5 text-sm" required></div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_rgba(16,185,129,0.4)] transition">Confirmar Venta</button>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl mt-6 text-sm shadow-[0_0_20px_rgba(16,185,129,0.4)] transition border border-white/20">Confirmar Venta</button>
                     </form>`;
                 document.getElementById('v-fec').valueAsDate = new Date();
                 document.getElementById('form-dinamico').onsubmit = async function(e) {
@@ -903,6 +934,227 @@
                 });
             }
 
+            function renderUI() {
+                try {
+                    const hoy = new Date(); const mes = String(hoy.getMonth()+1).padStart(2,'0'); const dia = String(hoy.getDate()).padStart(2,'0'); const hoyMD = mes + "-" + dia;
+                    let cumpleaneros = [];
+
+                    const cAlertas = document.getElementById('contenedor-alertas'); const elTotalAlertas = document.getElementById('total-alertas');
+                    if(cAlertas && elTotalAlertas) {
+                        cAlertas.innerHTML = ''; let alertas = 0;
+                        for(let i=0; i<window.appState.listaSociosData.length; i++) {
+                            let s = window.appState.listaSociosData[i];
+                            const est = evaluarEstado(s.vence);
+                            if(s.nacimiento && String(s.nacimiento).endsWith(hoyMD)) { cumpleaneros.push(s.nombre); }
+
+                            if(est.t !== 'Active' || s.deuda > 0) {
+                                alertas++;
+                                let deudaFlag = ''; if (s.deuda > 0) { deudaFlag = '<div class="absolute left-0 top-0 w-2 h-full bg-red-500 shadow-[0_0_10px_#ef4444]"></div>'; }
+                                let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=FOTO';
+                                let subtitulo = s.deuda > 0 ? '<span class="text-red-500">Deuda: $' + s.deuda + '</span>' : 'Miembro';
+                                let spanEstado = ''; if (est.t === 'Expired') spanEstado = 'Expirado'; else if (est.t === 'Warning') spanEstado = 'Por Vencer'; else spanEstado = 'Activo';
+                                let btnSaldar = ''; if (s.deuda > 0) { btnSaldar = '<button class="bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white px-5 py-2.5 text-xs rounded-full font-bold transition shadow-sm border border-red-500/20" onclick="event.stopPropagation(); window.abrirModalPago(\'' + s.id + '\', true)">Saldar</button>'; }
+
+                                cAlertas.innerHTML += `
+                                    <div class="p-5 glass-light flex flex-col sm:flex-row justify-between items-center transition hover:scale-[1.02] cursor-pointer gap-4 sm:gap-0 relative overflow-hidden shadow-sm border border-white/50" onclick="window.mostrarDetalleSocio('${s.id}')">
+                                        ${deudaFlag}
+                                        <div class="flex items-center gap-4 w-full sm:w-auto ml-2">
+                                            <img src="${fotUrl}" class="w-12 h-12 rounded-full object-cover shadow-md border border-white/50">
+                                            <div class="w-40"><p class="text-sm font-black text-gray-900 tracking-tight">${s.nombre}</p><p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">${subtitulo}</p></div>
+                                            <span class="px-3 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border shadow-sm ${est.c}">${spanEstado}</span>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            ${btnSaldar}
+                                            <button class="bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 px-6 py-2.5 text-xs rounded-full font-black tracking-wide transition shadow-sm" onclick="event.stopPropagation(); window.abrirModalPago('${s.id}')">Renovar</button>
+                                        </div>
+                                    </div>`;
+                            }
+                        }
+                        elTotalAlertas.innerText = alertas;
+                        if(alertas === 0) { cAlertas.innerHTML = '<div class="p-8 text-center text-gray-400 font-bold tracking-widest uppercase text-xs">Todo en orden. Cero alertas.</div>'; }
+
+                        const cCont = document.getElementById('cumple-container');
+                        if(cumpleaneros.length > 0 && cCont) { cCont.classList.remove('hidden'); cCont.style.display = 'flex'; document.getElementById('cumple-nombres').innerText = cumpleaneros.join(', '); }
+                    }
+
+                    const tbS = document.getElementById('tabla-socios-body');
+                    if(tbS) {
+                        tbS.innerHTML = '';
+                        for(let i=0; i<window.appState.listaSociosData.length; i++) {
+                            let s = window.appState.listaSociosData[i];
+                            const est = evaluarEstado(s.vence);
+                            let btnEliminar = ''; if (window.appState.userRole === 'admin') { btnEliminar = '<button class="btn-del-s bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-red-500/20" data-id="' + s.id + '">Borrar</button>'; }
+                            const esCumpleHoy = s.nacimiento && String(s.nacimiento).endsWith(hoyMD);
+                            let spanEstado = ''; if (est.t === 'Expired') spanEstado = 'Expirado'; else if (est.t === 'Warning') spanEstado = 'Próximo'; else spanEstado = 'Activo';
+                            let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=?';
+                            let cumpleHtml = esCumpleHoy ? '<span title="Cumpleaños Hoy" class="drop-shadow-md text-lg">🎂</span>' : '';
+                            let deudaHtml = s.deuda > 0 ? '<span class="block text-red-500 mt-1 bg-red-50 px-2 py-0.5 rounded border border-red-100 w-fit shadow-inner">Debe: $' + s.deuda + '</span>' : '';
+
+                            tbS.innerHTML += `
+                                <tr class="border-b border-black/5 hover:bg-black/5 transition">
+                                    <td class="py-4 px-4"><span class="px-2.5 py-1.5 rounded-lg text-[10px] font-bold tracking-widest uppercase border shadow-sm ${est.c}">${spanEstado}</span></td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-4">
+                                            <img src="${fotUrl}" class="w-10 h-10 rounded-full object-cover shadow-md border border-white/50">
+                                            <div><p class="text-gray-900 font-black text-sm flex items-center gap-1 tracking-tight">${s.nombre} ${cumpleHtml}</p></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-xs font-bold text-gray-700">${s.membresia} <span class="text-[10px] font-semibold text-gray-500 block uppercase tracking-wider mt-0.5">${s.servicio}</span></td>
+                                    <td class="py-4 px-4 text-gray-900 font-mono text-xs font-bold">${s.vence} ${deudaHtml}</td>
+                                    <td class="py-4 px-4 flex justify-end gap-2 items-center">
+                                        <button class="bg-emerald-500/10 text-emerald-600 px-3 py-2 rounded-full hover:bg-emerald-500 hover:text-white transition text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20" onclick="window.registrarIngreso('${s.id}', '${s.nombre}')">✓ Presente</button>
+                                        <button class="bg-[#25D366]/10 text-[#25D366] p-2 rounded-full hover:bg-[#25D366] hover:text-white transition border border-[#25D366]/20" onclick="window.enviarWhatsApp('${s.telefono}', '${s.nombre}')" title="WhatsApp"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></button>
+                                        <button class="bg-purple-500/10 text-purple-600 hover:bg-purple-500 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-purple-500/20" onclick="window.abrirModalRutina('${s.id}')">📝 Rutina</button>
+                                        <button class="bg-blue-500/10 hover:bg-blue-500 hover:text-white text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-blue-500/20" onclick="window.abrirModalPago('${s.id}')">Cobrar</button>
+                                        <button class="btn-edit-s bg-black/5 hover:bg-black/10 text-gray-800 px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-black/10" data-id="${s.id}">Editar</button>
+                                        ${btnEliminar}
+                                    </td>
+                                </tr>`;
+                        }
+                    }
+
+                    if(window.appState.userRole === 'admin') {
+                        const tbF = document.getElementById('tabla-finanzas-body'); 
+                        if(tbF) {
+                            tbF.innerHTML = '';
+                            for(let i=0; i<window.appState.listaFinanzasData.length; i++) {
+                                let f = window.appState.listaFinanzasData[i];
+                                const isEgreso = f.tipo === 'Egreso';
+                                const tColor = isEgreso ? 'text-red-600 bg-red-500/10 border-red-500/20' : (f.tipo === 'Inventario' ? 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20' : 'text-blue-600 bg-blue-500/10 border-blue-500/20');
+                                let fechaFormat = f.fecha ? f.fecha.split('-').reverse().join('/') : '';
+                                let signo = isEgreso ? '-' : '';
+
+                                tbF.innerHTML += `
+                                    <tr class="border-b border-black/5 hover:bg-black/5 transition">
+                                        <td class="py-3 px-4 text-gray-500 font-mono text-[11px] font-bold tracking-widest">${fechaFormat}</td>
+                                        <td class="py-3 px-4 text-gray-900 font-black text-sm tracking-tight">${f.concepto}</td>
+                                        <td class="py-3 px-4"><span class="px-3 py-1 rounded-full text-[10px] font-bold border ${tColor}">${f.tipo}</span></td>
+                                        <td class="py-3 px-4 text-gray-600 text-[10px] font-bold uppercase tracking-widest">${f.medio || 'Efectivo'}</td>
+                                        <td class="py-3 px-4 font-black ${isEgreso ? 'text-red-500' : 'text-gray-900'} font-mono">${signo}$${Number(f.monto||0).toLocaleString('es-AR')}</td>
+                                        <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-400 hover:text-red-500 transition font-bold" data-id="${f.id}">✕</button></td>
+                                    </tr>`;
+                            }
+                        }
+
+                        const tbCierres = document.getElementById('tabla-turnos-admin-body');
+                        if(tbCierres) {
+                            tbCierres.innerHTML = '';
+                            if(window.appState.listaCierresData.length === 0) { 
+                                tbCierres.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400 font-bold text-[10px] uppercase tracking-widest">Aún no hay turnos cerrados.</td></tr>'; 
+                            } else {
+                                for(let i=0; i<window.appState.listaCierresData.length; i++) {
+                                    let c = window.appState.listaCierresData[i];
+                                    const final = Number(c.fondo_inicial||0) + Number(c.total_pos||0) + Number(c.total_mem||0) - Number(c.egresos||0);
+                                    
+                                    let fechaCierre = '-';
+                                    let targetDate = c.cierre ? c.cierre : c.timestamp;
+                                    if(targetDate) {
+                                        let dObj = new Date(targetDate);
+                                        if(!isNaN(dObj)) fechaCierre = dObj.toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
+                                    }
+
+                                    let obsHtml = c.observaciones ? '<br><span class="text-[10px] text-orange-600 bg-orange-500/10 border border-orange-500/20 px-2 py-1 rounded mt-1.5 inline-block shadow-inner">📝 ' + c.observaciones + '</span>' : '';
+
+                                    tbCierres.innerHTML += `
+                                        <tr class="border-b border-black/5 hover:bg-black/5 transition">
+                                            <td class="py-4 px-4 font-mono text-[11px] text-gray-600 font-bold tracking-widest">
+                                                ${fechaCierre}
+                                                ${obsHtml}
+                                            </td>
+                                            <td class="py-4 px-4 text-emerald-600 font-mono font-black tracking-tight text-base">+$${Number(c.total_pos||0) + Number(c.total_mem||0)}</td>
+                                            <td class="py-4 px-4 text-red-500 font-mono font-black tracking-tight text-base">-$${c.egresos||0}</td>
+                                            <td class="py-4 px-4 font-black text-gray-900 font-mono text-lg tracking-tight">$${final} <span class="text-[9px] text-gray-500 font-bold ml-1 tracking-widest uppercase block mt-0.5">(Fondo Base: $${c.fondo_inicial||0})</span></td>
+                                            <td class="py-4 px-4 text-[10px] text-gray-500 uppercase font-black tracking-widest">${c.usuario === 'admin' ? 'Dueño' : 'Staff'}</td>
+                                            <td class="py-4 px-4 text-center">
+                                                <button class="btn-del-cierre text-gray-400 hover:text-red-500 transition px-2 font-black" data-id="${c.id}" title="Eliminar">✕</button>
+                                            </td>
+                                        </tr>`;
+                                }
+                            }
+                        }
+                    }
+
+                    if(window.appState.gymModulos.tienda) {
+                        const cCat = document.getElementById('catalogo-productos');
+                        if(cCat) {
+                            cCat.innerHTML = '';
+                            for(let i=0; i<window.appState.listaProductosData.length; i++) {
+                                let p = window.appState.listaProductosData[i];
+                                const btnEditAdmin = window.appState.userRole === 'admin' ? `<button onclick="event.stopPropagation(); window.abrirModalEditarProducto('${p.id}', '${p.nombre}', '${p.precio}')" class="absolute top-3 right-3 bg-black/5 hover:bg-blue-500 hover:text-white text-gray-500 p-2 rounded-xl z-10 transition opacity-0 group-hover:opacity-100 backdrop-blur-md shadow-sm border border-black/10"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>` : '';
+                                cCat.innerHTML += `
+                                    <div class="relative bg-white/40 border border-black/5 hover:bg-white hover:border-blue-300 rounded-[1.5rem] transition flex flex-col justify-between h-32 overflow-hidden group shadow-sm hover:shadow-md">
+                                        <button onclick="window.abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="absolute inset-0 w-full h-full text-left p-5 transition z-0 flex flex-col justify-between">
+                                            <span class="text-sm font-black text-gray-900 tracking-tight leading-tight w-[80%] drop-shadow-sm">${p.nombre}</span>
+                                            <span class="text-xs font-mono font-black text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg w-fit mt-1 shadow-inner">$${p.precio}</span>
+                                        </button>${btnEditAdmin}
+                                    </div>`;
+                            }
+                        }
+                        
+                        const tbT = document.getElementById('tabla-tienda-body'); 
+                        if(tbT) {
+                            tbT.innerHTML = '';
+                            let hayVentas = false;
+                            if (window.appState.estadoCajaGlobal.abierta) {
+                                for(let i=0; i<window.appState.listaFinanzasData.length; i++) {
+                                    let f = window.appState.listaFinanzasData[i];
+                                    if(f.tipo === 'Inventario' && f.timestamp > window.appState.estadoCajaGlobal.ts) {
+                                        hayVentas = true;
+                                        tbT.innerHTML += `<tr class="border-b border-black/5"><td class="py-3 px-2 text-gray-900 font-bold text-sm tracking-tight">${f.concepto}</td><td class="py-3 px-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">${f.medio||'Efectivo'}</td><td class="py-3 px-2 text-right text-gray-900 font-mono font-black text-base">$${f.monto}</td></tr>`;
+                                    }
+                                }
+                            } else if (window.appState.userRole === 'admin') {
+                                const hoyCorta = new Date().toISOString().split('T')[0];
+                                for(let i=0; i<window.appState.listaFinanzasData.length; i++) {
+                                    let f = window.appState.listaFinanzasData[i];
+                                    if(f.tipo === 'Inventario' && f.fecha === hoyCorta) {
+                                        hayVentas = true;
+                                        tbT.innerHTML += `<tr class="border-b border-black/5"><td class="py-3 px-2 text-gray-900 font-bold text-sm tracking-tight">${f.concepto}</td><td class="py-3 px-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">${f.medio||'Efectivo'}</td><td class="py-3 px-2 text-right text-gray-900 font-mono font-black text-base">$${f.monto}</td></tr>`;
+                                    }
+                                }
+                            }
+                            
+                            if(!hayVentas) {
+                                let msjTienda = window.appState.estadoCajaGlobal.abierta ? 'Sin ventas registradas' : (window.appState.userRole==='admin' ? 'Sin ventas hoy' : 'TURNO CERRADO');
+                                tbT.innerHTML = `<tr><td class="py-10 text-gray-400 text-center text-[10px] uppercase font-bold tracking-widest">${msjTienda}</td></tr>`;
+                            }
+                        }
+                    }
+
+                    const tbE = document.getElementById('tabla-evaluaciones-body'); 
+                    if(tbE) {
+                        tbE.innerHTML = '';
+                        for(let i=0; i<window.appState.listaEvalsData.length; i++) {
+                            let e = window.appState.listaEvalsData[i];
+                            const imc = parseFloat(e.imc);
+                            let badgeImc = 'text-gray-700 bg-gray-500/10 border-gray-500/20'; 
+                            if(imc >= 25) badgeImc = 'text-orange-700 bg-orange-500/10 border-orange-500/20'; 
+                            if(imc >= 30) badgeImc = 'text-red-700 bg-red-500/10 border-red-500/20'; 
+                            const btnEliminar = window.appState.userRole === 'admin' ? `<button class="btn-del-e text-gray-400 hover:text-red-500 transition px-2 font-bold" data-id="${e.id}">✕</button>` : '';
+                            let eFecha = e.fecha ? e.fecha.split('-').reverse().join('/') : '';
+
+                            tbE.innerHTML += `
+                                <tr class="border-b border-black/5 hover:bg-black/5 transition">
+                                    <td class="py-4 px-4 text-gray-600 font-mono text-[11px] font-bold tracking-widest">${eFecha}</td>
+                                    <td class="py-4 px-4 text-gray-900 font-black tracking-tight">${e.socio}</td>
+                                    <td class="py-4 px-4 text-gray-600 font-bold">${e.peso} kg</td>
+                                    <td class="py-4 px-4 text-gray-600 font-bold">${e.altura} cm</td>
+                                    <td class="py-4 px-4"><span class="px-3 py-1.5 rounded-lg text-[11px] font-bold border shadow-inner ${badgeImc}">${e.imc}</span></td>
+                                    <td class="py-4 px-4 text-center">${btnEliminar}</td>
+                                </tr>`;
+                        }
+                    }
+                    
+                    const screenL = document.getElementById('loading-screen');
+                    const appC = document.getElementById('app-container');
+                    if(screenL) {
+                        screenL.style.display = 'none';
+                        if(appC) { appC.classList.remove('hidden'); appC.style.display = 'flex'; }
+                    }
+
+                } catch (err) { console.error("Error UI:", err); }
+            }
+
             window.cargarDatosMaestros = async function() {
                 try {
                     const snap = await getDoc(doc(db, "gimnasios", GYM_ID));
@@ -925,7 +1177,7 @@
                     const basePill = "nav-item cursor-pointer px-6 py-2.5 rounded-full text-sm font-semibold transition-all text-gray-300 hover:text-white flex items-center gap-2";
                     if(window.appState.gymModulos.tienda) { mCont.innerHTML += '<div id="nav-tienda" class="' + basePill + '" onclick="window.cambiarVista(\'tienda\')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tienda POS</div>'; }
                     if(window.appState.gymModulos.evaluaciones) { mCont.innerHTML += '<div id="nav-evaluaciones" class="' + basePill + '" onclick="window.cambiarVista(\'evaluaciones\')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Fichas Med.</div>'; }
-
+                    
                     const safeGet = async (col) => { try { return await getDocs(collection(db, "gimnasios", GYM_ID, col)); } catch(e) { return { empty: true, forEach: () => {} }; } };
 
                     const [sSnap, fSnap, eSnap, pSnap, cSnap, tSnap] = await Promise.all([ 
@@ -967,272 +1219,57 @@
                         renderizarGrafico(window.appState.listaFinanzasData);
                     }
                     
-                    // Render UI
-                    const hoy = new Date(); const mes = String(hoy.getMonth()+1).padStart(2,'0'); const dia = String(hoy.getDate()).padStart(2,'0'); const hoyMD = mes + "-" + dia;
-                    let cumpleaneros = [];
-                    const cAlertas = document.getElementById('contenedor-alertas'); const elTotalAlertas = document.getElementById('total-alertas');
-                    
-                    if(cAlertas && elTotalAlertas) {
-                        cAlertas.innerHTML = ''; let alertas = 0;
-                        for(let i=0; i<window.appState.listaSociosData.length; i++) {
-                            let s = window.appState.listaSociosData[i];
-                            const est = evaluarEstado(s.vence);
-                            if(s.nacimiento && String(s.nacimiento).endsWith(hoyMD)) { cumpleaneros.push(s.nombre); }
+                    renderUI(); 
+                } catch (err) { console.error("Error Global en Fetch de Datos:", err); }
+            };
 
-                            if(est.t !== 'Active' || s.deuda > 0) {
-                                alertas++;
-                                let deudaFlag = ''; if (s.deuda > 0) { deudaFlag = '<div class="absolute left-0 top-0 w-2 h-full bg-red-500 shadow-[0_0_10px_#ef4444]"></div>'; }
-                                let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=FOTO';
-                                let subtitulo = s.deuda > 0 ? '<span class="text-red-500">Deuda: $' + s.deuda + '</span>' : 'Miembro';
-                                let spanEstado = ''; if (est.t === 'Expired') spanEstado = 'Expirado'; else if (est.t === 'Warning') spanEstado = 'Por Vencer'; else spanEstado = 'Activo';
-                                let btnSaldar = ''; if (s.deuda > 0) { btnSaldar = '<button class="bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white px-5 py-2.5 text-xs rounded-full font-bold transition shadow-sm border border-red-500/20" onclick="event.stopPropagation(); window.abrirModalPago(\'' + s.id + '\', true)">Saldar</button>'; }
-
-                                cAlertas.innerHTML += `
-                                    <div class="p-5 glass-light flex flex-col sm:flex-row justify-between items-center transition hover:scale-[1.02] cursor-pointer gap-4 sm:gap-0 relative overflow-hidden shadow-sm border border-white/50" onclick="window.mostrarDetalleSocio('${s.id}')">
-                                        ${deudaFlag}
-                                        <div class="flex items-center gap-4 w-full sm:w-auto ml-2">
-                                            <img src="${fotUrl}" class="w-12 h-12 rounded-full object-cover shadow-md border border-white/50">
-                                            <div class="w-40"><p class="text-sm font-black text-gray-900 tracking-tight">${s.nombre}</p><p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">${subtitulo}</p></div>
-                                            <span class="px-3 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border shadow-sm ${est.c}">${spanEstado}</span>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            ${btnSaldar}
-                                            <button class="bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 px-6 py-2.5 text-xs rounded-full font-black tracking-wide transition shadow-sm" onclick="event.stopPropagation(); window.abrirModalPago('${s.id}')">Renovar</button>
-                                        </div>
-                                    </div>`;
-                            }
-                        }
-                        elTotalAlertas.innerText = alertas;
-                        if(alertas === 0) { cAlertas.innerHTML = '<div class="p-8 text-center text-gray-400 font-bold tracking-widest uppercase text-xs">Todo en orden. Cero alertas.</div>'; }
-                        const cCont = document.getElementById('cumple-container');
-                        if(cumpleaneros.length > 0 && cCont) { cCont.classList.remove('hidden'); cCont.style.display = 'flex'; document.getElementById('cumple-nombres').innerText = cumpleaneros.join(', '); }
-                    }
-
-                    const tbS = document.getElementById('tabla-socios-body');
-                    if(tbS) {
-                        tbS.innerHTML = '';
-                        for(let i=0; i<window.appState.listaSociosData.length; i++) {
-                            let s = window.appState.listaSociosData[i];
-                            const est = evaluarEstado(s.vence);
-                            let btnEliminar = ''; if (window.appState.userRole === 'admin') { btnEliminar = '<button class="btn-del-s bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-red-500/20" data-id="' + s.id + '">Borrar</button>'; }
-                            const esCumpleHoy = s.nacimiento && String(s.nacimiento).endsWith(hoyMD);
-                            let spanEstado = ''; if (est.t === 'Expired') spanEstado = 'Expirado'; else if (est.t === 'Warning') spanEstado = 'Próximo'; else spanEstado = 'Activo';
-                            let fotUrl = s.foto ? s.foto : 'https://via.placeholder.com/150/e5e7eb/a1a1aa?text=?';
-                            let cumpleHtml = esCumpleHoy ? '<span title="Cumpleaños Hoy" class="drop-shadow-md text-lg">🎂</span>' : '';
-                            let deudaHtml = s.deuda > 0 ? '<span class="block text-red-500 mt-1 bg-red-50 px-2 py-0.5 rounded border border-red-100 w-fit shadow-inner">Debe: $' + s.deuda + '</span>' : '';
-
-                            tbS.innerHTML += `
-                                <tr class="border-b border-black/5 hover:bg-black/5 transition">
-                                    <td class="py-4 px-4"><span class="px-2.5 py-1.5 rounded-lg text-[10px] font-bold tracking-widest uppercase border shadow-sm ${est.c}">${spanEstado}</span></td>
-                                    <td class="py-4 px-4">
-                                        <div class="flex items-center gap-4">
-                                            <img src="${fotUrl}" class="w-10 h-10 rounded-full object-cover shadow-md border border-white/50">
-                                            <div><p class="text-gray-900 font-black text-sm flex items-center gap-1 tracking-tight">${s.nombre} ${cumpleHtml}</p></div>
-                                        </div>
-                                    </td>
-                                    <td class="py-4 px-4 text-xs font-bold text-gray-700">${s.membresia} <span class="text-[10px] font-semibold text-gray-500 block uppercase tracking-wider mt-0.5">${s.servicio}</span></td>
-                                    <td class="py-4 px-4 text-gray-900 font-mono text-xs font-bold">${s.vence} ${deudaHtml}</td>
-                                    <td class="py-4 px-4 flex justify-end gap-2 items-center">
-                                        <button class="bg-emerald-500/10 text-emerald-600 px-3 py-2 rounded-full hover:bg-emerald-500 hover:text-white transition text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20" onclick="window.registrarIngreso('${s.id}', '${s.nombre}')">✓ Presente</button>
-                                        <button class="bg-[#25D366]/10 text-[#25D366] p-2 rounded-full hover:bg-[#25D366] hover:text-white transition border border-[#25D366]/20" onclick="window.enviarWhatsApp('${s.telefono}', '${s.nombre}')" title="WhatsApp"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></button>
-                                    <button class="bg-purple-500/10 text-purple-600 hover:bg-purple-500 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-purple-500/20" onclick="window.abrirModalRutina('${s.id}')">📝 Rutina</button>
-                                    <button class="bg-blue-500/10 hover:bg-blue-500 hover:text-white text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-blue-500/20" onclick="window.abrirModalPago('${s.id}')">Cobrar</button>
-                                    <button class="btn-edit-s bg-black/5 hover:bg-black/10 text-gray-800 px-3 py-1.5 rounded-full text-[10px] font-bold transition uppercase tracking-widest border border-black/10" data-id="${s.id}">Editar</button>
-                                    ${btnEliminar}
-                                </td>
-                            </tr>`;
+            document.body.addEventListener('click', async function(e) {
+                if (e.target.closest('.btn-del-s')) {
+                    if (confirm("¿Eliminar registro de socio de forma irreversible?")) { 
+                        try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').getAttribute('data-id'))); window.showToast("Miembro Eliminado"); window.cargarDatosMaestros(); } catch(err){} 
                     }
                 }
-
-                if(window.appState.userRole === 'admin') {
-                    const tbF = document.getElementById('tabla-finanzas-body'); 
-                    if(tbF) {
-                        tbF.innerHTML = '';
-                        for(let i=0; i<window.appState.listaFinanzasData.length; i++) {
-                            let f = window.appState.listaFinanzasData[i];
-                            const isEgreso = f.tipo === 'Egreso';
-                            const tColor = isEgreso ? 'text-red-600 bg-red-500/10 border-red-500/20' : (f.tipo === 'Inventario' ? 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20' : 'text-blue-600 bg-blue-500/10 border-blue-500/20');
-                            let fechaFormat = f.fecha ? f.fecha.split('-').reverse().join('/') : '';
-                            let signo = isEgreso ? '-' : '';
-
-                            tbF.innerHTML += `
-                                <tr class="border-b border-black/5 hover:bg-black/5 transition">
-                                    <td class="py-3 px-4 text-gray-500 font-mono text-[11px] font-bold tracking-widest">${fechaFormat}</td>
-                                    <td class="py-3 px-4 text-gray-900 font-black text-sm tracking-tight">${f.concepto}</td>
-                                    <td class="py-3 px-4"><span class="px-3 py-1 rounded-full text-[10px] font-bold border ${tColor}">${f.tipo}</span></td>
-                                    <td class="py-3 px-4 text-gray-600 text-[10px] font-bold uppercase tracking-widest">${f.medio || 'Efectivo'}</td>
-                                    <td class="py-3 px-4 font-black ${isEgreso ? 'text-red-500' : 'text-gray-900'} font-mono">${signo}$${Number(f.monto||0).toLocaleString('es-AR')}</td>
-                                    <td class="py-3 px-4 text-center"><button class="btn-del-f text-gray-400 hover:text-red-500 transition font-bold" data-id="${f.id}">✕</button></td>
-                                </tr>`;
-                        }
-                    }
-
-                    const tbCierres = document.getElementById('tabla-turnos-admin-body');
-                    if(tbCierres) {
-                        tbCierres.innerHTML = '';
-                        if(window.appState.listaCierresData.length === 0) { 
-                            tbCierres.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400 font-bold text-[10px] uppercase tracking-widest">Aún no hay turnos cerrados.</td></tr>'; 
-                        } else {
-                            for(let i=0; i<window.appState.listaCierresData.length; i++) {
-                                let c = window.appState.listaCierresData[i];
-                                const final = Number(c.fondo_inicial||0) + Number(c.total_pos||0) + Number(c.total_mem||0) - Number(c.egresos||0);
-                                
-                                let fechaCierre = '-';
-                                let targetDate = c.cierre ? c.cierre : c.timestamp;
-                                if(targetDate) {
-                                    let dObj = new Date(targetDate);
-                                    if(!isNaN(dObj)) fechaCierre = dObj.toLocaleString('es-AR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
-                                }
-
-                                let obsHtml = c.observaciones ? '<br><span class="text-[10px] text-orange-600 bg-orange-500/10 border border-orange-500/20 px-2 py-1 rounded mt-1.5 inline-block shadow-inner">📝 ' + c.observaciones + '</span>' : '';
-
-                                tbCierres.innerHTML += `
-                                    <tr class="border-b border-black/5 hover:bg-black/5 transition">
-                                        <td class="py-4 px-4 font-mono text-[11px] text-gray-600 font-bold tracking-widest">
-                                            ${fechaCierre}
-                                            ${obsHtml}
-                                        </td>
-                                        <td class="py-4 px-4 text-emerald-600 font-mono font-black tracking-tight text-base">+$${Number(c.total_pos||0) + Number(c.total_mem||0)}</td>
-                                        <td class="py-4 px-4 text-red-500 font-mono font-black tracking-tight text-base">-$${c.egresos||0}</td>
-                                        <td class="py-4 px-4 font-black text-gray-900 font-mono text-lg tracking-tight">$${final} <span class="text-[9px] text-gray-500 font-bold ml-1 tracking-widest uppercase block mt-0.5">(Fondo Base: $${c.fondo_inicial||0})</span></td>
-                                        <td class="py-4 px-4 text-[10px] text-gray-500 uppercase font-black tracking-widest">${c.usuario === 'admin' ? 'Dueño' : 'Staff'}</td>
-                                        <td class="py-4 px-4 text-center">
-                                            <button class="btn-del-cierre text-gray-400 hover:text-red-500 transition px-2 font-black" data-id="${c.id}" title="Eliminar">✕</button>
-                                        </td>
-                                    </tr>`;
-                            }
-                        }
+                if (e.target.closest('.btn-del-f')) {
+                    if (confirm("¿Anular transacción financiera?")) { 
+                        try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').getAttribute('data-id'))); window.showToast("Transacción Anulada", "error"); window.cargarDatosMaestros(); } catch(err){}
                     }
                 }
-
-                if(window.appState.gymModulos.tienda) {
-                    const cCat = document.getElementById('catalogo-productos');
-                    if(cCat) {
-                        cCat.innerHTML = '';
-                        for(let i=0; i<window.appState.listaProductosData.length; i++) {
-                            let p = window.appState.listaProductosData[i];
-                            const btnEditAdmin = window.appState.userRole === 'admin' ? `<button onclick="event.stopPropagation(); window.abrirModalEditarProducto('${p.id}', '${p.nombre}', '${p.precio}')" class="absolute top-3 right-3 bg-black/5 hover:bg-blue-500 hover:text-white text-gray-500 p-2 rounded-xl z-10 transition opacity-0 group-hover:opacity-100 backdrop-blur-md shadow-sm border border-black/10"><svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>` : '';
-                            cCat.innerHTML += `
-                                <div class="relative bg-white/40 border border-black/5 hover:bg-white hover:border-blue-300 rounded-[1.5rem] transition flex flex-col justify-between h-32 overflow-hidden group shadow-sm hover:shadow-md">
-                                    <button onclick="window.abrirModalVentaArticulo('${p.nombre}', ${p.precio})" class="absolute inset-0 w-full h-full text-left p-5 transition z-0 flex flex-col justify-between">
-                                        <span class="text-sm font-black text-gray-900 tracking-tight leading-tight w-[80%] drop-shadow-sm">${p.nombre}</span>
-                                        <span class="text-xs font-mono font-black text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg w-fit mt-1 shadow-inner">$${p.precio}</span>
-                                    </button>${btnEditAdmin}
-                                </div>`;
-                        }
-                    }
-                    
-                    const tbT = document.getElementById('tabla-tienda-body'); 
-                    if(tbT) {
-                        tbT.innerHTML = '';
-                        let hayVentas = false;
-                        if (window.appState.estadoCajaGlobal.abierta) {
-                            for(let i=0; i<window.appState.listaFinanzasData.length; i++) {
-                                let f = window.appState.listaFinanzasData[i];
-                                if(f.tipo === 'Inventario' && f.timestamp > window.appState.estadoCajaGlobal.ts) {
-                                    hayVentas = true;
-                                    tbT.innerHTML += `<tr class="border-b border-black/5"><td class="py-3 px-2 text-gray-900 font-bold text-sm tracking-tight">${f.concepto}</td><td class="py-3 px-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">${f.medio||'Efectivo'}</td><td class="py-3 px-2 text-right text-gray-900 font-mono font-black text-base">$${f.monto}</td></tr>`;
-                                }
-                            }
-                        } else if (window.appState.userRole === 'admin') {
-                            const hoyCorta = new Date().toISOString().split('T')[0];
-                            for(let i=0; i<window.appState.listaFinanzasData.length; i++) {
-                                let f = window.appState.listaFinanzasData[i];
-                                if(f.tipo === 'Inventario' && f.fecha === hoyCorta) {
-                                    hayVentas = true;
-                                    tbT.innerHTML += `<tr class="border-b border-black/5"><td class="py-3 px-2 text-gray-900 font-bold text-sm tracking-tight">${f.concepto}</td><td class="py-3 px-2 text-gray-500 text-[10px] uppercase font-black tracking-widest">${f.medio||'Efectivo'}</td><td class="py-3 px-2 text-right text-gray-900 font-mono font-black text-base">$${f.monto}</td></tr>`;
-                                }
-                            }
-                        }
-                        
-                        if(!hayVentas) {
-                            let msjTienda = window.appState.estadoCajaGlobal.abierta ? 'Sin ventas registradas' : (window.appState.userRole==='admin' ? 'Sin ventas hoy' : 'TURNO CERRADO');
-                            tbT.innerHTML = `<tr><td class="py-10 text-gray-400 text-center text-[10px] uppercase font-bold tracking-widest">${msjTienda}</td></tr>`;
-                        }
+                if (e.target.closest('.btn-del-e')) {
+                    if (confirm("¿Eliminar medición médica?")) { 
+                        try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').getAttribute('data-id'))); window.showToast("Medición Eliminada"); window.cargarDatosMaestros(); } catch(err){}
                     }
                 }
-
-                const tbE = document.getElementById('tabla-evaluaciones-body'); 
-                if(tbE) {
-                    tbE.innerHTML = '';
-                    for(let i=0; i<window.appState.listaEvalsData.length; i++) {
-                        let e = window.appState.listaEvalsData[i];
-                        const imc = parseFloat(e.imc);
-                        let badgeImc = 'text-gray-700 bg-gray-500/10 border-gray-500/20'; 
-                        if(imc >= 25) badgeImc = 'text-orange-700 bg-orange-500/10 border-orange-500/20'; 
-                        if(imc >= 30) badgeImc = 'text-red-700 bg-red-500/10 border-red-500/20'; 
-                        const btnEliminar = window.appState.userRole === 'admin' ? `<button class="btn-del-e text-gray-400 hover:text-red-500 transition px-2 font-bold" data-id="${e.id}">✕</button>` : '';
-                        let eFecha = e.fecha ? e.fecha.split('-').reverse().join('/') : '';
-
-                        tbE.innerHTML += `
-                            <tr class="border-b border-black/5 hover:bg-black/5 transition">
-                                <td class="py-4 px-4 text-gray-600 font-mono text-[11px] font-bold tracking-widest">${eFecha}</td>
-                                <td class="py-4 px-4 text-gray-900 font-black tracking-tight">${e.socio}</td>
-                                <td class="py-4 px-4 text-gray-600 font-bold">${e.peso} kg</td>
-                                <td class="py-4 px-4 text-gray-600 font-bold">${e.altura} cm</td>
-                                <td class="py-4 px-4"><span class="px-3 py-1.5 rounded-lg text-[11px] font-bold border shadow-inner ${badgeImc}">${e.imc}</span></td>
-                                <td class="py-4 px-4 text-center">${btnEliminar}</td>
-                            </tr>`;
+                if (e.target.closest('.btn-del-cierre')) {
+                    if (confirm("¿Eliminar registro de Arqueo de Caja?")) { 
+                        try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').getAttribute('data-id'))); window.showToast("Arqueo Eliminado"); window.cargarDatosMaestros(); } catch(err){}
                     }
                 }
-                
-                const screenL = document.getElementById('loading-screen');
-                const appC = document.getElementById('app-container');
-                if(screenL) {
-                    screenL.style.display = 'none';
-                    if(appC) { appC.classList.remove('hidden'); appC.style.display = 'flex'; }
-                }
-
-            } catch (err) { console.error("Error Global en Fetch de Datos:", err); }
-        };
-
-        document.body.addEventListener('click', async function(e) {
-            if (e.target.closest('.btn-del-s')) {
-                if (confirm("¿Eliminar registro de socio de forma irreversible?")) { 
-                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "socios", e.target.closest('.btn-del-s').getAttribute('data-id'))); window.showToast("Miembro Eliminado"); window.cargarDatosMaestros(); } catch(err){} 
-                }
-            }
-            if (e.target.closest('.btn-del-f')) {
-                if (confirm("¿Anular transacción financiera?")) { 
-                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "finanzas", e.target.closest('.btn-del-f').getAttribute('data-id'))); window.showToast("Transacción Anulada", "error"); window.cargarDatosMaestros(); } catch(err){}
-                }
-            }
-            if (e.target.closest('.btn-del-e')) {
-                if (confirm("¿Eliminar medición médica?")) { 
-                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "evaluaciones", e.target.closest('.btn-del-e').getAttribute('data-id'))); window.showToast("Medición Eliminada"); window.cargarDatosMaestros(); } catch(err){}
-                }
-            }
-            if (e.target.closest('.btn-del-cierre')) {
-                if (confirm("¿Eliminar registro de Arqueo de Caja?")) { 
-                    try { await deleteDoc(doc(db, "gimnasios", GYM_ID, "cierres", e.target.closest('.btn-del-cierre').getAttribute('data-id'))); window.showToast("Arqueo Eliminado"); window.cargarDatosMaestros(); } catch(err){}
-                }
-            }
-            if (e.target.closest('.btn-edit-s')) {
-                let idBuscado = e.target.closest('.btn-edit-s').getAttribute('data-id');
-                let foundSocio = null;
-                for(let i=0; i<window.appState.listaSociosData.length; i++) {
-                    if(window.appState.listaSociosData[i].id === idBuscado) { foundSocio = window.appState.listaSociosData[i]; break; }
-                }
-                window.abrirModalSocio(foundSocio);
-            }
-        });
-
-        const inputBusqueda = document.getElementById('input-busqueda-socio');
-        if(inputBusqueda) {
-            inputBusqueda.addEventListener('input', function(e) {
-                const trs = document.querySelectorAll('#tabla-socios-body tr'); const term = e.target.value.toLowerCase();
-                for(let i=0; i<trs.length; i++) {
-                    const tr = trs[i]; const pEl = tr.querySelector('td:nth-child(2) p');
-                    if (pEl) { const nombre = pEl.innerText.toLowerCase(); if (nombre.indexOf(term) !== -1) { tr.style.display = ''; } else { tr.style.display = 'none'; } }
+                if (e.target.closest('.btn-edit-s')) {
+                    let idBuscado = e.target.closest('.btn-edit-s').getAttribute('data-id');
+                    let foundSocio = null;
+                    for(let i=0; i<window.appState.listaSociosData.length; i++) {
+                        if(window.appState.listaSociosData[i].id === idBuscado) { foundSocio = window.appState.listaSociosData[i]; break; }
+                    }
+                    window.abrirModalSocio(foundSocio);
                 }
             });
-        }
 
-        window.cargarDatosMaestros();
+            const inputBusqueda = document.getElementById('input-busqueda-socio');
+            if(inputBusqueda) {
+                inputBusqueda.addEventListener('input', function(e) {
+                    const trs = document.querySelectorAll('#tabla-socios-body tr'); const term = e.target.value.toLowerCase();
+                    for(let i=0; i<trs.length; i++) {
+                        const tr = trs[i]; const pEl = tr.querySelector('td:nth-child(2) p');
+                        if (pEl) { const nombre = pEl.innerText.toLowerCase(); if (nombre.indexOf(term) !== -1) { tr.style.display = ''; } else { tr.style.display = 'none'; } }
+                    }
+                });
+            }
+
+            window.cargarDatosMaestros();
 
         } catch(error) {
             const banner = document.getElementById('error-banner');
-            if (banner) { banner.innerText = "ERROR FATAL: " + error.message; banner.classList.remove('hidden'); }
+            if (banner) { banner.innerText = "ERROR FATAL DE SISTEMA: " + error.message; banner.classList.remove('hidden'); }
         }
     </script>
 </body>
